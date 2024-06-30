@@ -1,0 +1,246 @@
+package com.mala.digital_joper_mala;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+
+public class MainActivity extends AppCompatActivity {
+
+
+    // XML id's----------------------------------------------------------------
+
+    TextView text1,text2,text3,firstpage,secondpage;
+    Button add1, add2, add3;
+    Button less2, less3;
+    Button reset1, reset2, reset3;
+    int count = 0;
+    int i = 0;
+    int j = 0;
+
+    // XML id's----------------------------------------------------------------
+
+    @SuppressLint("MissingInflatedId")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+
+        //Identity period start+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        text1 = findViewById(R.id.text1);
+        text2 = findViewById(R.id.text2);
+        text3 = findViewById(R.id.text3);
+        add1 = findViewById(R.id.add1);
+        add2 = findViewById(R.id.add2);
+        add3 = findViewById(R.id.add3);
+        less2 = findViewById(R.id.less2);
+        less3 = findViewById(R.id.less3);
+        reset1 = findViewById(R.id.reset1);
+        reset2 = findViewById(R.id.reset2);
+        reset3 = findViewById(R.id.reset3);
+        firstpage = findViewById(R.id.firstpage);
+        secondpage = findViewById(R.id.secondpage);
+
+        //Identity period end+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+        /* Display and Button started */
+
+
+        //1st step started++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        add1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    count++;
+
+                    if (count > 0 && count < 109){
+
+                        text1.setText(" " + count);
+
+                    }
+
+            }
+        });
+
+        less2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    count--;
+
+                    if (count > -1 && count < 17){
+
+                        text1.setText (" "+count);
+
+
+                    }
+
+            }
+        });
+
+        reset1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               count = 0;
+
+                text1.setText(" "+count);
+
+            }
+        });
+        //1st step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
+        //2nd step started++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        add2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                i++;
+
+                if (i > 0 && i < 17) {
+
+                    text2.setText(" " + i);
+
+                }
+            }
+        });
+
+        less3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                i--;
+
+                if (i > -1 && i < 17){
+
+                    text2.setText(" " + i);
+                }
+
+
+
+            }
+        });
+
+        reset2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                i = 0;
+
+                text2.setText(" "+i);
+
+            }
+        });
+        //2nd step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
+        //3rd step started++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        add3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                j++;
+
+                if (j > 0 && j < 5) {
+
+                    text3.setText(" " + j);
+
+                }
+            }
+        });
+
+        reset3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                j = 0;
+
+                text3.setText(" "+j);
+
+            }
+        });
+        //3rd step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+        //Other pages-------------------------------------------------------------------------------
+        firstpage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent mypage = new Intent(MainActivity.this,MainActivity2.class);
+                startActivity(mypage);
+
+            }
+        });
+
+        secondpage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(MainActivity.this, MainActivity3.class);
+                startActivity(intent);
+
+            }
+        });
+        //Other pages-------------------------------------------------------------------------------
+
+
+
+
+    }
+
+    /*@Override
+    public void onBackPressed() {
+
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("")
+                .setMessage("")
+                .setIcon(R.drawable.)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        dialogInterface.dismiss();
+                        finish();
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        dialogInterface.dismiss();
+
+                    }
+                })
+                .show();
+
+
+    }
+
+     */
+}

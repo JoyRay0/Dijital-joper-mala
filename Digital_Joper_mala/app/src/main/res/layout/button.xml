@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="2"
+    >
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/firstpage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="মালা জপের নিয়ম"
+        android:textSize="15sp"
+        android:layout_margin="5dp"
+        android:drawableEnd="@drawable/next4"
+        android:layout_weight="1"
+        android:elevation="12dp"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/secondpage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="মালা জপের কারন"
+        android:textSize="15sp"
+        android:drawableEnd="@drawable/next4"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:elevation="12dp"
+        />
+
+
+</LinearLayout>
