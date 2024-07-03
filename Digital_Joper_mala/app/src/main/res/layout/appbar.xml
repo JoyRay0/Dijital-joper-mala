@@ -30,7 +30,7 @@
             android:src="@drawable/baseline_density_medium_24"
             android:layout_centerVertical="true"
             android:backgroundTint="#008080"
-            android:backgroundTintMode="multiply"
+            android:backgroundTintMode="src_atop"
             android:padding="10dp"
             />
 
