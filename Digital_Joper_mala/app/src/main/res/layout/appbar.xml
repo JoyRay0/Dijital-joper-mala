@@ -2,14 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
 
 
         <com.google.android.material.appbar.AppBarLayout
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
 
             >
 
@@ -18,7 +19,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#008080"
-
+                app:title="জপের মালা"
+                android:paddingStart="60dp"
                 />
 
         </com.google.android.material.appbar.AppBarLayout>
