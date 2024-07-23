@@ -6,23 +6,33 @@ import androidx.appcompat.widget.AppCompatImageButton;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.view.View;
-import android.widget.ImageButton;
+
 
 public class MainActivity3 extends AppCompatActivity {
 
-    //XML id's
+    //XML id's-----------------------------------------------------
 
     AppCompatImageButton mback;
+
+   // TextToSpeech textToSpeech;
+
+    //XML id's-----------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
 
-        //identity period
+        //identity period------------------------------------------
 
         mback = findViewById(R.id.back);
+        //button = findViewById(R.id.button);
+
+        //identity period------------------------------------------
+
+
 
         //starting point
 
@@ -36,5 +46,31 @@ public class MainActivity3 extends AppCompatActivity {
             }
         });
 
+
+        /*
+        //text to speech------------------------------------------------------------
+
+         textToSpeech = new TextToSpeech(MainActivity3.this, new TextToSpeech.OnInitListener() {
+             @Override
+             public void onInit(int i) {
+
+             }
+         });
+
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                textToSpeech.speak(, TextToSpeech.QUEUE_FLUSH, null, null);
+
+            }
+        });
+
+        //text to speech------------------------------------------------------------
+
+
+         */
     }
 }

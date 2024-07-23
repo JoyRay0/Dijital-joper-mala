@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
     >
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
         android:background="#00F9F6EE"
         android:padding="10dp"
         >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:text="@string/stage1"
-            android:textColor="#36454F"
-            android:textSize="20sp"
-            android:textStyle="bold" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/pro"
             android:orientation="vertical"
-            android:elevation="12dp"
+            android:elevation="5dp"
             >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="@string/stage1"
+                android:textColor="#36454F"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
 
             <TextView
                 android:layout_width="match_parent"
@@ -86,25 +88,25 @@
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/stage2"
-            android:textSize="20sp"
-            android:textColor="#36454F"
-            android:textStyle="bold"
-            android:layout_margin="15dp"
-            />
-
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/pro"
             android:orientation="vertical"
-            android:elevation="12dp"
+            android:elevation="5dp"
             >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/stage2"
+                android:textSize="20sp"
+                android:textColor="#36454F"
+                android:textStyle="bold"
+                android:layout_margin="15dp"
+                />
 
             <TextView
                 android:layout_width="match_parent"
@@ -164,25 +166,26 @@
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/stage3"
-            android:textSize="20sp"
-            android:textColor="#36454F"
-            android:textStyle="bold"
-            android:layout_margin="15dp"
-            />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_margin="10dp"
             android:background="@drawable/pro"
-            android:elevation="12dp"
+            android:elevation="5dp"
 
             >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/stage3"
+                android:textSize="20sp"
+                android:textColor="#36454F"
+                android:textStyle="bold"
+                android:layout_margin="15dp"
+                />
 
             <TextView
                 android:layout_width="match_parent"
@@ -232,11 +235,6 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="10dp"
-            android:layout_height="20dp"/>
-
-
     </LinearLayout>
 
-</ScrollView>
+</HorizontalScrollView>

@@ -21,9 +21,13 @@ public class MainActivity extends AppCompatActivity {
     Button add1, add2, add3;
     Button less2, less3;
     Button reset1, reset2, reset3;
-    int count = 0;
-    int i = 0;
-    int j = 0;
+
+    //initial value********************************************
+
+    int count = 0, i = 0, j = 0;
+
+    //initial value********************************************
+
 
     // XML id's----------------------------------------------------------------
 
@@ -213,25 +217,27 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /*@Override
+    @Override
     public void onBackPressed() {
 
         new AlertDialog.Builder(MainActivity.this)
-                .setTitle("")
-                .setMessage("")
-                .setIcon(R.drawable.)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setTitle("জপের মালা")
+                .setMessage("আপনি কি এই অ্যাপটি বন্ধ করতে চান ?")
+             //   .setIcon(R.drawable.)
+                .setPositiveButton("হ্যা", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
 
                         dialogInterface.dismiss();
                         finish();
 
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton("না", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
 
                         dialogInterface.dismiss();
 
@@ -242,5 +248,5 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-     */
+
 }
