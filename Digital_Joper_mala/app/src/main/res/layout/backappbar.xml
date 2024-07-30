@@ -8,18 +8,24 @@
    <Toolbar
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:background="#008080"
-       />
+       android:background="#AB065050" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/back"
-        android:layout_width="60dp"
-        android:layout_height="50dp"
-        android:src="@drawable/baseline_arrow_back_24"
-        android:layout_centerVertical="true"
-        android:backgroundTint="#008080"
-        android:backgroundTintMode="src_atop"
-        android:padding="10dp"
-        />
+
+
+        <ImageButton
+            android:id="@+id/back"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/baseline_arrow_back_24"
+            android:layout_centerVertical="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="10dp"
+            />
+
+
+
+
 
 </RelativeLayout>

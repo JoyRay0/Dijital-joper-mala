@@ -5,16 +5,24 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import android.content.Intent;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.google.android.material.internal.NavigationMenu;
+import com.google.android.material.navigation.NavigationBarMenu;
+import com.google.android.material.ripple.RippleUtils;
+
 public class MainActivity2 extends AppCompatActivity {
 
     //XML id's
 
-    AppCompatImageButton back;
+    ImageButton back;
+
+
+
 
 
     @Override
@@ -27,9 +35,14 @@ public class MainActivity2 extends AppCompatActivity {
         back = findViewById(R.id.back);
 
 
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+
+
 
                 Intent myback = new Intent(MainActivity2.this, MainActivity.class);
                 startActivity(myback);

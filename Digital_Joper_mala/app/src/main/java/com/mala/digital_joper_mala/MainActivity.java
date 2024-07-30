@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     Button less2, less3;
     Button reset1, reset2, reset3;
 
+    
     //initial value********************************************
 
     int count = 0, i = 0, j = 0;
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         reset3 = findViewById(R.id.reset3);
         firstpage = findViewById(R.id.firstpage);
         secondpage = findViewById(R.id.secondpage);
+
 
         //Identity period end+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -229,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
 
 
+
                         dialogInterface.dismiss();
                         finish();
 
@@ -247,6 +251,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 
 
 }

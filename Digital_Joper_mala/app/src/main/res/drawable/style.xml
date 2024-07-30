@@ -7,8 +7,6 @@
         android:color="#EDEADE"
         />
 
-
-
     <corners
         android:radius="10dp"
 

@@ -16,8 +16,7 @@
                     style="@style/Widget.MaterialComponents.Toolbar.Primary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#008080"
-
+                    android:background="#AB065050"
                     />
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -29,13 +28,10 @@
             android:layout_height="50dp"
             android:src="@drawable/baseline_density_medium_24"
             android:layout_centerVertical="true"
-            android:backgroundTint="#008080"
+            android:backgroundTint="#AB065050"
             android:backgroundTintMode="src_atop"
             android:padding="10dp"
+
             />
-
-
-
-
 
 </RelativeLayout>

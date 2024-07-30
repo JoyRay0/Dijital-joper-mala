@@ -18,7 +18,7 @@
         >
 
         <LinearLayout
-            android:id="@+id/lla"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -26,6 +26,7 @@
             >
 
             <TextView
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/question1"
@@ -36,6 +37,7 @@
                 />
 
             <TextView
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/Answer1"
@@ -47,6 +49,7 @@
                 />
 
             <TextView
+                android:id="@+id/t3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/question2"
@@ -57,6 +60,7 @@
                 />
 
             <TextView
+                android:id="@+id/t4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/Answer2"
@@ -68,6 +72,7 @@
                 />
 
             <TextView
+                android:id="@+id/t5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/question3"
@@ -78,6 +83,7 @@
                 />
 
             <TextView
+                android:id="@+id/t6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/Answer3"
@@ -89,6 +95,7 @@
                 />
 
             <TextView
+                android:id="@+id/t7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/question4"
@@ -99,6 +106,7 @@
                 />
 
             <TextView
+                android:id="@+id/t8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/Answer4"
@@ -110,6 +118,7 @@
                 />
 
             <TextView
+                android:id="@+id/t9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/question5"
@@ -120,6 +129,7 @@
                 />
 
             <TextView
+                android:id="@+id/t10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/Answer5"
@@ -131,6 +141,7 @@
                 />
 
             <TextView
+                android:id="@+id/t11"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/question6"
@@ -141,6 +152,7 @@
                 />
 
             <TextView
+                android:id="@+id/t12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
@@ -149,6 +161,14 @@
                 android:textColor="#36454F"
                 android:textSize="20sp"
                 android:textStyle="italic" />
+
+
+
+
+
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
 
         </LinearLayout>
 
