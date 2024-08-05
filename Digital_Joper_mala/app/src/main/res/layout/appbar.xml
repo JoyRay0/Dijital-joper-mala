@@ -17,11 +17,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#AB065050"
+                    app:title="জপের মালা"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="70dp"
                     />
 
         </com.google.android.material.appbar.AppBarLayout>
 
 
+
+
+
+        <!--
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/menu"
             android:layout_width="60dp"
@@ -33,5 +40,21 @@
             android:padding="10dp"
 
             />
+            -->
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_settings_24"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:backgroundTint="#AB065050"
+            android:backgroundTintMode="src_atop"
+            android:padding="10dp"
+            android:background="?android:attr/selectableItemBackground"
+            />
+
+
 
 </RelativeLayout>

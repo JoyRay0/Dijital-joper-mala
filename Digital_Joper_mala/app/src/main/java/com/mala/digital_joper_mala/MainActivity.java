@@ -2,6 +2,7 @@ package com.mala.digital_joper_mala;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -22,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     Button add1, add2, add3;
     Button less2, less3;
     Button reset1, reset2, reset3;
+
+    AppCompatImageButton setting;
 
     
     //initial value********************************************
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         reset3 = findViewById(R.id.reset3);
         firstpage = findViewById(R.id.firstpage);
         secondpage = findViewById(R.id.secondpage);
+        setting = findViewById(R.id.setting);
 
 
         //Identity period end+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -216,10 +220,28 @@ public class MainActivity extends AppCompatActivity {
         //Other pages-------------------------------------------------------------------------------
 
 
+        //setting button-------------------------------------
+
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                startActivity(intent);
+
+
+
+            }
+        });
+
+
+        //setting button-------------------------------------
 
 
     }
 
+
+    /*
     @Override
     public void onBackPressed() {
 
@@ -251,6 +273,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+     */
 
 
 
