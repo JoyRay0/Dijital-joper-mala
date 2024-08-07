@@ -23,123 +23,124 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <!-- started-->
 
 
+            <!-- Feedback -->
 
-
-            <!-- Feedback-->
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/feedback"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-
-                <TextView
-                    android:id="@+id/feedback"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:drawableStart="@drawable/baseline_email_24"
-                    android:gravity="center"
-                    android:padding="15dp"
-                    android:text=" আমাদের মতামত জানান"
-                    android:textColor="#000"
-                    android:textSize="20sp"
-                    android:textStyle="normal"
-                    android:clickable="true"
-                    android:focusable="true"
-                    />
-
-            </LinearLayout>
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableStart="@drawable/baseline_email_24"
+                android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
+                android:drawablePadding="20dp"
+                android:focusable="true"
+                android:gravity="start"
+                android:padding="15dp"
+                android:text=" আমাদের মতামত জানান"
+                android:textColor="#B4000000"
+                android:textSize="17sp"
+                android:textStyle="normal" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#79000000"
-                />
+                android:background="#79000000" />
 
             <!-- Feedback-->
 
 
             <!-- privacy policy-->
 
-            <LinearLayout
+
+            <TextView
+                android:id="@+id/privacy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-
-                >
-
-                <TextView
-                    android:id="@+id/privacy"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=" প্রাইভেসি &amp; পলিসি"
-                    android:textSize="20sp"
-                    android:textColor="#000"
-                    android:textStyle="normal"
-                    android:gravity="center"
-                    android:padding="15dp"
-                    android:drawableStart="@drawable/baseline_shield_24"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:focusable="true"
-                    />
-
-            </LinearLayout>
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableStart="@drawable/baseline_privacy_tip_24"
+                android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
+                android:drawablePadding="20dp"
+                android:focusable="true"
+                android:gravity="start"
+                android:padding="15dp"
+                android:text=" প্রাইভেসি &amp; পলিসি"
+                android:textColor="#B4000000"
+                android:textSize="17sp"
+                android:textStyle="normal" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#79000000"
-                />
+                android:background="#79000000" />
 
             <!--privacy policy -->
 
 
-            <!-- app version-->
+            <!-- info -->
 
-            <LinearLayout
+
+            <TextView
+                android:id="@+id/app_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-
-                <TextView
-                    android:id="@+id/app_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=" কিছু ইনফরমেশন "
-                    android:textSize="20sp"
-                    android:textColor="#000"
-                    android:textStyle="normal"
-                    android:gravity="center"
-                    android:padding="15dp"
-                    android:drawableStart="@drawable/baseline_info_24"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:focusable="true"
-                    />
-
-            </LinearLayout>
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableStart="@drawable/baseline_info_24"
+                android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
+                android:drawablePadding="20dp"
+                android:focusable="true"
+                android:gravity="start"
+                android:padding="15dp"
+                android:text=" কিছু ইনফরমেশন "
+                android:textColor="#B4000000"
+                android:textSize="17sp"
+                android:textStyle="normal" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#79000000"
-                />
-
-            <!-- app version-->
+                android:background="#79000000" />
 
 
+            <!-- info -->
 
 
+            <!-- new features -->
 
+
+            <TextView
+                android:id="@+id/features"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableStart="@drawable/baseline_tips_and_updates_24"
+                android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
+                android:drawablePadding="20dp"
+                android:focusable="true"
+                android:gravity="start"
+                android:padding="15dp"
+                android:text=" নতুন ফিচারগুলো "
+                android:textColor="#B4000000"
+                android:textSize="17sp"
+                android:textStyle="normal" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#79000000" />
+
+
+            <!-- new features  -->
+
+            
 
         </LinearLayout>
 

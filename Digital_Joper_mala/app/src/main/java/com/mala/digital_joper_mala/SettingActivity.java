@@ -16,7 +16,7 @@ public class SettingActivity extends AppCompatActivity {
     //XML id's---------------------------------------------
 
     ImageButton back;
-    TextView privacy, app_info, feedback;
+    TextView privacy, app_info, feedback, features;
 
     //XML id's---------------------------------------------
 
@@ -30,6 +30,7 @@ public class SettingActivity extends AppCompatActivity {
         privacy = findViewById(R.id.privacy);
         app_info = findViewById(R.id.app_info);
         feedback = findViewById(R.id.feedback);
+        features = findViewById(R.id.features);
 
         //identity-------------------------------------------
 
@@ -104,6 +105,21 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         //Feedback--------------------------------------------
+
+
+        //Features----------------------------------------------
+
+        features.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(SettingActivity.this, NewFeaturesActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        //Features----------------------------------------------
 
 
 

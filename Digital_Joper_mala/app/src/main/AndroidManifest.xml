@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
@@ -15,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Digital_Joper_mala"
         tools:targetApi="34">
+        <activity
+            android:name=".NewFeaturesActivity"
+            android:exported="false" />
         <activity
             android:name=".AppInfoActivity"
             android:exported="false" />
