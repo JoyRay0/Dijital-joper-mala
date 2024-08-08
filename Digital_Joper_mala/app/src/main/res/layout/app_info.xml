@@ -44,11 +44,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="এপ ভার্সন: 1.0.0"
-            android:textSize="20sp"
-            android:textColor="#000"
+            android:text="App Version : 1.0.0"
+            android:textSize="17sp"
             android:gravity="center"
-            android:padding="20dp"
+            android:padding="15dp"
             />
 
 
