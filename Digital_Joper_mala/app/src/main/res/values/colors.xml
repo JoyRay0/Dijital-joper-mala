@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="color1">#FF000000</color>
-    <color name="color2">#FFFFFFFF</color>
-    <color name="color3">#EAA0A0</color>
+    <color name="color2">#000</color> <!-- dark mode, email, info, privacy, tips and update, forward arrow, button_text_colo_button.xml, jopa.xml color-->
+    <color name="color3">#EDEADE</color> <!-- style.xml color-->
     <color name="color4">#00BCD4</color>
-    <color name="my_dark_primary">#1E000000</color>
+    <color name="color5">#D0DDD2D2</color>  <!-- buttonstyle.xml color-->
+    <color name="color6">#fff</color> <!-- pro.xml color-->
+    <color name="color7">#79000000</color> <!-- divider color-->
+    <color name="color8">#F0008080</color>  <!-- color_primary color-->
+
+   
 </resources>

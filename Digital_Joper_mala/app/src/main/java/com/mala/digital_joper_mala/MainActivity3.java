@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.view.View;
@@ -16,6 +17,9 @@ public class MainActivity3 extends AppCompatActivity {
     //XML id's-----------------------------------------------------
 
     ImageButton mback;
+
+    Boolean nightMode;
+    SharedPreferences sharedPreferences;
 
 
 
@@ -33,7 +37,8 @@ public class MainActivity3 extends AppCompatActivity {
         mback = findViewById(R.id.back);
 
 
-
+        sharedPreferences = getSharedPreferences(getString(R.string.app_name),MODE_PRIVATE);
+        nightMode = sharedPreferences.getBoolean("night",false);
 
 
 

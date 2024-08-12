@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="#00F9F6EE"
+    style="@style/SCREEN"
+
     >
 
     <include layout="@layout/appbar"
@@ -35,7 +36,8 @@
                     android:contentDescription="@string/rada_krishna"
                     />
 
-                <include layout="@layout/button"/>
+                <include layout="@layout/button"
+                    />
 
 
                 <TextView
@@ -43,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
                     android:text="@string/rk"
-                    android:textColor="#353935"
+                    style="@style/Text_italic"
                     android:textSize="20sp"
                     android:textStyle="normal" />
 
@@ -52,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/srikrishna"
                     android:textSize="20sp"
-                    android:textColor="#36454F"
+                    style="@style/button_text_color"
                     android:textStyle="bold"
                     android:layout_margin="15dp"
                     android:gravity="center"
@@ -63,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
                     android:text="@string/nam"
-                    android:textColor="#353935"
+                    style="@style/Text_italic"
                     android:textSize="20sp"
                     android:textStyle="normal" />
 
@@ -72,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/as"
                     android:textSize="20sp"
-                    android:textColor="#36454F"
+                    style="@style/button_text_color"
                     android:textStyle="bold"
                     android:layout_margin="15dp"
                     android:gravity="center"
@@ -83,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/title"
                     android:textSize="20sp"
-                    android:textColor="#353935"
+                    style="@style/Text_italic"
                     android:textStyle="normal"
                     android:layout_margin="15dp"
                     />
@@ -93,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/hare_krishna"
                     android:textSize="20sp"
-                    android:textColor="#36454F"
+                    style="@style/button_text_color"
                     android:textStyle="bold"
                     android:gravity="center"
                     android:layout_margin="15dp"
@@ -103,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/akan"
                     android:textSize="20sp"
-                    android:textColor="#353935"
+                    style="@style/Text_italic"
                     android:textStyle="normal"
                     android:layout_margin="15dp"
                     />
@@ -118,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/end"
                     android:textSize="20sp"
-                    android:textColor="#353935"
+                    style="@style/Text_italic"
                     android:textStyle="normal"
                     android:layout_margin="15dp"
                     />
@@ -128,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/end_to"
                     android:textSize="20sp"
-                    android:textColor="#36454F"
+                    style="@style/button_text_color"
                     android:textStyle="bold"
                     android:layout_margin="15dp"
                     android:gravity="center"

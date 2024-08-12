@@ -6,25 +6,22 @@
     android:orientation="horizontal">
 
 
-        <com.google.android.material.appbar.AppBarLayout
+       <Toolbar
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:background="#AB065050"
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            >
-                <com.google.android.material.appbar.MaterialToolbar
-                    style="@style/Widget.MaterialComponents.Toolbar.Primary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#AB065050"
-                    app:title="জপের মালা"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="70dp"
-                    />
-
-        </com.google.android.material.appbar.AppBarLayout>
+           >
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="match_parent"
+                   android:text="জপের মালা"
+                   android:textSize="20sp"
+                   style="@style/app_bar"
+                   />
 
 
+       </Toolbar>
 
 
 

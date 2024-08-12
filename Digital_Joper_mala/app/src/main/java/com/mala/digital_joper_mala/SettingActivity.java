@@ -1,6 +1,7 @@
 package com.mala.digital_joper_mala;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,10 @@ import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SwitchCompat;
+
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 public class SettingActivity extends AppCompatActivity {
 
@@ -17,6 +22,11 @@ public class SettingActivity extends AppCompatActivity {
 
     ImageButton back;
     TextView privacy, app_info, feedback, features;
+
+    MaterialSwitch sw;
+    boolean nightMode;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     //XML id's---------------------------------------------
 
@@ -31,8 +41,49 @@ public class SettingActivity extends AppCompatActivity {
         app_info = findViewById(R.id.app_info);
         feedback = findViewById(R.id.feedback);
         features = findViewById(R.id.features);
+        sw = findViewById(R.id.sw);
+
+
+        sharedPreferences = getSharedPreferences(getString(R.string.app_name),MODE_PRIVATE);
+        nightMode = sharedPreferences.getBoolean("night", false);
+
 
         //identity-------------------------------------------
+
+
+        //night mode-----------------------------------------------------------
+
+        if (nightMode){
+
+            sw.setChecked(true);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        }
+
+
+
+
+        sw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (nightMode ){
+                    editor = sharedPreferences.edit();
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+                    editor.putBoolean("night",false);
+
+                }else {
+
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    editor = sharedPreferences.edit();
+                    editor.putBoolean("night", true);
+
+                }
+                editor.apply();
+
+            }
+        });
 
 
 

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
 
     >
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:background="#00F9F6EE"
+        android:background="#00FFFFFF"
         android:padding="10dp"
+        android:weightSum="3"
         >
 
 
@@ -20,6 +21,7 @@
             android:background="@drawable/pro"
             android:orientation="vertical"
             android:elevation="5dp"
+            android:layout_weight="1"
             >
 
             <TextView
@@ -27,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="@string/stage1"
-                android:textColor="#36454F"
+                style="@style/TEXT_BOLD"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -37,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="@string/bar108"
-                android:textColor="#353935"
+                style="@style/Text_italic"
                 android:textSize="20sp" />
 
             <TextView
@@ -50,7 +52,7 @@
                 android:elevation="10dp"
                 android:gravity="center"
                 android:text="@string/_0"
-                android:textColor="#353935"
+                android:textColor="@color/color2"
                 android:textSize="35sp" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -60,7 +62,7 @@
                 android:layout_margin="15dp"
                 android:background="@drawable/buttonstyle"
                 android:text="@string/addone"
-                android:textColor="#36454F"
+                style="@style/button_text_color"
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -69,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="@string/lessone"
-                android:textColor="#36454F"
+                style="@style/button_text_color"
                 android:textSize="20sp"
                 android:elevation="12dp"
                 android:background="@drawable/buttonstyle"
@@ -81,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="@string/reset"
-                android:textColor="#36454F"
+                style="@style/button_text_color"
                 android:textSize="20sp"
                 android:background="@drawable/buttonstyle"
                 />
@@ -96,6 +98,7 @@
             android:background="@drawable/pro"
             android:orientation="vertical"
             android:elevation="5dp"
+            android:layout_weight="1"
             >
 
             <TextView
@@ -103,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/stage2"
                 android:textSize="20sp"
-                android:textColor="#36454F"
+                style="@style/TEXT_BOLD"
                 android:textStyle="bold"
                 android:layout_margin="15dp"
                 />
@@ -113,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="@string/bar16"
-                android:textColor="#353935"
+                style="@style/Text_italic"
                 android:textSize="20sp" />
 
             <TextView
@@ -126,19 +129,18 @@
                 android:elevation="10dp"
                 android:gravity="center"
                 android:text="@string/_0"
-                android:textColor="#353935"
+                android:textColor="@color/color2"
                 android:textSize="35sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/add2"
+                style="@style/button_text_color"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:text="@string/addone"
-                android:textColor="#36454F"
-                android:textSize="20sp"
                 android:background="@drawable/buttonstyle"
-                />
+                android:text="@string/addone"
+                android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/less3"
@@ -146,7 +148,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="@string/lessone"
-                android:textColor="#36454F"
+                style="@style/button_text_color"
                 android:textSize="20sp"
                 android:elevation="10dp"
                 android:background="@drawable/buttonstyle"
@@ -159,7 +161,7 @@
                 android:layout_margin="15dp"
                 android:elevation="10dp"
                 android:text="@string/reset"
-                android:textColor="#36454F"
+                style="@style/button_text_color"
                 android:textSize="20sp"
                 android:background="@drawable/buttonstyle"
                 />
@@ -174,6 +176,7 @@
             android:layout_margin="10dp"
             android:background="@drawable/pro"
             android:elevation="5dp"
+            android:layout_weight="1"
 
             >
 
@@ -182,7 +185,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/stage3"
                 android:textSize="20sp"
-                android:textColor="#36454F"
+                style="@style/TEXT_BOLD"
                 android:textStyle="bold"
                 android:layout_margin="15dp"
                 />
@@ -192,7 +195,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/bar4"
                 android:textSize="20sp"
-                android:textColor="#353935"
+                style="@style/Text_italic"
                 android:layout_margin="15dp"
                 />
 
@@ -202,7 +205,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/_0"
                 android:textSize="35sp"
-                android:textColor="#353935"
+                android:textColor="@color/color2"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:background="@drawable/style"
@@ -217,7 +220,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/addone"
                 android:textSize="20sp"
-                android:textColor="#36454F"
+                style="@style/button_text_color"
                 android:layout_margin="15dp"
                 android:background="@drawable/buttonstyle"
                 />
@@ -228,7 +231,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/reset"
                 android:textSize="20sp"
-                android:textColor="#36454F"
+                style="@style/button_text_color"
                 android:layout_margin="15dp"
                 android:background="@drawable/buttonstyle"
                 />

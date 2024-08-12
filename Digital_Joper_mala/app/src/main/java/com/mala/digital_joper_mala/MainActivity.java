@@ -2,11 +2,13 @@ package com.mala.digital_joper_mala;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -25,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     Button reset1, reset2, reset3;
 
     AppCompatImageButton setting;
+
+    SharedPreferences sharedPreferences;
+    boolean nightMode;
 
     
     //initial value********************************************
@@ -61,9 +66,19 @@ public class MainActivity extends AppCompatActivity {
         setting = findViewById(R.id.setting);
 
 
+        sharedPreferences = getSharedPreferences(getString(R.string.app_name),MODE_PRIVATE);
+        nightMode = sharedPreferences.getBoolean("night",false);
+
+
+
         //Identity period end+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+        if (nightMode){
+
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        }
 
 
         /* Display and Button started */

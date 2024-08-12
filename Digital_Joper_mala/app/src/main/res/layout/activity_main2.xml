@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity2"
-
+    style="@style/SCREEN"
     >
 
     <include layout="@layout/backappbar"
@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/number1"
                 android:textSize="20sp"
-                android:textColor="#353935"
+                style="@style/Text_italic"
                 android:textStyle="normal"
                 android:layout_margin="15dp"
                 />
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/number2"
                 android:textSize="20sp"
-                android:textColor="#353935"
+                style="@style/Text_italic"
                 android:textStyle="normal"
                 android:layout_margin="15dp"
                 />
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/number3"
                 android:textSize="20sp"
-                android:textColor="#353935"
+                style="@style/Text_italic"
                 android:textStyle="normal"
                 android:layout_margin="15dp"
                 />
@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="@string/number4"
-                android:textColor="#353935"
+                style="@style/Text_italic"
                 android:textSize="20sp"
                 android:textStyle="normal" />
 
@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/number5"
                 android:textSize="20sp"
-                android:textColor="#353935"
+                style="@style/Text_italic"
                 android:textStyle="normal"
                 android:layout_margin="15dp"
                 />
@@ -123,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/number6"
                 android:textSize="20sp"
-                android:textColor="#353935"
+                style="@style/Text_italic"
                 android:textStyle="normal"
                 android:layout_margin="15dp"
                 />
@@ -142,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/number7"
                 android:textSize="20sp"
-                android:textColor="#353935"
+                style="@style/Text_italic"
                 android:textStyle="normal"
                 android:layout_margin="15dp"
                 />
@@ -161,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/number8"
                 android:textSize="20sp"
-                android:textColor="#353935"
+                style="@style/Text_italic"
                 android:textStyle="normal"
                 android:layout_margin="15dp"
                 />
@@ -180,7 +180,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/number9"
                 android:textSize="20sp"
-                android:textColor="#353935"
+                style="@style/Text_italic"
                 android:textStyle="normal"
                 android:layout_margin="15dp"
                 />
@@ -192,6 +192,7 @@
                 android:background="#BDB0AC"
                 android:layout_margin="15dp"
                 android:contentDescription="number"
+
                 />
 
 

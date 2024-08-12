@@ -5,6 +5,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +23,9 @@ public class MainActivity2 extends AppCompatActivity {
 
     ImageButton back;
 
+    Boolean nightMode;
+    SharedPreferences sharedPreferences;
+
 
 
 
@@ -34,6 +38,9 @@ public class MainActivity2 extends AppCompatActivity {
         //identity period
 
         back = findViewById(R.id.back);
+
+        sharedPreferences = getSharedPreferences(getString(R.string.app_name),MODE_PRIVATE);
+        nightMode = sharedPreferences.getBoolean("night",false);
 
 
 

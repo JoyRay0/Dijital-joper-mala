@@ -5,7 +5,9 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NewFeaturesActivity">
+    tools:context=".NewFeaturesActivity"
+    style="@style/SCREEN"
+    >
 
     <include layout="@layout/backappbar"
         android:id="@+id/toolbar"
@@ -28,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:text=" অ্যাপ এর মধ্যে নতুন কোনো ফিচার যুক্ত হলে এখান থেকে তা জানতে পারবেন।"
                 android:textSize="20sp"
-                android:textColor="#000"
+                style="@style/button_text_color"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:padding="10dp"

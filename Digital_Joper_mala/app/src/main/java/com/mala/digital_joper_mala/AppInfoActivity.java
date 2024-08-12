@@ -1,6 +1,7 @@
 package com.mala.digital_joper_mala;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -15,6 +16,9 @@ public class AppInfoActivity extends AppCompatActivity {
 
     ImageButton back;
 
+    Boolean nightMode;
+    SharedPreferences sharedPreferences;
+
     //XMl id's------------------------------------
 
 
@@ -26,6 +30,9 @@ public class AppInfoActivity extends AppCompatActivity {
         //identity period--------------------------------------
 
         back = findViewById(R.id.back);
+
+        sharedPreferences = getSharedPreferences(getString(R.string.app_name),MODE_PRIVATE);
+        nightMode = sharedPreferences.getBoolean("night",false);
 
         //identity period--------------------------------------
 
