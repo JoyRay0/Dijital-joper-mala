@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    style="@style/SCREEN"
+    android:background="@color/color4"
 
     >
 
@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
                     android:text="@string/rk"
-                    style="@style/Text_italic"
+                    android:textColor="@color/color9"
                     android:textSize="20sp"
                     android:textStyle="normal" />
 
@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/srikrishna"
                     android:textSize="20sp"
-                    style="@style/button_text_color"
+                    android:textColor="@color/color10"
                     android:textStyle="bold"
                     android:layout_margin="15dp"
                     android:gravity="center"
@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
                     android:text="@string/nam"
-                    style="@style/Text_italic"
+                    android:textColor="@color/color9"
                     android:textSize="20sp"
                     android:textStyle="normal" />
 
@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/as"
                     android:textSize="20sp"
-                    style="@style/button_text_color"
+                    android:textColor="@color/color10"
                     android:textStyle="bold"
                     android:layout_margin="15dp"
                     android:gravity="center"
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/title"
                     android:textSize="20sp"
-                    style="@style/Text_italic"
+                    android:textColor="@color/color9"
                     android:textStyle="normal"
                     android:layout_margin="15dp"
                     />
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/hare_krishna"
                     android:textSize="20sp"
-                    style="@style/button_text_color"
+                    android:textColor="@color/color10"
                     android:textStyle="bold"
                     android:gravity="center"
                     android:layout_margin="15dp"
@@ -105,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/akan"
                     android:textSize="20sp"
-                    style="@style/Text_italic"
+                    android:textColor="@color/color9"
                     android:textStyle="normal"
                     android:layout_margin="15dp"
                     />
@@ -120,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/end"
                     android:textSize="20sp"
-                    style="@style/Text_italic"
+                    android:textColor="@color/color9"
                     android:textStyle="normal"
                     android:layout_margin="15dp"
                     />
@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/end_to"
                     android:textSize="20sp"
-                    style="@style/button_text_color"
+                    android:textColor="@color/color10"
                     android:textStyle="bold"
                     android:layout_margin="15dp"
                     android:gravity="center"

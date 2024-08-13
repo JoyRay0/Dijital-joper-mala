@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AppInfoActivity"
-    style="@style/SCREEN"
+    android:background="@color/color4"
 
     >
 
@@ -24,9 +24,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ধন্যবাদ আমাদের অ্যাপ ব্যবহার করার জন্য"
+            android:text="@string/app_info_bold_text"
             android:textSize="20sp"
-            style="@style/TEXT_BOLD"
+            android:textColor="@color/color10"
             android:gravity="center"
             android:layout_margin="10dp"
             android:textStyle="bold"
@@ -35,8 +35,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="আমরা অ্যাপ এর মধ্যে নিয়মিত আপডেট দিই এবং প্রতিটি আপডেটে নতুন নতুন ফিচার যুক্ত করি। আমাদের
-অ্যাপ ব্যবহার করতে যদি কোনো প্রকার সমস্যা হয় তবে দয়া করে আমাদের জানান। আমরা আপনার সমস্যা সমাধানের যথাসাধ্য চেষ্টা করবো।"
+            android:text="@string/app_info_normal_text"
             android:textSize="17sp"
             android:gravity="center"
             android:padding="5dp"

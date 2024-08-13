@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="color1">#936969</color>
+    <color name="color1">#D3402929</color> <!--toolbar -->
+
     <color name="color2">#fff</color> <!-- dark mode, email, info, privacy, tips and update, forward arrow, button_text_colo_button.xml, jopa.xml color-->
+
     <color name="color3">#36454F</color> <!-- style.xml color-->
-    <color name="color4">#301934</color>
+
+    <color name="color4">#1E1717</color> <!-- screen_background-->
+
     <color name="color5">#D0815454</color> <!-- buttonstyle.xml color-->
+
     <color name="color6">#423B3B</color> <!-- pro.xml color-->
+
     <color name="color7">#79FFF4F4</color> <!-- divider color-->
+
     <color name="color8">#2E2525</color> <!-- color_primary color-->
+
+    <color name="color9">#FCF5E5</color>  <!-- Normal_text, Jopa.xml > button_text_color, activity3 > bold_text, new_features.xml> normal_text color-->
+
+    <color name="color10">#FAF9F6</color>  <!-- Bold_text, activity3 > normal_text, new_features.xml> bold_text color-->
+
+    <color name="color11">#9A8E8E</color> <!-- forward arrow -->
+
+    <color name="color12">#EAE1E1</color> <!-- tvDisplay_color -->
 
 
 

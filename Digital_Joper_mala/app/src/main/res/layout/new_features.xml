@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".NewFeaturesActivity"
-    style="@style/SCREEN"
+    android:background="@color/color4"
     >
 
     <include layout="@layout/backappbar"
@@ -30,11 +30,32 @@
                 android:layout_height="wrap_content"
                 android:text=" অ্যাপ এর মধ্যে নতুন কোনো ফিচার যুক্ত হলে এখান থেকে তা জানতে পারবেন।"
                 android:textSize="20sp"
-                style="@style/button_text_color"
+                android:textColor="@color/color10"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:padding="10dp"
                 />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="  - ডার্ক মোড এড করা হয়েছে"
+                android:textSize="20sp"
+                android:textColor="@color/color9"
+                android:gravity="start"
+                android:textStyle="normal"
+                android:padding="10dp"
+                android:layout_marginTop="20dp"
+                />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dark_mode"
+                android:background="#BDB0AC"
+                />
+
+
 
 
 

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SettingActivity"
-    style="@style/SCREEN"
+    android:background="@color/color4"
 
     >
 
@@ -43,7 +43,7 @@
                 android:gravity="start"
                 android:padding="15dp"
                 android:text=" আমাদের মতামত জানান"
-                style="@style/TEXT_BOLD"
+                android:textColor="@color/color9"
                 android:textSize="17sp"
                 android:textStyle="normal" />
 
@@ -71,9 +71,10 @@
                 android:gravity="start"
                 android:padding="15dp"
                 android:text=" প্রাইভেসি &amp; পলিসি"
-                style="@style/TEXT_BOLD"
                 android:textSize="17sp"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                android:textColor="@color/color9"
+                />
 
             <View
                 android:layout_width="match_parent"
@@ -99,7 +100,7 @@
                 android:gravity="start"
                 android:padding="15dp"
                 android:text=" কিছু ইনফরমেশন "
-                style="@style/TEXT_BOLD"
+                android:textColor="@color/color9"
                 android:textSize="17sp"
                 android:textStyle="normal" />
 
@@ -128,7 +129,7 @@
                 android:gravity="start"
                 android:padding="15dp"
                 android:text=" নতুন ফিচারগুলো "
-                style="@style/TEXT_BOLD"
+                android:textColor="@color/color9"
                 android:textSize="17sp"
                 android:textStyle="normal" />
 
@@ -149,7 +150,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="ডার্ক মোড"
-                    style="@style/TEXT_BOLD"
+                    android:textColor="@color/color9"
                     android:textSize="17sp"
                     android:textStyle="normal"
                     android:drawableStart="@drawable/baseline_dark_mode_24"

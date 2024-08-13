@@ -8,7 +8,7 @@
    <Toolbar
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:background="#AB065050" />
+       android:background="@color/color1" />
 
 
 

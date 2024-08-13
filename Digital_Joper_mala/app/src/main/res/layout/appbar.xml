@@ -9,7 +9,7 @@
        <Toolbar
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:background="#AB065050"
+           android:background="@color/color1"
 
            >
                <TextView
@@ -17,7 +17,7 @@
                    android:layout_height="match_parent"
                    android:text="জপের মালা"
                    android:textSize="20sp"
-                   style="@style/app_bar"
+                   android:textColor="#fff"
                    />
 
 

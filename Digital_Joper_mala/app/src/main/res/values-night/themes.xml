@@ -11,45 +11,4 @@
     </style>
 
 
-
-
-    <!-- Dark mode  -->
-
-    <style name="SCREEN">
-
-        <item name="android:background">#353935</item>
-    </style>
-
-    <!-- text color 1 background-->
-
-    <style name="TEXT_BOLD">
-
-        <item name="android:textColor">#fff</item>
-
-    </style>
-
-    <!-- text color 2 background-->
-
-    <style name="Text_italic">
-
-        <item name="android:textColor">#F9F6EE</item>
-
-    </style>
-
-    <!-- button text color-->
-
-    <style name="button_text_color">
-
-        <item name="android:textColor">#fff</item>
-    </style>
-
-    <!--app bar text -->
-    <style name="app_bar">
-        <item name="android:textColor">#fff</item>
-
-    </style>
-
-
-
-
 </resources>

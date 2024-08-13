@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity3"
-    style="@style/SCREEN"
+    android:background="@color/color4"
     >
 
     <include layout="@layout/backappbar"
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/question1"
                 android:textSize="20sp"
-                style="@style/Text_italic"
+                android:textColor="@color/color9"
                 android:textStyle="bold"
                 android:layout_margin="15dp"
                 />
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/Answer1"
                 android:textSize="20sp"
-                style="@style/TEXT_BOLD"
+                android:textColor="@color/color10"
                 android:textStyle="normal"
                 android:layout_margin="15dp"
                 android:gravity="center"
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/question2"
                 android:textSize="20sp"
-                style="@style/Text_italic"
+                android:textColor="@color/color9"
                 android:textStyle="bold"
                 android:layout_margin="15dp"
                 />
@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/Answer2"
                 android:textSize="20sp"
-                style="@style/TEXT_BOLD"
+                android:textColor="@color/color10"
                 android:textStyle="normal"
                 android:gravity="center"
                 android:layout_margin="15dp"
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/question3"
                 android:textSize="20sp"
-                style="@style/Text_italic"
+                android:textColor="@color/color9"
                 android:textStyle="bold"
                 android:layout_margin="15dp"
                 />
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/Answer3"
                 android:textSize="20sp"
-                style="@style/TEXT_BOLD"
+                android:textColor="@color/color10"
                 android:textStyle="normal"
                 android:gravity="center"
                 android:layout_margin="15dp"
@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/question4"
                 android:textSize="20sp"
-                style="@style/Text_italic"
+                android:textColor="@color/color9"
                 android:textStyle="bold"
                 android:layout_margin="15dp"
                 />
@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/Answer4"
                 android:textSize="20sp"
-                style="@style/TEXT_BOLD"
+                android:textColor="@color/color10"
                 android:textStyle="normal"
                 android:gravity="center"
                 android:layout_margin="15dp"
@@ -124,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/question5"
                 android:textSize="20sp"
-                style="@style/Text_italic"
+                android:textColor="@color/color9"
                 android:textStyle="bold"
                 android:layout_margin="15dp"
                 />
@@ -135,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/Answer5"
                 android:textSize="20sp"
-                style="@style/TEXT_BOLD"
+                android:textColor="@color/color10"
                 android:textStyle="normal"
                 android:gravity="center"
                 android:layout_margin="15dp"
@@ -147,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/question6"
                 android:textSize="20sp"
-                style="@style/Text_italic"
+                android:textColor="@color/color9"
                 android:textStyle="bold"
                 android:layout_margin="15dp"
                 />
@@ -159,13 +159,10 @@
                 android:layout_margin="15dp"
                 android:gravity="center"
                 android:text="@string/Answer6"
-                style="@style/TEXT_BOLD"
+                android:textColor="@color/color10"
                 android:textStyle="normal"
                 android:textSize="20sp"
                  />
-
-
-
 
 
             <View

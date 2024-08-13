@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="@string/stage1"
-                style="@style/TEXT_BOLD"
+                android:textColor="@color/color10"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="@string/bar108"
-                style="@style/Text_italic"
+                android:textColor="@color/color9"
                 android:textSize="20sp" />
 
             <TextView
@@ -62,7 +62,7 @@
                 android:layout_margin="15dp"
                 android:background="@drawable/buttonstyle"
                 android:text="@string/addone"
-                style="@style/button_text_color"
+                android:textColor="@color/color9"
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="@string/lessone"
-                style="@style/button_text_color"
+                android:textColor="@color/color9"
                 android:textSize="20sp"
                 android:elevation="12dp"
                 android:background="@drawable/buttonstyle"
@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="@string/reset"
-                style="@style/button_text_color"
+                android:textColor="@color/color9"
                 android:textSize="20sp"
                 android:background="@drawable/buttonstyle"
                 />
@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/stage2"
                 android:textSize="20sp"
-                style="@style/TEXT_BOLD"
+                android:textColor="@color/color10"
                 android:textStyle="bold"
                 android:layout_margin="15dp"
                 />
@@ -116,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="@string/bar16"
-                style="@style/Text_italic"
+                android:textColor="@color/color9"
                 android:textSize="20sp" />
 
             <TextView
@@ -134,7 +134,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/add2"
-                style="@style/button_text_color"
+                android:textColor="@color/color9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
@@ -148,7 +148,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="@string/lessone"
-                style="@style/button_text_color"
+                android:textColor="@color/color9"
                 android:textSize="20sp"
                 android:elevation="10dp"
                 android:background="@drawable/buttonstyle"
@@ -161,7 +161,7 @@
                 android:layout_margin="15dp"
                 android:elevation="10dp"
                 android:text="@string/reset"
-                style="@style/button_text_color"
+                android:textColor="@color/color9"
                 android:textSize="20sp"
                 android:background="@drawable/buttonstyle"
                 />
@@ -185,7 +185,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/stage3"
                 android:textSize="20sp"
-                style="@style/TEXT_BOLD"
+                android:textColor="@color/color10"
                 android:textStyle="bold"
                 android:layout_margin="15dp"
                 />
@@ -195,7 +195,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/bar4"
                 android:textSize="20sp"
-                style="@style/Text_italic"
+                android:textColor="@color/color9"
                 android:layout_margin="15dp"
                 />
 
@@ -220,7 +220,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/addone"
                 android:textSize="20sp"
-                style="@style/button_text_color"
+                android:textColor="@color/color9"
                 android:layout_margin="15dp"
                 android:background="@drawable/buttonstyle"
                 />
@@ -231,7 +231,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/reset"
                 android:textSize="20sp"
-                style="@style/button_text_color"
+                android:textColor="@color/color9"
                 android:layout_margin="15dp"
                 android:background="@drawable/buttonstyle"
                 />
