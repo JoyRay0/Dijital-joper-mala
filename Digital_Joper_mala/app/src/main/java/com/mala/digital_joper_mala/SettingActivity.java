@@ -70,7 +70,6 @@ public class SettingActivity extends AppCompatActivity {
                 if (nightMode ){
                     editor = sharedPreferences.edit();
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
                     editor.putBoolean("night",false);
 
                 }else {
@@ -84,6 +83,8 @@ public class SettingActivity extends AppCompatActivity {
 
             }
         });
+
+        //night mode-----------------------------------------------------------
 
 
 

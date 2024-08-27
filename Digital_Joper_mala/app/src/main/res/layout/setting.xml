@@ -36,8 +36,6 @@
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
-                android:drawableStart="@drawable/baseline_email_24"
-                android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
                 android:drawablePadding="20dp"
                 android:focusable="true"
                 android:gravity="start"
@@ -45,7 +43,9 @@
                 android:text=" আমাদের মতামত জানান"
                 android:textColor="@color/color9"
                 android:textSize="17sp"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                app:drawableEndCompat="@drawable/baseline_arrow_forward_ios_24"
+                app:drawableStartCompat="@drawable/baseline_feedback_24" />
 
             <View
                 android:layout_width="match_parent"
@@ -53,6 +53,60 @@
                 android:background="@color/color7" />
 
             <!-- Feedback-->
+
+
+            <!-- new features -->
+
+
+            <TextView
+                android:id="@+id/features"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawablePadding="20dp"
+                android:focusable="true"
+                android:gravity="start"
+                android:padding="15dp"
+                android:text=" নতুন ফিচারগুলো "
+                android:textColor="@color/color9"
+                android:textSize="17sp"
+                android:textStyle="normal"
+                app:drawableEndCompat="@drawable/baseline_arrow_forward_ios_24"
+                app:drawableStartCompat="@drawable/baseline_tips_and_updates_24" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color7" />
+
+
+            <!-- new features  -->
+
+
+            <!-- Dark mode-->
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/sw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ডার্ক মোড"
+                    android:textColor="@color/color9"
+                    android:textSize="17sp"
+                    android:textStyle="normal"
+                    android:drawableStart="@drawable/baseline_dark_mode_24"
+                    android:drawablePadding="20dp"
+                    android:padding="15dp"
+
+                    />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color7"
+                />
+
+            <!-- Dark mode-->
 
 
             <!-- privacy policy-->
@@ -64,8 +118,6 @@
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
-                android:drawableStart="@drawable/baseline_privacy_tip_24"
-                android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
                 android:drawablePadding="20dp"
                 android:focusable="true"
                 android:gravity="start"
@@ -74,7 +126,8 @@
                 android:textSize="17sp"
                 android:textStyle="normal"
                 android:textColor="@color/color9"
-                />
+                app:drawableEndCompat="@drawable/baseline_arrow_forward_ios_24"
+                app:drawableStartCompat="@drawable/baseline_privacy_tip_24" />
 
             <View
                 android:layout_width="match_parent"
@@ -93,8 +146,6 @@
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
-                android:drawableStart="@drawable/baseline_info_24"
-                android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
                 android:drawablePadding="20dp"
                 android:focusable="true"
                 android:gravity="start"
@@ -102,7 +153,9 @@
                 android:text=" কিছু ইনফরমেশন "
                 android:textColor="@color/color9"
                 android:textSize="17sp"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                app:drawableEndCompat="@drawable/baseline_arrow_forward_ios_24"
+                app:drawableStartCompat="@drawable/baseline_info_24" />
 
             <View
                 android:layout_width="match_parent"
@@ -111,60 +164,6 @@
 
 
             <!-- info -->
-
-
-            <!-- new features -->
-
-
-            <TextView
-                android:id="@+id/features"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:drawableStart="@drawable/baseline_tips_and_updates_24"
-                android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
-                android:drawablePadding="20dp"
-                android:focusable="true"
-                android:gravity="start"
-                android:padding="15dp"
-                android:text=" নতুন ফিচারগুলো "
-                android:textColor="@color/color9"
-                android:textSize="17sp"
-                android:textStyle="normal" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color7" />
-
-
-            <!-- new features  -->
-
-
-            <!-- Dark mode-->
-
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/sw"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="ডার্ক মোড"
-                    android:textColor="@color/color9"
-                    android:textSize="17sp"
-                    android:textStyle="normal"
-                    android:drawableStart="@drawable/baseline_dark_mode_24"
-                    android:drawablePadding="20dp"
-                    android:gravity="start"
-                    android:padding="15dp"
-                    android:clickable="true"
-                    android:focusable="true"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color7"
-                />
 
 
 

@@ -39,7 +39,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="  - ডার্ক মোড এড করা হয়েছে"
+                android:text="  - ডার্ক মোড এড করা হয়েছে।"
                 android:textSize="20sp"
                 android:textColor="@color/color9"
                 android:gravity="start"
@@ -54,11 +54,6 @@
                 android:src="@drawable/dark_mode"
                 android:background="#BDB0AC"
                 />
-
-
-
-
-
 
         </LinearLayout>
 

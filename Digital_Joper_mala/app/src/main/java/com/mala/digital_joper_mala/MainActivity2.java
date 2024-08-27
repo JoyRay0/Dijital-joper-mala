@@ -1,6 +1,7 @@
 package com.mala.digital_joper_mala;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 
@@ -19,7 +20,7 @@ import com.google.android.material.ripple.RippleUtils;
 
 public class MainActivity2 extends AppCompatActivity {
 
-    //XML id's
+    //XML id's------------------------------------------------------------
 
     ImageButton back;
 
@@ -27,6 +28,7 @@ public class MainActivity2 extends AppCompatActivity {
     SharedPreferences sharedPreferences;
 
 
+    //XML id's------------------------------------------------------------
 
 
 
@@ -35,12 +37,26 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        //identity period
+        //identity period----------------------------------------------------------
 
         back = findViewById(R.id.back);
 
         sharedPreferences = getSharedPreferences(getString(R.string.app_name),MODE_PRIVATE);
         nightMode = sharedPreferences.getBoolean("night",false);
+
+
+        //identity period----------------------------------------------------------
+
+
+
+
+        //---------------------------------------------------------------------
+
+        if (nightMode){
+
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        }
 
 
 
@@ -57,6 +73,8 @@ public class MainActivity2 extends AppCompatActivity {
 
             }
         });
+
+        //---------------------------------------------------------------------
 
         
     }

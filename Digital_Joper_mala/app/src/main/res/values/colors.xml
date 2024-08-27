@@ -14,7 +14,7 @@
 
     <color name="color7">#79000000</color> <!-- divider color-->
 
-    <color name="color8">#F0008080</color>  <!-- color_primary color-->
+    <color name="color8">#008080</color>  <!-- color_primary color-->
 
     <color name="color9">#353935</color>  <!-- Normal_text, Jopa.xml > button_text_color, activity3 > bold_text, new_features.xml> normal_text  color-->
 
@@ -23,6 +23,10 @@
     <color name="color11">#736565</color> <!-- forward arrow -->
 
     <color name="color12">#353935</color> <!-- tvDisplay_color -->
+
+    <color name="color13">#36DAA06D</color> <!-- button color -->
+
+
 
 
 </resources>

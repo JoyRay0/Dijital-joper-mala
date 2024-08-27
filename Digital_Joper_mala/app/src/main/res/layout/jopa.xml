@@ -10,12 +10,13 @@
         android:orientation="horizontal"
         android:background="#00FFFFFF"
         android:padding="10dp"
+        android:baselineAligned="false"
         android:weightSum="3"
         >
 
 
         <LinearLayout
-            android:layout_width="320dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/pro"
@@ -44,11 +45,11 @@
 
             <TextView
                 android:id="@+id/text1"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="15dp"
-                android:background="@drawable/style"
+                android:background="@drawable/counter_display"
                 android:elevation="10dp"
                 android:gravity="center"
                 android:text="@string/_0"
@@ -92,7 +93,7 @@
 
 
         <LinearLayout
-            android:layout_width="320dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/pro"
@@ -121,11 +122,11 @@
 
             <TextView
                 android:id="@+id/text2"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="15dp"
-                android:background="@drawable/style"
+                android:background="@drawable/counter_display"
                 android:elevation="10dp"
                 android:gravity="center"
                 android:text="@string/_0"
@@ -170,7 +171,7 @@
 
 
         <LinearLayout
-            android:layout_width="320dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_margin="10dp"
@@ -201,14 +202,14 @@
 
             <TextView
                 android:id="@+id/text3"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/_0"
                 android:textSize="35sp"
                 android:textColor="@color/color2"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:background="@drawable/style"
+                android:background="@drawable/counter_display"
                 android:layout_margin="15dp"
                 android:elevation="10dp"
                 />
