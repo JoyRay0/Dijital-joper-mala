@@ -32,18 +32,20 @@
                 android:textSize="20sp"
                 android:textColor="@color/color10"
                 android:gravity="center"
-                android:textStyle="bold"
+                android:textStyle="normal"
                 android:padding="10dp"
                 />
+
+            <!-- dark mode features -->
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="  - ডার্ক মোড এড করা হয়েছে।"
+                android:text=" ১।  ডার্ক মোড এড করা হয়েছে ।"
                 android:textSize="20sp"
                 android:textColor="@color/color9"
                 android:gravity="start"
-                android:textStyle="normal"
+                android:textStyle="bold"
                 android:padding="10dp"
                 android:layout_marginTop="20dp"
                 />
@@ -54,6 +56,36 @@
                 android:src="@drawable/dark_mode"
                 android:background="#BDB0AC"
                 />
+
+            <!-- dark mode features -->
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="30dp"/>
+
+
+            <!-- share app features -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" ২।  শেয়ার বাটন এড করা হয়েছে ।"
+                android:textSize="20sp"
+                android:textColor="@color/color9"
+                android:gravity="start"
+                android:textStyle="bold"
+                android:padding="10dp"
+                android:layout_marginTop="20dp"
+                />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/share_pic"
+                android:background="#BDB0AC"
+                />
+
+            <!-- share app features -->
 
         </LinearLayout>
 

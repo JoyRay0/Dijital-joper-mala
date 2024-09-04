@@ -17,12 +17,13 @@
             android:id="@+id/ques_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=" "
+            android:text=" question "
             android:textSize="20sp"
             android:textColor="@color/color9"
             android:textStyle="bold"
             android:layout_margin="10dp"
-
+            android:paddingStart="0dp"
+            android:paddingEnd="10dp"
             />
         <ImageView
             android:id="@+id/imageview"
@@ -51,7 +52,7 @@
             android:id="@+id/tvDisplay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=" "
+            android:text=" answer "
             android:textSize="20sp"
             android:textColor="@color/color10"
             android:textStyle="normal"

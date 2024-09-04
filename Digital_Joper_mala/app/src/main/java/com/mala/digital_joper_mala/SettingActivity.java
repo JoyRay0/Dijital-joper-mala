@@ -22,6 +22,7 @@ public class SettingActivity extends AppCompatActivity {
 
     ImageButton back;
     TextView privacy, app_info, feedback, features;
+    TextView share;
 
     MaterialSwitch sw;
     boolean nightMode;
@@ -42,7 +43,7 @@ public class SettingActivity extends AppCompatActivity {
         feedback = findViewById(R.id.feedback);
         features = findViewById(R.id.features);
         sw = findViewById(R.id.sw);
-
+        share = findViewById(R.id.share);
 
         sharedPreferences = getSharedPreferences(getString(R.string.app_name),MODE_PRIVATE);
         nightMode = sharedPreferences.getBoolean("night", false);
@@ -174,6 +175,30 @@ public class SettingActivity extends AppCompatActivity {
         //Features----------------------------------------------
 
 
+
+
+        //Share the app----------------------------------------------
+
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String Body = "Download this App";
+                String sub = "https://play.google.com/store/apps/details?id=com.mala.digital_joper_mala";
+                intent.putExtra(Intent.EXTRA_TEXT,Body);
+                intent.putExtra(Intent.EXTRA_TEXT,sub);
+                startActivity(Intent.createChooser(intent,null));
+
+            }
+        });
+
+
+        //Share the app----------------------------------------------
+
+       
 
 
 
