@@ -1,5 +1,6 @@
 package com.mala.digital_joper_mala;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -21,13 +22,17 @@ public class SettingActivity extends AppCompatActivity {
     //XML id's---------------------------------------------
 
     ImageButton back;
-    TextView privacy, app_info, feedback, features;
-    TextView share;
+    TextView privacy, app_info, feedback, features, share, rating;
+
 
     MaterialSwitch sw;
     boolean nightMode;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+
+
+
+    private final String appPackageName = "com.mala.digital_joper_mala";
 
     //XML id's---------------------------------------------
 
@@ -44,6 +49,7 @@ public class SettingActivity extends AppCompatActivity {
         features = findViewById(R.id.features);
         sw = findViewById(R.id.sw);
         share = findViewById(R.id.share);
+        rating = findViewById(R.id.rating);
 
         sharedPreferences = getSharedPreferences(getString(R.string.app_name),MODE_PRIVATE);
         nightMode = sharedPreferences.getBoolean("night", false);
@@ -187,7 +193,7 @@ public class SettingActivity extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 String Body = "Download this App";
-                String sub = "https://play.google.com/store/apps/details?id=com.mala.digital_joper_mala";
+                String sub = "https://play.google.com/store/apps/details?id="+appPackageName;
                 intent.putExtra(Intent.EXTRA_TEXT,Body);
                 intent.putExtra(Intent.EXTRA_TEXT,sub);
                 startActivity(Intent.createChooser(intent,null));
@@ -198,7 +204,28 @@ public class SettingActivity extends AppCompatActivity {
 
         //Share the app----------------------------------------------
 
-       
+
+
+
+        //Rating the app-------------------------------------------------
+
+        rating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                }
+
+                //market://details?id=
+            }
+        });
+
+
+        // Rating the app-------------------------------------------------
 
 
 

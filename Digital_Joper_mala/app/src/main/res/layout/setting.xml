@@ -97,7 +97,6 @@
                     android:drawableStart="@drawable/baseline_dark_mode_24"
                     android:drawablePadding="20dp"
                     android:padding="15dp"
-
                     />
 
             <View
@@ -137,6 +136,34 @@
 
             <!-- share -->
 
+
+            <!-- share -->
+
+
+            <TextView
+                android:id="@+id/rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawablePadding="20dp"
+                android:focusable="true"
+                android:gravity="start"
+                android:padding="15dp"
+                android:text=" আমাদের অ্যাপকে ফাইভ স্টার রেটিং দিন "
+                android:textColor="@color/color9"
+                android:textSize="17sp"
+                android:textStyle="normal"
+                app:drawableEndCompat="@drawable/baseline_arrow_forward_ios_24"
+                app:drawableStartCompat="@drawable/baseline_star_rate_24" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color7" />
+
+
+            <!-- share -->
 
 
 
