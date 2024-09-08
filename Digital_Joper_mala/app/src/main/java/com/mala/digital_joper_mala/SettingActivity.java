@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +24,7 @@ public class SettingActivity extends AppCompatActivity {
     //XML id's---------------------------------------------
 
     ImageButton back;
-    TextView privacy, app_info, feedback, features, share, rating;
+    TextView privacy, app_info, feedback, features, share, rating, more_app;
 
 
     MaterialSwitch sw;
@@ -50,6 +52,7 @@ public class SettingActivity extends AppCompatActivity {
         sw = findViewById(R.id.sw);
         share = findViewById(R.id.share);
         rating = findViewById(R.id.rating);
+        more_app = findViewById(R.id.more_app);
 
         sharedPreferences = getSharedPreferences(getString(R.string.app_name),MODE_PRIVATE);
         nightMode = sharedPreferences.getBoolean("night", false);
@@ -58,12 +61,18 @@ public class SettingActivity extends AppCompatActivity {
         //identity-------------------------------------------
 
 
+
         //night mode-----------------------------------------------------------
+
+        sw.setThumbIconResource(R.drawable.baseline_sunny_24);
+
 
         if (nightMode){
 
             sw.setChecked(true);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            sw.setThumbIconResource(R.drawable.baseline_nightlight_round_24);
+
 
         }
 
@@ -228,6 +237,17 @@ public class SettingActivity extends AppCompatActivity {
         // Rating the app-------------------------------------------------
 
 
+        //more app-------------------------------------------------
+
+        more_app.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity( new Intent(SettingActivity.this, MoreAppsActivity.class));
+            }
+        });
+        
+        //more app-------------------------------------------------
 
     }
 }

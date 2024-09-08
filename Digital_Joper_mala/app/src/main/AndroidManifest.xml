@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Digital_Joper_mala"
         tools:targetApi="34">
         <activity
+            android:name=".MoreAppsActivity"
+            android:exported="false" />
+        <activity
             android:name=".SplashScreen"
             android:exported="false" />
         <activity
