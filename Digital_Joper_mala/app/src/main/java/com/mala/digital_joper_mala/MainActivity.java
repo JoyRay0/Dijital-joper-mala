@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     AppCompatImageButton setting;
 
+    Vibrator vibrator;
     SharedPreferences sharedPreferences;
     boolean nightMode;
     
@@ -100,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
                     }
 
 
+                    vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                    vibrator.vibrate(60);
+
             }
         });
 
@@ -115,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                     }
+                vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                vibrator.vibrate(60);
 
             }
         });
@@ -127,7 +134,10 @@ public class MainActivity extends AppCompatActivity {
 
                 text1.setText(" "+count);
 
+                vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                vibrator.vibrate(60);
             }
+
         });
         //1st step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -148,6 +158,8 @@ public class MainActivity extends AppCompatActivity {
                     text2.setText(" " + i);
 
                 }
+                vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                vibrator.vibrate(60);
             }
         });
 
@@ -163,6 +175,8 @@ public class MainActivity extends AppCompatActivity {
                 }
 
 
+                vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                vibrator.vibrate(60);
 
             }
         });
@@ -175,6 +189,8 @@ public class MainActivity extends AppCompatActivity {
 
                 text2.setText(" "+i);
 
+                vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                vibrator.vibrate(60);
             }
         });
         //2nd step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -196,6 +212,8 @@ public class MainActivity extends AppCompatActivity {
                     text3.setText(" " + j);
 
                 }
+                vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                vibrator.vibrate(60);
             }
         });
 
@@ -207,6 +225,8 @@ public class MainActivity extends AppCompatActivity {
 
                 text3.setText(" "+j);
 
+                vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                vibrator.vibrate(60);
             }
         });
         //3rd step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

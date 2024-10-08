@@ -4,6 +4,8 @@
         <!-- Customize your light theme here. -->
          <item name="colorPrimary">@color/color8</item>
 
+
+
     </style>
 
     <style name="Theme.Digital_Joper_mala" parent="Base.Theme.Digital_Joper_mala" />

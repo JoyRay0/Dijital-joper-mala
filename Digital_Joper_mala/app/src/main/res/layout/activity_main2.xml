@@ -42,7 +42,7 @@
                 android:src="@drawable/pic1"
                 android:contentDescription="name"
                 android:layout_margin="15dp"
-                android:background="#BDB0AC"
+                android:background="#A9000000"
                 />
 
             <TextView
@@ -61,7 +61,7 @@
                 android:src="@drawable/pic2"
                 android:contentDescription="name2"
                 android:layout_margin="15dp"
-                android:background="#BDB0AC"
+                android:background="#A9000000"
                 />
 
             <TextView
@@ -78,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_margin="15dp"
-                android:background="#BDB0AC"
+                android:background="#A9000000"
                 android:contentDescription="name3"
                 android:src="@drawable/pic3" />
 
@@ -95,7 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:src="@drawable/pic4"
-                android:background="#BDB0AC"
+                android:background="#A9000000"
                 android:layout_margin="15dp"
                 android:contentDescription="number"
                 />
@@ -114,7 +114,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_margin="15dp"
-                android:background="#BDB0AC"
+                android:background="#A9000000"
                 android:contentDescription="number"
                 android:src="@drawable/pic5" />
 
@@ -130,9 +130,9 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="200dp"
                 android:src="@drawable/pic7"
-                android:background="#BDB0AC"
+                android:background="#A9000000"
                 android:layout_margin="15dp"
                 android:contentDescription="number"
                 />
@@ -149,9 +149,9 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="200dp"
                 android:src="@drawable/pic8"
-                android:background="#BDB0AC"
+                android:background="#A9000000"
                 android:layout_margin="15dp"
                 android:contentDescription="number"
                 />
@@ -168,12 +168,11 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:src="@drawable/pic9"
-                android:background="#BDB0AC"
+                android:layout_height="200dp"
                 android:layout_margin="15dp"
+                android:background="#A9000000"
                 android:contentDescription="number"
-                />
+                android:src="@drawable/pic9" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -189,7 +188,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:src="@drawable/pic6"
-                android:background="#BDB0AC"
+                android:background="#A9000000"
                 android:layout_margin="15dp"
                 android:contentDescription="number"
 

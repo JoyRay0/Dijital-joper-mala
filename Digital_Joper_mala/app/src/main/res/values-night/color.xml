@@ -27,5 +27,8 @@
 
     <color name="color13">#36454F</color> <!-- button color -->
 
+    <color name="color14">#2196F3</color> <!-- switch_track_darkmode color -->
+
+    <color name="color15">#EDE7E7</color> <!-- switch_thumb_darkmode color -->
 
 </resources>

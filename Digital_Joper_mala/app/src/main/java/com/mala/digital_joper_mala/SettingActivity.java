@@ -1,23 +1,25 @@
 package com.mala.digital_joper_mala;
 
-import android.content.ActivityNotFoundException;
+
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
+
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
 
-import com.google.android.material.materialswitch.MaterialSwitch;
+
 
 public class SettingActivity extends AppCompatActivity {
 
@@ -27,8 +29,10 @@ public class SettingActivity extends AppCompatActivity {
     TextView privacy, app_info, feedback, features, share, rating, more_app;
 
 
-    MaterialSwitch sw;
-    boolean nightMode;
+
+    SwitchCompat sw;
+    private boolean nightMode;
+
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
@@ -44,6 +48,7 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.setting);
 
         //identity-------------------------------------------
+
         back = findViewById(R.id.back);
         privacy = findViewById(R.id.privacy);
         app_info = findViewById(R.id.app_info);
@@ -54,51 +59,50 @@ public class SettingActivity extends AppCompatActivity {
         rating = findViewById(R.id.rating);
         more_app = findViewById(R.id.more_app);
 
+
+
+        //dark----------------------------------------------------------------
         sharedPreferences = getSharedPreferences(getString(R.string.app_name),MODE_PRIVATE);
         nightMode = sharedPreferences.getBoolean("night", false);
-
+        //dark----------------------------------------------------------------
 
         //identity-------------------------------------------
 
 
 
+
+
         //night mode-----------------------------------------------------------
 
-        sw.setThumbIconResource(R.drawable.baseline_sunny_24);
-
-
         if (nightMode){
-
             sw.setChecked(true);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            sw.setThumbIconResource(R.drawable.baseline_nightlight_round_24);
-
 
         }
 
 
 
+      sw.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
 
-        sw.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+              if (nightMode){
 
-                if (nightMode ){
-                    editor = sharedPreferences.edit();
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    editor.putBoolean("night",false);
+                  editor = sharedPreferences.edit();
+                  AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                  editor.putBoolean("night",false);
 
-                }else {
+              }else {
 
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    editor = sharedPreferences.edit();
-                    editor.putBoolean("night", true);
+                  AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                  editor = sharedPreferences.edit();
+                  editor.putBoolean("night", true);
 
-                }
-                editor.apply();
+              }
+              editor.apply();
 
-            }
-        });
+          }
+      });
 
         //night mode-----------------------------------------------------------
 
@@ -126,8 +130,16 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(SettingActivity.this, AppInfoActivity.class);
-                startActivity(intent);
+                //dialog***************************************************
+
+                Dialog dialog = new Dialog(SettingActivity.this);
+                dialog.setContentView(R.layout.custom_dialog_box);
+                dialog.show();
+
+                //dialog***************************************************
+
+                //Intent intent = new Intent(SettingActivity.this, AppInfoActivity.class);
+                //startActivity(intent);
 
             }
         });

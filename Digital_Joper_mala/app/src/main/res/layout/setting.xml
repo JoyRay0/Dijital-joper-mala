@@ -86,7 +86,7 @@
 
             <!-- Dark mode-->
 
-                <com.google.android.material.materialswitch.MaterialSwitch
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/sw"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -97,7 +97,8 @@
                     android:drawableStart="@drawable/baseline_dark_mode_24"
                     android:drawablePadding="20dp"
                     android:padding="15dp"
-
+                    app:thumbTint="@color/color15"
+                    app:trackTint="@color/color14"
                     />
 
             <View
@@ -107,6 +108,7 @@
                 />
 
             <!-- Dark mode-->
+
 
 
             <!-- more app -->
