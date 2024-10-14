@@ -72,8 +72,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
         //Identity period end+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
+
 
 
         if (nightMode){
@@ -81,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
         }
+
 
 
 
@@ -101,10 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
 
-
-                    vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-                    vibrator.vibrate(60);
-
+                vibrate();
             }
         });
 
@@ -120,8 +124,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                     }
-                vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-                vibrator.vibrate(60);
+                vibrate();
+
 
             }
         });
@@ -134,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
 
                 text1.setText(" "+count);
 
-                vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-                vibrator.vibrate(60);
+                vibrate();
+
             }
 
         });
@@ -158,8 +162,8 @@ public class MainActivity extends AppCompatActivity {
                     text2.setText(" " + i);
 
                 }
-                vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-                vibrator.vibrate(60);
+                vibrate();
+
             }
         });
 
@@ -174,9 +178,9 @@ public class MainActivity extends AppCompatActivity {
                     text2.setText(" " + i);
                 }
 
+                vibrate();
 
-                vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-                vibrator.vibrate(60);
+
 
             }
         });
@@ -189,8 +193,8 @@ public class MainActivity extends AppCompatActivity {
 
                 text2.setText(" "+i);
 
-                vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-                vibrator.vibrate(60);
+                vibrate();
+
             }
         });
         //2nd step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -212,8 +216,8 @@ public class MainActivity extends AppCompatActivity {
                     text3.setText(" " + j);
 
                 }
-                vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-                vibrator.vibrate(60);
+                vibrate();
+
             }
         });
 
@@ -225,8 +229,8 @@ public class MainActivity extends AppCompatActivity {
 
                 text3.setText(" "+j);
 
-                vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-                vibrator.vibrate(60);
+                vibrate();
+
             }
         });
         //3rd step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -276,8 +280,15 @@ public class MainActivity extends AppCompatActivity {
         //setting button-------------------------------------
 
 
+    }//on create==================================
+
+    private void vibrate(){
+
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        vibrator.vibrate(50);
+
     }
 
 
 
-}
+}//public class ===========================

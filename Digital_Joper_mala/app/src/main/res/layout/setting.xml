@@ -39,8 +39,9 @@
                 android:drawablePadding="20dp"
                 android:focusable="true"
                 android:gravity="start"
-                android:padding="15dp"
+                android:padding="12dp"
                 android:text=" আমাদের মতামত জানান"
+                android:fontFamily="@font/noto_serif_bengali"
                 android:textColor="@color/color9"
                 android:textSize="17sp"
                 android:textStyle="normal"
@@ -67,8 +68,9 @@
                 android:drawablePadding="20dp"
                 android:focusable="true"
                 android:gravity="start"
-                android:padding="15dp"
+                android:padding="12dp"
                 android:text=" নতুন ফিচারগুলো "
+                android:fontFamily="@font/noto_serif_bengali"
                 android:textColor="@color/color9"
                 android:textSize="17sp"
                 android:textStyle="normal"
@@ -91,12 +93,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="ডার্ক মোড"
+                    android:fontFamily="@font/noto_serif_bengali"
                     android:textColor="@color/color9"
                     android:textSize="17sp"
                     android:textStyle="normal"
                     android:drawableStart="@drawable/baseline_dark_mode_24"
                     android:drawablePadding="20dp"
-                    android:padding="15dp"
+                    android:padding="12dp"
                     app:thumbTint="@color/color15"
                     app:trackTint="@color/color14"
                     />
@@ -108,7 +111,6 @@
                 />
 
             <!-- Dark mode-->
-
 
 
             <!-- more app -->
@@ -123,8 +125,9 @@
                 android:drawablePadding="20dp"
                 android:focusable="true"
                 android:gravity="start"
-                android:padding="15dp"
+                android:padding="12dp"
                 android:text=" আমাদের অন্যান্য অ্যাপগুলো "
+                android:fontFamily="@font/noto_serif_bengali"
                 android:textColor="@color/color9"
                 android:textSize="17sp"
                 android:textStyle="normal"
@@ -152,8 +155,9 @@
                 android:drawablePadding="20dp"
                 android:focusable="true"
                 android:gravity="start"
-                android:padding="15dp"
+                android:padding="12dp"
                 android:text=" অ্যাপটি শেয়ার করুন "
+                android:fontFamily="@font/noto_serif_bengali"
                 android:textColor="@color/color9"
                 android:textSize="17sp"
                 android:textStyle="normal"
@@ -181,8 +185,9 @@
                 android:drawablePadding="20dp"
                 android:focusable="true"
                 android:gravity="start"
-                android:padding="15dp"
+                android:padding="12dp"
                 android:text=" আমাদের অ্যাপকে ফাইভ স্টার রেটিং দিন "
+                android:fontFamily="@font/noto_serif_bengali"
                 android:textColor="@color/color9"
                 android:textSize="17sp"
                 android:textStyle="normal"
@@ -211,8 +216,9 @@
                 android:drawablePadding="20dp"
                 android:focusable="true"
                 android:gravity="start"
-                android:padding="15dp"
+                android:padding="12dp"
                 android:text=" প্রাইভেসি &amp; পলিসি"
+                android:fontFamily="@font/noto_serif_bengali"
                 android:textColor="@color/color9"
                 android:textSize="17sp"
                 android:textStyle="normal"
@@ -239,8 +245,9 @@
                 android:drawablePadding="20dp"
                 android:focusable="true"
                 android:gravity="start"
-                android:padding="15dp"
+                android:padding="12dp"
                 android:text=" কিছু ইনফরমেশন "
+                android:fontFamily="@font/noto_serif_bengali"
                 android:textColor="@color/color9"
                 android:textSize="17sp"
                 android:textStyle="normal"
@@ -254,8 +261,6 @@
 
 
             <!-- info -->
-
-
 
 
         </LinearLayout>

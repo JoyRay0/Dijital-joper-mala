@@ -2,8 +2,11 @@ package com.mala.digital_joper_mala;
 
 
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -31,10 +34,11 @@ public class SettingActivity extends AppCompatActivity {
 
 
     SwitchCompat sw;
-    private boolean nightMode;
+     boolean nightMode,vib_enable;
 
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
+    SharedPreferences sharedPreferences,sharedPreferences1;
+    SharedPreferences.Editor editor,editor1;
+    Vibrator vibrator;
 
 
 
@@ -61,14 +65,13 @@ public class SettingActivity extends AppCompatActivity {
 
 
 
+
         //dark----------------------------------------------------------------
         sharedPreferences = getSharedPreferences(getString(R.string.app_name),MODE_PRIVATE);
         nightMode = sharedPreferences.getBoolean("night", false);
         //dark----------------------------------------------------------------
 
         //identity-------------------------------------------
-
-
 
 
 
@@ -134,6 +137,7 @@ public class SettingActivity extends AppCompatActivity {
 
                 Dialog dialog = new Dialog(SettingActivity.this);
                 dialog.setContentView(R.layout.custom_dialog_box);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
                 dialog.show();
 
                 //dialog***************************************************
@@ -237,7 +241,7 @@ public class SettingActivity extends AppCompatActivity {
 
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                } catch (android.content.ActivityNotFoundException e) {
+                } catch (ActivityNotFoundException e) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
                 }
 
