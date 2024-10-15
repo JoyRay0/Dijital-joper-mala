@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:text="@string/app_info_normal_text"
             android:textSize="17sp"
-            android:fontFamily="@font/tiro_bangla_regular"
+            android:fontFamily="@font/noto_serif_bengali"
             android:gravity="center"
             android:padding="5dp"
 
@@ -40,7 +40,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="App Version : 1.4"
+            android:text="App Version : 1.5"
             android:textSize="17sp"
             android:gravity="center"
             android:layout_gravity="center"

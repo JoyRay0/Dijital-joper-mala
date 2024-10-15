@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:text=" অ্যাপ এর মধ্যে নতুন কোনো ফিচার যুক্ত হলে এখান থেকে তা জানতে পারবেন।"
                 android:textSize="20sp"
-                android:fontFamily="@font/tiro_bangla_regular"
+                android:fontFamily="@font/noto_serif_bengali"
                 android:textColor="@color/color10"
                 android:gravity="center"
                 android:textStyle="normal"

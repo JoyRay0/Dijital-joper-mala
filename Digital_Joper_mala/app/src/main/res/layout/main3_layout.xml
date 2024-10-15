@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text=" answer "
-            android:fontFamily="@font/tiro_bangla_regular"
+            android:fontFamily="@font/noto_serif_bengali"
             android:textSize="20sp"
             android:textColor="@color/color10"
             android:textStyle="normal"
