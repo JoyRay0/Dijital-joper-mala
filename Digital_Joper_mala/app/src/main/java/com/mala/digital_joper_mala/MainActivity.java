@@ -11,7 +11,10 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -25,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     Button reset1, reset2, reset3;
 
     AppCompatImageButton setting;
+
 
     Vibrator vibrator;
     SharedPreferences sharedPreferences;
@@ -65,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         firstpage = findViewById(R.id.firstpage);
         secondpage = findViewById(R.id.secondpage);
         setting = findViewById(R.id.setting);
+
 
 
         sharedPreferences = getSharedPreferences(getString(R.string.app_name),MODE_PRIVATE);
@@ -288,6 +293,8 @@ public class MainActivity extends AppCompatActivity {
         vibrator.vibrate(50);
 
     }
+
+
 
 
 

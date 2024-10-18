@@ -1,47 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="wrap_content">
 
-    >
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
         android:background="#00FFFFFF"
+        android:orientation="horizontal"
         android:padding="10dp"
-        android:baselineAligned="false"
-        android:weightSum="3"
-        >
+        android:weightSum="3">
 
 
         <LinearLayout
+            android:id="@+id/liner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/pro"
-            android:orientation="vertical"
-            android:elevation="5dp"
             android:layout_weight="1"
+            android:background="@drawable/pro"
+            android:elevation="5dp"
+            android:orientation="vertical"
+
             >
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/text10"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:text="@string/stage1"
                 android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/stage1"
                 android:textColor="@color/color10"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
 
+                />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:text="@string/bar108"
                 android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/bar108"
                 android:textColor="@color/color9"
                 android:textSize="20sp" />
 
@@ -74,25 +77,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
+                android:background="@drawable/buttonstyle"
+                android:elevation="12dp"
                 android:fontFamily="@font/noto_serif_bengali"
                 android:text="@string/lessone"
                 android:textColor="@color/color9"
-                android:textSize="20sp"
-                android:elevation="12dp"
-                android:background="@drawable/buttonstyle"
-                />
+                android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/reset1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
+                android:background="@drawable/buttonstyle"
+                android:fontFamily="@font/noto_serif_bengali"
                 android:text="@string/reset"
                 android:textColor="@color/color9"
-                android:fontFamily="@font/noto_serif_bengali"
-                android:textSize="20sp"
-                android:background="@drawable/buttonstyle"
-                />
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -101,22 +102,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/pro"
-            android:orientation="vertical"
-            android:elevation="5dp"
             android:layout_weight="1"
-            >
+            android:background="@drawable/pro"
+            android:elevation="5dp"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:fontFamily="@font/noto_serif_bengali"
                 android:text="@string/stage2"
-                android:textSize="20sp"
                 android:textColor="@color/color10"
-                android:textStyle="bold"
-                android:layout_margin="15dp"
-                />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -143,13 +142,13 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/add2"
-                android:textColor="@color/color9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:fontFamily="@font/noto_serif_bengali"
                 android:background="@drawable/buttonstyle"
+                android:fontFamily="@font/noto_serif_bengali"
                 android:text="@string/addone"
+                android:textColor="@color/color9"
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -157,26 +156,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:text="@string/lessone"
-                android:fontFamily="@font/noto_serif_bengali"
-                android:textColor="@color/color9"
-                android:textSize="20sp"
-                android:elevation="10dp"
                 android:background="@drawable/buttonstyle"
-                />
+                android:elevation="10dp"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/lessone"
+                android:textColor="@color/color9"
+                android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/reset2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:elevation="10dp"
-                android:text="@string/reset"
-                android:fontFamily="@font/noto_serif_bengali"
-                android:textColor="@color/color9"
-                android:textSize="20sp"
                 android:background="@drawable/buttonstyle"
-                />
+                android:elevation="10dp"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/reset"
+                android:textColor="@color/color9"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -184,77 +181,73 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_margin="10dp"
+            android:layout_weight="1"
             android:background="@drawable/pro"
             android:elevation="5dp"
-            android:layout_weight="1"
+            android:orientation="vertical"
 
             >
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/stage3"
-                android:fontFamily="@font/noto_serif_bengali"
-                android:textSize="20sp"
-                android:textColor="@color/color10"
-                android:textStyle="bold"
                 android:layout_margin="15dp"
-                />
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/stage3"
+                android:textColor="@color/color10"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/bar4"
-                android:fontFamily="@font/noto_serif_bengali"
-                android:textSize="20sp"
-                android:textColor="@color/color9"
                 android:layout_margin="15dp"
-                />
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/bar4"
+                android:textColor="@color/color9"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/text3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/_0"
-
-                android:textSize="35sp"
-                android:textColor="@color/color2"
                 android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:background="@drawable/counter_display"
+
                 android:layout_margin="15dp"
+                android:background="@drawable/counter_display"
                 android:elevation="10dp"
-                />
+                android:gravity="center"
+                android:text="@string/_0"
+                android:textColor="@color/color2"
+                android:textSize="35sp" />
 
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/add3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/addone"
-                android:fontFamily="@font/noto_serif_bengali"
-                android:textSize="20sp"
-                android:textColor="@color/color9"
                 android:layout_margin="15dp"
                 android:background="@drawable/buttonstyle"
-                />
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/addone"
+                android:textColor="@color/color9"
+                android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/reset3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/reset"
-                android:fontFamily="@font/noto_serif_bengali"
-                android:textSize="20sp"
-                android:textColor="@color/color9"
                 android:layout_margin="15dp"
                 android:background="@drawable/buttonstyle"
-                />
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/reset"
+                android:textColor="@color/color9"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
     </LinearLayout>
+
 
 </HorizontalScrollView>
