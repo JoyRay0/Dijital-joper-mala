@@ -21,6 +21,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -183,45 +185,58 @@ public class MainActivity3 extends AppCompatActivity {
         }
     }
 
-    //new method crested------------------------------------------------
 
     private void hashmap(){
 
 
-        //hashmap started****************************************
+        String ques1 = getString(R.string.question1);
+        String ques2 = getString(R.string.question2);
+        String ques3 = getString(R.string.question3);
+        String ques4 = getString(R.string.question4);
+        String ques5 = getString(R.string.question5);
+        String ques6 = getString(R.string.question6);
 
-        hashMap = new HashMap<>();  //question 1
-        hashMap.put("ques1","১। মালা জপ করা সবার কর্তব্য কেন ?");
-        hashMap.put("ans1","শ্রী গৌরাঙ্গ মহাপ্রভু তার ভক্তগণকে তার শ্রীমুখে আজ্ঞা করিলেন, প্রতিদিন ১ লক্ষ নাম জপ করিবে। প্রতিদিন ১ লক্ষ নাম যিনি জপ করেন, তার মনের বাঞ্ছা পূর্ণ করেন ভগবান। নামবিনে কলিকালে আর কোন ধর্ম নাই, শাস্ত্রে বলা হয়েছে শ্রী হরিনাম মহামন্ত্র হলো সব মন্ত্রের সার। হরিনাম জপ করিলে সব পাপ ক্ষয় হয়, এই নামেই জীবের মোক্ষ লাভ হয়। তাই সবার হরিনাম জপ করা কর্তব্য।");
+        String ans1 = getString(R.string.Answer1);
+        String ans2 = getString(R.string.Answer2);
+        String ans3 = getString(R.string.Answer3);
+        String ans4 = getString(R.string.Answer4);
+        String ans5 = getString(R.string.Answer5);
+        String ans6 = getString(R.string.Answer6);
+
+
+        hashMap = new HashMap<>();
+        hashMap.put("ques1", ques1);
+        hashMap.put("ans1",ans1);
         arrayList.add(hashMap);
 
-        hashMap = new HashMap<>(); //question 2
-        hashMap.put("ques1","২। মালা জপ করিলে কেন তার হিসাব রাখতে হয় ?");
-        hashMap.put("ans1","কলিযুগে শ্রীমন মহাপ্রভু তার ভক্ত ও বৈষ্ণবদের সংখ্যা রক্ষণ সম্বন্ধে নির্দেশ দিয়েছেন। যদি মালা জপ করে তার সংখ্যা গননা না করা হয় তাহলে সে জপের কোন ফল পাওয়া যায় না ।");
+        hashMap = new HashMap<>();
+        hashMap.put("ques1",ques2);
+        hashMap.put("ans1",ans2);
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>(); //question 3
-        hashMap.put("ques1","৩। মানব জন্ম এতো দুর্লব কেন ?");
-        hashMap.put("ans1","২০ লক্ষ বার গাছ রুপে। ৯ লক্ষ বার জলের প্রানী রুপে। ১১ লক্ষ বার কৃমি কিট রুপে। ১০ লক্ষ বার পক্ষী রুপে। ৩০ লক্ষ বার পশু রুপে। ৪ লক্ষ বার বানর রুপে। মোট ৮৪ লক্ষ বার জন্মের পর আমরা ১ টি মানব জন্ম পাই । তাই মানব জন্ম খুব দুর্লব । তাই আমাদের এই জন্ম-মৃত্যুর চক্র থেকে বের হতে হলে সর্বদা হরিনাম জপ করতে হবে ।");
+        hashMap.put("ques1",ques3);
+        hashMap.put("ans1",ans3);
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>(); //question 4
-        hashMap.put("ques1", "৪। আমাদের প্রতিদিন কতবার মালা জপ করা উচিত ?");
-        hashMap.put("ans1","মালা ১০৮ বার জপ করিলে ১ ফিরান হয়। এইরুপ ৪ ফিরানে ১ গ্রন্থি হয় এবং ১৬ গ্রন্থিতে ১ লক্ষ নাম পূর্ন হয়। এইভাবে ৪ বার x ১৬ বার = ৬৪ বার । ৬৪ বার জপ করিলে ১ লক্ষ নাম পূর্ন হয় । শ্রীমন মহাপ্রভু সমস্ত ভক্তগণকে ১ লক্ষ নাম জপের আদেশ দিয়েছেন ।");
+        hashMap.put("ques1", ques4);
+        hashMap.put("ans1",ans4);
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>(); //question 5
-        hashMap.put("ques1", "৫। কখন আমাদের মালা জপ করা উচিত ?");
-        hashMap.put("ans1","মালা জপের সঠিক সময় হচ্ছে স্নান করার পর। স্নান এরপর আমাদের শরীর ও মন পবিএ থাকে। শরীর ও মন পবিএ থাকার ফলে ভগবানের প্রতি আমাদের ভক্তি জাগ্রত হয়।");
+        hashMap.put("ques1", ques5);
+        hashMap.put("ans1",ans5);
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>(); //question 6
-        hashMap.put("ques1", "৬। কিভাবে শ্রী শ্রী হরনিাম জপের মালা শুদ্বি করতে হয় ?");
-        hashMap.put("ans1"," শ্রী শ্রী  হরিনাম জপের ১০৮ টি মালা। সর্ব প্রথম পঞ্চগব্য ও মন্ত্র দ্বারা শুদ্ব করিবে। তারপর জপের মালা ভগবান শ্রী রাধাকৃষ্ণের চরনে ছুয়িয়ে মালার আধারীতে / থলিতে রেখে মালা জপ করিবে । পঞ্চগব্য তৈরির বিধি : “ দই , দুধ , ঘি , গরুর গোবর ও চেনা ”।");
+        hashMap.put("ques1", ques6);
+        hashMap.put("ans1",ans6);
         arrayList.add(hashMap);
         
-        //hashmap ended***********************************************
 
-    }
+
+    }//hashmap ended
+
 
 }//public class ended
