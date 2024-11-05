@@ -16,6 +16,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -103,6 +104,7 @@ public class SettingActivity extends AppCompatActivity {
 
               }
               editor.apply();
+
 
           }
       });

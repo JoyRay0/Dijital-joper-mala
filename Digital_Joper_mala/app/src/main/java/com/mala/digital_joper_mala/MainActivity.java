@@ -3,18 +3,20 @@ package com.mala.digital_joper_mala;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
+import com.google.android.material.appbar.MaterialToolbar;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -22,12 +24,14 @@ public class MainActivity extends AppCompatActivity {
 
     // XML id's----------------------------------------------------------------
 
+
+    Toolbar toolbar;
     TextView text1,text2,text3,firstpage,secondpage;
     Button add1, add2, add3;
     Button less2, less3;
     Button reset1, reset2, reset3;
 
-    AppCompatImageButton setting;
+
 
 
     Vibrator vibrator;
@@ -38,9 +42,12 @@ public class MainActivity extends AppCompatActivity {
 
     int count = 0, i = 0, j = 0;
 
+
+
     //initial value********************************************
 
 
+    private final String appPackageName = "com.mala.digital_joper_mala";
     // XML id's----------------------------------------------------------------
 
 
@@ -68,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
         reset3 = findViewById(R.id.reset3);
         firstpage = findViewById(R.id.firstpage);
         secondpage = findViewById(R.id.secondpage);
-        setting = findViewById(R.id.setting);
+
+       toolbar = findViewById(R.id.toolbar);
 
 
 
@@ -83,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        tooLbar();
+
 
 
 
@@ -92,6 +102,10 @@ public class MainActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
         }
+
+
+
+
 
 
 
@@ -267,22 +281,6 @@ public class MainActivity extends AppCompatActivity {
         //Other pages-------------------------------------------------------------------------------
 
 
-        //setting button-------------------------------------
-
-        setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
-                startActivity(intent);
-
-
-
-            }
-        });
-
-
-        //setting button-------------------------------------
 
 
     }//on create==================================
@@ -291,6 +289,42 @@ public class MainActivity extends AppCompatActivity {
 
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         vibrator.vibrate(50);
+
+    }
+    private void tooLbar(){
+
+        toolbar.inflateMenu(R.menu.toolbar_menu);
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                if (item.getItemId() == R.id.share){
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    String Body = "Download this App";
+                    String sub = "https://play.google.com/store/apps/details?id="+appPackageName;
+                    intent.putExtra(Intent.EXTRA_TEXT,Body);
+                    intent.putExtra(Intent.EXTRA_TEXT,sub);
+                    startActivity(Intent.createChooser(intent,null));
+
+
+                } else if (item.getItemId() == R.id.setting) {
+
+                    startActivity(new Intent(MainActivity.this, SettingActivity.class));
+
+                }
+
+
+
+                return false;
+            }
+        });
+
+
+
+
+
 
     }
 
