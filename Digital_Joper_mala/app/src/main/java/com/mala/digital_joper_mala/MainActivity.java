@@ -1,22 +1,25 @@
 package com.mala.digital_joper_mala;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.google.android.material.appbar.MaterialToolbar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     Button add1, add2, add3;
     Button less2, less3;
     Button reset1, reset2, reset3;
+
 
 
 
@@ -68,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
         add1 = findViewById(R.id.add1);
         add2 = findViewById(R.id.add2);
         add3 = findViewById(R.id.add3);
-        less2 = findViewById(R.id.less2);
-        less3 = findViewById(R.id.less3);
+        //less2 = findViewById(R.id.less2);
+        //less3 = findViewById(R.id.less3);
         reset1 = findViewById(R.id.reset1);
         reset2 = findViewById(R.id.reset2);
         reset3 = findViewById(R.id.reset3);
@@ -77,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
         secondpage = findViewById(R.id.secondpage);
 
        toolbar = findViewById(R.id.toolbar);
-
 
 
         sharedPreferences = getSharedPreferences(getString(R.string.app_name),MODE_PRIVATE);
@@ -88,11 +91,10 @@ public class MainActivity extends AppCompatActivity {
         //Identity period end+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-
+        
 
 
         tooLbar();
-
 
 
 
@@ -102,9 +104,6 @@ public class MainActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
         }
-
-
-
 
 
 
@@ -130,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 vibrate();
             }
         });
+        /*
 
         less2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,17 +137,19 @@ public class MainActivity extends AppCompatActivity {
 
                     count--;
 
-                    if (count > -1 && count < 17){
+                if (count > -1 && count <= 16){
 
-                        text1.setText (" "+count);
+                    text1.setText (" "+count);
 
 
-                    }
+                }
                 vibrate();
 
 
             }
         });
+
+         */
 
         reset1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /*
         less3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,6 +206,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+         */
 
         reset2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -285,13 +290,17 @@ public class MainActivity extends AppCompatActivity {
 
     }//on create==================================
 
-    private void vibrate(){
+    private void vibrate(){                     //vibrate
 
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+
         vibrator.vibrate(50);
 
+
+
     }
-    private void tooLbar(){
+
+    private void tooLbar(){                     //toolbar
 
         toolbar.inflateMenu(R.menu.toolbar_menu);
 
@@ -316,19 +325,12 @@ public class MainActivity extends AppCompatActivity {
                 }
 
 
-
                 return false;
             }
         });
 
 
-
-
-
-
     }
-
-
 
 
 

@@ -10,6 +10,15 @@
 
     <style name="Theme.Digital_Joper_mala" parent="Base.Theme.Digital_Joper_mala" />
 
+    <style name="three_dot_colr" parent="ThemeOverlay.AppCompat.ActionBar">
+
+        <item name="android:tint">#fff</item>
+
+
+    </style>
+
+
+
 
 
 

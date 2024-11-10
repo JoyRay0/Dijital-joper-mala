@@ -11,6 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:background="@color/color1"
+        android:theme="@style/three_dot_colr"
+
         />
 
 

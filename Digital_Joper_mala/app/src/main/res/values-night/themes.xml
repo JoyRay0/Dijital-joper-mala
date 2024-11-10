@@ -11,6 +11,11 @@
 
 
     </style>
+    <style name="three_dot_colr" parent="ThemeOverlay.AppCompat.ActionBar">
+
+        <item name="colorPrimary">#fff</item>
+
+    </style>
 
 
 </resources>

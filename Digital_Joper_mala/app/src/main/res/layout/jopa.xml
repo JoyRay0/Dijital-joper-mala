@@ -57,7 +57,7 @@
                 android:fontFamily="@font/noto_serif_bengali"
                 android:background="@drawable/counter_display"
                 android:elevation="10dp"
-                android:gravity="center"
+                android:gravity="center|bottom"
                 android:text="@string/_0"
                 android:textColor="@color/color2"
                 android:textSize="35sp" />
@@ -73,6 +73,8 @@
                 android:textColor="@color/color9"
                 android:textSize="20sp" />
 
+            <!--
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/less2"
                 android:layout_width="match_parent"
@@ -84,6 +86,7 @@
                 android:text="@string/lessone"
                 android:textColor="@color/color9"
                 android:textSize="20sp" />
+                -->
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/reset1"
@@ -135,7 +138,7 @@
                 android:layout_margin="15dp"
                 android:background="@drawable/counter_display"
                 android:elevation="10dp"
-                android:gravity="center"
+                android:gravity="center|bottom"
                 android:text="@string/_0"
                 android:fontFamily="@font/noto_serif_bengali"
                 android:textColor="@color/color2"
@@ -152,8 +155,10 @@
                 android:textColor="@color/color9"
                 android:textSize="20sp" />
 
+            <!--
+
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/less3"
+                android:id="@+id/less2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
@@ -163,6 +168,7 @@
                 android:text="@string/lessone"
                 android:textColor="@color/color9"
                 android:textSize="20sp" />
+                -->
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/reset2"
@@ -218,7 +224,7 @@
                 android:layout_margin="15dp"
                 android:background="@drawable/counter_display"
                 android:elevation="10dp"
-                android:gravity="center"
+                android:gravity="center|bottom"
                 android:text="@string/_0"
                 android:textColor="@color/color2"
                 android:textSize="35sp" />
