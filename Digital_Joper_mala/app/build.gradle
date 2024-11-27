@@ -10,8 +10,8 @@ android {
         applicationId "com.mala.digital_joper_mala"
         minSdk 21
         targetSdk 34
-        versionCode 7
-        versionName "1.5"
+        versionCode 9
+        versionName "1.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -37,6 +37,4 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
-    implementation 'eu.dkaratzas:android-inapp-update:1.0.5'
-
 }

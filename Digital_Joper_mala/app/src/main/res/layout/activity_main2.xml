@@ -85,30 +85,33 @@
                 android:contentDescription="name3"
                 android:src="@drawable/pic3" />
 
+            <!--
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_margin="15dp"
+               android:fontFamily="@font/noto_serif_bengali"
+               android:text="@string/number4"
+               android:textColor="@color/color9"
+               android:textSize="20sp"
+               android:textStyle="normal" />
+
+
+           <ImageView
+               android:layout_width="match_parent"
+               android:layout_height="200dp"
+               android:src="@drawable/pic4"
+               android:background="#A9000000"
+               android:layout_margin="15dp"
+               android:contentDescription="number"
+               />
+               -->
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
                 android:fontFamily="@font/noto_serif_bengali"
                 android:text="@string/number4"
-                android:textColor="@color/color9"
-                android:textSize="20sp"
-                android:textStyle="normal" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:src="@drawable/pic4"
-                android:background="#A9000000"
-                android:layout_margin="15dp"
-                android:contentDescription="number"
-                />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/noto_serif_bengali"
-                android:text="@string/number5"
                 android:textSize="20sp"
                 android:textColor="@color/color9"
                 android:textStyle="normal"
@@ -126,7 +129,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/number6"
+                android:text="@string/number5"
                 android:fontFamily="@font/noto_serif_bengali"
                 android:textSize="20sp"
                 android:textColor="@color/color9"
@@ -146,7 +149,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/number7"
+                android:text="@string/number6"
                 android:textSize="20sp"
                 android:fontFamily="@font/noto_serif_bengali"
                 android:textColor="@color/color9"
@@ -166,7 +169,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/number8"
+                android:text="@string/number7"
                 android:textSize="20sp"
                 android:fontFamily="@font/noto_serif_bengali"
                 android:textColor="@color/color9"
@@ -185,7 +188,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/number9"
+                android:text="@string/number8"
                 android:textSize="20sp"
                 android:fontFamily="@font/noto_serif_bengali"
                 android:textColor="@color/color9"
@@ -202,7 +205,6 @@
                 android:contentDescription="number"
 
                 />
-
 
 
         </LinearLayout>

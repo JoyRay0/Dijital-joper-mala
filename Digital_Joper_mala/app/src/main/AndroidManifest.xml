@@ -23,9 +23,6 @@
             android:name=".NewFeaturesActivity"
             android:exported="false" />
         <activity
-            android:name=".AppInfoActivity"
-            android:exported="false" />
-        <activity
             android:name=".PrivacyPolicyActivity"
             android:exported="false" />
         <activity
