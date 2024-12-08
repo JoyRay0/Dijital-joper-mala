@@ -10,9 +10,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
@@ -32,6 +35,7 @@ public class HomeAllMalaActivity extends AppCompatActivity {
     HashMap<String, String> hashMap;
 
     RadioButton radio_button_home, radio_button_rules, radio_button_info;
+    RadioGroup radio_group;
 
     //XML id's----------------------------------------------------------------------
 
@@ -47,6 +51,7 @@ public class HomeAllMalaActivity extends AppCompatActivity {
         radio_button_home = findViewById(R.id.radio_button_home);
         radio_button_rules = findViewById(R.id.radio_button_rules);
         radio_button_info = findViewById(R.id.radio_button_info);
+        radio_group = findViewById(R.id.radio_group);
         //identity period-------------------------------------------------------------------
 
         hashmap();
@@ -55,20 +60,40 @@ public class HomeAllMalaActivity extends AppCompatActivity {
 
         tooLbar();
 
-        if (radio_button_home.isActivated() || radio_button_rules.isChecked() || radio_button_info.isChecked()){
 
-            radio_button_home.setTextColor(R.color.color2);
-            radio_button_rules.setTextColor(R.color.color2);
-            radio_button_info.setTextColor(R.color.color2);
 
-        }else {
+        //radio group customize
+        radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int id) {
 
-            radio_button_home.setTextColor(R.color.color3);
-            radio_button_rules.setTextColor(R.color.color3);
-            radio_button_info.setTextColor(R.color.color3);
 
-        }
+                //radio button default color
+                radio_button_home.setTextColor(getResources().getColor(android.R.color.white));
+                radio_button_rules.setTextColor(getResources().getColor(android.R.color.white));
+                radio_button_info.setTextColor(getResources().getColor(android.R.color.white));
 
+
+
+
+
+                if (id == R.id.radio_button_home){
+
+                    radio_button_home.setTextColor(getResources().getColor(android.R.color.black));
+
+                } else if (id == R.id.radio_button_rules) {
+
+                    radio_button_rules.setTextColor(getResources().getColor(android.R.color.black));
+
+
+                } else if (id == R.id.radio_button_info) {
+
+                    radio_button_info.setTextColor(getResources().getColor(android.R.color.black));
+
+                }
+
+            }
+        });
 
 
 
@@ -111,20 +136,18 @@ public class HomeAllMalaActivity extends AppCompatActivity {
     private void hashmap(){
 
         hashMap = new HashMap<>();
-        hashMap.put("name_mala","");
+        hashMap.put("name_mala","মালা");
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
-        hashMap.put("name_mala","");
+        hashMap.put("name_mala","বৈষ্ণব মালা");
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
-        hashMap.put("name_mala","");
+        hashMap.put("name_mala","শিব মালা");
         arrayList.add(hashMap);
 
-        hashMap = new HashMap<>();
-        hashMap.put("name_mala","");
-        arrayList.add(hashMap);
+        
 
     }
 
@@ -153,17 +176,27 @@ public class HomeAllMalaActivity extends AppCompatActivity {
            @SuppressLint("ViewHolder") View view1 =  layoutInflater.inflate(R.layout.desgin_for_all_mala_home, viewGroup,false);
 
             CardView cardview = view1.findViewById(R.id.cardview);
+            AppCompatTextView all_mala_name_textview = view1.findViewById(R.id.all_mala_name_textview);
+            AppCompatImageView all_mala_imageview = view1.findViewById(R.id.all_mala_imageview);
+
 
            HashMap<String, String> hashMap1 = arrayList.get(position);
 
+           //hashmap to string
+           String text_item = hashMap1.get("name_mala");
 
-           cardview.setOnClickListener(new View.OnClickListener() {
+           all_mala_name_textview.setText(text_item);
+
+
+
+
+           cardview.setOnClickListener(new View.OnClickListener() { //mala button
                @Override
                public void onClick(View view) {
 
                    if (position == 0){
 
-                       Toast.makeText(HomeAllMalaActivity.this, "Sending", Toast.LENGTH_SHORT).show();
+                       startActivity(new Intent(HomeAllMalaActivity.this, UMalaActivity.class));
 
                    } else if (position == 1) {
 

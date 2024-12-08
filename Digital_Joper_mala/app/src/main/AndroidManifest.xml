@@ -17,6 +17,9 @@
         android:theme="@style/Theme.Digital_Joper_mala"
         tools:targetApi="34">
         <activity
+            android:name=".UMalaActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
