@@ -16,6 +16,16 @@
 
 
     </style>
+    <style name="img_corners" parent="ShapeAppearance.Material3.Corner.Full">
+
+        <!--<item name="cornerFamily">rounded</item> -->
+        <!--<item name="cornerSize">20dp</item>-->
+        <item name="cornerRadius">70dp</item>
+
+
+    </style>
+
+
 
 
 

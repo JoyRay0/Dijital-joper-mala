@@ -17,7 +17,7 @@
         android:textColor="@color/color2"
         android:padding="5dp"
         android:layout_margin="5dp"
-        android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
+        android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
         android:layout_weight="1"
         android:background="@drawable/style"
         />
@@ -30,7 +30,7 @@
         android:fontFamily="@font/noto_serif_bengali"
         android:textSize="17sp"
         android:textColor="@color/color2"
-        android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
+        android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
         android:layout_margin="5dp"
         android:padding="5dp"
         android:layout_weight="1"

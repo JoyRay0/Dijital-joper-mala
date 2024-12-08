@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeAllMalaActivity">
+
+    <include layout="@layout/appbar"
+        android:id="@+id/appbar"
+        />
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_below="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp"
+        android:weightSum="3"
+
+        >
+
+        <RadioButton
+            android:id="@+id/radio_button_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="হোম"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:textColor="#000"
+            android:fontFamily="@font/noto_serif_bengali"
+            android:button="@android:color/transparent"
+            android:layout_weight="1"
+            android:background="@drawable/radio_checked"
+            android:layout_margin="5dp"
+            android:checked="true"
+            />
+
+        <RadioButton
+            android:id="@+id/radio_button_rules"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@android:color/transparent"
+            android:text="নিয়ম"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:fontFamily="@font/noto_serif_bengali"
+            android:layout_weight="1"
+            android:background="@drawable/radio_checked"
+            android:layout_margin="5dp"
+
+            />
+        <RadioButton
+            android:id="@+id/radio_button_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@android:color/transparent"
+            android:text="জপের উপকারীতা"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:layout_weight="1"
+            android:fontFamily="@font/noto_serif_bengali"
+            android:background="@drawable/radio_checked"
+            android:layout_margin="5dp"
+            />
+
+
+    </RadioGroup>
+
+    <GridView
+        android:id="@+id/all_mala_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="3"
+        android:layout_below="@+id/radio_group"
+        android:listSelector="@android:color/transparent"
+        android:horizontalSpacing="0dp"
+        android:verticalSpacing="0dp"
+        android:stretchMode="columnWidth"
+
+        />
+
+</RelativeLayout>
