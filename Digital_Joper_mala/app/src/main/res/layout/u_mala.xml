@@ -1,31 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".UMalaActivity"
+    android:layout_height="match_parent"
     android:background="@color/color4"
-    >
+    tools:context=".UMalaActivity">
 
-    <include layout="@layout/backappbar"
+    <include
         android:id="@+id/backbar"
+        layout="@layout/backappbar"
+
+        />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/n_s"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
-
-
-    <include layout="@layout/jopa"
-        android:id="@+id/jopa"
         android:layout_height="match_parent"
-        android:layout_width="wrap_content"
-       app:layout_constraintTop_toBottomOf="@id/backbar"
+        android:layout_below="@id/backbar">
 
-        />
+        <RelativeLayout
+            android:id="@+id/rr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appcompat_textview1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:text="মন্ত্র:"
+                android:textColor="@color/color9"
+                android:textSize="17sp"
+                android:textStyle="normal" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_eye1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="10dp"
+                android:layout_toEndOf="@id/appcompat_textview1"
+                app:srcCompat="@drawable/eye_svgrepo_com"
+                android:tag="open_eye"
+                />
+
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/ed_autocomplete_textview1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/appcompat_textview1"
+                android:layout_margin="10dp"
+                android:background="@drawable/edit_text_design"
+                android:ems="10"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:hint="জপের মন্ত্র"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:padding="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:textColor="@color/color18"
+                android:textColorHint="@color/color17" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/save1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/appcompat_textview1"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="15dp"
+                android:layout_toEndOf="@id/ed_autocomplete_textview1"
+                android:padding="5dp"
+                app:srcCompat="@drawable/baseline_save_24" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_mantras1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ed_autocomplete_textview1"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:gravity="center"
+                android:text="জপ মন্ত্র"
+                android:textColor="@color/color10"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appcompat_textview2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_mantras1"
+                android:layout_margin="10dp"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:text="মন্ত্র:"
+                android:textColor="@color/color9"
+                android:textSize="17sp"
+                android:textStyle="normal" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_eye2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="10dp"
+                android:layout_below="@id/tv_mantras1"
+                android:layout_toEndOf="@id/appcompat_textview1"
+                app:srcCompat="@drawable/eye_svgrepo_com"
+                android:tag="open_eye"
+                />
+
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/ed_autocomplete_textview2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/appcompat_textview2"
+                android:layout_margin="10dp"
+                android:background="@drawable/edit_text_design"
+                android:ems="10"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:hint="জপের মন্ত্র "
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:padding="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:textColor="@color/color18"
+                android:textColorHint="@color/color17"
+
+                />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/save2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/appcompat_textview2"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="15dp"
+                android:layout_toEndOf="@id/ed_autocomplete_textview2"
+                android:padding="5dp"
+                app:srcCompat="@drawable/baseline_save_24" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_mantras2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ed_autocomplete_textview2"
+                android:layout_margin="10dp"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:text="জপ মন্ত্র"
+                android:textColor="@color/color10"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
+
+            <include
+                android:id="@+id/jopa"
+                layout="@layout/jopa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_mantras2" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@id/jopa" />
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

@@ -31,4 +31,10 @@
 
     <color name="color15">#EDE7E7</color> <!-- switch_thumb_darkmode color -->
 
+    <color name="color16">#523F51B5</color> <!-- auto_complete_background  color -->
+
+    <color name="color17">#D5FCF5E5</color> <!-- hint_text  color -->
+
+    <color name="color18">#fff</color> <!-- auto_complete_text  color -->
+
 </resources>

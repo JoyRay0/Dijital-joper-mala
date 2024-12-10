@@ -3,6 +3,7 @@ package com.mala.digital_joper_mala;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
@@ -29,10 +30,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     Toolbar toolbar;
-    TextView text1,text2,text3,firstpage,secondpage;
-    Button add1, add2, add3;
+
+    TextView text1,text2,text3;
+
+    AppCompatButton firstpage,secondpage;
+
+    AppCompatButton add1, add2, add3;
     Button less2, less3;
-    Button reset1, reset2, reset3;
+    AppCompatButton reset1, reset2, reset3;
 
 
 
