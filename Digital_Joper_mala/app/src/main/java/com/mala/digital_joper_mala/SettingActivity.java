@@ -6,44 +6,60 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.os.Vibrator;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatRadioButton;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.SwitchCompat;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 
 public class SettingActivity extends AppCompatActivity {
 
     //XML id's---------------------------------------------
 
-    ImageButton back;
-    TextView privacy, app_info, feedback, features, share, rating, more_app;
+    private ImageButton back;
+    private TextView privacy, app_info, feedback, features, share, rating, more_app;
 
 
+    private RelativeLayout main;
 
-    SwitchCompat sw;
-     boolean nightMode,vib_enable;
+    private AppCompatTextView mode;
+    private RadioGroup day_night_radio_group;
+    private AppCompatRadioButton day_radio_button, night_radio_button, system_default_radio_button;
+    private AppCompatButton mode_ok;
 
-    SharedPreferences sharedPreferences,sharedPreferences1;
-    SharedPreferences.Editor editor,editor1;
-    Vibrator vibrator;
+    boolean nightMode;
 
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
+    BottomNavigationView bottom_nav;
 
-    private final String appPackageName = "com.mala.digital_joper_mala";
+    private static final String appPackageName = "com.mala.digital_joper_mala";
 
     //XML id's---------------------------------------------
 
@@ -52,6 +68,32 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting);
 
+
+       /*
+       //dark----------------------------------------------------------------
+        sharedPreferences = getSharedPreferences(getString(R.string.app_name),MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        nightMode = sharedPreferences.getBoolean("nightmode", false);
+
+
+
+        if (nightMode){
+            sw.setChecked(true);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+
+         */
+
+
+        //dark----------------------------------------------------------------
+
+        /*
+        sharedPreferences = getSharedPreferences("App_theme",MODE_PRIVATE);
+        sharedPreferences.getString("theme_mode",);
+
+         */
+
+
         //identity-------------------------------------------
 
         back = findViewById(R.id.back);
@@ -59,55 +101,68 @@ public class SettingActivity extends AppCompatActivity {
         app_info = findViewById(R.id.app_info);
         feedback = findViewById(R.id.feedback);
         features = findViewById(R.id.features);
-        sw = findViewById(R.id.sw);
+        //mode = findViewById(R.id.mode);
         share = findViewById(R.id.share);
         rating = findViewById(R.id.rating);
         more_app = findViewById(R.id.more_app);
+        bottom_nav = findViewById(R.id.bottom_nav);
+        main = findViewById(R.id.main);
 
 
 
-
-        //dark----------------------------------------------------------------
-        sharedPreferences = getSharedPreferences(getString(R.string.app_name),MODE_PRIVATE);
-        nightMode = sharedPreferences.getBoolean("night", false);
-        //dark----------------------------------------------------------------
 
         //identity-------------------------------------------
 
 
 
+
+
+
+
+
+
+
         //night mode-----------------------------------------------------------
 
-        if (nightMode){
-            sw.setChecked(true);
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        /*
+        mode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        }
+                mytheme();
+
+            }
+        });
+
+         */
 
 
 
-      sw.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
+        bottom_nav();
 
-              if (nightMode){
+
+
+
+        /*
+
+         if (nightMode){
 
                   editor = sharedPreferences.edit();
                   AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                   editor.putBoolean("night",false);
+                  restart_activity_with_animation();
 
               }else {
 
                   AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                   editor = sharedPreferences.edit();
                   editor.putBoolean("night", true);
-
+                  restart_activity_with_animation();
               }
               editor.apply();
 
+        */
 
-          }
-      });
 
         //night mode-----------------------------------------------------------
 
@@ -268,4 +323,157 @@ public class SettingActivity extends AppCompatActivity {
         //more app-------------------------------------------------
 
     }
+
+    private void mytheme() {
+
+
+        Dialog dialog = new Dialog(SettingActivity.this);
+        dialog.setContentView(R.layout.mode);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        dialog.show();
+
+        day_night_radio_group = dialog.findViewById(R.id.day_night_radio_group);
+        day_radio_button = dialog.findViewById(R.id.day_radio_button);
+        night_radio_button = dialog.findViewById(R.id.night_radio_button);
+        system_default_radio_button = dialog.findViewById(R.id.system_default_radio_button);
+        mode_ok = dialog.findViewById(R.id.mode_ok);
+
+
+
+        mode_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+              int checked_radioButton = day_night_radio_group.getCheckedRadioButtonId();
+
+              if (checked_radioButton == R.id.day_radio_button){
+
+                  day_radio_button.setChecked(true);
+                  AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                  mode_theme("light");
+
+
+
+              } else if (checked_radioButton == R.id.night_radio_button) {
+
+                  night_radio_button.setChecked(true);
+                  AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                  mode_theme("dark");
+
+
+
+
+              } else if (checked_radioButton == R.id.system_default_radio_button) {
+
+                  system_default_radio_button.setChecked(true);
+                  AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                  mode_theme("system");
+
+
+              }
+
+
+              dialog.dismiss();
+
+            }
+        });
+
+        /*
+        if (nightMode){
+
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            editor.putBoolean("nightmode",false);
+
+        }else {
+
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            editor.putBoolean("nightmode",true);
+
+        }
+        editor.apply();
+
+         */
+
+    }
+
+
+    private void mode_theme(String mode) {
+
+
+       sharedPreferences = getSharedPreferences("App_theme",MODE_PRIVATE);
+        editor.putString("theme_mode",mode);
+        editor = sharedPreferences.edit();
+        editor.commit();
+
+
+    }
+
+
+    private String load_mode(){
+
+       SharedPreferences sharedPreferences = getSharedPreferences("App_theme",MODE_PRIVATE);
+
+        return  sharedPreferences.getString("theme_mode","system");
+    }
+
+
+    private void bottom_nav(){
+
+        bottom_nav.setSelectedItemId(R.id.bottom_nav_setting);
+
+        bottom_nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                if (item.getItemId() == R.id.bottom_nav_home){
+
+                    startActivity(new Intent(SettingActivity.this, HomeAllMalaActivity.class));
+                    finishAffinity();
+
+                }else if (item.getItemId() == R.id.bottom_nav_rule){
+
+                    startActivity(new Intent(SettingActivity.this, RulesForJopaActivity.class));
+                    finishAffinity();
+
+                }else if (item.getItemId() == R.id.bottom_nav_list){
+
+                    startActivity(new Intent(SettingActivity.this, AdvatageForJopaActivity.class));
+                    finishAffinity();
+
+                }
+
+                return false;
+            }
+        });
+
+    }
+
+    /*
+    private void refreshUI(){
+
+        getWindow().setWindowAnimations(android.R.style.Animation_Dialog);
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+
+        //View rootview = getWindow().getDecorView();
+
+        if ((newConfig.uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES){
+
+
+
+        }else {
+
+
+
+        }
+
+
+
+    }
+
+     */
 }

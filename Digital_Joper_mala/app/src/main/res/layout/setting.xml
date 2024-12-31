@@ -45,7 +45,7 @@
                 android:textColor="@color/color9"
                 android:textSize="17sp"
                 android:textStyle="normal"
-                app:drawableEndCompat="@drawable/baseline_arrow_forward_ios_24"
+                app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
                 app:drawableStartCompat="@drawable/baseline_feedback_24" />
 
             <View
@@ -74,7 +74,7 @@
                 android:textColor="@color/color9"
                 android:textSize="17sp"
                 android:textStyle="normal"
-                app:drawableEndCompat="@drawable/baseline_arrow_forward_ios_24"
+                app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
                 app:drawableStartCompat="@drawable/baseline_tips_and_updates_24" />
 
             <View
@@ -86,31 +86,31 @@
             <!-- new features  -->
 
 
-            <!-- Dark mode-->
+            <!-- Dark mode
 
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/sw"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="ডার্ক মোড"
-                    android:fontFamily="@font/noto_serif_bengali"
-                    android:textColor="@color/color9"
-                    android:textSize="17sp"
-                    android:textStyle="normal"
-                    android:drawableStart="@drawable/baseline_dark_mode_24"
-                    android:drawablePadding="20dp"
-                    android:padding="12dp"
-                    app:thumbTint="@color/color15"
-                    app:trackTint="@color/color14"
-                    />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/baseline_brightness_6_24"
+                android:drawablePadding="20dp"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:padding="12dp"
+                android:text="অ্যাপ থিম"
+                android:textColor="@color/color9"
+                android:textSize="17sp"
+                android:textStyle="normal"
+                android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
+                 />
 
+            Dark mode-->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/color7"
                 />
 
-            <!-- Dark mode-->
+
 
 
 
@@ -132,7 +132,7 @@
                 android:textColor="@color/color9"
                 android:textSize="17sp"
                 android:textStyle="normal"
-                app:drawableEndCompat="@drawable/baseline_arrow_forward_ios_24"
+                app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
                 app:drawableStartCompat="@drawable/baseline_language_24" />
 
             <View
@@ -162,7 +162,7 @@
                 android:textColor="@color/color9"
                 android:textSize="17sp"
                 android:textStyle="normal"
-                app:drawableEndCompat="@drawable/baseline_arrow_forward_ios_24"
+                app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
                 app:drawableStartCompat="@drawable/baseline_share_24" />
 
             <View
@@ -192,7 +192,7 @@
                 android:textColor="@color/color9"
                 android:textSize="17sp"
                 android:textStyle="normal"
-                app:drawableEndCompat="@drawable/baseline_arrow_forward_ios_24"
+                app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
                 app:drawableStartCompat="@drawable/baseline_star_rate_24" />
 
             <View
@@ -223,7 +223,7 @@
                 android:textColor="@color/color9"
                 android:textSize="17sp"
                 android:textStyle="normal"
-                app:drawableEndCompat="@drawable/baseline_arrow_forward_ios_24"
+                app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
                 app:drawableStartCompat="@drawable/baseline_privacy_tip_24" />
 
             <View
@@ -252,7 +252,7 @@
                 android:textColor="@color/color9"
                 android:textSize="17sp"
                 android:textStyle="normal"
-                app:drawableEndCompat="@drawable/baseline_arrow_forward_ios_24"
+                app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
                 app:drawableStartCompat="@drawable/baseline_info_24" />
 
             <View
@@ -268,5 +268,21 @@
 
 
     </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/bottom_nav_design"
+        android:elevation="3dp"
+        app:itemIconSize="25dp"
+        app:itemIconTint="@color/color18"
+        app:itemRippleColor="#fff"
+        app:labelVisibilityMode="labeled"
+        style="@style/Bottom_Navigation_Style"
+        app:menu="@menu/bottom_menu" />
 
 </RelativeLayout>

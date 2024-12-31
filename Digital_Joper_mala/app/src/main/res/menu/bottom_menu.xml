@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/bottom_nav_home"
+        android:title="হোম"
+        android:icon="@drawable/baseline_home_24"
+
+        />
+
+    <item
+        android:id="@+id/bottom_nav_rule"
+        android:title="জপের নিয়ম"
+        android:icon="@drawable/baseline_rule_24"
+        />
+
+    <item
+        android:id="@+id/bottom_nav_list"
+        android:title="জপের ফল"
+        android:icon="@drawable/baseline_article_24"
+        />
+
+    <item
+        android:id="@+id/bottom_nav_setting"
+        android:title="সেটিংস"
+        android:icon="@drawable/baseline_settings_24"
+        />
+
+
+</menu>

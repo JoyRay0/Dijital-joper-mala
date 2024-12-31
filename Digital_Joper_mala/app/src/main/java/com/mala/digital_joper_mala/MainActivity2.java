@@ -27,6 +27,10 @@ public class MainActivity2 extends AppCompatActivity {
     Boolean nightMode;
     SharedPreferences sharedPreferences;
 
+    private static final String PREF_NAME = "dark_light_mode";
+    private static final String KEY_NAME = "dark_mode";
+    private static final String appPackageName = "com.mala.digital_joper_mala";
+
 
     //XML id's------------------------------------------------------------
 
@@ -35,15 +39,26 @@ public class MainActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //dark----------------------------------------------------------------
+        sharedPreferences = getSharedPreferences(PREF_NAME,MODE_PRIVATE);
+        nightMode = sharedPreferences.getBoolean(KEY_NAME, false);
+
+
+        /*
+        if (nightMode){
+            sw.setChecked(true);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+         */
+        AppCompatDelegate.setDefaultNightMode(nightMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+
+        //dark----------------------------------------------------------------
         setContentView(R.layout.activity_main2);
 
         //identity period----------------------------------------------------------
 
         back = findViewById(R.id.back);
-
-        sharedPreferences = getSharedPreferences(getString(R.string.app_name),MODE_PRIVATE);
-        nightMode = sharedPreferences.getBoolean("night",false);
-
 
         //identity period----------------------------------------------------------
 
@@ -51,13 +66,6 @@ public class MainActivity2 extends AppCompatActivity {
 
 
         //---------------------------------------------------------------------
-
-        if (nightMode){
-
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        }
-
 
 
         back.setOnClickListener(new View.OnClickListener() {

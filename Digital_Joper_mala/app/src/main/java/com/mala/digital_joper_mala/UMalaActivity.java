@@ -7,6 +7,7 @@ import android.os.Vibrator;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 
@@ -37,6 +38,8 @@ public class UMalaActivity extends AppCompatActivity {
 
     Toolbar toolbar;
 
+    ImageButton back;
+
     Vibrator vibrator;
 
     SharedPreferences sharedPreferences, save_text1, save_text2;
@@ -45,13 +48,24 @@ public class UMalaActivity extends AppCompatActivity {
 
     int count = 0, i = 0, j = 0;
 
-    private final String appPackageName = "com.mala.digital_joper_mala";
+    private static final String PREF_NAME = "dark_light_mode";
+    private static final String KEY_NAME = "dark_mode";
+    private static final String appPackageName = "com.mala.digital_joper_mala";
 
     //XML id's--------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //dark----------------------------------------------------------------
+
+        sharedPreferences = getSharedPreferences(PREF_NAME,MODE_PRIVATE);
+        nightMode = sharedPreferences.getBoolean(KEY_NAME, false);
+
+        AppCompatDelegate.setDefaultNightMode(nightMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+
+        //dark----------------------------------------------------------------
         setContentView(R.layout.u_mala);
 
         //identity period -----------------------------------------------------------
@@ -74,6 +88,7 @@ public class UMalaActivity extends AppCompatActivity {
         save2 = findViewById(R.id.save2);
         iv_eye1 = findViewById(R.id.iv_eye1);
         iv_eye2 = findViewById(R.id.iv_eye2);
+        back = findViewById(R.id.back);
 
 
         //identity period -----------------------------------------------------------
@@ -90,8 +105,8 @@ public class UMalaActivity extends AppCompatActivity {
 
 
 
-        tv_mantras1.setText("‘‘"+saved_text1+"’’");
-        tv_mantras2.setText("‘‘"+saved_text2+"’’");
+        tv_mantras1.setText("‘‘ "+saved_text1+" ’’");
+        tv_mantras2.setText("‘‘ "+saved_text2+" ’’");
 
         save();
 
@@ -165,6 +180,15 @@ public class UMalaActivity extends AppCompatActivity {
                     save2.setVisibility(View.VISIBLE);
 
                 }
+
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(UMalaActivity.this, HomeAllMalaActivity.class));
 
             }
         });
@@ -295,7 +319,6 @@ public class UMalaActivity extends AppCompatActivity {
 
     private void save(){
 
-
         save1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -309,9 +332,6 @@ public class UMalaActivity extends AppCompatActivity {
                     editor1.apply();
 
                     tv_mantras1.setText("‘‘"+ed_mantra1+"’’");
-
-
-
 
                 }else {
 

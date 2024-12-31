@@ -44,6 +44,10 @@ public class MainActivity3 extends AppCompatActivity {
 
     HashMap<String, String> hashMap;
 
+    private static final String PREF_NAME = "dark_light_mode";
+    private static final String KEY_NAME = "dark_mode";
+
+
 
 
 
@@ -53,6 +57,15 @@ public class MainActivity3 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //dark----------------------------------------------------------------
+        sharedPreferences = getSharedPreferences(PREF_NAME,MODE_PRIVATE);
+        nightMode = sharedPreferences.getBoolean(KEY_NAME, false);
+
+
+        AppCompatDelegate.setDefaultNightMode(nightMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+
+        //dark----------------------------------------------------------------
         setContentView(R.layout.activity_main3);
 
         //identity period------------------------------------------
@@ -60,9 +73,6 @@ public class MainActivity3 extends AppCompatActivity {
         mback = findViewById(R.id.back);
         listView = findViewById(R.id.listview);
 
-
-        sharedPreferences = getSharedPreferences(getString(R.string.app_name),MODE_PRIVATE);
-        nightMode = sharedPreferences.getBoolean("night",false);
 
         hashmap();
 

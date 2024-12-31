@@ -46,8 +46,9 @@
                 android:layout_height="30dp"
                 android:layout_margin="10dp"
                 android:layout_toEndOf="@id/appcompat_textview1"
-                app:srcCompat="@drawable/eye_svgrepo_com"
                 android:tag="open_eye"
+                app:srcCompat="@drawable/eye_svgrepo_com"
+                android:background="?attr/actionBarItemBackground"
                 />
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
@@ -73,12 +74,11 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_below="@id/appcompat_textview1"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
+                android:background="?attr/actionBarItemBackground"
                 android:layout_marginTop="15dp"
                 android:layout_toEndOf="@id/ed_autocomplete_textview1"
                 android:padding="5dp"
-                app:srcCompat="@drawable/baseline_save_24" />
+                app:srcCompat="@drawable/tack_save_button_svgrepo_com_2_" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_mantras1"
@@ -112,11 +112,12 @@
                 android:id="@+id/iv_eye2"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_margin="10dp"
                 android:layout_below="@id/tv_mantras1"
+                android:layout_margin="10dp"
                 android:layout_toEndOf="@id/appcompat_textview1"
-                app:srcCompat="@drawable/eye_svgrepo_com"
                 android:tag="open_eye"
+                app:srcCompat="@drawable/eye_svgrepo_com"
+                android:background="?attr/actionBarItemBackground"
                 />
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
@@ -144,12 +145,11 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_below="@id/appcompat_textview2"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
+                android:background="?attr/actionBarItemBackground"
                 android:layout_marginTop="15dp"
                 android:layout_toEndOf="@id/ed_autocomplete_textview2"
                 android:padding="5dp"
-                app:srcCompat="@drawable/baseline_save_24" />
+                app:srcCompat="@drawable/tack_save_button_svgrepo_com_2_" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_mantras2"

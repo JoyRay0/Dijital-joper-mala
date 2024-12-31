@@ -88,6 +88,8 @@
     <!-- 2 Button -->
     <string name="rules_of_jopa">মালা জপের নিয়ম</string>
     <string name="japa_descri">মালা জপের কারন</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- 2 Button -->
 

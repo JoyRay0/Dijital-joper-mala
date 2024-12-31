@@ -56,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
     //initial value********************************************
 
 
-    private final String appPackageName = "com.mala.digital_joper_mala";
+    private static final String PREF_NAME = "dark_light_mode";
+    private static final String KEY_NAME = "dark_mode";
+    private static final String appPackageName = "com.mala.digital_joper_mala";
     // XML id's----------------------------------------------------------------
 
 
@@ -66,6 +68,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //dark----------------------------------------------------------------
+        sharedPreferences = getSharedPreferences(PREF_NAME,MODE_PRIVATE);
+        nightMode = sharedPreferences.getBoolean(KEY_NAME, false);
+
+
+        /*
+        if (nightMode){
+            sw.setChecked(true);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+         */
+        AppCompatDelegate.setDefaultNightMode(nightMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+
+        //dark----------------------------------------------------------------
         setContentView(R.layout.activity_main);
 
 
@@ -88,30 +105,13 @@ public class MainActivity extends AppCompatActivity {
        toolbar = findViewById(R.id.toolbar);
 
 
-        sharedPreferences = getSharedPreferences(getString(R.string.app_name),MODE_PRIVATE);
-        nightMode = sharedPreferences.getBoolean("night",false);
 
 
 
         //Identity period end+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-        
-
-
         tooLbar();
-
-
-
-
-        if (nightMode){
-
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        }
-
-
-
 
 
         /* Display and Button started */
@@ -322,10 +322,6 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra(Intent.EXTRA_TEXT,sub);
                     startActivity(Intent.createChooser(intent,null));
 
-
-                } else if (item.getItemId() == R.id.setting) {
-
-                    startActivity(new Intent(MainActivity.this, SettingActivity.class));
 
                 }
 

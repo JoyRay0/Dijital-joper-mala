@@ -2,22 +2,31 @@ package com.mala.digital_joper_mala;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +36,9 @@ public class HomeAllMalaActivity extends AppCompatActivity {
 
     //XML id's----------------------------------------------------------------------
 
-    String appPackageName = "com.mala.digital_joper_mala";
+
+    private static final String appPackageName = "com.mala.digital_joper_mala";
+
     Toolbar toolbar;
     GridView all_mala_gridview;
 
@@ -37,32 +48,53 @@ public class HomeAllMalaActivity extends AppCompatActivity {
     RadioButton radio_button_home, radio_button_rules, radio_button_info;
     RadioGroup radio_group;
 
+
+    BottomNavigationView bottom_nav;
+
+    FrameLayout frame_layout;
+
     //XML id's----------------------------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        load_mode();
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_all_mala);
+        //dark----------------------------------------------------------------
+
+        //dark----------------------------------------------------------------
+
+
 
         //identity period-------------------------------------------------------------------
 
         toolbar = findViewById(R.id.toolbar);
         all_mala_gridview = findViewById(R.id.all_mala_gridview);
-        radio_button_home = findViewById(R.id.radio_button_home);
-        radio_button_rules = findViewById(R.id.radio_button_rules);
-        radio_button_info = findViewById(R.id.radio_button_info);
-        radio_group = findViewById(R.id.radio_group);
+        //radio_button_home = findViewById(R.id.radio_button_home);
+        //radio_button_rules = findViewById(R.id.radio_button_rules);
+        //radio_button_info = findViewById(R.id.radio_button_info);
+        //radio_group = findViewById(R.id.radio_group);
+        bottom_nav = findViewById(R.id.bottom_nav);
+        frame_layout = findViewById(R.id.frame_layout);
+
         //identity period-------------------------------------------------------------------
+
+
+
 
         hashmap();
         Myadapter myadapter = new Myadapter();
         all_mala_gridview.setAdapter(myadapter);
 
         tooLbar();
+        bottom_nav();
 
 
 
-        //radio group customize
+       /*
         radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int id) {
@@ -72,8 +104,6 @@ public class HomeAllMalaActivity extends AppCompatActivity {
                 radio_button_home.setTextColor(getResources().getColor(android.R.color.white));
                 radio_button_rules.setTextColor(getResources().getColor(android.R.color.white));
                 radio_button_info.setTextColor(getResources().getColor(android.R.color.white));
-
-
 
 
 
@@ -95,6 +125,7 @@ public class HomeAllMalaActivity extends AppCompatActivity {
             }
         });
 
+        */
 
 
 
@@ -119,9 +150,9 @@ public class HomeAllMalaActivity extends AppCompatActivity {
                     startActivity(Intent.createChooser(intent,null));
 
 
-                } else if (item.getItemId() == R.id.setting) {
+                } else if (item.getItemId() == R.id.rating) {
 
-                    startActivity(new Intent(HomeAllMalaActivity.this, SettingActivity.class));
+
 
                 }
 
@@ -132,6 +163,58 @@ public class HomeAllMalaActivity extends AppCompatActivity {
 
 
     }//toolbar
+
+    private void bottom_nav(){
+
+
+        bottom_nav.setSelectedItemId(R.id.bottom_nav_home);
+
+
+        bottom_nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                if (item.getItemId() == R.id.bottom_nav_rule){
+
+                    startActivity(new Intent(HomeAllMalaActivity.this, RulesForJopaActivity.class));
+                    finishAffinity();
+
+                }else if (item.getItemId() == R.id.bottom_nav_list){
+
+                    startActivity(new Intent(HomeAllMalaActivity.this, AdvatageForJopaActivity.class));
+                    finishAffinity();
+
+                }else if (item.getItemId() == R.id.bottom_nav_setting){
+
+                    startActivity(new Intent(HomeAllMalaActivity.this, SettingActivity.class));
+                    finishAffinity();
+                }
+
+                return false;
+            }
+        });
+    }
+
+    private void current_theme() {
+
+        String mode_saved = load_mode();
+
+        if (mode_saved.equals("light")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+        } else if (mode_saved.equals("dark")) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        }
+
+    }
+    private String load_mode() {
+
+        SharedPreferences sharedPreferences = getSharedPreferences("App_theme", MODE_PRIVATE);
+        return sharedPreferences.getString("theme_mode", "system");
+    }
 
     private void hashmap(){
 
