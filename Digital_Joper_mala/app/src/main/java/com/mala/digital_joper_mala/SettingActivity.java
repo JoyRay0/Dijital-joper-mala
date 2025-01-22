@@ -57,7 +57,7 @@ public class SettingActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
-    BottomNavigationView bottom_nav;
+
 
     private static final String appPackageName = "com.mala.digital_joper_mala";
 
@@ -105,21 +105,9 @@ public class SettingActivity extends AppCompatActivity {
         share = findViewById(R.id.share);
         rating = findViewById(R.id.rating);
         more_app = findViewById(R.id.more_app);
-        bottom_nav = findViewById(R.id.bottom_nav);
         main = findViewById(R.id.main);
 
-
-
-
         //identity-------------------------------------------
-
-
-
-
-
-
-
-
 
 
         //night mode-----------------------------------------------------------
@@ -135,13 +123,6 @@ public class SettingActivity extends AppCompatActivity {
         });
 
          */
-
-
-
-        bottom_nav();
-
-
-
 
         /*
 
@@ -174,8 +155,8 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(SettingActivity.this, MainActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(SettingActivity.this, HomeAllMalaActivity.class));
+                finishAffinity();
 
             }
         });
@@ -211,20 +192,14 @@ public class SettingActivity extends AppCompatActivity {
 
         //privacy------------------------------------------
 
-
-
         privacy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
-                Intent intent1 = new Intent(SettingActivity.this, PrivacyPolicyActivity.class);
-                startActivity(intent1);
+                startActivity( new Intent(SettingActivity.this, PrivacyPolicyActivity.class));
 
             }
         });
-
-
 
         //privacy------------------------------------------
 
@@ -249,20 +224,15 @@ public class SettingActivity extends AppCompatActivity {
 
 
         //Features----------------------------------------------
-
         features.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(SettingActivity.this, NewFeaturesActivity.class);
-                startActivity(intent);
-
+                startActivity(new Intent(SettingActivity.this, NewFeaturesActivity.class));
             }
         });
 
         //Features----------------------------------------------
-
-
 
 
         //Share the app----------------------------------------------
@@ -283,11 +253,7 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
-
         //Share the app----------------------------------------------
-
-
-
 
         //Rating the app-------------------------------------------------
 
@@ -306,7 +272,6 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
-
         // Rating the app-------------------------------------------------
 
 
@@ -324,8 +289,9 @@ public class SettingActivity extends AppCompatActivity {
 
     }
 
-    private void mytheme() {
 
+    //selected theme---------------------------------------------------
+    private void mytheme() {
 
         Dialog dialog = new Dialog(SettingActivity.this);
         dialog.setContentView(R.layout.mode);
@@ -415,65 +381,15 @@ public class SettingActivity extends AppCompatActivity {
 
         return  sharedPreferences.getString("theme_mode","system");
     }
+    //selected theme---------------------------------------------------
 
-
-    private void bottom_nav(){
-
-        bottom_nav.setSelectedItemId(R.id.bottom_nav_setting);
-
-        bottom_nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                if (item.getItemId() == R.id.bottom_nav_home){
-
-                    startActivity(new Intent(SettingActivity.this, HomeAllMalaActivity.class));
-                    finishAffinity();
-
-                }else if (item.getItemId() == R.id.bottom_nav_rule){
-
-                    startActivity(new Intent(SettingActivity.this, RulesForJopaActivity.class));
-                    finishAffinity();
-
-                }else if (item.getItemId() == R.id.bottom_nav_list){
-
-                    startActivity(new Intent(SettingActivity.this, AdvatageForJopaActivity.class));
-                    finishAffinity();
-
-                }
-
-                return false;
-            }
-        });
-
-    }
-
-    /*
-    private void refreshUI(){
-
-        getWindow().setWindowAnimations(android.R.style.Animation_Dialog);
-    }
 
     @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
+    public void onBackPressed() {
+        super.onBackPressed();
 
-
-        //View rootview = getWindow().getDecorView();
-
-        if ((newConfig.uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES){
-
-
-
-        }else {
-
-
-
-        }
-
-
+        startActivity(new Intent(SettingActivity.this, HomeAllMalaActivity.class));
+        finishAffinity();
 
     }
-
-     */
-}
+}//public class =========================================

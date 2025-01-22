@@ -12,7 +12,7 @@
 
     <color name="color6">#fff</color> <!-- pro.xml color-->
 
-    <color name="color7">#79000000</color> <!-- divider color-->
+    <color name="color7">#27000000</color> <!-- divider color-->
 
     <color name="color8">#008080</color>  <!-- color_primary color-->
 
@@ -20,7 +20,7 @@
 
     <color name="color10">#36454F</color>  <!-- Bold text, activity3 > normal_text, app_info_bold_text, new_features.xml> bold_text  color-->
 
-    <color name="color11">#534848</color> <!-- forward arrow -->
+    <color name="color11">#C6534848</color> <!-- forward arrow -->
 
     <color name="color12">#353935</color> <!-- tvDisplay_color -->
 

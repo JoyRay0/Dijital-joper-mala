@@ -3,6 +3,9 @@ package com.mala.digital_joper_mala;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.cardview.widget.CardView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -15,12 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 
 
 import java.util.ArrayList;
@@ -106,7 +105,7 @@ public class MainActivity3 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent myintent = new Intent(MainActivity3.this, MainActivity.class);
+                Intent myintent = new Intent(MainActivity3.this, Boisnob_mala.class);
                 startActivity(myintent);
 
             }
@@ -140,21 +139,21 @@ public class MainActivity3 extends AppCompatActivity {
         public View getView(int i, View view, ViewGroup viewGroup) {
 
             LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            @SuppressLint("ViewHolder") View view1 = layoutInflater.inflate(R.layout.main3_layout, viewGroup, false);
+            @SuppressLint("ViewHolder") View view1 = layoutInflater.inflate(R.layout.design_of_listview, viewGroup, false);
 
             HashMap<String, String> hashMap1 = arrayList.get(i);
 
 
-            ImageView imageview = view1.findViewById(R.id.imageview);
-            LinearLayout ans_linear_layout = view1.findViewById(R.id.ans_linear_layout);
-            RelativeLayout clicked = view1.findViewById(R.id.clicked);
-            TextView ques_text = view1.findViewById(R.id.ques_text);
-            TextView tvDisplay = view1.findViewById(R.id.tvDisplay);
+            AppCompatImageView imageview = view1.findViewById(R.id.imageview);
+            CardView ans_cardview = view1.findViewById(R.id.ans_cardview);
+            CardView clicked = view1.findViewById(R.id.clicked);
+            AppCompatTextView ques_text = view1.findViewById(R.id.ques_text);
+            AppCompatTextView tvDisplay = view1.findViewById(R.id.tvDisplay);
 
 
 
             String string = hashMap1.get("ques1");
-            ques_text.setText(""+string);
+            ques_text.setText(string);
 
 
 
@@ -169,19 +168,19 @@ public class MainActivity3 extends AppCompatActivity {
 
 
 
-                    if (ans_linear_layout.getVisibility() == View.GONE){
+                    if (ans_cardview.getVisibility() == View.GONE){
 
 
-                        tvDisplay.setText(""+string1);
+                        tvDisplay.setText(string1);
                         //TransitionManager.beginDelayedTransition(mother_layout, new AutoTransition());
-                        ans_linear_layout.setVisibility(View.VISIBLE);
+                        ans_cardview.setVisibility(View.VISIBLE);
                         imageview.setImageResource(R.drawable.baseline_keyboard_arrow_up_24);
 
                     }else {
 
-                        tvDisplay.setText(""+string1);
+                        tvDisplay.setText(string1);
                         //TransitionManager.beginDelayedTransition(mother_layout, new AutoTransition());
-                        ans_linear_layout.setVisibility(View.GONE);
+                        ans_cardview.setVisibility(View.GONE);
                         imageview.setImageResource(R.drawable.baseline_keyboard_arrow_down_24);
 
                     }

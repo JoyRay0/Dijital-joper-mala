@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -17,19 +18,16 @@
         android:theme="@style/Base.Theme.Digital_Joper_mala"
         tools:targetApi="34">
         <activity
+            android:name=".ShivMala"
+            android:exported="false" />
+        <activity
             android:name=".HomeAllMalaActivity"
             android:exported="false" />
         <activity
-            android:name=".AdvatageForJopaActivity"
+            android:name=".Custom_MalaActivity"
             android:exported="false" />
         <activity
-            android:name=".RulesForJopaActivity"
-            android:exported="false" />
-        <activity
-            android:name=".UMalaActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".Boisnob_mala"
             android:exported="false" />
         <activity
             android:name=".MoreAppsActivity"
@@ -52,7 +50,6 @@
             android:exported="false" />
         <activity
             android:name=".SplashScreenActivity"
-            android:theme="@style/Base.Theme.Digital_Joper_mala"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

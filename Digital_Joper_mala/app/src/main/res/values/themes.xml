@@ -6,23 +6,11 @@
 
         <item name="android:forceDarkAllowed">false</item>
 
-    </style>
-
-    <style name="Theme.Digital_Joper_mala" parent="Base.Theme.Digital_Joper_mala" />
-
-    <style name="three_dot_colr" parent="ThemeOverlay.AppCompat.ActionBar">
-
-        <item name="android:tint">#fff</item>
 
 
     </style>
-    <style name="splash_screen" parent="Theme.Material3.Light.NoActionBar">
 
 
-        <item name="android:windowBackground">@drawable/splash_img</item>
-        <item name="android:scaleType">fitXY</item>
-
-    </style>
 
     
    
@@ -32,21 +20,30 @@
 
         <item name="iconSize">24dp</item>
 
+        <item name="background">"@drawable/bottom_nav_design"</item>
+
         <item name="itemTextAppearanceActive">@style/ActiveTextApperence</item>
 
         <item name="itemTextAppearanceInactive">@style/InActiveTextApperence</item>
+        
+        
 
     </style>
 
     <style name="ActiveTextApperence" parent="TextAppearance.AppCompat.Caption">
 
+
         <item name="android:paddingTop">4dp</item>
+
+
 
     </style>
 
     <style name="InActiveTextApperence" parent="TextAppearance.AppCompat.Caption">
 
         <item name="android:paddingTop">4dp</item>
+
+
 
     </style>
 

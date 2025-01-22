@@ -28,62 +28,82 @@
             <!-- started-->
 
 
-            <!-- Feedback -->
-
-            <TextView
-                android:id="@+id/feedback"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:drawablePadding="20dp"
-                android:focusable="true"
-                android:gravity="start"
-                android:padding="12dp"
-                android:text=" আমাদের মতামত জানান"
-                android:fontFamily="@font/noto_serif_bengali"
-                android:textColor="@color/color9"
-                android:textSize="17sp"
-                android:textStyle="normal"
-                app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
-                app:drawableStartCompat="@drawable/baseline_feedback_24" />
+                app:cardElevation="3dp"
+                app:cardCornerRadius="10dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="#fff"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color7" />
+                    <!-- Feedback -->
 
-            <!-- Feedback-->
+                    <TextView
+                        android:id="@+id/feedback"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:drawablePadding="20dp"
+                        android:focusable="true"
+                        android:gravity="start"
+                        android:padding="12dp"
+                        android:text=" আমাদের মতামত জানান"
+                        android:fontFamily="@font/noto_serif_bengali"
+                        android:textColor="@color/color9"
+                        android:textSize="16sp"
+                        android:textStyle="normal"
+                        app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
+                        app:drawableStartCompat="@drawable/baseline_feedback_24" />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color7"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        />
 
-            <!-- new features -->
-
-
-            <TextView
-                android:id="@+id/features"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:drawablePadding="20dp"
-                android:focusable="true"
-                android:gravity="start"
-                android:padding="12dp"
-                android:text=" নতুন ফিচারগুলো "
-                android:fontFamily="@font/noto_serif_bengali"
-                android:textColor="@color/color9"
-                android:textSize="17sp"
-                android:textStyle="normal"
-                app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
-                app:drawableStartCompat="@drawable/baseline_tips_and_updates_24" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color7" />
+                    <!-- Feedback-->
 
 
-            <!-- new features  -->
+                    <!-- new features -->
+
+
+                    <TextView
+                        android:id="@+id/features"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:drawablePadding="20dp"
+                        android:focusable="true"
+                        android:gravity="start"
+                        android:padding="12dp"
+                        android:text=" নতুন ফিচারগুলো "
+                        android:fontFamily="@font/noto_serif_bengali"
+                        android:textColor="@color/color9"
+                        android:textSize="16sp"
+                        android:textStyle="normal"
+                        app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
+                        app:drawableStartCompat="@drawable/baseline_tips_and_updates_24" />
+
+
+
+                    <!-- new features  -->
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
 
 
             <!-- Dark mode
@@ -104,164 +124,193 @@
                  />
 
             Dark mode-->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color7"
-                />
 
 
-
-
-
-            <!-- more app -->
-
-
-            <TextView
-                android:id="@+id/more_app"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:drawablePadding="20dp"
-                android:focusable="true"
-                android:gravity="start"
-                android:padding="12dp"
-                android:text=" আমাদের অন্যান্য অ্যাপগুলো "
-                android:fontFamily="@font/noto_serif_bengali"
-                android:textColor="@color/color9"
-                android:textSize="17sp"
-                android:textStyle="normal"
-                app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
-                app:drawableStartCompat="@drawable/baseline_language_24" />
+                app:cardElevation="3dp"
+                app:cardCornerRadius="10dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="#fff"
+                >
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color7" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <!-- more app -->
 
 
-            <!-- more app -->
+                    <TextView
+                        android:id="@+id/more_app"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:drawablePadding="20dp"
+                        android:focusable="true"
+                        android:gravity="start"
+                        android:padding="12dp"
+                        android:text=" আমাদের অন্যান্য অ্যাপগুলো "
+                        android:fontFamily="@font/noto_serif_bengali"
+                        android:textColor="@color/color9"
+                        android:textSize="16sp"
+                        android:textStyle="normal"
+                        app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
+                        app:drawableStartCompat="@drawable/baseline_language_24" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color7"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        />
 
 
-            <!-- share -->
+                    <!-- more app -->
 
 
-            <TextView
-                android:id="@+id/share"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:drawablePadding="20dp"
-                android:focusable="true"
-                android:gravity="start"
-                android:padding="12dp"
-                android:text=" অ্যাপটি শেয়ার করুন "
-                android:fontFamily="@font/noto_serif_bengali"
-                android:textColor="@color/color9"
-                android:textSize="17sp"
-                android:textStyle="normal"
-                app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
-                app:drawableStartCompat="@drawable/baseline_share_24" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color7" />
+                    <!-- share -->
 
 
-            <!-- share -->
+                    <TextView
+                        android:id="@+id/share"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:drawablePadding="20dp"
+                        android:focusable="true"
+                        android:gravity="start"
+                        android:padding="12dp"
+                        android:text=" অ্যাপটি শেয়ার করুন "
+                        android:fontFamily="@font/noto_serif_bengali"
+                        android:textColor="@color/color9"
+                        android:textSize="16sp"
+                        android:textStyle="normal"
+                        app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
+                        app:drawableStartCompat="@drawable/baseline_share_24" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color7"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        />
 
 
-            <!-- Rating -->
+                    <!-- share -->
 
 
-            <TextView
-                android:id="@+id/rating"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:drawablePadding="20dp"
-                android:focusable="true"
-                android:gravity="start"
-                android:padding="12dp"
-                android:text=" আমাদের অ্যাপকে ফাইভ স্টার রেটিং দিন "
-                android:fontFamily="@font/noto_serif_bengali"
-                android:textColor="@color/color9"
-                android:textSize="17sp"
-                android:textStyle="normal"
-                app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
-                app:drawableStartCompat="@drawable/baseline_star_rate_24" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color7" />
+                    <!-- Rating -->
 
 
-            <!-- Rating -->
+                    <TextView
+                        android:id="@+id/rating"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:drawablePadding="20dp"
+                        android:focusable="true"
+                        android:gravity="start"
+                        android:padding="12dp"
+                        android:text=" আমাদের অ্যাপকে ফাইভ স্টার রেটিং দিন "
+                        android:fontFamily="@font/noto_serif_bengali"
+                        android:textColor="@color/color9"
+                        android:textSize="16sp"
+                        android:textStyle="normal"
+                        app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
+                        app:drawableStartCompat="@drawable/baseline_star_rate_24" />
 
 
 
-            <!-- privacy policy-->
+                    <!-- Rating -->
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
 
 
-            <TextView
-                android:id="@+id/privacy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:drawablePadding="20dp"
-                android:focusable="true"
-                android:gravity="start"
-                android:padding="12dp"
-                android:text=" প্রাইভেসি &amp; পলিসি"
-                android:fontFamily="@font/noto_serif_bengali"
-                android:textColor="@color/color9"
-                android:textSize="17sp"
-                android:textStyle="normal"
-                app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
-                app:drawableStartCompat="@drawable/baseline_privacy_tip_24" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color7" />
-
-            <!--privacy policy -->
-
-
-            <!-- info -->
-
-
-            <TextView
-                android:id="@+id/app_info"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:drawablePadding="20dp"
-                android:focusable="true"
-                android:gravity="start"
-                android:padding="12dp"
-                android:text=" কিছু ইনফরমেশন "
-                android:fontFamily="@font/noto_serif_bengali"
-                android:textColor="@color/color9"
-                android:textSize="17sp"
-                android:textStyle="normal"
-                app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
-                app:drawableStartCompat="@drawable/baseline_info_24" />
+                app:cardElevation="3dp"
+                app:cardCornerRadius="10dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="#fff"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                    <!-- privacy policy-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color7" />
+                    <TextView
+                        android:id="@+id/privacy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:drawablePadding="20dp"
+                        android:focusable="true"
+                        android:gravity="start"
+                        android:padding="12dp"
+                        android:text=" প্রাইভেসি &amp; পলিসি"
+                        android:fontFamily="@font/noto_serif_bengali"
+                        android:textColor="@color/color9"
+                        android:textSize="16sp"
+                        android:textStyle="normal"
+                        app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
+                        app:drawableStartCompat="@drawable/baseline_privacy_tip_24" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color7"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        />
+
+                    <!--privacy policy -->
 
 
-            <!-- info -->
+                    <!-- info -->
+
+
+                    <TextView
+                        android:id="@+id/app_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:drawablePadding="20dp"
+                        android:focusable="true"
+                        android:gravity="start"
+                        android:padding="12dp"
+                        android:text=" কিছু ইনফরমেশন "
+                        android:fontFamily="@font/noto_serif_bengali"
+                        android:textColor="@color/color9"
+                        android:textSize="16sp"
+                        android:textStyle="normal"
+                        app:drawableEndCompat="@drawable/baseline_keyboard_arrow_right_24"
+                        app:drawableStartCompat="@drawable/baseline_info_24" />
+
+
+                    <!-- info -->
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
 
 
         </LinearLayout>
@@ -269,20 +318,5 @@
 
     </ScrollView>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/bottom_nav_design"
-        android:elevation="3dp"
-        app:itemIconSize="25dp"
-        app:itemIconTint="@color/color18"
-        app:itemRippleColor="#fff"
-        app:labelVisibilityMode="labeled"
-        style="@style/Bottom_Navigation_Style"
-        app:menu="@menu/bottom_menu" />
 
 </RelativeLayout>

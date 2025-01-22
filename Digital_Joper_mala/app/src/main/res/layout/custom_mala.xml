@@ -6,13 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color4"
-    tools:context=".UMalaActivity">
+    tools:context=".Custom_MalaActivity">
 
     <include
         android:id="@+id/backbar"
         layout="@layout/backappbar"
 
         />
+
+
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/n_s"
@@ -27,6 +29,13 @@
 
             >
 
+            <include android:id="@+id/upload_img"
+                android:layout_margin="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                layout="@layout/add_img"/>
+
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/appcompat_textview1"
                 android:layout_width="wrap_content"
@@ -38,13 +47,16 @@
                 android:text="মন্ত্র:"
                 android:textColor="@color/color9"
                 android:textSize="17sp"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                android:layout_below="@id/upload_img"
+                />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_eye1"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_margin="10dp"
+                android:layout_below="@id/upload_img"
                 android:layout_toEndOf="@id/appcompat_textview1"
                 android:tag="open_eye"
                 app:srcCompat="@drawable/eye_svgrepo_com"
@@ -71,7 +83,7 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/save1"
-                android:layout_width="40dp"
+                android:layout_width="30dp"
                 android:layout_height="40dp"
                 android:layout_below="@id/appcompat_textview1"
                 android:background="?attr/actionBarItemBackground"
@@ -93,6 +105,19 @@
                 android:textColor="@color/color10"
                 android:textSize="19sp"
                 android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_delete1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/baseline_delete_forever_24"
+                android:layout_below="@id/ed_autocomplete_textview1"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:background="?attr/actionBarItemBackground"
+                />
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/appcompat_textview2"
@@ -142,7 +167,7 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/save2"
-                android:layout_width="40dp"
+                android:layout_width="30dp"
                 android:layout_height="40dp"
                 android:layout_below="@id/appcompat_textview2"
                 android:background="?attr/actionBarItemBackground"
@@ -150,6 +175,7 @@
                 android:layout_toEndOf="@id/ed_autocomplete_textview2"
                 android:padding="5dp"
                 app:srcCompat="@drawable/tack_save_button_svgrepo_com_2_" />
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_mantras2"
@@ -165,6 +191,18 @@
                 android:textColor="@color/color10"
                 android:textSize="19sp"
                 android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_delete2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/baseline_delete_forever_24"
+                android:layout_below="@id/ed_autocomplete_textview2"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:background="?attr/actionBarItemBackground"
+                />
 
 
             <include

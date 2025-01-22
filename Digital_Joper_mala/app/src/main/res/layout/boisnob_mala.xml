@@ -4,19 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".Boisnob_mala"
     android:background="@color/color4"
 
     >
 
-    <include layout="@layout/appbar"
-        android:id="@+id/top"
+    <include layout="@layout/backappbar"
+        android:id="@+id/back_bar"
         />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/top"
+        android:layout_below="@+id/back_bar"
         >
 
             <LinearLayout
@@ -26,15 +26,7 @@
 
                 >
 
-                <ImageView
-                    android:layout_width="200dp"
-                    android:layout_height="250dp"
-                    android:src="@drawable/img1"
-                    android:scaleType="centerCrop"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:contentDescription="@string/rada_krishna"
-                    />
+                <include layout="@layout/add_img"/>
 
                 <include layout="@layout/button"
                     />

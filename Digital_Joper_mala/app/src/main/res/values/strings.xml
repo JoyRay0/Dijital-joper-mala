@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">জপের মালা</string>
+    <string name="app_name">জপ মালা</string>
 
     <string name="rada_krishna">Rada_krishna</string>
 
@@ -76,6 +76,16 @@
 
     <!-- MainActivity3 -->
 
+    <!-- Advantage of jopa -->
+
+    <string name="ques1">১। সনাতন ধর্মে মালা জপ করা হয় কেন ?</string>
+    <string name="ans1">মালা জপে ঈশ্বরের নাম বা মন্ত্রের পুনরাবৃওির মাধ্যমে পরমাত্মার সঙ্গে আত্মিক সংযোগ স্থাপন করে। এটি ভক্তির এক রুপ, যা আত্মা এবং পরমাত্মার মিলনের পথ তৈরি করে। প্রতিদিন মালা জপ করলে জীবনে আধ্যাত্মিক এবং মানসিক উন্নতি ঘটে।</string>
+
+    <string name="ques2">২। মানব জন্ম এতো দুর্লব কেন ?</string>
+    <string name="ans2">২০ লক্ষ বার গাছ রুপে। ৯ লক্ষ বার জলের প্রানী রুপে। ১১ লক্ষ বার কৃমি কিট রুপে। ১০ লক্ষ বার পক্ষী রুপে। ৩০ লক্ষ বার পশু রুপে। ৪ লক্ষ বার বানর রুপে। মোট ৮৪ লক্ষ বার জন্মের পর আমরা ১ টি মানব জন্ম পাই । তাই মানব জন্ম খুব দুর্লব ।তাই আমাদের এই জন্ম-মৃত্যুর চক্র থেকে বের হতে হলে সর্বদা মালা জপ করতে হবে।</string>
+
+    <!-- Advantage of jopa -->
+
 
     <!-- Others information -->
 
@@ -86,10 +96,10 @@
 
 
     <!-- 2 Button -->
-    <string name="rules_of_jopa">মালা জপের নিয়ম</string>
-    <string name="japa_descri">মালা জপের কারন</string>
+    <string name="rules_of_jopa">জপের নিয়ম</string>
+    <string name="japa_descri">জপের কারন</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
     <!-- 2 Button -->
 

@@ -11,6 +11,7 @@
         android:background="#00FFFFFF"
         android:orientation="horizontal"
         android:padding="10dp"
+        android:baselineAligned="false"
         android:weightSum="3">
 
 
@@ -20,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:background="@drawable/pro"
+            android:background="@drawable/jopa_counter_display"
             android:elevation="5dp"
             android:orientation="vertical"
 
@@ -49,7 +50,7 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/text1"
+                android:id="@+id/tv_count_display1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -107,7 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:background="@drawable/pro"
+            android:background="@drawable/jopa_counter_display"
             android:elevation="5dp"
             android:orientation="vertical">
 
@@ -131,7 +132,7 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/text2"
+                android:id="@+id/tv_count_display2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -190,7 +191,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:background="@drawable/pro"
+            android:background="@drawable/jopa_counter_display"
             android:elevation="5dp"
             android:orientation="vertical"
 
@@ -216,7 +217,7 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/text3"
+                android:id="@+id/tv_count_display3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

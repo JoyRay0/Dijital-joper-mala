@@ -6,18 +6,17 @@
         android:id="@+id/bottom_nav_home"
         android:title="হোম"
         android:icon="@drawable/baseline_home_24"
-
         />
 
     <item
         android:id="@+id/bottom_nav_rule"
-        android:title="জপের নিয়ম"
+        android:title="নিয়ম"
         android:icon="@drawable/baseline_rule_24"
         />
 
     <item
         android:id="@+id/bottom_nav_list"
-        android:title="জপের ফল"
+        android:title="তথ্য"
         android:icon="@drawable/baseline_article_24"
         />
 

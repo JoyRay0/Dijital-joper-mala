@@ -2,45 +2,54 @@ package com.mala.digital_joper_mala;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.view.MenuItem;
+import android.provider.MediaStore;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
-public class UMalaActivity extends AppCompatActivity {
+
+public class Custom_MalaActivity extends AppCompatActivity {
 
     //XML id's--------------------------------------------------
 
-    AppCompatAutoCompleteTextView ed_autocomplete_textview1, ed_autocomplete_textview2;
+    private AppCompatAutoCompleteTextView ed_autocomplete_textview1, ed_autocomplete_textview2;
 
-    AppCompatTextView tv_mantras1, tv_mantras2;
+    private AppCompatTextView tv_mantras1, tv_mantras2;
 
-    TextView text1,text2,text3;
+    private TextView text1,text2,text3;
 
-    AppCompatButton add1, add2, add3;
+    private AppCompatButton add1, add2, add3, reset1, reset2, reset3;
 
-    AppCompatButton reset1, reset2, reset3;
+    private AppCompatImageButton iv_upload_button, iv_delete_button;
 
-    AppCompatImageView save1, save2, iv_eye1, iv_eye2;
+    private AppCompatImageView save1, save2, iv_eye1, iv_eye2, iv_upload_image, iv_delete1, iv_delete2;
 
     Toolbar toolbar;
 
-    ImageButton back;
+    private ImageButton back;
 
-    Vibrator vibrator;
+    private Vibrator vibrator;
 
     SharedPreferences sharedPreferences, save_text1, save_text2;
     boolean nightMode;
@@ -51,13 +60,14 @@ public class UMalaActivity extends AppCompatActivity {
     private static final String PREF_NAME = "dark_light_mode";
     private static final String KEY_NAME = "dark_mode";
     private static final String appPackageName = "com.mala.digital_joper_mala";
+    private static final int REQUEST_IMG_PICK = 1;
 
     //XML id's--------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.custom_mala);
         //dark----------------------------------------------------------------
 
         sharedPreferences = getSharedPreferences(PREF_NAME,MODE_PRIVATE);
@@ -66,7 +76,7 @@ public class UMalaActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(nightMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
 
         //dark----------------------------------------------------------------
-        setContentView(R.layout.u_mala);
+
 
         //identity period -----------------------------------------------------------
 
@@ -81,14 +91,19 @@ public class UMalaActivity extends AppCompatActivity {
         reset1 = findViewById(R.id.reset1);
         reset2 = findViewById(R.id.reset2);
         reset3 = findViewById(R.id.reset3);
-        text1 = findViewById(R.id.text1);
-        text2 = findViewById(R.id.text2);
-        text3 = findViewById(R.id.text3);
+        text1 = findViewById(R.id.tv_count_display1);
+        text2 = findViewById(R.id.tv_count_display2);
+        text3 = findViewById(R.id.tv_count_display3);
         save1 = findViewById(R.id.save1);
         save2 = findViewById(R.id.save2);
         iv_eye1 = findViewById(R.id.iv_eye1);
         iv_eye2 = findViewById(R.id.iv_eye2);
         back = findViewById(R.id.back);
+        iv_upload_image = findViewById(R.id.iv_upload_image);
+        iv_upload_button = findViewById(R.id.iv_upload_button);
+        iv_delete_button = findViewById(R.id.iv_delete_button);
+        iv_delete1 = findViewById(R.id.iv_delete1);
+        iv_delete2 = findViewById(R.id.iv_delete2);
 
 
         //identity period -----------------------------------------------------------
@@ -139,6 +154,7 @@ public class UMalaActivity extends AppCompatActivity {
                     iv_eye1.setTag("close_eye");
                     ed_autocomplete_textview1.setVisibility(View.GONE);
                     save1.setVisibility(View.GONE);
+                    iv_delete1.setVisibility(View.GONE);
 
 
 
@@ -148,6 +164,7 @@ public class UMalaActivity extends AppCompatActivity {
                     iv_eye1.setTag("open_eye");
                     ed_autocomplete_textview1.setVisibility(View.VISIBLE);
                     save1.setVisibility(View.VISIBLE);
+                    iv_delete1.setVisibility(View.VISIBLE);
 
                 }
 
@@ -169,6 +186,7 @@ public class UMalaActivity extends AppCompatActivity {
                     iv_eye2.setTag("close_eye");
                     ed_autocomplete_textview2.setVisibility(View.GONE);
                     save2.setVisibility(View.GONE);
+                    iv_delete2.setVisibility(View.GONE);
 
 
 
@@ -178,6 +196,7 @@ public class UMalaActivity extends AppCompatActivity {
                     iv_eye2.setTag("open_eye");
                     ed_autocomplete_textview2.setVisibility(View.VISIBLE);
                     save2.setVisibility(View.VISIBLE);
+                    iv_delete2.setVisibility(View.VISIBLE);
 
                 }
 
@@ -188,7 +207,7 @@ public class UMalaActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(UMalaActivity.this, HomeAllMalaActivity.class));
+                startActivity(new Intent(Custom_MalaActivity.this, HomeAllMalaActivity.class));
 
             }
         });
@@ -302,10 +321,68 @@ public class UMalaActivity extends AppCompatActivity {
         //3rd step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+        //image added -------------------------------------------------------------------
+        iv_upload_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, REQUEST_IMG_PICK);
+
+            }
+        });
+
+        iv_delete_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                delete_img();
+
+            }
+        });
+
+        load_img_form_storage();
+        //image added -------------------------------------------------------------------
+
+        //delete_button1----------------------
+        iv_delete1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                save_text1 = getSharedPreferences("text_save1", MODE_PRIVATE);
+                SharedPreferences.Editor editor = save_text1.edit();
+                editor.clear();
+                editor.apply();
+
+                tv_mantras1.setText("জপ মন্ত্র");
+
+            }
+        });
+
+        //delete_button1----------------------
+        iv_delete2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                save_text2 = getSharedPreferences("text_save2", MODE_PRIVATE);
+                SharedPreferences.Editor editor = save_text2.edit();
+                editor.clear();
+                editor.apply();
+
+                tv_mantras2.setText("জপ মন্ত্র");
+
+            }
+        });
+
+
+
+
 
 
     }//on create====================================
 
+
+    //vibration--------------------------
     private void vibrate(){                     //vibrate
 
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
@@ -317,6 +394,7 @@ public class UMalaActivity extends AppCompatActivity {
     }
 
 
+    //save--------------------------
     private void save(){
 
         save1.setOnClickListener(new View.OnClickListener() {
@@ -373,7 +451,103 @@ public class UMalaActivity extends AppCompatActivity {
             }
         });
 
+    }
 
+    private void load_img_form_storage(){
+
+
+        try {
+
+            FileInputStream fileInputStream = openFileInput("saved_image.png");
+
+           Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
+           iv_upload_image.setImageBitmap(bitmap);
+           fileInputStream.close();
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+
+
+        }
 
     }
+
+
+    private void save_img_to_internal_storage(Bitmap bitmap){
+
+        try {
+
+            File file = new File(getFilesDir(),"saved_image.png");
+            if (file.exists()){
+                file.delete();
+
+            }
+
+
+            //file created-----
+            FileOutputStream fos = openFileOutput("saved_image.png", MODE_PRIVATE);
+
+            //image compressed----
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+
+
+
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+            Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
+
+
+    private void delete_img(){
+
+        File file = new File(getFilesDir(),"saved_image.png");
+
+        if (file.exists()){
+
+            if (file.delete()){
+
+                iv_upload_image.setImageDrawable(null);
+                iv_upload_image.setImageResource(R.drawable.gallery);
+
+            }
+        }
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_IMG_PICK && resultCode == RESULT_OK && data != null){
+
+            try {
+
+                Uri img_uri = data.getData();
+
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(Custom_MalaActivity.this.getContentResolver(), img_uri);
+
+                iv_upload_image.setImageBitmap(bitmap);
+
+                save_img_to_internal_storage(bitmap);
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+
+
 }//public class ===============================
