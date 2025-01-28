@@ -136,9 +136,8 @@ public class HomeAllMalaActivity extends AppCompatActivity {
 
     }//on create=======================
 
-    //menu button
+    //toolbar-------------------------------------------------------------------
     private void tooLbar(){                     //toolbar
-
 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -170,8 +169,10 @@ public class HomeAllMalaActivity extends AppCompatActivity {
         });
 
 
-    }//toolbar
+    }
+    //toolbar-------------------------------------------------------------------
 
+    //bottom navigation----------------------------------------------------------------
     private void bottom_nav(){
 
         bottom_nav.setSelectedItemId(R.id.bottom_nav_home);
@@ -218,6 +219,7 @@ public class HomeAllMalaActivity extends AppCompatActivity {
             }
         });
     }
+    //bottom navigation----------------------------------------------------------------
 
 
 }//public class=================================

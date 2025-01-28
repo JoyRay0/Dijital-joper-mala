@@ -200,14 +200,14 @@ public class MainActivity3 extends AppCompatActivity {
 
         String ques1 = getString(R.string.question1);
         String ques2 = getString(R.string.question2);
-        String ques3 = getString(R.string.question3);
+
         String ques4 = getString(R.string.question4);
         String ques5 = getString(R.string.question5);
         String ques6 = getString(R.string.question6);
 
         String ans1 = getString(R.string.Answer1);
         String ans2 = getString(R.string.Answer2);
-        String ans3 = getString(R.string.Answer3);
+
         String ans4 = getString(R.string.Answer4);
         String ans5 = getString(R.string.Answer5);
         String ans6 = getString(R.string.Answer6);
@@ -223,10 +223,7 @@ public class MainActivity3 extends AppCompatActivity {
         hashMap.put("ans1",ans2);
         arrayList.add(hashMap);
 
-        hashMap = new HashMap<>(); //question 3
-        hashMap.put("ques1",ques3);
-        hashMap.put("ans1",ans3);
-        arrayList.add(hashMap);
+
 
         hashMap = new HashMap<>(); //question 4
         hashMap.put("ques1", ques4);

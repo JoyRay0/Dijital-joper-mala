@@ -95,8 +95,8 @@ public class Boisnob_mala extends AppCompatActivity {
         reset1 = findViewById(R.id.reset1);
         reset2 = findViewById(R.id.reset2);
         reset3 = findViewById(R.id.reset3);
-        firstpage = findViewById(R.id.firstpage);
-        secondpage = findViewById(R.id.secondpage);
+        //firstpage = findViewById(R.id.firstpage);
+        //secondpage = findViewById(R.id.secondpage);
         back = findViewById(R.id.back);
         iv_upload_button = findViewById(R.id.iv_upload_button);
         iv_delete_button = findViewById(R.id.iv_delete_button);
@@ -218,6 +218,7 @@ public class Boisnob_mala extends AppCompatActivity {
         });
         //3rd step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+        /*
 
         //Other pages-------------------------------------------------------------------------------
         firstpage.setOnClickListener(new View.OnClickListener() {
@@ -241,6 +242,8 @@ public class Boisnob_mala extends AppCompatActivity {
         });
         //Other pages-------------------------------------------------------------------------------
 
+
+         */
         //image added -------------------------------------------------------------------
         iv_upload_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -280,7 +283,7 @@ public class Boisnob_mala extends AppCompatActivity {
 
         try {
 
-            FileInputStream fileInputStream = openFileInput("saved_image.png");
+            FileInputStream fileInputStream = openFileInput("saved_image2.png");
 
             Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
             iv_upload_image.setImageBitmap(bitmap);
@@ -298,14 +301,14 @@ public class Boisnob_mala extends AppCompatActivity {
 
         try {
 
-            File file = new File(getFilesDir(),"saved_image.png");
+            File file = new File(getFilesDir(),"saved_image2.png");
             if (file.exists()){
                 file.delete();
 
             }
 
             //file created-----
-            FileOutputStream fos = openFileOutput("saved_image.png", MODE_PRIVATE);
+            FileOutputStream fos = openFileOutput("saved_image2.png", MODE_PRIVATE);
 
             //image compressed----
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
@@ -321,7 +324,7 @@ public class Boisnob_mala extends AppCompatActivity {
 
     private void delete_img(){
 
-        File file = new File(getFilesDir(),"saved_image.png");
+        File file = new File(getFilesDir(),"saved_image2.png");
 
         if (file.exists()){
 

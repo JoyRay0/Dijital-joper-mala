@@ -95,17 +95,18 @@ public class Advantage_of_jopa extends Fragment {
     //data from server----------------------------------------------------
     private void data_from_server(String url){
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(JSONObject response) {
 
                         try {
 
-                            for (int x = 0; x <response.length(); x++){
+                            JSONArray jsonArray = response.getJSONArray("data");
 
-                                JSONObject jsonObject = response.optJSONObject(x);
+                            for (int x = 0; x <jsonArray.length(); x++){
+                                JSONObject jsonObject = jsonArray.getJSONObject(x);
 
                                 String question = jsonObject.getString("question");
                                 String answer = jsonObject.getString("answer");
@@ -135,7 +136,7 @@ public class Advantage_of_jopa extends Fragment {
 
         // Access the RequestQueue through your singleton class.
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-        requestQueue.add(jsonArrayRequest);
+        requestQueue.add(jsonObjectRequest);
 
     }
     //data from server----------------------------------------------------
@@ -165,7 +166,7 @@ public class Advantage_of_jopa extends Fragment {
 
             if (!isDataloaded){
 
-                data_from_server("https://rksoftwares.xyz/jopa_mala/Jopa_info.php");
+                data_from_server("https://rksoftwares.xyz/jopa_mala/Jopa_info?res=info");
                 isDataloaded = true;
             }
 

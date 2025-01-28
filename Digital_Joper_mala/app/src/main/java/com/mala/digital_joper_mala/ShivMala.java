@@ -225,7 +225,7 @@ public class ShivMala extends AppCompatActivity {
 
         try {
 
-            FileInputStream fileInputStream = openFileInput("saved_image.png");
+            FileInputStream fileInputStream = openFileInput("saved_image3.png");
 
             Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
             iv_upload_image.setImageBitmap(bitmap);
@@ -243,14 +243,14 @@ public class ShivMala extends AppCompatActivity {
 
         try {
 
-            File file = new File(getFilesDir(),"saved_image.png");
+            File file = new File(getFilesDir(),"saved_image3.png");
             if (file.exists()){
                 file.delete();
 
             }
 
             //file created-----
-            FileOutputStream fos = openFileOutput("saved_image.png", MODE_PRIVATE);
+            FileOutputStream fos = openFileOutput("saved_image3.png", MODE_PRIVATE);
 
             //image compressed----
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
@@ -266,7 +266,7 @@ public class ShivMala extends AppCompatActivity {
 
     private void delete_img(){
 
-        File file = new File(getFilesDir(),"saved_image.png");
+        File file = new File(getFilesDir(),"saved_image3.png");
 
         if (file.exists()){
 

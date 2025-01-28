@@ -35,7 +35,7 @@
                 android:fontFamily="@font/noto_serif_bengali"
                 android:text="@string/stage1"
                 android:textColor="@color/color10"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
 
                 />
@@ -47,7 +47,7 @@
                 android:fontFamily="@font/noto_serif_bengali"
                 android:text="@string/bar108"
                 android:textColor="@color/color9"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/tv_count_display1"
@@ -61,7 +61,7 @@
                 android:gravity="center|bottom"
                 android:text="@string/_0"
                 android:textColor="@color/color2"
-                android:textSize="35sp" />
+                android:textSize="30sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/add1"
@@ -72,7 +72,7 @@
                 android:fontFamily="@font/noto_serif_bengali"
                 android:text="@string/addone"
                 android:textColor="@color/color9"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <!--
 
@@ -98,7 +98,7 @@
                 android:fontFamily="@font/noto_serif_bengali"
                 android:text="@string/reset"
                 android:textColor="@color/color9"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -119,7 +119,7 @@
                 android:fontFamily="@font/noto_serif_bengali"
                 android:text="@string/stage2"
                 android:textColor="@color/color10"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -129,7 +129,7 @@
                 android:fontFamily="@font/noto_serif_bengali"
                 android:text="@string/bar16"
                 android:textColor="@color/color9"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/tv_count_display2"
@@ -143,7 +143,7 @@
                 android:text="@string/_0"
                 android:fontFamily="@font/noto_serif_bengali"
                 android:textColor="@color/color2"
-                android:textSize="35sp" />
+                android:textSize="30sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/add2"
@@ -154,7 +154,7 @@
                 android:fontFamily="@font/noto_serif_bengali"
                 android:text="@string/addone"
                 android:textColor="@color/color9"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <!--
 
@@ -181,7 +181,7 @@
                 android:fontFamily="@font/noto_serif_bengali"
                 android:text="@string/reset"
                 android:textColor="@color/color9"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -204,7 +204,7 @@
                 android:fontFamily="@font/noto_serif_bengali"
                 android:text="@string/stage3"
                 android:textColor="@color/color10"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -214,7 +214,7 @@
                 android:fontFamily="@font/noto_serif_bengali"
                 android:text="@string/bar4"
                 android:textColor="@color/color9"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/tv_count_display3"
@@ -228,7 +228,7 @@
                 android:gravity="center|bottom"
                 android:text="@string/_0"
                 android:textColor="@color/color2"
-                android:textSize="35sp" />
+                android:textSize="30sp" />
 
 
             <androidx.appcompat.widget.AppCompatButton
@@ -240,7 +240,7 @@
                 android:fontFamily="@font/noto_serif_bengali"
                 android:text="@string/addone"
                 android:textColor="@color/color9"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/reset3"
@@ -251,7 +251,7 @@
                 android:fontFamily="@font/noto_serif_bengali"
                 android:text="@string/reset"
                 android:textColor="@color/color9"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 

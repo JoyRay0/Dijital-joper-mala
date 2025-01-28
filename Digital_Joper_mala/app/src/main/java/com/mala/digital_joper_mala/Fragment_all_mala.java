@@ -58,6 +58,7 @@ public class Fragment_all_mala extends Fragment {
 
 
 
+    //adapter class -----------------------------------------------------------
     private void hashmap(){
 
         hashMap = new HashMap<>();
@@ -129,7 +130,7 @@ public class Fragment_all_mala extends Fragment {
 
                     } else if (position == 2) {
 
-                        Toast.makeText(getActivity(), "working on it", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getActivity(), ShivMala.class));
 
                     }
 
@@ -139,6 +140,7 @@ public class Fragment_all_mala extends Fragment {
 
             return view1;
         }
-    }//adapter class===================
+    }
+    //adapter class -----------------------------------------------------------
 
 }//public class===========================
