@@ -145,7 +145,7 @@ public class MainActivity3 extends AppCompatActivity {
 
 
             AppCompatImageView imageview = view1.findViewById(R.id.imageview);
-            CardView ans_cardview = view1.findViewById(R.id.ans_cardview);
+            CardView ans_layout = view1.findViewById(R.id.ans_layout);
             CardView clicked = view1.findViewById(R.id.clicked);
             AppCompatTextView ques_text = view1.findViewById(R.id.ques_text);
             AppCompatTextView tvDisplay = view1.findViewById(R.id.tvDisplay);
@@ -168,19 +168,19 @@ public class MainActivity3 extends AppCompatActivity {
 
 
 
-                    if (ans_cardview.getVisibility() == View.GONE){
+                    if (ans_layout.getVisibility() == View.GONE){
 
 
                         tvDisplay.setText(string1);
                         //TransitionManager.beginDelayedTransition(mother_layout, new AutoTransition());
-                        ans_cardview.setVisibility(View.VISIBLE);
+                        ans_layout.setVisibility(View.VISIBLE);
                         imageview.setImageResource(R.drawable.baseline_keyboard_arrow_up_24);
 
                     }else {
 
                         tvDisplay.setText(string1);
                         //TransitionManager.beginDelayedTransition(mother_layout, new AutoTransition());
-                        ans_cardview.setVisibility(View.GONE);
+                        ans_layout.setVisibility(View.GONE);
                         imageview.setImageResource(R.drawable.baseline_keyboard_arrow_down_24);
 
                     }

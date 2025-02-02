@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -166,7 +167,7 @@ public class Advantage_of_jopa extends Fragment {
 
             if (!isDataloaded){
 
-                data_from_server("https://rksoftwares.xyz/jopa_mala/Jopa_info?res=info");
+                data_from_server("https://rksoftwares.xyz/jopa_mala/Jopa_info?res=get_info");
                 isDataloaded = true;
             }
 
@@ -223,8 +224,8 @@ public class Advantage_of_jopa extends Fragment {
             HashMap<String, String> hashMap1 = arrayList.get(position);
 
             AppCompatImageView imageview = view1.findViewById(R.id.imageview);
-            CardView ans_cardview = view1.findViewById(R.id.ans_cardview);
-            CardView clicked = view1.findViewById(R.id.clicked);
+            LinearLayout ans_layout = view1.findViewById(R.id.ans_layout);
+            LinearLayout clicked = view1.findViewById(R.id.clicked);
             AppCompatTextView ques_text = view1.findViewById(R.id.ques_text);
             AppCompatTextView tvDisplay = view1.findViewById(R.id.tvDisplay);
 
@@ -242,19 +243,19 @@ public class Advantage_of_jopa extends Fragment {
 
                     String ans1 = hashMap1.get("ans");
 
-                    if (ans_cardview.getVisibility() == View.GONE){
+                    if (ans_layout.getVisibility() == View.GONE){
 
 
                         tvDisplay.setText(ans1);
                         //TransitionManager.beginDelayedTransition(mother_layout, new AutoTransition());
-                        ans_cardview.setVisibility(View.VISIBLE);
+                        ans_layout.setVisibility(View.VISIBLE);
                         imageview.setImageResource(R.drawable.baseline_keyboard_arrow_up_24);
 
                     }else {
 
 
                         //TransitionManager.beginDelayedTransition(mother_layout, new AutoTransition());
-                        ans_cardview.setVisibility(View.GONE);
+                        ans_layout.setVisibility(View.GONE);
                         imageview.setImageResource(R.drawable.baseline_keyboard_arrow_down_24);
 
                     }

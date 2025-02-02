@@ -43,7 +43,7 @@ public class Boisnob_mala extends AppCompatActivity {
 
     private ImageButton back;
 
-    private AppCompatImageButton iv_upload_button, iv_delete_button;
+    private AppCompatImageButton iv_upload_button, iv_delete_button, ib_rules;
 
     private AppCompatImageView  iv_upload_image;
 
@@ -101,6 +101,7 @@ public class Boisnob_mala extends AppCompatActivity {
         iv_upload_button = findViewById(R.id.iv_upload_button);
         iv_delete_button = findViewById(R.id.iv_delete_button);
         iv_upload_image = findViewById(R.id.iv_upload_image);
+        ib_rules = findViewById(R.id.ib_rules);
 
 
 
@@ -121,6 +122,19 @@ public class Boisnob_mala extends AppCompatActivity {
             }
         });
         //back button-----------------------------------------------
+
+        //custom floating button--------------------------------
+
+        ib_rules.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(Boisnob_mala.this, MainActivity2.class));
+
+            }
+        });
+
+        //custom floating button--------------------------------
 
 
         //1st step started++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

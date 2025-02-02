@@ -58,7 +58,7 @@ public class Fragment_all_mala extends Fragment {
 
 
 
-    //adapter class -----------------------------------------------------------
+   //hashmap----------------------------------------
     private void hashmap(){
 
         hashMap = new HashMap<>();
@@ -73,10 +73,10 @@ public class Fragment_all_mala extends Fragment {
         hashMap.put("name_mala","শিব মালা");
         arrayList.add(hashMap);
 
-
-
     }
+    //hashmap----------------------------------------
 
+    //adapter class -----------------------------------------------------------
     private class Myadapter extends BaseAdapter {
 
 
@@ -112,7 +112,6 @@ public class Fragment_all_mala extends Fragment {
             String text_item = hashMap1.get("name_mala");
 
             all_mala_name_textview.setText(text_item);
-
 
 
 

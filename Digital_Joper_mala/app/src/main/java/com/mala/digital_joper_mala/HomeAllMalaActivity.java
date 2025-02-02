@@ -3,6 +3,7 @@ package com.mala.digital_joper_mala;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,8 +29,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.InstallState;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
 
 
 import java.util.ArrayList;
@@ -42,6 +55,7 @@ public class HomeAllMalaActivity extends AppCompatActivity {
 
 
     private static final String appPackageName = "com.mala.digital_joper_mala";
+    private static final int REQUEST_CODE_UPDATE = 100;
 
     private Toolbar toolbar;
     private GridView all_mala_gridview;
@@ -55,6 +69,10 @@ public class HomeAllMalaActivity extends AppCompatActivity {
     private FrameLayout frame_layout;
 
     private BottomNavigationView bottom_nav;
+
+    private AppUpdateManager appUpdateManager;
+
+    private InstallStateUpdatedListener installStateUpdatedListener;
 
 
     //XML id's----------------------------------------------------------------------
@@ -79,15 +97,13 @@ public class HomeAllMalaActivity extends AppCompatActivity {
 
         //identity period-------------------------------------------------------------------
 
-
-
-
-        //hashmap();
-        //Myadapter myadapter = new Myadapter();
-        //all_mala_gridview.setAdapter(myadapter);
-
         tooLbar();
         bottom_nav();
+
+        appUpdateManager = AppUpdateManagerFactory.create(HomeAllMalaActivity.this);
+        check_update();
+
+
 
 
 
@@ -220,6 +236,84 @@ public class HomeAllMalaActivity extends AppCompatActivity {
         });
     }
     //bottom navigation----------------------------------------------------------------
+
+    //in app update-----------------------------------------------------------------------
+
+    private void check_update(){        //checking update available or not
+
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+
+        appUpdateInfoTask.addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
+            @Override
+            public void onSuccess(AppUpdateInfo appUpdateInfo) {
+
+                if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)){
+
+                    try {
+                        appUpdateManager.startUpdateFlowForResult(appUpdateInfo,AppUpdateType.FLEXIBLE, HomeAllMalaActivity.this, REQUEST_CODE_UPDATE);
+                    } catch (IntentSender.SendIntentException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+            }
+        });
+
+    }
+
+    private void Register_install_state_update(){
+
+        installStateUpdatedListener = new InstallStateUpdatedListener() {
+            @Override
+            public void onStateUpdate(@NonNull InstallState installState) {
+                if (installState.installStatus() == InstallStatus.DOWNLOADED){
+
+                    show_update_complete_notification();
+
+                } else if (installState.installStatus() == InstallStatus.FAILED) {
+
+                    Toast.makeText(HomeAllMalaActivity.this, "Update Failed", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        };
+        appUpdateManager.registerListener(installStateUpdatedListener);
+
+    }
+
+    private void show_update_complete_notification() {
+
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),"Update completed now restart your app", Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("Restart", view -> appUpdateManager.completeUpdate());
+        snackbar.show();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
+            @Override
+            public void onSuccess(AppUpdateInfo appUpdateInfo) {
+
+                if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED){
+                    show_update_complete_notification();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (appUpdateManager != null && installStateUpdatedListener != null){
+            appUpdateManager.unregisterListener(installStateUpdatedListener);
+        }
+    }
+
+    //in app update-----------------------------------------------------------------------
 
 
 }//public class=================================

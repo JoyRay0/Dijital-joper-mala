@@ -45,7 +45,7 @@ public class MainActivity2 extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(nightMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
 
         //dark----------------------------------------------------------------
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.boisnob_mala_rules);
 
         //identity period----------------------------------------------------------
 
