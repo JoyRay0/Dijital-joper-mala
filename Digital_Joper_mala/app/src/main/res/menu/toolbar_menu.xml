@@ -9,15 +9,17 @@
         <item
             android:id="@+id/share"
             android:title="Share"
-            android:icon="@drawable/baseline_share_25"
+            android:icon="@drawable/ic_share"
             app:showAsAction="ifRoom"/>
 
 
         <item
             android:id="@+id/rating"
             android:title="Rate"
-            android:icon="@drawable/baseline_star_rate_25"
+            android:icon="@drawable/ic_star"
             app:showAsAction="ifRoom"/>
+
+
     </group>
 
 

@@ -3,12 +3,16 @@ package com.mala.digital_joper_mala;
 
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 
@@ -29,9 +33,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -77,9 +83,6 @@ public class Advantage_of_jopa extends Fragment {
 
         ad_jopa = view.findViewById(R.id.ad_jopa);
 
-
-
-
         //identity period--------------------------------------------
 
         setnetworkReceiver();
@@ -101,6 +104,8 @@ public class Advantage_of_jopa extends Fragment {
 
                     @Override
                     public void onResponse(JSONObject response) {
+
+                        Log.d("res", response.toString());
 
                         try {
 
@@ -137,6 +142,14 @@ public class Advantage_of_jopa extends Fragment {
 
         // Access the RequestQueue through your singleton class.
         RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
+
+        int socketTimeout = 5000; // 5 সেকেন্ড
+        RetryPolicy policy = new DefaultRetryPolicy(
+                socketTimeout,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        );
+        jsonObjectRequest.setRetryPolicy(policy);
         requestQueue.add(jsonObjectRequest);
 
     }
@@ -156,24 +169,49 @@ public class Advantage_of_jopa extends Fragment {
     private boolean isInternetAvaiable(Context context){
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        //NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-        return networkInfo != null && networkInfo.isConnected();
+        if (connectivityManager != null) {
+            Network network = connectivityManager.getActiveNetwork();
+            NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
+            return capabilities != null &&
+                    (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR));
+        }
+
+        return false;
     }
 
     private void loadData(Context context){
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("ইন্টারনেট কানেকশন নেই!");
+        builder.setMessage("ইন্টারনেট চালু করে আবার চেষ্টা করুন।");
+        builder.setPositiveButton("বন্ধ করুন", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+
+                dialogInterface.dismiss();
+
+            }
+        });
+
+
         if (isInternetAvaiable(context)){
+
 
             if (!isDataloaded){
 
+                arrayList.clear();
                 data_from_server("https://rksoftwares.xyz/jopa_mala/Jopa_info?res=get_info");
                 isDataloaded = true;
+
             }
 
         }else {
 
-
+            builder.show();
             isDataloaded = false;
 
         }
@@ -186,6 +224,7 @@ public class Advantage_of_jopa extends Fragment {
             public void onReceive(Context context, Intent intent) {
 
                 loadData(context);
+
             }
         };
 

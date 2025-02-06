@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.mala.digital_joper_mala"
-        minSdk 21
+        minSdk 23
         targetSdk 34
         versionCode 9
         versionName "1.7"

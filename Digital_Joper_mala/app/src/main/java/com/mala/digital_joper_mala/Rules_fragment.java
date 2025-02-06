@@ -141,6 +141,12 @@ public class Rules_fragment extends Fragment {
         hashMap.put("ans","শৌচ কাজ করার পর, স্নানের আগে এবং অপবিএ শরীরে জপ করলে জপের কোন ফল পাওয়া যায় না।");
         arrayList.add(hashMap);
 
+        hashMap = new HashMap<>();
+        hashMap.put("ques","৪। কোথায় কতবার জপ করিবেন ?");
+        hashMap.put("ans","১ম ধাপে ১০৮ বার জপ করিবন। ১ম ধাপে ১০৮ বার জপ শেষ হলে ২য় ধাপে ১ বার গননা করিবেন। এই ভাবে ২য় ধাপে ১৬ বার গননা করিবেন। " +
+                "২য় ধাপে ১৬ বার গননা শেষ হলে, ৩য় ধাপে ১ বার গননা করিবন। এই ভাবে ৩য় ধাপে ৪ বার গননা করিবেন।");
+        arrayList.add(hashMap);
+
 
 
     }

@@ -69,9 +69,12 @@ public class Fragment_all_mala extends Fragment {
         hashMap.put("name_mala","বৈষ্ণব মালা");
         arrayList.add(hashMap);
 
+        /*
         hashMap = new HashMap<>();
         hashMap.put("name_mala","শিব মালা");
         arrayList.add(hashMap);
+
+         */
 
     }
     //hashmap----------------------------------------
