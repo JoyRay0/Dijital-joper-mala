@@ -6,7 +6,7 @@
 
     <color name="color3">#EDEADE</color> <!-- style.xml color-->
 
-    <color name="color4">#00F9F6EE</color> <!-- screen_background-->
+    <color name="color4">#00F9F6EE</color> <!-- 00F9F6EE screen_background-->
 
     <color name="color5">#D0DDD2D2</color>  <!-- buttonstyle.xml color-->
 
@@ -14,7 +14,7 @@
 
     <color name="color7">#27000000</color> <!-- divider color-->
 
-    <color name="color8">#008080</color>  <!-- color_primary color-->
+    <color name="color8">#008080</color>  <!--008080 color_primary color-->
 
     <color name="color9">#353935</color>  <!-- Normal_text, Jopa.xml > button_text_color, activity3 > bold_text, new_features.xml> normal_text  color-->
 
@@ -35,6 +35,8 @@
     <color name="color17">#C9000000</color> <!-- hint_text  color -->
 
     <color name="color18">#000</color> <!-- auto_complete_text  color -->
+
+
 
 
 

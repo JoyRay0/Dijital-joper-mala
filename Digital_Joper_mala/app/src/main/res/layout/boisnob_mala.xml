@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Boisnob_mala"
@@ -10,18 +11,21 @@
     >
 
     <include layout="@layout/backappbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/back_bar"
         />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/back_bar"
+
         >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
 
             >
@@ -165,7 +169,8 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="15dp"
         android:tooltipText="জপের নিয়ম"
-        tools:ignore="HardcodedText"
+
         />
+
 
 </RelativeLayout>

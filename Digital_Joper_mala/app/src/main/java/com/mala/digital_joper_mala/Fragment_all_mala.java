@@ -1,7 +1,9 @@
 package com.mala.digital_joper_mala;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatImageView;
@@ -13,8 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.Toast;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +26,8 @@ import java.util.HashMap;
 public class Fragment_all_mala extends Fragment {
 
     //XML id's-------------------------------------------------
+
+    private FrameLayout anim_fab;
 
     private GridView all_mala_gridview;
 
@@ -42,6 +47,7 @@ public class Fragment_all_mala extends Fragment {
         //Identity period --------------------------------------------
 
 
+        anim_fab = view.findViewById(R.id.anim_fab);
         all_mala_gridview = view.findViewById(R.id.all_mala_gridview);
 
 
@@ -50,6 +56,7 @@ public class Fragment_all_mala extends Fragment {
         hashmap();
         Myadapter myadapter = new Myadapter();
         all_mala_gridview.setAdapter(myadapter);
+        fab_button();
 
 
 
@@ -144,5 +151,34 @@ public class Fragment_all_mala extends Fragment {
         }
     }
     //adapter class -----------------------------------------------------------
+
+    //fab button----------------------------------------------
+
+    private void fab_button(){
+
+        anim_fab.setOnClickListener(view -> {
+
+            Dialog dialog = new Dialog(getActivity());
+            dialog.setContentView(R.layout.bangla_date);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            dialog.show();
+
+            AppCompatTextView banglaDate_tv = dialog.findViewById(R.id.banglaDate_tv);
+
+            String bangla_full_date = BanglaDateUtils.getBanglafullDate();
+            String week = BanglaDateUtils.getWeekDay();
+            String day = BanglaDateUtils.getBanglaDay();
+            String month = BanglaDateUtils.getBanglaMonth();
+            String season = BanglaDateUtils.getBanglaSeason();
+
+            banglaDate_tv.setText("তারিখ: "+bangla_full_date+"\nবার: "+week);
+
+
+
+        });
+
+    }
+
+    //fab button----------------------------------------------
 
 }//public class===========================

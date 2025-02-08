@@ -1,35 +1,21 @@
 package com.mala.digital_joper_mala;
 
-import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -43,10 +29,6 @@ import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
-
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class HomeAllMalaActivity extends AppCompatActivity {
@@ -102,6 +84,8 @@ public class HomeAllMalaActivity extends AppCompatActivity {
 
         appUpdateManager = AppUpdateManagerFactory.create(HomeAllMalaActivity.this);
         check_update();
+
+        startService(new Intent(this, Notification_service.class));
 
 
 
@@ -311,9 +295,12 @@ public class HomeAllMalaActivity extends AppCompatActivity {
         if (appUpdateManager != null && installStateUpdatedListener != null){
             appUpdateManager.unregisterListener(installStateUpdatedListener);
         }
+
+        stopService(new Intent(this, Notification_service.class));
     }
 
     //in app update-----------------------------------------------------------------------
+
 
 
 }//public class=================================

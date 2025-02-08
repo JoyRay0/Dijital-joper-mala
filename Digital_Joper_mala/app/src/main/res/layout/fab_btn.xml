@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/anim_fab"
+    android:layout_width="56dp"
+    android:layout_height="56dp"
+    android:background="@drawable/corners"
+    android:layout_margin="10dp"
+    android:elevation="10dp"
+    android:tooltipText="Bangla Date"
+    >
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="37dp"
+        android:layout_height="37dp"
+        android:id="@+id/animation_view"
+        app:lottie_rawRes="@raw/date_anim"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        android:layout_gravity="center"
+        />
+
+</FrameLayout>

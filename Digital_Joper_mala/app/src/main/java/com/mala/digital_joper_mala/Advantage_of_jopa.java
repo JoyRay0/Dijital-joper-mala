@@ -185,12 +185,11 @@ public class Advantage_of_jopa extends Fragment {
     private void loadData(Context context){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("ইন্টারনেট কানেকশন নেই!");
+        builder.setTitle("ইন্টারনেট সংযোগ নেই!");
         builder.setMessage("ইন্টারনেট চালু করে আবার চেষ্টা করুন।");
         builder.setPositiveButton("বন্ধ করুন", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
 
                 dialogInterface.dismiss();
 
