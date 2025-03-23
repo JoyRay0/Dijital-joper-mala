@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
+        android:usesCleartextTraffic="false"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -20,38 +21,38 @@
         tools:targetApi="34">
 
         <activity
-            android:name=".ShivMala"
+            android:name=".Activity.ShivMala"
             android:exported="false" />
         <activity
-            android:name=".HomeAllMalaActivity"
+            android:name=".Activity.HomeAllMalaActivity"
             android:exported="false" />
         <activity
-            android:name=".Custom_MalaActivity"
+            android:name=".Activity.Custom_MalaActivity"
             android:exported="false" />
         <activity
-            android:name=".Boisnob_mala"
+            android:name=".Activity.Boisnob_mala"
             android:exported="false" />
         <activity
-            android:name=".MoreAppsActivity"
+            android:name=".Activity.MoreAppsActivity"
             android:exported="false" />
         <activity
-            android:name=".NewFeaturesActivity"
+            android:name=".Activity.NewFeaturesActivity"
             android:exported="false" />
         <activity
-            android:name=".PrivacyPolicyActivity"
+            android:name=".Activity.PrivacyPolicyActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingActivity"
+            android:name=".Activity.SettingActivity"
             android:configChanges="uiMode|screenSize|orientation"
             android:exported="false" />
         <activity
-            android:name=".MainActivity3"
+            android:name=".Activity.MainActivity3"
             android:exported="false" />
         <activity
-            android:name=".MainActivity2"
+            android:name=".Activity.MainActivity2"
             android:exported="false" />
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".Activity.SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -61,7 +62,7 @@
         </activity>
 
         <service
-            android:name=".Notification_service"
+            android:name=".Utils.Notification_service"
             android:exported="true"
 
             />

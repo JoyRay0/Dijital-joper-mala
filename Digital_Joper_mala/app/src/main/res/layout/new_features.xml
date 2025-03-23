@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NewFeaturesActivity"
+    tools:context=".Activity.NewFeaturesActivity"
     android:background="@color/color4"
     >
 
@@ -138,7 +138,6 @@
                 android:layout_margin="10dp"
                 app:srcCompat="@drawable/fab"
                 />
-
 
             <View
                 android:layout_width="20dp"

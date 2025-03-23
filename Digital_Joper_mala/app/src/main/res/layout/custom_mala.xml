@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color4"
-    tools:context=".Custom_MalaActivity">
+    tools:context=".Activity.Custom_MalaActivity">
 
     <include
         android:id="@+id/backbar"

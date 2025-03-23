@@ -7,17 +7,25 @@
         >
 
         <item
+            android:id="@+id/notification"
+            android:title="নোটিফিকেশন"
+            android:icon="@drawable/ic_notifications"
+            app:showAsAction="always"
+            
+            />
+
+        <item
             android:id="@+id/share"
-            android:title="Share"
+            android:title="শেয়ার"
             android:icon="@drawable/ic_share"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="always"/>
 
 
         <item
             android:id="@+id/rating"
-            android:title="Rate"
+            android:title="রিভিউ"
             android:icon="@drawable/ic_star"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="always"/>
 
 
     </group>

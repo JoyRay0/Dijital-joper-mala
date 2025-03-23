@@ -5,13 +5,14 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeAllMalaActivity">
+    tools:context=".Activity.HomeAllMalaActivity">
+
 
     <include
         android:id="@+id/appbar"
         layout="@layout/appbar"
-        />
 
+        />
     <!--
     <RadioGroup
         android:id="@+id/radio_group"
@@ -90,6 +91,7 @@
         android:layout_centerInParent="true"
         android:background="@drawable/bottom_nav_design"
         app:itemIconSize="25dp"
+        app:itemRippleColor="#B361C1"
         app:itemIconTint="@drawable/selected_nav_icon"
         app:labelVisibilityMode="selected"
         style="@style/Bottom_Navigation_Style"

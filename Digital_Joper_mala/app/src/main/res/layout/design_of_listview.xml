@@ -73,7 +73,7 @@
             android:textColor="@color/color10"
             android:textStyle="normal"
             android:layout_margin="10dp"
-            android:gravity="center"
+            android:gravity="start"
             tools:ignore="HardcodedText"
             />
 
