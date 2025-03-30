@@ -29,121 +29,13 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="১। এখানে মালা জপের সব নিয়ম সর্ম্পকে জানতে পারবেন। "
+                android:text="আপডেটে নতুন ফিচার আসলে এখান থেকে জানতে পারবেন।"
                 android:textSize="18sp"
+                android:textColor="@color/color9"
+                android:textAlignment="center"
                 android:fontFamily="@font/noto_serif_bengali"
-                android:textColor="@color/color10"
-                android:gravity="start"
-                android:textStyle="normal"
-                android:layout_margin="10dp"
-                tools:ignore="Hardcodedtext"
+                tools:ignore="HardcodedText"
                 />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:background="#A9000000"
-                android:layout_margin="10dp"
-                app:srcCompat="@drawable/rules"
-                />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=" ২। এখানে মালা জপের যাবতীয় তথ্য সর্ম্পকে জানতে পারবেন। "
-                android:textSize="18sp"
-                android:fontFamily="@font/noto_serif_bengali"
-                android:textColor="@color/color10"
-                android:gravity="start"
-                android:textStyle="normal"
-                android:layout_margin="10dp"
-                tools:ignore="Hardcodedtext"
-                />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:background="#A9000000"
-                android:layout_margin="10dp"
-                app:srcCompat="@drawable/info"
-                />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="৩। এখানে আপনি নিজের জপ মন্ত্র দিয়ে মালা তৈরি করতে পারবেন। 'জপের মন্ত্র'
-এর জায়গায় আপনার জপ মন্ত্র লিখে পাশে থাকা 'পিন বাটনে' চাপ দিবেন তাহলে আপনার মন্ত্র সেভ হয়ে যাবে। "
-                android:textSize="18sp"
-                android:fontFamily="@font/noto_serif_bengali"
-                android:textColor="@color/color10"
-                android:gravity="start"
-                android:textStyle="normal"
-                android:layout_margin="10dp"
-                tools:ignore="Hardcodedtext"
-                />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_gravity="center"
-                android:background="#A9000000"
-                android:layout_margin="10dp"
-                app:srcCompat="@drawable/custom_mala"
-                android:scaleType="fitCenter"
-                />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="৪। এখানে আপার পছন্দ মতো ছবি দিতে পারবেন।"
-                android:textSize="18sp"
-                android:fontFamily="@font/noto_serif_bengali"
-                android:textColor="@color/color10"
-                android:gravity="start"
-                android:textStyle="normal"
-                android:layout_margin="10dp"
-                tools:ignore="Hardcodedtext"
-                />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:background="#A9000000"
-                android:layout_margin="10dp"
-                app:srcCompat="@drawable/adding_img"
-                />
-
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="৫। এই বাটনে ক্লিক করলে বৈষ্ণব মালা জপের নিয়ম সর্ম্পকে জানতে পারবেন। "
-                android:textSize="18sp"
-                android:fontFamily="@font/noto_serif_bengali"
-                android:textColor="@color/color10"
-                android:gravity="start"
-                android:textStyle="normal"
-                android:layout_margin="10dp"
-                tools:ignore="Hardcodedtext"
-                />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:background="#A9000000"
-                android:layout_margin="10dp"
-                app:srcCompat="@drawable/fab"
-                />
-
-            <View
-                android:layout_width="20dp"
-                android:layout_height="20dp"/>
-
-
 
         </LinearLayout>
 

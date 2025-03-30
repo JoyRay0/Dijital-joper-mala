@@ -21,24 +21,20 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+
 import com.mala.digital_joper_mala.R;
+import com.mala.digital_joper_mala.Utils.Request_limit;
 
 
 import org.json.JSONArray;
@@ -47,13 +43,23 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+
+import java.net.CookieManager;
 import java.util.ArrayList;
+
+import java.util.Collections;
 import java.util.HashMap;
+
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
 
@@ -71,12 +77,9 @@ public class Advantage_of_jopa extends Fragment {
 
     private ProgressBar progressBar;
 
-
-
     private boolean isDataloaded = false;
 
-
-
+    private Request_limit limit;
 
 
     //XML id's--------------------------------------------
@@ -98,76 +101,13 @@ public class Advantage_of_jopa extends Fragment {
 
         myadapter = new Myadapter();
         ad_jopa.setAdapter(myadapter);
-        //cronet engine -------------------------------------------------------
-
-        
-
-        //cronet engine -------------------------------------------------------
 
 
+        limit = new Request_limit(getActivity());
 
 
         return view;
     }//on create===============================
-
-    //data from server----------------------------------------------------
-    private void data_from_server(String url){
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                        Log.d("res", response.toString());
-
-                        try {
-
-                            JSONArray jsonArray = response.getJSONArray("data");
-
-                            for (int x = 0; x <jsonArray.length(); x++){
-                                JSONObject jsonObject = jsonArray.getJSONObject(x);
-
-                                String question = jsonObject.getString("question");
-                                String answer = jsonObject.getString("answer");
-
-                                hashMap = new HashMap<>();
-                                hashMap.put("ques",question);
-                                hashMap.put("ans",answer);
-                                arrayList.add(hashMap);
-
-                            }
-
-                            myadapter.notifyDataSetChanged();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-
-                    }
-                });
-
-        // Access the RequestQueue through your singleton class.
-        RequestQueue requestQueue = Volley.newRequestQueue(requireActivity());
-
-        int socketTimeout = 5000; // 5 সেকেন্ড
-        RetryPolicy policy = new DefaultRetryPolicy(
-                socketTimeout,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-        );
-        jsonObjectRequest.setRetryPolicy(policy);
-        requestQueue.add(jsonObjectRequest);
-
-    }
-    //data from server----------------------------------------------------
 
     //checking internet -----------------------------------------------------
 
@@ -217,8 +157,21 @@ public class Advantage_of_jopa extends Fragment {
             if (!isDataloaded){
 
                 arrayList.clear();
-                //data_from_server("https://rksoftwares.xyz/jopa_mala/Jopa_info?res=get_info");
-                data_form_server("https://rksoftwares.xyz/jopa_mala/Jopa_info?res=get_info");
+
+                if (limit.canMakeRequest(getActivity())){
+
+                    try {
+
+                        data_form_server("https://rksoftwares.xyz/jopa_mala/Jopa_info?res=get_info");
+
+                    }catch (Exception e){
+
+                        data_form_server("https://rksoftwares.xyz/All_app/jopa_mala/Jopa_info?res=get_info");
+                    }
+
+
+                }
+
                 isDataloaded = true;
 
             }
@@ -331,6 +284,9 @@ public class Advantage_of_jopa extends Fragment {
 
         //cache data--------------------------------------
 
+        //unique device id
+        String device_id = UUID.randomUUID().toString();
+
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .cache(cache)
@@ -344,12 +300,11 @@ public class Advantage_of_jopa extends Fragment {
                             .build();
                     return response;
                 })
-
-
                 .build();
 
         okhttp3.Request request = new okhttp3.Request.Builder()
                 .url(url)
+                .header("X-UUID", device_id)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -360,7 +315,6 @@ public class Advantage_of_jopa extends Fragment {
 
                    progressBar.setVisibility(View.VISIBLE);
 
-
                });
                 e.printStackTrace();
 
@@ -370,9 +324,7 @@ public class Advantage_of_jopa extends Fragment {
             public void onResponse(@NonNull Call call, @NonNull okhttp3.Response response) throws IOException {
 
                 if (response.isSuccessful() && response.body() != null){
-
-
-
+                    
                     String jopa_info = response.body().string();
 
                     try {
@@ -414,9 +366,5 @@ public class Advantage_of_jopa extends Fragment {
 
 
     }
-
-
-
-
 
 }//public class===============================

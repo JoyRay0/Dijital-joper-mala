@@ -21,7 +21,7 @@
             android:layout_margin="10dp"
             >
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/app_info_bold_text"
                 android:textSize="20sp"
@@ -46,7 +46,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="App Version : 1.8"
+                android:text="App Version : 1.9"
                 android:fontFamily="@font/noto_serif_bengali"
                 android:textSize="17sp"
                 android:gravity="center"

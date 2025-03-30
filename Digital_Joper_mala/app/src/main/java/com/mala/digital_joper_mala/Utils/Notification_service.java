@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 import com.mala.digital_joper_mala.Activity.HomeAllMalaActivity;
 import com.mala.digital_joper_mala.R;
@@ -38,7 +39,9 @@ public class Notification_service extends Service {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "my notification", NotificationManager.IMPORTANCE_DEFAULT);
             NotificationManager manager = getSystemService(NotificationManager.class);
 
-            if (manager != null) manager.createNotificationChannel(channel);
+            if (manager != null  && manager.getNotificationChannel(CHANNEL_ID) == null) {
+                manager.createNotificationChannel(channel);
+            }
 
         }
 
@@ -46,8 +49,6 @@ public class Notification_service extends Service {
 
     @SuppressLint("ForegroundServiceType")
     private void start_foreg_notification(){
-
-
 
         Intent intent = new Intent(this, HomeAllMalaActivity.class);
 
@@ -57,8 +58,10 @@ public class Notification_service extends Service {
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, pending);
 
+        Notification notification;
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Notification notification = new Notification.Builder(this, CHANNEL_ID)
+             notification = new Notification.Builder(this, CHANNEL_ID)
 
                     .setContentTitle("জপ মালা সর্ম্পকে জানতে এখানে ক্লিক করুন ।")
                     .setContentText("জপ মালা ব্যাকগ্রাউন্ডে চলছে ।")
@@ -66,10 +69,19 @@ public class Notification_service extends Service {
                     .setContentIntent(pendingIntent)
                     .build();
 
-            startForeground(1, notification);
+
+        } else {
+             notification = new NotificationCompat.Builder(this)
+
+                    .setContentTitle("জপ মালা সর্ম্পকে জানতে এখানে ক্লিক করুন ।")
+                    .setContentText("জপ মালা ব্যাকগ্রাউন্ডে চলছে ।")
+                    .setSmallIcon(R.drawable.jopa_icon)
+                    .setContentIntent(pendingIntent)
+                     .setPriority(NotificationCompat.PRIORITY_LOW)
+                    .build();
+
         }
-
-
+        startForeground(1, notification);
 
     }
 

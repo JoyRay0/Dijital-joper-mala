@@ -1,5 +1,8 @@
 <?php
 require 'db.php';
+require 'middleware.php';
+require 'ID_middleware.php';
+
 header('Content-Type: application/json; charset=utf-8');
 
 header("Access-Control-Allow-Origin: https://rksoftwares.xyz");
@@ -22,68 +25,81 @@ header('Referrer-Policy: no-referrer');
 
 //All database table with one api in Routing Logic
 
-$method = $_SERVER['REQUEST_METHOD'];
-$res = $_GET['res'] ?? '';
+rate_limt();
 
-if($method !== 'GET'){
+check_deviceIds();
 
-    echo json_encode([
+jopa_mala();
 
-        "status" => "Falied",
-        "message" => "Method not supported"
 
-    ]);
-    exit;
+function jopa_mala(){
 
-}
+    $method = $_SERVER['REQUEST_METHOD'];
+    $res = $_GET['res'] ?? '';
+    global $database_connect;
 
-switch($res){
+    if($method != 'GET'){
 
-    case 'get_info':
-
-        $sql = "SELECT * FROM jop_mala_info1";
-        break;
-    
-    
-    default:
-      
         echo json_encode([
 
-            "status" => "Failed",
-            "message" => "Invalid resource type"
+            "status" => "Falied",
+            "message" => "Method not supported"
 
         ]);
         exit;
 
-}
+    }
+
+    switch($res){
+
+        case 'get_info':
+
+            $sql = "SELECT * FROM jop_mala_info1";
+            break;
+        
+        
+        default:
+        
+            echo json_encode([
+
+                "status" => "Failed",
+                "message" => "Invalid resource type"
+
+            ]);
+            exit;
+
+    }
 
 
-$sql_query = mysqli_query($database_connect, $sql);
+    $sql_query = mysqli_query($database_connect, $sql);
 
-if(!$sql_query){
+    if(!$sql_query){
+
+        echo json_encode([
+
+            "status" => "Falied",
+            "message" => "Database query failed"
+        ]);
+        exit;
+
+    }
+
+    $data = [];
+
+    while($item = mysqli_fetch_assoc($sql_query)){
+
+        $data[] = $item;
+
+    }
 
     echo json_encode([
 
-        "status" => "Falied",
-        "message" => "Database query failed"
+        "status" => "Success",
+        "data" => $data
+
     ]);
-    exit;
 
-}
+    }
 
-$data = [];
-
-while($item = mysqli_fetch_assoc($sql_query)){
-
-    $data[] = $item;
-
-}
-
-echo json_encode([
-
-    "status" => "Success",
-    "data" => $data
-
-]);
 
 ?>

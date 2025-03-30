@@ -72,12 +72,6 @@ public class HomeAllMalaActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private GridView all_mala_gridview;
 
-    //ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
-    //HashMap<String, String> hashMap;
-
-    //RadioButton radio_button_home, radio_button_rules, radio_button_info;
-    //RadioGroup radio_group;
-
     private FrameLayout frame_layout;
 
     private BottomNavigationView bottom_nav;
@@ -85,6 +79,12 @@ public class HomeAllMalaActivity extends AppCompatActivity {
     private AppUpdateManager appUpdateManager;
 
     private InstallStateUpdatedListener installStateUpdatedListener;
+
+    private AppCompatTextView tv_notification_title;
+
+    private AppCompatTextView tv_notification_description;
+
+    private AppCompatTextView tv_no_notification;
 
 
 
@@ -210,18 +210,18 @@ public class HomeAllMalaActivity extends AppCompatActivity {
 
                 } else if (item.getItemId() == R.id.notification) {
 
+
+
                     Dialog dialog = new Dialog(HomeAllMalaActivity.this);
                     dialog.setContentView(R.layout.notification_dialog);
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
                     dialog.show();
 
-                    AppCompatTextView tv_notification_title = dialog.findViewById(R.id.tv_notification_title);
-                    AppCompatTextView tv_notification_description = dialog.findViewById(R.id.tv_notification_description);
-                    AppCompatTextView tv_no_notification = dialog.findViewById(R.id.tv_no_notification);
+                    tv_notification_title = dialog.findViewById(R.id.tv_notification_title);
+                    tv_notification_description= dialog.findViewById(R.id.tv_notification_description);
+                    tv_no_notification = dialog.findViewById(R.id.tv_no_notification);
 
-
-
-                    String url = "https://rksoftwares.xyz/jopa_mala/";
+                    String url = "https://rksoftwares.xyz/All_app/jopa_mala/InAppNotification";
 
                     OkHttpClient client = new OkHttpClient();
 
@@ -234,6 +234,8 @@ public class HomeAllMalaActivity extends AppCompatActivity {
                             new Handler(Looper.getMainLooper()).post(() -> {
 
                                 tv_no_notification.setVisibility(View.VISIBLE);
+                                tv_notification_title.setVisibility(View.GONE);
+                                tv_no_notification.setVisibility(View.GONE);
 
                             });
 
@@ -249,30 +251,39 @@ public class HomeAllMalaActivity extends AppCompatActivity {
                                 try {
                                     JSONObject object = new JSONObject(message);
 
-                                    String title = object.getString("Title");
-                                    String description = object.getString("Description");
-                                    String notification_num = object.getString("Notification_num");
+                                    String title = object.getString("title");
+                                    String description = object.getString("description");
+                                    String msize = object.getString("msize");
 
                                     new Handler(Looper.getMainLooper()).post(() -> {
 
-                                        tv_no_notification.setVisibility(View.GONE);
-                                        tv_notification_title.setVisibility(View.VISIBLE);
-                                        tv_notification_description.setVisibility(View.VISIBLE);
+                                        if (msize.equals("long")){
 
-                                        int notify_num = Integer.parseInt(notification_num);
+                                            tv_no_notification.setVisibility(View.GONE);
+                                            tv_notification_title.setVisibility(View.VISIBLE);
+                                            tv_notification_description.setVisibility(View.VISIBLE);
 
+                                            //int notify_num = Integer.parseInt(notification_num);
 
+                                            tv_notification_title.setText(title);
+                                            tv_notification_description.setText(description);
+                                            
+                                        } else if (msize.equals("sort")) {
 
-                                        tv_notification_title.setText(title);
-                                        tv_notification_description.setText(description);
+                                            tv_no_notification.setVisibility(View.VISIBLE);
+                                            tv_notification_title.setVisibility(View.GONE);
+                                            tv_notification_description.setVisibility(View.GONE);
 
-
+                                        }
 
                                     });
 
+                                } catch (Exception e) {
+                                   new Handler(Looper.getMainLooper()).post(() -> {
 
-                                } catch (JSONException e) {
-                                    throw new RuntimeException(e);
+                                       Toast.makeText(HomeAllMalaActivity.this, ""+e, Toast.LENGTH_SHORT).show();
+
+                                   });
                                 }
 
                             }
@@ -292,8 +303,6 @@ public class HomeAllMalaActivity extends AppCompatActivity {
 
     //bottom navigation----------------------------------------------------------------
     private void bottom_nav(){
-
-        bottom_nav.getOrCreateBadge(R.id.bottom_nav_list).clearNumber();
 
         bottom_nav.setSelectedItemId(R.id.bottom_nav_home);
 
@@ -405,7 +414,5 @@ public class HomeAllMalaActivity extends AppCompatActivity {
         stopService(new Intent(this, Notification_service.class));
     }
     //in app update-----------------------------------------------------------------------
-
-
 
 }//public class=================================
