@@ -19,6 +19,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -85,8 +86,6 @@ public class HomeAllMalaActivity extends AppCompatActivity {
     private AppCompatTextView tv_notification_description;
 
     private AppCompatTextView tv_no_notification;
-
-
 
 
     //XML id's----------------------------------------------------------------------
@@ -210,8 +209,6 @@ public class HomeAllMalaActivity extends AppCompatActivity {
 
                 } else if (item.getItemId() == R.id.notification) {
 
-
-
                     Dialog dialog = new Dialog(HomeAllMalaActivity.this);
                     dialog.setContentView(R.layout.notification_dialog);
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
@@ -221,6 +218,7 @@ public class HomeAllMalaActivity extends AppCompatActivity {
                     tv_notification_description= dialog.findViewById(R.id.tv_notification_description);
                     tv_no_notification = dialog.findViewById(R.id.tv_no_notification);
 
+                    tv_no_notification.setVisibility(View.VISIBLE);
                     String url = "https://rksoftwares.xyz/All_app/jopa_mala/InAppNotification";
 
                     OkHttpClient client = new OkHttpClient();
@@ -235,7 +233,7 @@ public class HomeAllMalaActivity extends AppCompatActivity {
 
                                 tv_no_notification.setVisibility(View.VISIBLE);
                                 tv_notification_title.setVisibility(View.GONE);
-                                tv_no_notification.setVisibility(View.GONE);
+                                tv_notification_description.setVisibility(View.GONE);
 
                             });
 
@@ -279,11 +277,7 @@ public class HomeAllMalaActivity extends AppCompatActivity {
                                     });
 
                                 } catch (Exception e) {
-                                   new Handler(Looper.getMainLooper()).post(() -> {
-
-                                       Toast.makeText(HomeAllMalaActivity.this, ""+e, Toast.LENGTH_SHORT).show();
-
-                                   });
+                                   e.printStackTrace();
                                 }
 
                             }
