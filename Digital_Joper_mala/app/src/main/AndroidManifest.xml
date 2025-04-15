@@ -15,46 +15,43 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher6"
+        android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher6_round"
+        android:roundIcon="@mipmap/app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.Digital_Joper_mala"
         tools:targetApi="34">
 
         <activity
-            android:name=".Activity.ShivMala"
+            android:name=".Activity.Act_ShivMala"
             android:exported="false" />
         <activity
-            android:name=".Activity.HomeAllMalaActivity"
+            android:name=".Activity.Act_Home_All_Mala"
             android:exported="false" />
         <activity
-            android:name=".Activity.Custom_MalaActivity"
+            android:name=".Activity.Act_Custom_Mala"
             android:exported="false" />
         <activity
-            android:name=".Activity.Boisnob_mala"
+            android:name=".Activity.Act_Boisnob_mala"
             android:exported="false" />
         <activity
-            android:name=".Activity.MoreAppsActivity"
+            android:name=".Activity.Act_MoreApps"
             android:exported="false" />
         <activity
-            android:name=".Activity.NewFeaturesActivity"
+            android:name=".Activity.Act_NewFeatures"
             android:exported="false" />
         <activity
-            android:name=".Activity.PrivacyPolicyActivity"
+            android:name=".Activity.Act_PrivacyPolicy"
             android:exported="false" />
         <activity
-            android:name=".Activity.SettingActivity"
+            android:name=".Activity.Act_Setting"
             android:configChanges="uiMode|screenSize|orientation"
             android:exported="false" />
         <activity
-            android:name=".Activity.MainActivity3"
+            android:name=".Activity.Act_boisnob_mala_helper"
             android:exported="false" />
         <activity
-            android:name=".Activity.MainActivity2"
-            android:exported="false" />
-        <activity
-            android:name=".Activity.SplashScreenActivity"
+            android:name=".Activity.Act_SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,12 +59,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service
-            android:name=".Utils.Notification_service"
-            android:exported="true"
-            android:foregroundServiceType="mediaPlayback"
-            tools:ignore="ForegroundServicePermission" />
 
     </application>
 

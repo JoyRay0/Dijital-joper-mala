@@ -1,45 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color1">#AB065050</color>  <!-- toolbar-->
 
-    <color name="color2">#1B1212</color> <!-- dark mode, email, info, privacy, tips and update, button_text_colo_button.xml, jopa.xml color-->
+    <color name="toolbar_color">#AB065050</color>
 
-    <color name="color3">#EDEADE</color> <!-- style.xml color-->
+    <color name="background_color">#00F9F6EE</color>
 
-    <color name="color4">#00F9F6EE</color> <!-- 00F9F6EE screen_background-->
+    <color name="icon_color">#000</color>
 
-    <color name="color5">#D0DDD2D2</color>  <!-- buttonstyle.xml color-->
+    <color name="status_bar_color">#008080</color>
 
-    <color name="color6">#fff</color> <!-- pro.xml color-->
+    <color name="bold_text_color">#353935</color>
 
-    <color name="color7">#27000000</color> <!-- divider color-->
+    <color name="normal_text_color">#36454F</color>
 
-    <color name="color8">#008080</color>  <!--008080 color_primary color-->
+    <color name="card_view_color">#fff</color>
 
-    <color name="color9">#353935</color>  <!-- Normal_text, Jopa.xml > button_text_color, activity3 > bold_text, new_features.xml> normal_text  color-->
+    <color name="counter_display_color">#EDEADE</color>
 
-    <color name="color10">#36454F</color>  <!-- Bold text, activity3 > normal_text, app_info_bold_text, new_features.xml> bold_text  color-->
+    <color name="counter_display_button_color">#D0DDD2D2</color>
 
-    <color name="color11">#C6534848</color> <!-- forward arrow -->
+    <color name="arrow_color">#C6534848</color>
 
-    <color name="color12">#353935</color> <!-- tvDisplay_color -->
+    <color name="divider_color">#27000000</color>
 
-    <color name="color13">#36DAA06D</color> <!-- button color -->
+    <color name="bottom_nav_background">#A4009688</color>
 
-    <color name="color14">#776060</color> <!-- switch_track_darkmode color -->
+    <color name="bottom_nav_item_text_color">#242222</color>
 
-    <color name="color15">#141313</color> <!-- switch_thumb_darkmode color -->
+    <color name="bottom_nav_icon_unchecked">#E15B5050</color>
 
-    <color name="color16">#2F00BCD4</color> <!-- auto_complete_text  color -->
+    <color name="intro_dialog_background_color">#F4EFEF</color>
 
-    <color name="color17">#C9000000</color> <!-- hint_text  color -->
+    <color name="intro_dialog_button_color">#E6C08A</color>
 
-    <color name="color18">#000</color> <!-- auto_complete_text  color -->
+    <color name="mala_background_color">#B2A8A8</color>
 
+    <color name="mala_img_background_color">#fff</color>
 
-
-
-
-
+    <color name="edit_text_color">#2F00BCD4</color>
 
 </resources>

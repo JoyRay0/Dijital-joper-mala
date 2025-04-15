@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.Act_NewFeatures"
+    android:background="@color/background_color"
+    >
+
+    <include layout="@layout/lay_back_appbar"
+        android:id="@+id/toolbar"
+        />
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="আপডেটে নতুন ফিচার আসলে এখান থেকে জানতে পারবেন।"
+                android:textSize="18sp"
+                android:textColor="@color/bold_text_color"
+                android:textAlignment="center"
+                android:fontFamily="@font/noto_serif_bengali"
+                tools:ignore="HardcodedText"
+                />
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</RelativeLayout>

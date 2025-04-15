@@ -1,7 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="status_bar_color">#322D2D</color>
 
+    <color name="toolbar_color">#34414B</color>
 
+    <color name="background_color">#28282B</color>
+
+    <color name="icon_color">#fff</color>
+
+    <color name="bold_text_color">#FAF9F6</color>
+
+    <color name="normal_text_color">#FCF5E5</color>
+
+    <color name="counter_display_color">#484D50</color>
+
+    <color name="card_view_color">#5F5D5D</color>
+
+    <color name="counter_display_button_color">#023524</color>
+
+    <color name="arrow_color">#34ADA1</color>
+
+    <color name="divider_color">#928D88</color>
+
+    <color name="bottom_nav_background">#2C3840</color>
+
+    <color name="bottom_nav_item_text_color">#CAC1C1</color>
+
+    <color name="bottom_nav_icon_unchecked">#B1A8A8</color>
+
+    <color name="intro_dialog_background_color">#524A4A</color>
+
+    <color name="intro_dialog_button_color">#844949</color>
+
+    <color name="mala_background_color">#C0C0C0</color>
+
+    <color name="mala_img_background_color">#fff</color>
+
+    <color name="edit_text_color">#25342D</color>
 
 </resources>

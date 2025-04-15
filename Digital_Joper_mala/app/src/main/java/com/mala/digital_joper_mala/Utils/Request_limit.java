@@ -2,6 +2,8 @@ package com.mala.digital_joper_mala.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Toast;
 
 public class Request_limit {
@@ -36,7 +38,11 @@ public class Request_limit {
             // 1 মিনিটের মধ্যে যদি 5 এর বেশি রিকুয়েস্ট হয়ে থাকে, false রিটার্ন করুন
             if (requestCount >= MAX_REQUEST) {
 
-                Toast.makeText(context, "কিছুক্ষণ পর আবার চেষ্টা করুন", Toast.LENGTH_SHORT).show();
+                new Handler(Looper.getMainLooper()).post(() -> {
+
+                    Toast.makeText(context, "কিছুক্ষণ পর আবার চেষ্টা করুন", Toast.LENGTH_SHORT).show();
+
+                });
                 return false; // Too many requests
             }
 

@@ -5,25 +5,25 @@
     <item
         android:id="@+id/bottom_nav_home"
         android:title="হোম"
-        android:icon="@drawable/baseline_home_24"
+        android:icon="@drawable/ic_home"
         />
 
     <item
         android:id="@+id/bottom_nav_rule"
         android:title="নিয়ম"
-        android:icon="@drawable/baseline_rule_24"
+        android:icon="@drawable/ic_rules"
         />
 
     <item
         android:id="@+id/bottom_nav_list"
         android:title="তথ্য"
-        android:icon="@drawable/baseline_article_24"
+        android:icon="@drawable/ic_list"
         />
 
     <item
         android:id="@+id/bottom_nav_setting"
         android:title="সেটিংস"
-        android:icon="@drawable/baseline_settings_24"
+        android:icon="@drawable/ic_setting"
         />
 
 

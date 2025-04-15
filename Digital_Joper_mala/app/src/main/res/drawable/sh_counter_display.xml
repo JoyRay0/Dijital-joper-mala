@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+
+        <shape
+            android:shape="rectangle"
+            >
+            <solid android:color="@color/counter_display_color"/>
+
+            <corners android:radius="10dp"/>
+
+            <size
+                android:width="90dp"
+                android:height="20dp"
+                />
+        </shape>
+
+    </item>
+</selector>

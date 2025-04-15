@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="none"
+
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#00FFFFFF"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:baselineAligned="false"
+        android:weightSum="3">
+
+
+        <LinearLayout
+            android:id="@+id/liner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/sh_jopa_background"
+            android:elevation="5dp"
+            android:orientation="vertical"
+
+            >
+
+            <TextView
+                android:id="@+id/text10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/stage1"
+                android:textColor="@color/bold_text_color"
+                android:textSize="18sp"
+                android:textStyle="bold"
+
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/bar108"
+                android:textColor="@color/normal_text_color"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_count_display1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="15dp"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:background="@drawable/sh_counter_display"
+                android:elevation="10dp"
+                android:gravity="center|bottom"
+                android:text="০"
+                android:textColor="@color/bold_text_color"
+                android:textSize="30sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/add1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/sh_button_style"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/addone"
+                android:textColor="@color/bold_text_color"
+                android:textSize="18sp" />
+
+            <!--
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/less2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/buttonstyle"
+                android:elevation="12dp"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/lessone"
+                android:textColor="@color/color9"
+                android:textSize="20sp" />
+                -->
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/reset1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/sh_button_style"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/reset"
+                android:textColor="@color/bold_text_color"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/sh_jopa_background"
+            android:elevation="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/stage2"
+                android:textColor="@color/bold_text_color"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/bar16"
+                android:textColor="@color/normal_text_color"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_count_display2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="15dp"
+                android:background="@drawable/sh_counter_display"
+                android:elevation="10dp"
+                android:gravity="center|bottom"
+                android:text="০"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:textColor="@color/bold_text_color"
+                android:textSize="30sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/add2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/sh_button_style"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/addone"
+                android:textColor="@color/bold_text_color"
+                android:textSize="18sp" />
+
+            <!--
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/less2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/buttonstyle"
+                android:elevation="10dp"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/lessone"
+                android:textColor="@color/color9"
+                android:textSize="20sp" />
+                -->
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/reset2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/sh_button_style"
+                android:elevation="10dp"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/reset"
+                android:textColor="@color/bold_text_color"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/sh_jopa_background"
+            android:elevation="5dp"
+            android:orientation="vertical"
+
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/stage3"
+                android:textColor="@color/bold_text_color"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/bar4"
+                android:textColor="@color/normal_text_color"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_count_display3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:layout_margin="15dp"
+                android:background="@drawable/sh_counter_display"
+                android:elevation="10dp"
+                android:gravity="center|bottom"
+                android:text="০"
+                android:textColor="@color/bold_text_color"
+                android:textSize="30sp" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/add3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/sh_button_style"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/addone"
+                android:textColor="@color/bold_text_color"
+                android:textSize="18sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/reset3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/sh_button_style"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:text="@string/reset"
+                android:textColor="@color/bold_text_color"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</HorizontalScrollView>

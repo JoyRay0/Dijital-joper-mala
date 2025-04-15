@@ -6,8 +6,8 @@
         <!--
          <item name="colorPrimary">@color/my_dark_primary</item>
          -->
-        <item name="colorPrimary">@color/color8</item>
-        <item name="android:forceDarkAllowed">false</item>
+        <item name="colorPrimary">@color/status_bar_color</item>
+        <!-- <item name="android:forceDarkAllowed">false</item> -->
 
 
 

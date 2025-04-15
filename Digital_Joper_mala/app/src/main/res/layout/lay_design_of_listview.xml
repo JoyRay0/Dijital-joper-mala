@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:id="@+id/mother_layout">
+
+
+    <LinearLayout
+        android:id="@+id/clicked"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:elevation="15dp"
+        android:background="@drawable/sh_custom_ques_ans_background"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/ques_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" question "
+                android:fontFamily="@font/noto_serif_bengali"
+                android:textSize="18sp"
+                android:textColor="@color/bold_text_color"
+                android:textStyle="bold"
+                android:layout_margin="10dp"
+                android:paddingStart="0dp"
+                android:paddingEnd="10dp"
+                tools:ignore="HardcodedText"
+
+                />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imageview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_down"
+                android:layout_alignEnd="@+id/ques_text"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/ans_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_margin="10dp"
+        android:elevation="5dp"
+        android:background="@drawable/sh_custom_ques_ans_background"
+        >
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="answer"
+            android:fontFamily="@font/noto_serif_bengali"
+            android:textSize="18sp"
+            android:textColor="@color/normal_text_color"
+            android:textStyle="normal"
+            android:layout_margin="10dp"
+            android:gravity="start"
+            tools:ignore="HardcodedText"
+            />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

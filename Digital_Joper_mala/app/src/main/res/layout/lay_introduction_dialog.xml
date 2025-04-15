@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="15dp"
+        app:cardBackgroundColor="@color/intro_dialog_background_color"
+        app:cardElevation="5dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="স্বাগতম জপ মালা অ্যাপে!"
+                android:textSize="20sp"
+                android:textColor="@color/bold_text_color"
+                android:textStyle="bold"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:layout_margin="10dp"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="আপনার দৈনিক জপ, মন্ত্রচর্চা ও আধ্যাত্মিক অনুশীলনকে আরও সহজ ও স্মরণযোগ্য করে তুলতে আমরা এনেছি এই ডিজিটাল জপমালা।"
+                android:textSize="17sp"
+                android:textColor="@color/normal_text_color"
+                android:textStyle="normal"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:layout_marginStart="10dp"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="এই অ্যাপে আপনি পাবেন:"
+                android:textSize="18sp"
+                android:textColor="@color/bold_text_color"
+                android:textStyle="bold"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:layout_margin="10dp"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="*  ডিজিটাল মালা দিয়ে জপ গণনার সুবিধা"
+                android:textSize="17sp"
+                android:textColor="@color/normal_text_color"
+                android:textStyle="normal"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:layout_marginStart="20dp"
+                android:padding="5dp"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="*  পছন্দের মন্ত্র সংরক্ষণ ও অনুসরণ"
+                android:textSize="17sp"
+                android:textColor="@color/normal_text_color"
+                android:textStyle="normal"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:layout_marginStart="20dp"
+                android:padding="5dp"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="*  শান্ত ও মনঃসংযোগ বৃদ্ধিকারী ডিজাইন"
+                android:textSize="17sp"
+                android:textColor="@color/normal_text_color"
+                android:textStyle="normal"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:layout_marginStart="20dp"
+                android:padding="5dp"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="আপনার আধ্যাত্মিক পথচলা হোক আরও শুদ্ধ, আরও সুসংগঠিত।"
+                android:textSize="18sp"
+                android:textColor="@color/normal_text_color"
+                android:textStyle="normal"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:layout_marginStart="10dp"
+                android:padding="5dp"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="চলুন, শুরু করি জপ সাধনা।"
+                android:textSize="18sp"
+                android:textColor="@color/bold_text_color"
+                android:textStyle="bold"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:layout_margin="10dp"
+                />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="17dp"
+                android:layout_margin="15dp"
+                app:cardBackgroundColor="@color/intro_dialog_button_color"
+                app:cardElevation="7dp"
+                android:layout_gravity="end"
+                >
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="শুরু করুন"
+                    android:textSize="17sp"
+                    android:textColor="@color/normal_text_color"
+                    android:fontFamily="@font/noto_serif_bengali"
+                    android:padding="10dp"
+                    />
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
