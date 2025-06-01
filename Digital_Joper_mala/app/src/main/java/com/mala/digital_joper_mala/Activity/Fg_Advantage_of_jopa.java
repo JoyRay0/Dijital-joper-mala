@@ -9,14 +9,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
@@ -34,13 +32,15 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 
+import com.google.gson.Gson;
+import com.mala.digital_joper_mala.Api.Request_link;
+import com.mala.digital_joper_mala.Model.Api_links;
+import com.mala.digital_joper_mala.Model.Data;
+import com.mala.digital_joper_mala.Model.Main_response;
 import com.mala.digital_joper_mala.R;
+import com.mala.digital_joper_mala.Utils.ApiResponseListener;
 import com.mala.digital_joper_mala.Utils.Request_limit;
 
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,6 +49,7 @@ import java.util.ArrayList;
 
 import java.util.HashMap;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -151,17 +152,31 @@ public class Fg_Advantage_of_jopa extends Fragment {
 
             if (!isDataloaded){
 
-                arrayList.clear();
+               // arrayList.clear();
 
                 if (limit.canMakeRequest(getActivity())){
 
                     try {
 
-                        data_form_server("https://rksoftwares.xyz/jopa_mala/Jopa_info?res=get_info");
+                        Request_link link = new Request_link(new ApiResponseListener() {
+                            @Override
+                            public void onApiResponse(Api_links apiLinks) {
+
+                                String url = apiLinks.getJopa_info();
+
+                                data_form_server(url);
+
+                            }
+
+                            @Override
+                            public void onApiFailed(String error) {
+
+                            }
+                        });
+                        link.Apis();
 
                     }catch (Exception e){
-
-                        data_form_server("https://rksoftwares.xyz/All_app/jopa_mala/Jopa_info?res=get_info");
+                        e.printStackTrace();
                     }
 
 
@@ -282,6 +297,7 @@ public class Fg_Advantage_of_jopa extends Fragment {
         //unique device id
         String device_id = UUID.randomUUID().toString();
 
+        Gson gson = new Gson();
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .cache(cache)
@@ -323,21 +339,21 @@ public class Fg_Advantage_of_jopa extends Fragment {
                     String jopa_info = response.body().string();
 
                     try {
-                        JSONObject jsonObject = new JSONObject(jopa_info);
-                        JSONArray jsonArray = jsonObject.getJSONArray("data");
 
-                        for (int i = 0; i<jsonArray.length(); i++){
+                        Main_response mainResponse = gson.fromJson(jopa_info, Main_response.class);
 
-                            JSONObject object = jsonArray.getJSONObject(i);
+                        List<Data> data = mainResponse.getData();
 
-                            String question = object.getString("question");
-                            String answer = object.getString("answer");
+                        arrayList.clear();
+
+                        for (int i = 0; i<data.size(); i++){
+
+                           Data data1 = data.get(i);
 
                             hashMap = new HashMap<>();
-                            hashMap.put("ques",question);
-                            hashMap.put("ans",answer);
+                            hashMap.put("ques",data1.getQuestion());
+                            hashMap.put("ans",data1.getAnswer());
                             arrayList.add(hashMap);
-
 
                         }
                        new Handler(Looper.getMainLooper()).post(() -> {
@@ -348,8 +364,8 @@ public class Fg_Advantage_of_jopa extends Fragment {
 
 
 
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
 
 

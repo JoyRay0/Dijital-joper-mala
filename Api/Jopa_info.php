@@ -3,6 +3,8 @@ require 'db.php';
 require 'middleware.php';
 require 'ID_middleware.php';
 
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+
 header('Content-Type: application/json; charset=utf-8');
 
 header("Access-Control-Allow-Origin: https://rksoftwares.xyz");
@@ -21,6 +23,8 @@ header('X-Frame-Options: DENY');
 
 // Referrer-Policy হেডার
 header('Referrer-Policy: no-referrer');
+
+header("Cache-Control: public, max-age=3600");
 
 
 //All database table with one api in Routing Logic

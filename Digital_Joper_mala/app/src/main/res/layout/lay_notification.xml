@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="15dp"
+    android:layout_margin="15dp"
+    app:cardBackgroundColor="@color/card_view_color"
+    android:id="@+id/cv_dialog"
+    android:visibility="gone"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_img"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            app:srcCompat="@drawable/img_gallery"
+            android:layout_gravity="center"
+            android:contentDescription="image"
+            android:visibility="gone"
+            android:scaleType="centerCrop"
+            />
+        
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_notification_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:textSize="17sp"
+            android:fontFamily="@font/noto_serif_bengali"
+            android:textColor="@color/bold_text_color"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:visibility="gone"
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_notification_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:fontFamily="@font/noto_serif_bengali"
+            android:textSize="15sp"
+            android:textColor="@color/normal_text_color"
+            android:textStyle="normal"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone"
+            />
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            >
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mb_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="লিংক"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:textColor="@color/bold_text_color"
+                android:layout_margin="5dp"
+                android:background="?attr/selectableItemBackground"
+                android:layout_alignParentEnd="true"
+                android:visibility="gone"
+                />
+
+        </RelativeLayout>
+
+
+        
+        
+    </LinearLayout>
+
+    
+</androidx.cardview.widget.CardView>

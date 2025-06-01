@@ -26,6 +26,8 @@
             android:orientation="vertical"
             >
 
+            <!--
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -36,6 +38,25 @@
                 android:fontFamily="@font/noto_serif_bengali"
                 tools:ignore="HardcodedText"
                 />
+                -->
+
+            <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="সব মন্ত্র এখন এক জায়গায় – জপ করুন যেকোনো সময়, শান্তি পান প্রতিদিন।"
+            android:textSize="18sp"
+            android:textColor="@color/bold_text_color"
+            android:textAlignment="center"
+            android:fontFamily="@font/noto_serif_bengali"
+            tools:ignore="HardcodedText"
+            />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/img_new_list"
+                android:background="#744141"
+                />
+
 
         </LinearLayout>
 

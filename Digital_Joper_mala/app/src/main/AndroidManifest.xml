@@ -6,12 +6,9 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:usesCleartextTraffic="false"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -20,8 +17,11 @@
         android:roundIcon="@mipmap/app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.Digital_Joper_mala"
+        android:usesCleartextTraffic="false"
         tools:targetApi="34">
-
+        <activity
+            android:name=".Activity.Act_all_mantra"
+            android:exported="false" />
         <activity
             android:name=".Activity.Act_ShivMala"
             android:exported="false" />
@@ -59,7 +59,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

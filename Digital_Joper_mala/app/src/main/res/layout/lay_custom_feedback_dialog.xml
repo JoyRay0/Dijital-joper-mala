@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:scrollbars="none">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="15dp"
+        app:cardBackgroundColor="@color/card_view_color"
+        app:cardElevation="5dp"
+        android:layout_margin="10dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="আমরা আমাদের অ্যাপের অভিজ্ঞতা আরও উন্নত করার জন্য আপনার মতামত গ্রহণ করতে চাই!"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:textSize="18sp"
+                android:textColor="@color/bold_text_color"
+                android:textStyle="bold"
+                android:padding="10dp"
+                android:gravity="center"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="আপনার ফিডব্যাক আমাদের জন্য অমূল্য। আপনি যা বলবেন, তাতে আমাদের অ্যাপটি আরও উন্নত, শক্তিশালী এবং ব্যবহারকারী বান্ধব হতে পারবে। আমরা চাই আপনার মূল্যবান মতামত আমাদের সাহায্য করুক আরও ভালো কিছু তৈরি করতে। দয়া করে আপনার অভিজ্ঞতা শেয়ার করুন, এটি আমাদের চলার পথকে আলোকিত করবে।"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:textSize="17sp"
+                android:textColor="@color/normal_text_color"
+                android:textStyle="normal"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="এটি শুধুমাত্র কয়েকটি সেকেন্ড নিবে, কিন্তু আপনার প্রতিক্রিয়া আমাদের জন্য অনেক বড়"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:textSize="17sp"
+                android:textColor="@color/normal_text_color"
+                android:textStyle="normal"
+                android:padding="10dp"
+                android:gravity="start"
+                />
+
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/ed_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="আপনার মতামত লিখুন..."
+                android:textColorHint="@color/normal_text_color"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:padding="10dp"
+                android:ems="10"
+                android:textSize="16sp"
+                android:textColor="@color/normal_text_color"
+                android:background="@drawable/sh_edit_text_design"
+                android:layout_margin="10dp"
+                android:inputType="text"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                >
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="পাঠিয়ে দিন"
+                    android:textSize="17sp"
+                    android:padding="7dp"
+                    android:fontFamily="@font/noto_serif_bengali"
+                    android:background="?attr/selectableItemBackground"
+                    android:layout_alignParentEnd="true"
+                    android:textStyle="normal"
+                    android:textColor="@color/normal_text_color"
+
+                    />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_not_show_again"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="পুনরায় দেখাবেন না"
+                    android:textSize="17sp"
+                    android:padding="7dp"
+                    android:fontFamily="@font/noto_serif_bengali"
+                    android:background="?attr/selectableItemBackground"
+                    android:layout_alignParentStart="true"
+                    android:textStyle="normal"
+                    android:textColor="@color/normal_text_color"
+                    />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.core.widget.NestedScrollView>

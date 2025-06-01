@@ -37,6 +37,8 @@ public class Fg_all_mala extends Fragment {
 
     private GridView all_mala_gridview;
 
+    private AppCompatImageView iv_mantras;
+
     ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
     HashMap<String, String> hashMap;
 
@@ -52,15 +54,22 @@ public class Fg_all_mala extends Fragment {
 
         //Identity period --------------------------------------------
 
-        anim_fab = view.findViewById(R.id.anim_fab);
+        //anim_fab = view.findViewById(R.id.anim_fab);
         all_mala_gridview = view.findViewById(R.id.all_mala_gridview);
+        iv_mantras = view.findViewById(R.id.iv_mantras);
 
         //Identity period --------------------------------------------
 
         hashmap();
         Myadapter myadapter = new Myadapter();
         all_mala_gridview.setAdapter(myadapter);
-        fab_button();
+        //fab_button();
+
+        iv_mantras.setOnClickListener(view1 -> {
+
+            startActivity(new Intent(requireContext(), Act_all_mantra.class));
+
+        });
 
 
 

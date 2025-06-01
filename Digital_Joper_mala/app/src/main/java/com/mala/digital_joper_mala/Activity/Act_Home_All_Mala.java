@@ -2,6 +2,7 @@ package com.mala.digital_joper_mala.Activity;
 
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -16,19 +17,27 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
@@ -39,12 +48,21 @@ import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.gson.Gson;
+import com.mala.digital_joper_mala.Api.GET_api;
+import com.mala.digital_joper_mala.Api.Request_link;
+import com.mala.digital_joper_mala.Model.Api_links;
+import com.mala.digital_joper_mala.Model.Main_response;
 import com.mala.digital_joper_mala.R;
+import com.mala.digital_joper_mala.Utils.ApiResponseListener;
+import com.mala.digital_joper_mala.Utils.My_worker;
 import com.mala.digital_joper_mala.Utils.Security_utils;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -77,7 +95,7 @@ public class Act_Home_All_Mala extends AppCompatActivity {
     private AppCompatTextView tv_notification_description;
 
     private AppCompatTextView tv_no_notification;
-
+    
 
     //XML id's----------------------------------------------------------------------
 
@@ -117,8 +135,59 @@ public class Act_Home_All_Mala extends AppCompatActivity {
         check_update();
         //in ap update------------------------------------------------------
 
+        //feedback_dialog();
+
+        //in app notification--------------------------------------------------
+        SharedPreferences notification_pre = getSharedPreferences("notification", MODE_PRIVATE);
+        boolean isShowed = notification_pre.getBoolean("show_notification", false);
+
+       // Notification_dialog(Act_Home_All_Mala.this);
+
+        if (!isShowed){
+
+            Request_link link = new Request_link(new ApiResponseListener() {
+                @Override
+                public void onApiResponse(Api_links apiLinks) {
+
+                    String link = apiLinks.getInAppnotification();
+
+                    runOnUiThread(() -> {
+
+                        Notification_dialog(Act_Home_All_Mala.this,link );
+                        notification_pre.edit().putBoolean("show_notification", true).apply();
+                    });
 
 
+                }
+
+                @Override
+                public void onApiFailed(String error) {
+
+                }
+            });
+            link.Apis();
+
+
+
+
+
+        }else {
+
+            OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(My_worker.class)
+                    .setInitialDelay(5, TimeUnit.DAYS)
+                    .build();
+
+            WorkManager.getInstance(this).enqueue(workRequest);
+
+        }
+
+
+
+
+
+
+
+        //in app notification--------------------------------------------------
 
         //checking device security----------------------------------------------------------
         if (Security_utils.isDeviceRooted()) {
@@ -132,6 +201,7 @@ public class Act_Home_All_Mala extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.frame_layout, new Fg_all_mala()).commit();
         //Home fragment -------------------------------------------------------
+
 
 
 
@@ -164,85 +234,6 @@ public class Act_Home_All_Mala extends AppCompatActivity {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
                         finishAffinity();
                     }
-
-                } else if (item.getItemId() == R.id.notification) {
-
-                    Dialog dialog = new Dialog(Act_Home_All_Mala.this);
-                    dialog.setContentView(R.layout.lay_notification_dialog);
-                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                    dialog.show();
-
-                    tv_notification_title = dialog.findViewById(R.id.tv_notification_title);
-                    tv_notification_description= dialog.findViewById(R.id.tv_notification_description);
-                    tv_no_notification = dialog.findViewById(R.id.tv_no_notification);
-
-                    tv_no_notification.setVisibility(View.VISIBLE);
-                    String url = "https://rksoftwares.xyz/All_app/jopa_mala/InAppNotification";
-
-                    OkHttpClient client = new OkHttpClient();
-
-                    Request request = new Request.Builder().url(url).build();
-
-                    client.newCall(request).enqueue(new Callback() {
-                        @Override
-                        public void onFailure(@NonNull Call call, @NonNull IOException e) {
-
-                            new Handler(Looper.getMainLooper()).post(() -> {
-
-                                tv_no_notification.setVisibility(View.VISIBLE);
-                                tv_notification_title.setVisibility(View.GONE);
-                                tv_notification_description.setVisibility(View.GONE);
-
-                            });
-
-                        }
-
-                        @Override
-                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-
-                            if (response.isSuccessful() && response.body() != null){
-
-                                String message = response.body().string();
-
-                                try {
-                                    JSONObject object = new JSONObject(message);
-
-                                    String title = object.getString("title");
-                                    String description = object.getString("description");
-                                    String msize = object.getString("msize");
-
-                                    new Handler(Looper.getMainLooper()).post(() -> {
-
-                                        if (msize.equals("long")){
-
-                                            tv_no_notification.setVisibility(View.GONE);
-                                            tv_notification_title.setVisibility(View.VISIBLE);
-                                            tv_notification_description.setVisibility(View.VISIBLE);
-
-                                            //int notify_num = Integer.parseInt(notification_num);
-
-                                            tv_notification_title.setText(title);
-                                            tv_notification_description.setText(description);
-                                            
-                                        } else if (msize.equals("sort")) {
-
-                                            tv_no_notification.setVisibility(View.VISIBLE);
-                                            tv_notification_title.setVisibility(View.GONE);
-                                            tv_notification_description.setVisibility(View.GONE);
-
-                                        }
-
-                                    });
-
-                                } catch (Exception e) {
-                                   e.printStackTrace();
-                                }
-
-                            }
-
-                        }
-                    });
-
 
                 }
 
@@ -389,8 +380,105 @@ public class Act_Home_All_Mala extends AppCompatActivity {
 
         });
 
-
         dialog.show();
+
+    }
+
+
+
+    //notification dialog
+    private void Notification_dialog(Context context, String url){
+
+        Gson gson = new Gson();
+
+        GET_api getApi = new GET_api(url);
+
+        getApi.call_Api(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+                if (response.isSuccessful() && response.body() != null){
+
+                    String data = response.body().string();
+
+                    Main_response mainResponse = gson.fromJson(data, Main_response.class);
+
+                    new Handler(Looper.getMainLooper()).post(() -> {
+
+                       try {
+
+                           Dialog dialog = new Dialog(context);
+                           dialog.setContentView(R.layout.lay_notification);
+                           dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                           Window window = dialog.getWindow();
+                           window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                           dialog.show();
+
+                           AppCompatImageView iv_img = dialog.findViewById(R.id.iv_img);
+                           AppCompatTextView tv_notification_title = dialog.findViewById(R.id.tv_notification_title);
+                           AppCompatTextView tv_notification_description = dialog.findViewById(R.id.tv_notification_description);
+                           MaterialButton mb_send = dialog.findViewById(R.id.mb_send);
+                           CardView cv_dialog = dialog.findViewById(R.id.cv_dialog);
+
+                           cv_dialog.setVisibility(View.GONE);
+
+                           if (mainResponse.getMsize().contains("long")){
+
+                               cv_dialog.setVisibility(View.VISIBLE);
+                               tv_notification_title.setVisibility(View.VISIBLE);
+                               tv_notification_description.setVisibility(View.VISIBLE);
+
+                               tv_notification_title.setText(mainResponse.getTitle());
+                               tv_notification_description.setText(mainResponse.getDescription());
+
+
+                               if (mainResponse.getImg_link().isEmpty()){
+
+                                   iv_img.setVisibility(View.GONE);
+
+                               }else {
+                                   iv_img.setVisibility(View.VISIBLE);
+
+                                   Picasso.get().load(mainResponse.getImg_link()).into(iv_img);
+
+                               }
+
+                               if (mainResponse.getWeb_link().isEmpty()) {
+                                   mb_send.setVisibility(View.GONE);
+
+                               }else {
+                                   mb_send.setVisibility(View.VISIBLE);
+                                   mb_send.setOnClickListener(view -> {
+
+                                       startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(mainResponse.getWeb_link())));
+                                       dialog.dismiss();
+                                   });
+                               }
+
+                           }else {
+
+                               dialog.dismiss();
+
+
+                           }
+
+                       } catch (Exception e) {
+                          e.printStackTrace();
+                       }
+
+                    });
+
+
+                }
+
+            }
+        });
+
 
 
     }

@@ -7,14 +7,6 @@
         >
 
         <item
-            android:id="@+id/notification"
-            android:title="নোটিফিকেশন"
-            android:icon="@drawable/ic_notifications"
-            app:showAsAction="always"
-            
-            />
-
-        <item
             android:id="@+id/share"
             android:title="শেয়ার"
             android:icon="@drawable/ic_share"
