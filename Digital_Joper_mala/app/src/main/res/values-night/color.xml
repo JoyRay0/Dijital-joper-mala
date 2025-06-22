@@ -17,6 +17,10 @@
 
     <color name="card_view_color">#5F5D5D</color>
 
+    <color name="card_view_color2">#353935</color>
+
+    <color name="input_delete">#A628282B</color>
+
     <color name="counter_display_button_color">#023524</color>
 
     <color name="arrow_color">#34ADA1</color>

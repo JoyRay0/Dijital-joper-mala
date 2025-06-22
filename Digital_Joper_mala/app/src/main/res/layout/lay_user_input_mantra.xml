@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    >
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="@color/card_view_color2"
+        android:layout_margin="7dp"
+        app:cardElevation="3sp"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+           <androidx.appcompat.widget.AppCompatImageView
+               android:id="@+id/iv_delete"
+               android:layout_width="45dp"
+               android:layout_height="45dp"
+               android:src="@drawable/ic_delete"
+               android:background="@drawable/sh_user_input_delete"
+               android:layout_alignParentEnd="true"
+               android:layout_alignParentTop="true"
+               android:padding="5dp"
+               android:scaleType="center"
+               android:tooltipText="মন্ত্র ডিলিট"
+               />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:padding="5dp"
+                android:textColor="@color/bold_text_color"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:layout_below="@id/iv_delete"
+                />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/card_view_color"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                android:layout_margin="10dp"
+                android:layout_below="@id/tv_title"
+                >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_mantra"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/noto_serif_bengali"
+                        android:padding="7dp"
+                        android:text="mantra"
+                        android:textAlignment="center"
+                        android:textColor="@color/normal_text_color"
+                        android:textSize="16sp"
+                        android:textStyle="normal" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_copy"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignBottom="@id/tv_mantra"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="?attr/actionBarItemBackground"
+                        android:src="@drawable/ic_copy" />
+
+                </RelativeLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</LinearLayout>

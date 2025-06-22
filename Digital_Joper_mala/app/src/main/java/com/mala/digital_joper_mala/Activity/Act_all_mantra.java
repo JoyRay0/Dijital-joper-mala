@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.mala.digital_joper_mala.Adapter.All_mantra;
+import com.mala.digital_joper_mala.Database.Mantra;
 import com.mala.digital_joper_mala.R;
 
 import java.util.ArrayList;
@@ -32,6 +34,8 @@ public class Act_all_mantra extends AppCompatActivity {
 
     HashMap<String, String> map;
 
+    private Mantra my_mantra;
+
     //XML id's------------------------------------------------------
 
     @Override
@@ -47,6 +51,33 @@ public class Act_all_mantra extends AppCompatActivity {
         mantra = new All_mantra(this, mapList);
         lv_mantra.setAdapter(mantra);
         mantras();
+
+        /*
+        my_mantra = new Mantra(this);
+
+        my_mantra.insert("non", "Test");
+
+        List<HashMap<String, String>> allData = my_mantra.get_All_data();
+
+        if (allData == null || allData.isEmpty()){
+
+            Toast.makeText(this, "no data", Toast.LENGTH_SHORT).show();
+        }
+
+        for (HashMap<String, String> hashMap: allData) {
+
+            String title = hashMap.get("title");
+            String mantra = hashMap.get("mantra");
+
+
+            map = new HashMap<>();
+            map.put("দেবতার নাম",title);
+            map.put("জপ মন্ত্র",mantra);
+            mapList.add(map);
+
+        }
+
+         */
 
 
         back.setOnClickListener(view -> {

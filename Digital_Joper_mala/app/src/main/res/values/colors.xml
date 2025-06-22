@@ -15,6 +15,10 @@
 
     <color name="card_view_color">#fff</color>
 
+    <color name="card_view_color2">#E8E7E7</color>
+
+    <color name="input_delete">#D8D1D1</color>
+
     <color name="counter_display_color">#EDEADE</color>
 
     <color name="counter_display_button_color">#D0DDD2D2</color>

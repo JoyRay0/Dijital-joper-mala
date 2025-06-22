@@ -17,14 +17,10 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
@@ -59,15 +55,11 @@ import com.mala.digital_joper_mala.Utils.My_worker;
 import com.mala.digital_joper_mala.Utils.Security_utils;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.Response;
 
 
@@ -234,6 +226,11 @@ public class Act_Home_All_Mala extends AppCompatActivity {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
                         finishAffinity();
                     }
+
+                } else if (item.getItemId() ==R.id.add) {
+
+                    startActivity(new Intent(Act_Home_All_Mala.this, Act_add_mantra.class));
+                    finishAffinity();
 
                 }
 

@@ -65,7 +65,6 @@ public class All_mantra extends BaseAdapter {
 
         iv_copy.setOnClickListener(view2 -> {
 
-
             ClipboardManager manager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData data = ClipData.newPlainText("Text copied",mantras);
             manager.setPrimaryClip(data);

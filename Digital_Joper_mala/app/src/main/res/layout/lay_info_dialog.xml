@@ -44,19 +44,6 @@
 
                 />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="App Version : 1.9"
-                android:fontFamily="@font/noto_serif_bengali"
-                android:textSize="17sp"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:padding="15dp"
-                android:textColor="@color/normal_text_color"
-                />
-
-
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

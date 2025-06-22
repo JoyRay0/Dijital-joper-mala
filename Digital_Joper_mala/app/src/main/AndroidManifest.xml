@@ -20,6 +20,10 @@
         android:usesCleartextTraffic="false"
         tools:targetApi="34">
         <activity
+            android:name=".Activity.Act_add_mantra"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false" />
+        <activity
             android:name=".Activity.Act_all_mantra"
             android:exported="false" />
         <activity
