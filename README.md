@@ -1,6 +1,9 @@
 # জপ মালা - Digital Jap Mala
 
-## অ্যাপ ডাউনলোড করতে ক্লিক করুন 👉 [জপ মালা - Digital Jap Mala](https://play.google.com/store/apps/details?id=com.mala.digital_joper_mala)
+[![Play Store](https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=com.mala.digital_joper_mala)
+
+## 📲 অ্যাপ ডাউনলোড
+ডাউনলোড করতে ক্লিক করুন: [জপ মালা - Digital Jap Mala](https://play.google.com/store/apps/details?id=com.mala.digital_joper_mala)
 
 ### কেন আমাদের অ্যাপ ব্যবহার করবেন? 🤔
 – প্রতিদিনের জপ গণনা সহজে ট্র্যাক করুন।
