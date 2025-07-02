@@ -34,8 +34,7 @@
 – আধুনিক প্রযুক্তির মাধ্যমে ঐতিহ্যবাহী সাধনা সহজ করা।
 
 
-### Warning ⚠️ 
-
-This project is copyrighted.
-You are not allowed to copy, modify, or publish it under your own name.
-Violators will be reported for copyright infringement.
+### সতর্কতা ⚠️
+> **কপিরাইট সুরক্ষিত**  
+> এই প্রকল্পের কন্টেন্ট, কোড বা ডিজাইনের কোনো অংশ কপি, পরিবর্তন বা পুনঃপ্রকাশ করা নিষিদ্ধ।  
+> কপিরাইট লঙ্ঘনের ক্ষেত্রে আইনানুগ ব্যবস্থা নেওয়া হবে।
