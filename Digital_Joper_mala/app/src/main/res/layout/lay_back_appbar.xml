@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back"
             android:layout_centerVertical="true"
-            android:background="?android:attr/actionBarItemBackground"
+            android:background="?attr/actionBarItemBackground"
             android:clickable="true"
             android:focusable="true"
             android:padding="10dp"

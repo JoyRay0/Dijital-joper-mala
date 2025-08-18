@@ -1,11 +1,13 @@
 package com.mala.digital_joper_mala.Activity;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,14 +56,18 @@ import com.mala.digital_joper_mala.R;
 import com.mala.digital_joper_mala.Utils.ApiResponseListener;
 import com.mala.digital_joper_mala.Utils.My_worker;
 import com.mala.digital_joper_mala.Utils.Security_utils;
+
 import com.squareup.picasso.Picasso;
 
+
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
+
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+
+
 
 
 public class Act_Home_All_Mala extends AppCompatActivity {
@@ -128,7 +135,7 @@ public class Act_Home_All_Mala extends AppCompatActivity {
         //in ap update------------------------------------------------------
 
         //feedback_dialog();
-
+        /*
         //in app notification--------------------------------------------------
         SharedPreferences notification_pre = getSharedPreferences("notification", MODE_PRIVATE);
         boolean isShowed = notification_pre.getBoolean("show_notification", false);
@@ -149,7 +156,6 @@ public class Act_Home_All_Mala extends AppCompatActivity {
                         notification_pre.edit().putBoolean("show_notification", true).apply();
                     });
 
-
                 }
 
                 @Override
@@ -158,8 +164,6 @@ public class Act_Home_All_Mala extends AppCompatActivity {
                 }
             });
             link.Apis();
-
-
 
 
 
@@ -173,11 +177,7 @@ public class Act_Home_All_Mala extends AppCompatActivity {
 
         }
 
-
-
-
-
-
+         */
 
         //in app notification--------------------------------------------------
 
@@ -193,10 +193,6 @@ public class Act_Home_All_Mala extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.frame_layout, new Fg_all_mala()).commit();
         //Home fragment -------------------------------------------------------
-
-
-
-
 
     }//on create=======================
 
@@ -381,8 +377,6 @@ public class Act_Home_All_Mala extends AppCompatActivity {
 
     }
 
-
-
     //notification dialog
     private void Notification_dialog(Context context, String url){
 
@@ -475,8 +469,6 @@ public class Act_Home_All_Mala extends AppCompatActivity {
 
             }
         });
-
-
 
     }
 

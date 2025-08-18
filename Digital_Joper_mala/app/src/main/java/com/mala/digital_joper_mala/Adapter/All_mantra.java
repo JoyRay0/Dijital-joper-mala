@@ -53,7 +53,7 @@ public class All_mantra extends BaseAdapter {
 
         AppCompatTextView tv_title = view1.findViewById(R.id.tv_title);
         AppCompatTextView tv_mantra = view1.findViewById(R.id.tv_mantra);
-        AppCompatImageView iv_copy = view1.findViewById(R.id.iv_copy);
+        //AppCompatImageView iv_copy = view1.findViewById(R.id.iv_copy);
 
         HashMap<String, String> map = mapList.get(position);
 
@@ -63,7 +63,7 @@ public class All_mantra extends BaseAdapter {
         tv_title.setText(dev);
         tv_mantra.setText(mantras);
 
-        iv_copy.setOnClickListener(view2 -> {
+        tv_mantra.setOnClickListener(view2 -> {
 
             ClipboardManager manager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData data = ClipData.newPlainText("Text copied",mantras);

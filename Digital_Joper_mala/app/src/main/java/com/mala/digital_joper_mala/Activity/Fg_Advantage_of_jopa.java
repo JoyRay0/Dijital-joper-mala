@@ -287,31 +287,13 @@ public class Fg_Advantage_of_jopa extends Fragment {
 
     private void data_form_server(String url){
 
-        //cache data--------------------------------------
-        File cacheDr = new File(getContext().getCacheDir(),"data");
-        int cacheSize = 10 * 1024 * 1024; //10MB
-        Cache cache = new Cache(cacheDr, cacheSize);
-
-        //cache data--------------------------------------
-
         //unique device id
         String device_id = UUID.randomUUID().toString();
 
         Gson gson = new Gson();
 
-        OkHttpClient client = new OkHttpClient.Builder()
-                .cache(cache)
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .addInterceptor(chain -> {
-                    okhttp3.Response response = chain.proceed(chain.request());
-                    response = response.newBuilder()
-                            .header("Cache-Control", "public, max-age=600") // 10 মিনিট ক্যাশ রাখবে
-                            .build();
-                    return response;
-                })
-                .build();
+        OkHttpClient client = new OkHttpClient();
+
 
         okhttp3.Request request = new okhttp3.Request.Builder()
                 .url(url)

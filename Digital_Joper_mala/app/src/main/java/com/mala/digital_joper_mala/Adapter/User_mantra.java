@@ -81,11 +81,7 @@ public class User_mantra extends RecyclerView.Adapter<User_mantra.mantra> {
             }
 
 
-
-
-
         });
-
 
     }
 

@@ -41,19 +41,36 @@
                 -->
 
             <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="সব মন্ত্র এখন এক জায়গায় – জপ করুন যেকোনো সময়, শান্তি পান প্রতিদিন।"
-            android:textSize="18sp"
-            android:textColor="@color/bold_text_color"
-            android:textAlignment="center"
-            android:fontFamily="@font/noto_serif_bengali"
-            tools:ignore="HardcodedText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="১। এখন থেকে মন্ত্রে ক্লিক করলেই কপি হয়ে যাবে ।"
+                android:textSize="18sp"
+                android:textColor="@color/bold_text_color"
+                android:fontFamily="@font/noto_serif_bengali"
+                tools:ignore="HardcodedText"
+                android:layout_margin="10dp"
             />
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/img_new_list"
+                android:src="@drawable/img_click_mantra"
+                android:background="#744141"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="২। মালাতে এখন আরো ২টি মন্ত্র সেভ করতে পারবেন ।"
+                android:textSize="18sp"
+                android:textColor="@color/bold_text_color"
+                android:fontFamily="@font/noto_serif_bengali"
+                tools:ignore="HardcodedText"
+                android:layout_margin="10dp"
+                />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:src="@drawable/img_addi"
                 android:background="#744141"
                 />
 

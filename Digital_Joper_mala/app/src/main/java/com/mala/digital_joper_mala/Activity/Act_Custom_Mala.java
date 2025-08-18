@@ -35,9 +35,9 @@ public class Act_Custom_Mala extends AppCompatActivity {
 
     //XML id's--------------------------------------------------
 
-    private AppCompatAutoCompleteTextView ed_autocomplete_textview1, ed_autocomplete_textview2;
+    private AppCompatAutoCompleteTextView ed_autocomplete_textview1, ed_autocomplete_textview2, ed_autocomplete_textview3, ed_autocomplete_textview4;
 
-    private AppCompatTextView tv_mantras1, tv_mantras2;
+    private AppCompatTextView tv_mantras1, tv_mantras2, tv_mantras3, tv_mantras4;
 
     private TextView text1,text2,text3;
 
@@ -45,7 +45,7 @@ public class Act_Custom_Mala extends AppCompatActivity {
 
     private AppCompatImageButton iv_upload_button, iv_delete_button;
 
-    private AppCompatImageView save1, save2, iv_eye1, iv_eye2, iv_upload_image, iv_delete1, iv_delete2;
+    private AppCompatImageView save1, save2, save3, save4 ,iv_eye1, iv_eye2, iv_eye3, iv_eye4, iv_upload_image, iv_delete1, iv_delete2, iv_delete3, iv_delete4;
 
     Toolbar toolbar;
 
@@ -53,9 +53,7 @@ public class Act_Custom_Mala extends AppCompatActivity {
 
     private Vibrator vibrator;
 
-    SharedPreferences sharedPreferences, save_text1, save_text2;
-    boolean nightMode;
-
+    SharedPreferences sharedPreferences, save_text1, save_text2, save_text3, save_text4;
 
     int count = 0, i = 0, j = 0;
 
@@ -92,9 +90,32 @@ public class Act_Custom_Mala extends AppCompatActivity {
 
         ed_autocomplete_textview1 = findViewById(R.id.ed_autocomplete_textview1);
         ed_autocomplete_textview2 = findViewById(R.id.ed_autocomplete_textview2);
+        ed_autocomplete_textview3 = findViewById(R.id.ed_autocomplete_textview3);
+        ed_autocomplete_textview4 = findViewById(R.id.ed_autocomplete_textview4);
+
         tv_mantras1 = findViewById(R.id.tv_mantras1);
         tv_mantras2 = findViewById(R.id.tv_mantras2);
+        tv_mantras3 = findViewById(R.id.tv_mantras3);
+        tv_mantras4 = findViewById(R.id.tv_mantras4);
+
+        iv_eye1 = findViewById(R.id.iv_eye1);
+        iv_eye2 = findViewById(R.id.iv_eye2);
+        iv_eye3 = findViewById(R.id.iv_eye3);
+        iv_eye4 = findViewById(R.id.iv_eye4);
+
+        save1 = findViewById(R.id.save1);
+        save2 = findViewById(R.id.save2);
+        save3 = findViewById(R.id.save3);
+        save4 = findViewById(R.id.save4);
+
+        iv_delete1 = findViewById(R.id.iv_delete1);
+        iv_delete2 = findViewById(R.id.iv_delete2);
+        iv_delete3 = findViewById(R.id.iv_delete3);
+        iv_delete4 = findViewById(R.id.iv_delete4);
+
         toolbar = findViewById(R.id.toolbar);
+        back = findViewById(R.id.back);
+
         add1 = findViewById(R.id.add1);
         add2 = findViewById(R.id.add2);
         add3 = findViewById(R.id.add3);
@@ -104,17 +125,10 @@ public class Act_Custom_Mala extends AppCompatActivity {
         text1 = findViewById(R.id.tv_count_display1);
         text2 = findViewById(R.id.tv_count_display2);
         text3 = findViewById(R.id.tv_count_display3);
-        save1 = findViewById(R.id.save1);
-        save2 = findViewById(R.id.save2);
-        iv_eye1 = findViewById(R.id.iv_eye1);
-        iv_eye2 = findViewById(R.id.iv_eye2);
-        back = findViewById(R.id.back);
+
         iv_upload_image = findViewById(R.id.iv_upload_image);
         iv_upload_button = findViewById(R.id.iv_upload_button);
         iv_delete_button = findViewById(R.id.iv_delete_button);
-        iv_delete1 = findViewById(R.id.iv_delete1);
-        iv_delete2 = findViewById(R.id.iv_delete2);
-
 
         //identity period -----------------------------------------------------------
 
@@ -124,20 +138,47 @@ public class Act_Custom_Mala extends AppCompatActivity {
         save_text2 = getSharedPreferences("text_save2",MODE_PRIVATE);
         String saved_text2 = save_text2.getString("ed_saved2","");
 
+        save_text3 = getSharedPreferences("text_save3",MODE_PRIVATE);
+        String saved_text3 = save_text3.getString("ed_saved3","");
+
+        save_text4 = getSharedPreferences("text_save4",MODE_PRIVATE);
+        String saved_text4 = save_text4.getString("ed_saved4","");
+
         tv_mantras1.setText("‘‘ "+saved_text1+" ’’");
         tv_mantras2.setText("‘‘ "+saved_text2+" ’’");
+
+        tv_mantras3.setText("‘‘ "+saved_text3+" ’’");
+        tv_mantras4.setText("‘‘ "+saved_text4+" ’’");
 
         save();
 
 
         ed_autocomplete_textview1.setVisibility(View.VISIBLE);
         ed_autocomplete_textview2.setVisibility(View.VISIBLE);
+        ed_autocomplete_textview3.setVisibility(View.VISIBLE);
+        ed_autocomplete_textview4.setVisibility(View.VISIBLE);
+
         save1.setVisibility(View.VISIBLE);
         save2.setVisibility(View.VISIBLE);
+        save3.setVisibility(View.VISIBLE);
+        save4.setVisibility(View.VISIBLE);
 
+        // tags---------------------------------
         iv_eye1.setImageResource(R.drawable.ic_open_eye);
         iv_eye1.setTag("open_eye");
 
+        iv_eye2.setImageResource(R.drawable.ic_open_eye);
+        iv_eye2.setTag("open_eye");
+
+        iv_eye3.setImageResource(R.drawable.ic_open_eye);
+        iv_eye3.setTag("open_eye");
+
+        iv_eye4.setImageResource(R.drawable.ic_open_eye);
+        iv_eye4.setTag("open_eye");
+
+        // tags---------------------------------
+
+        //eye button--------------------------------
         iv_eye1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -152,8 +193,6 @@ public class Act_Custom_Mala extends AppCompatActivity {
                     save1.setVisibility(View.GONE);
                     iv_delete1.setVisibility(View.GONE);
 
-
-
                 } else if ("close_eye".equals(current_tag)) {
 
                     iv_eye1.setImageResource(R.drawable.ic_open_eye);
@@ -167,8 +206,7 @@ public class Act_Custom_Mala extends AppCompatActivity {
             }
         });
 
-        iv_eye2.setImageResource(R.drawable.ic_open_eye);
-        iv_eye2.setTag("open_eye");
+
 
         iv_eye2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,8 +222,6 @@ public class Act_Custom_Mala extends AppCompatActivity {
                     save2.setVisibility(View.GONE);
                     iv_delete2.setVisibility(View.GONE);
 
-
-
                 } else if ("close_eye".equals(current_tag)) {
 
                     iv_eye2.setImageResource(R.drawable.ic_open_eye);
@@ -199,6 +235,119 @@ public class Act_Custom_Mala extends AppCompatActivity {
             }
         });
 
+        iv_eye3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String current_tag = (String) iv_eye3.getTag();
+
+                if ("open_eye".equals(current_tag)){
+
+                    iv_eye3.setImageResource(R.drawable.ic_eye_close);
+                    iv_eye3.setTag("close_eye");
+                    ed_autocomplete_textview3.setVisibility(View.GONE);
+                    save3.setVisibility(View.GONE);
+                    iv_delete3.setVisibility(View.GONE);
+
+                } else if ("close_eye".equals(current_tag)) {
+
+                    iv_eye3.setImageResource(R.drawable.ic_open_eye);
+                    iv_eye3.setTag("open_eye");
+                    ed_autocomplete_textview3.setVisibility(View.VISIBLE);
+                    save3.setVisibility(View.VISIBLE);
+                    iv_delete3.setVisibility(View.VISIBLE);
+
+                }
+
+            }
+        });
+
+        iv_eye4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String current_tag = (String) iv_eye4.getTag();
+
+                if ("open_eye".equals(current_tag)){
+
+                    iv_eye4.setImageResource(R.drawable.ic_eye_close);
+                    iv_eye4.setTag("close_eye");
+                    ed_autocomplete_textview4.setVisibility(View.GONE);
+                    save4.setVisibility(View.GONE);
+                    iv_delete4.setVisibility(View.GONE);
+
+                } else if ("close_eye".equals(current_tag)) {
+
+                    iv_eye4.setImageResource(R.drawable.ic_open_eye);
+                    iv_eye4.setTag("open_eye");
+                    ed_autocomplete_textview4.setVisibility(View.VISIBLE);
+                    save4.setVisibility(View.VISIBLE);
+                    iv_delete4.setVisibility(View.VISIBLE);
+
+                }
+
+            }
+        });
+        //eye button--------------------------------
+
+        //delete_button----------------------
+        iv_delete1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                save_text1 = getSharedPreferences("text_save1", MODE_PRIVATE);
+                SharedPreferences.Editor editor = save_text1.edit();
+                editor.clear();
+                editor.apply();
+
+                tv_mantras1.setText("জপ মন্ত্র");
+
+            }
+        });
+
+        iv_delete2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                save_text2 = getSharedPreferences("text_save2", MODE_PRIVATE);
+                SharedPreferences.Editor editor = save_text2.edit();
+                editor.clear();
+                editor.apply();
+
+                tv_mantras2.setText("জপ মন্ত্র");
+
+            }
+        });
+
+        iv_delete3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                save_text3 = getSharedPreferences("text_save3", MODE_PRIVATE);
+                SharedPreferences.Editor editor = save_text3.edit();
+                editor.clear();
+                editor.apply();
+
+                tv_mantras3.setText("জপ মন্ত্র");
+
+            }
+        });
+
+        iv_delete4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                save_text4 = getSharedPreferences("text_save4", MODE_PRIVATE);
+                SharedPreferences.Editor editor = save_text4.edit();
+                editor.clear();
+                editor.apply();
+
+                tv_mantras4.setText("জপ মন্ত্র");
+
+            }
+        });
+        //delete_button----------------------
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,10 +356,6 @@ public class Act_Custom_Mala extends AppCompatActivity {
 
             }
         });
-
-
-
-
 
         //1st step started++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         add1.setOnClickListener(new View.OnClickListener() {
@@ -229,7 +374,6 @@ public class Act_Custom_Mala extends AppCompatActivity {
             }
         });
 
-
         reset1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -244,9 +388,6 @@ public class Act_Custom_Mala extends AppCompatActivity {
 
         });
         //1st step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
 
         //2nd step started++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         add2.setOnClickListener(new View.OnClickListener() {
@@ -265,8 +406,6 @@ public class Act_Custom_Mala extends AppCompatActivity {
             }
         });
 
-
-
         reset2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -280,9 +419,6 @@ public class Act_Custom_Mala extends AppCompatActivity {
             }
         });
         //2nd step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
 
         //3rd step started++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         add3.setOnClickListener(new View.OnClickListener() {
@@ -315,7 +451,6 @@ public class Act_Custom_Mala extends AppCompatActivity {
         });
         //3rd step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
         //image added -------------------------------------------------------------------
         iv_upload_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -339,43 +474,7 @@ public class Act_Custom_Mala extends AppCompatActivity {
         load_img_form_storage();
         //image added -------------------------------------------------------------------
 
-        //delete_button1----------------------
-        iv_delete1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                save_text1 = getSharedPreferences("text_save1", MODE_PRIVATE);
-                SharedPreferences.Editor editor = save_text1.edit();
-                editor.clear();
-                editor.apply();
-
-                tv_mantras1.setText("জপ মন্ত্র");
-
-            }
-        });
-
-        //delete_button1----------------------
-        iv_delete2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                save_text2 = getSharedPreferences("text_save2", MODE_PRIVATE);
-                SharedPreferences.Editor editor = save_text2.edit();
-                editor.clear();
-                editor.apply();
-
-                tv_mantras2.setText("জপ মন্ত্র");
-
-            }
-        });
-
-
-
-
-
-
     }//on create====================================
-
 
     //vibration--------------------------
     private void vibrate(){                     //vibrate
@@ -384,10 +483,7 @@ public class Act_Custom_Mala extends AppCompatActivity {
 
         vibrator.vibrate(50);
 
-
-
     }
-
 
     //save--------------------------
     private void save(){
@@ -435,6 +531,56 @@ public class Act_Custom_Mala extends AppCompatActivity {
                 }else {
 
                     tv_mantras2.setText("জপ মন্ত্র");
+
+
+                }
+
+            }
+        });
+
+        save3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String ed_mantra3 = ed_autocomplete_textview3.getText().toString();
+
+                if (ed_mantra3.length() > 0){
+
+                    SharedPreferences.Editor editor3 = save_text3.edit();
+                    editor3.putString("ed_saved3",ed_mantra3);
+                    editor3.apply();
+
+                    tv_mantras3.setText("‘‘"+ed_mantra3+"’’");
+                    ed_autocomplete_textview3.setText("");
+
+                }else {
+
+                    tv_mantras3.setText("জপ মন্ত্র");
+
+                }
+
+            }
+        });
+
+
+        save4.setOnClickListener(new View.OnClickListener() {   //save button2
+            @Override
+            public void onClick(View view) {
+
+                String ed_mantra4 = ed_autocomplete_textview4.getText().toString();
+
+                if (ed_mantra4.length() > 0){
+
+                    SharedPreferences.Editor editor4 = save_text4.edit();
+                    editor4.putString("ed_saved4",ed_mantra4);
+                    editor4.apply();
+
+                    tv_mantras4.setText("‘‘"+ed_mantra4+"’’");
+                    ed_autocomplete_textview4.setText("");
+
+                }else {
+
+                    tv_mantras4.setText("জপ মন্ত্র");
 
 
                 }
