@@ -1,6 +1,7 @@
 package com.mala.digital_joper_mala.Activity;
 
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -286,6 +287,18 @@ public class Act_Boisnob_mala extends AppCompatActivity {
         load_img_form_storage();
         //image added -------------------------------------------------------------------
 
+
+        //back-----------------------------------------------------------------
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+
+                startActivity(new Intent(Act_Boisnob_mala.this, Act_Home_All_Mala.class));
+                finishAffinity();
+
+            }
+        });
+        //back-----------------------------------------------------------------
 
     }//on create==================================
 

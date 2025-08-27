@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.graphics.Insets;
@@ -110,6 +111,19 @@ public class Act_all_mantra extends AppCompatActivity {
 
         });
 
+        //back---------------------------------------------------
+
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+
+                startActivity(new Intent(Act_all_mantra.this, Act_Home_All_Mala.class));
+                finishAffinity();
+
+            }
+        });
+
+        //back---------------------------------------------------
 
 
     }//on create===================================

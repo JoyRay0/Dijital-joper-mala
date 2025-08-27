@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -48,5 +49,15 @@ public class Act_NewFeatures extends AppCompatActivity {
 
         //back button---------------------------------------
 
-    }
-}
+        //back-----------------------------------------------------
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                startActivity(new Intent(Act_NewFeatures.this, Act_Setting.class));
+                finishAffinity();
+            }
+        });
+        //back-----------------------------------------------------
+
+    }//on create======================================
+}//public class=====================================

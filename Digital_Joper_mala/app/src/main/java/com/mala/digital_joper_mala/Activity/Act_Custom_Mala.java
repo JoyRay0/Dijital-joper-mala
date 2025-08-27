@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -473,6 +474,16 @@ public class Act_Custom_Mala extends AppCompatActivity {
 
         load_img_form_storage();
         //image added -------------------------------------------------------------------
+
+        //back------------------------------------------------------
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                startActivity(new Intent(Act_Custom_Mala.this, Act_Home_All_Mala.class));
+                finishAffinity();
+            }
+        });
+        //back------------------------------------------------------
 
     }//on create====================================
 

@@ -1,10 +1,12 @@
 package com.mala.digital_joper_mala.Activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mala.digital_joper_mala.R;
@@ -36,7 +38,15 @@ public class Act_PrivacyPolicy extends AppCompatActivity {
         web.loadUrl("https://sites.google.com/view/jopermala/home");
 
 
+        //back-----------------------------------------------------
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                startActivity(new Intent(Act_PrivacyPolicy.this, Act_Setting.class));
+                finishAffinity();
+            }
+        });
+        //back-----------------------------------------------------
 
-
-    }
-}
+    }//on create====================================
+}//public class====================================

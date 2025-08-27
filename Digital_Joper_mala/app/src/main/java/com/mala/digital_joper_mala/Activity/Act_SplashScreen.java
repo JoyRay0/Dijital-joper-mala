@@ -3,9 +3,11 @@ package com.mala.digital_joper_mala.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -14,16 +16,10 @@ import com.mala.digital_joper_mala.R;
 
 public class Act_SplashScreen extends AppCompatActivity {
 
-    //XML id's--------------------------------------------------------
-
-
-
-    //XML id's--------------------------------------------------------
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         SharedPreferences theme = getSharedPreferences("my_theme", MODE_PRIVATE);
         int defaultTheme = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
@@ -84,7 +80,6 @@ public class Act_SplashScreen extends AppCompatActivity {
             },2000);
 
         }
-
 
     }//on create=====================================
     private void other_page(){

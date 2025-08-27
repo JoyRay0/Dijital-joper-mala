@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatButton;
@@ -221,7 +222,17 @@ public class Act_Setting extends AppCompatActivity {
         
         //more app-------------------------------------------------
 
-    }
+        //back-----------------------------------------------------
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                startActivity(new Intent(Act_Setting.this, Act_Home_All_Mala.class));
+                finishAffinity();
+            }
+        });
+        //back-----------------------------------------------------
+
+    }//on create==================================
 
 
     //selected theme---------------------------------------------------
@@ -301,15 +312,5 @@ public class Act_Setting extends AppCompatActivity {
         dialog.show();
     }
     //selected theme---------------------------------------------------
-
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        startActivity(new Intent(Act_Setting.this, Act_Home_All_Mala.class));
-        finishAffinity();
-
-    }
 
 }//public class =========================================

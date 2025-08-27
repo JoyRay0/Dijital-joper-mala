@@ -1,5 +1,6 @@
 package com.mala.digital_joper_mala.Activity;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -17,16 +18,7 @@ public class Act_boisnob_mala_helper extends AppCompatActivity {
 
     ImageButton back;
 
-    Boolean nightMode;
-    SharedPreferences sharedPreferences;
-
-    private static final String PREF_NAME = "dark_light_mode";
-    private static final String KEY_NAME = "dark_mode";
-    private static final String appPackageName = "com.mala.digital_joper_mala";
-
-
     //XML id's------------------------------------------------------------
-
 
 
     @Override
@@ -41,17 +33,11 @@ public class Act_boisnob_mala_helper extends AppCompatActivity {
         //identity period----------------------------------------------------------
 
 
-
-
         //---------------------------------------------------------------------
-
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-
 
 
                 Intent myback = new Intent(Act_boisnob_mala_helper.this, Act_Boisnob_mala.class);
@@ -62,6 +48,16 @@ public class Act_boisnob_mala_helper extends AppCompatActivity {
 
         //---------------------------------------------------------------------
 
+        //back-----------------------------------------------
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                startActivity(new Intent(Act_boisnob_mala_helper.this, Act_Boisnob_mala.class));
+                finishAffinity();
+            }
+        });
+        //back-----------------------------------------------
         
-    }
-}
+    }//on create=========================
+
+}//public class===========================

@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -92,6 +93,17 @@ public class Act_add_mantra extends AppCompatActivity {
         });
 
 
+        //back-----------------------------------------------------
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+
+                startActivity(new Intent(Act_add_mantra.this, Act_Home_All_Mala.class));
+                finishAffinity();
+
+            }
+        });
+        //back-----------------------------------------------------
 
     }//on create====================
 
@@ -187,13 +199,4 @@ public class Act_add_mantra extends AppCompatActivity {
 
     }
 
-    //back--------------------------------------
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        startActivity(new Intent(Act_add_mantra.this, Act_Home_All_Mala.class));
-        finishAffinity();
-
-    }
 }//public class========================
