@@ -91,7 +91,6 @@
         android:layout_centerInParent="true"
         android:background="@drawable/sh_bottom_nav_design"
         app:itemIconSize="25dp"
-
         app:itemIconTint="@drawable/sh_selected_nav_icon"
         app:itemTextColor="@color/bottom_nav_item_text_color"
         app:labelVisibilityMode="selected"
