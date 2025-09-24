@@ -7,7 +7,7 @@ header("Cache-Control: public, max-age=3600");
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-if($method != 'GET'){
+if($method !== 'GET'){
 
     die(json_encode([
 
@@ -20,10 +20,9 @@ if($method != 'GET'){
 
 $apis = [
 
-    'jopa_info' => 'https://rksoftwares.xyz/All_app/jopa_mala/Jopa_info?res=get_info',
-    'inAppnotification' => 'https://rksoftwares.xyz/All_app/jopa_mala/InAppNotification',
-
-
+    'jopa_info' => 'https://jopamala.rksoftwares.xyz/arrayDatabase?res=get_info',
+    'jopa_info_db' => 'https://jopamala.rksoftwares.xyz/Jopa_info?res=get_info',
+    'inAppnotification' => 'https://jopamala.rksoftwares.xyz/InAppNotification',
 
 ];
 

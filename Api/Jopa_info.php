@@ -1,7 +1,7 @@
 <?php
 require 'db.php';
-require 'middleware.php';
-require 'ID_middleware.php';
+//require 'middleware.php';
+//require 'ID_middleware.php';
 
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 
@@ -29,9 +29,9 @@ header("Cache-Control: public, max-age=3600");
 
 //All database table with one api in Routing Logic
 
-rate_limt();
+//rate_limt();
 
-check_deviceIds();
+//check_deviceIds();
 
 jopa_mala();
 
@@ -40,9 +40,9 @@ function jopa_mala(){
 
     $method = $_SERVER['REQUEST_METHOD'];
     $res = $_GET['res'] ?? '';
-    global $database_connect;
+    global $pdo;
 
-    if($method != 'GET'){
+    if($method !== 'GET'){
 
         echo json_encode([
 
@@ -58,7 +58,8 @@ function jopa_mala(){
 
         case 'get_info':
 
-            $sql = "SELECT * FROM jop_mala_info1";
+            //$sql = "SELECT * FROM jop_mala_info1";
+            $stmt = $pdo->prepare("SELECT * FROM jop_mala_info1");
             break;
         
         
@@ -74,8 +75,9 @@ function jopa_mala(){
 
     }
 
+    $stmt->execute();
 
-    $sql_query = mysqli_query($database_connect, $sql);
+    $sql_query = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if(!$sql_query){
 
@@ -88,22 +90,14 @@ function jopa_mala(){
 
     }
 
-    $data = [];
-
-    while($item = mysqli_fetch_assoc($sql_query)){
-
-        $data[] = $item;
-
-    }
-
     echo json_encode([
 
         "status" => "Success",
-        "data" => $data
+        "data" => $sql_query
 
     ]);
 
-    }
+}
 
 
 ?>
