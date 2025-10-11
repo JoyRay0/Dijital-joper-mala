@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/card_view_color"
+    app:cardElevation="2dp"
+    app:cardCornerRadius="15dp"
+    android:layout_margin="10dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:layout_margin="10dp"
+            >
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/ed_note"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="জপ নোট"
+                android:textSize="17sp"
+                android:textColor="@color/normal_text_color"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:layout_weight="3"
+                android:padding="12dp"
+                android:inputType="textMultiLine"
+                android:imeOptions="actionNext"
+                android:background="@drawable/sh_jopa_history"
+                android:layout_margin="10dp"
+                />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/ed_count"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="সংখ্যা"
+                android:textSize="17sp"
+                android:textColor="@color/normal_text_color"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:inputType="text"
+                android:imeOptions="actionNext"
+                android:background="@drawable/sh_jopa_history"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_margin="10dp"
+            >
+
+            <!-- cancel -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cd_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#F3EBEB"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                >
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="বন্ধ"
+                    android:textSize="17sp"
+                    android:textColor="#000"
+                    android:fontFamily="@font/noto_serif_bengali"
+                    android:textStyle="normal"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    />
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- ok -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cd_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#59B25D"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                >
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="সেভ"
+                    android:textSize="17sp"
+                    android:textColor="#fff"
+                    android:fontFamily="@font/noto_serif_bengali"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    />
+
+            </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

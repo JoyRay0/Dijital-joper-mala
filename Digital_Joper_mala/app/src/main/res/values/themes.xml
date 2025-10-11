@@ -5,16 +5,9 @@
          <item name="colorPrimary">@color/status_bar_color</item>
 
        <!-- <item name="android:forceDarkAllowed">false</item> -->
-
-
-
+        
     </style>
 
-
-
-    
-   
-    
 
     <style name="Bottom_Navigation_Style" parent="Widget.Design.BottomNavigationView">
 

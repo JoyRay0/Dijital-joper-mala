@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group>
+
+        <item android:id="@+id/history"
+            android:title="জপ সংখ্যা"
+            android:icon="@drawable/ic_history"
+            />
+
+    </group>
+
+    <group>
+
+        <item android:id="@+id/share"
+            android:title="শেয়ার অ্যাপ"
+            android:icon="@drawable/ic_share"
+            />
+
+        <item android:id="@+id/star"
+            android:title="অ্যাপ রিভিউ"
+            android:icon="@drawable/ic_star"
+            />
+
+        <item android:id="@+id/feature"
+            android:title="নতুন ফিচারগুলো"
+            android:icon="@drawable/ic_new_item"
+            />
+
+    </group>
+
+
+
+</menu>

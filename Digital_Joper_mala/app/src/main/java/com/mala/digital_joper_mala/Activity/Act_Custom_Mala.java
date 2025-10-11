@@ -1,14 +1,19 @@
 package com.mala.digital_joper_mala.Activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.provider.MediaStore;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,10 +25,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 
 import com.mala.digital_joper_mala.R;
 
@@ -54,9 +61,15 @@ public class Act_Custom_Mala extends AppCompatActivity {
 
     private Vibrator vibrator;
 
+    private CardView cd_save_count1, cd_save_count2, cd_save_count3;
+
     SharedPreferences sharedPreferences, save_text1, save_text2, save_text3, save_text4;
 
     int count = 0, i = 0, j = 0;
+
+    String firstCount = "";
+    String secondCount = "";
+    String thirdCount = "";
 
     private static final String PREF_NAME = "dark_light_mode";
     private static final String KEY_NAME = "dark_mode";
@@ -84,8 +97,6 @@ public class Act_Custom_Mala extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_custom_mala);
-
-
 
         //identity period -----------------------------------------------------------
 
@@ -131,28 +142,275 @@ public class Act_Custom_Mala extends AppCompatActivity {
         iv_upload_button = findViewById(R.id.iv_upload_button);
         iv_delete_button = findViewById(R.id.iv_delete_button);
 
+        cd_save_count1 = findViewById(R.id.cd_save_count1);
+        cd_save_count2 = findViewById(R.id.cd_save_count2);
+        cd_save_count3 = findViewById(R.id.cd_save_count3);
+
         //identity period -----------------------------------------------------------
 
-        save_text1 = getSharedPreferences("text_save1",MODE_PRIVATE);
-        String saved_text1 = save_text1.getString("ed_saved1","");
-
-        save_text2 = getSharedPreferences("text_save2",MODE_PRIVATE);
-        String saved_text2 = save_text2.getString("ed_saved2","");
-
-        save_text3 = getSharedPreferences("text_save3",MODE_PRIVATE);
-        String saved_text3 = save_text3.getString("ed_saved3","");
-
-        save_text4 = getSharedPreferences("text_save4",MODE_PRIVATE);
-        String saved_text4 = save_text4.getString("ed_saved4","");
-
-        tv_mantras1.setText("‘‘ "+saved_text1+" ’’");
-        tv_mantras2.setText("‘‘ "+saved_text2+" ’’");
-
-        tv_mantras3.setText("‘‘ "+saved_text3+" ’’");
-        tv_mantras4.setText("‘‘ "+saved_text4+" ’’");
+        savedMantra();
 
         save();
 
+        eye();
+
+        deleteMantra();
+
+        countMantra();
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(Act_Custom_Mala.this, Act_Home_All_Mala.class));
+
+            }
+        });
+
+
+
+        //image added -------------------------------------------------------------------
+        iv_upload_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, REQUEST_IMG_PICK);
+
+            }
+        });
+
+        iv_delete_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                delete_img();
+
+            }
+        });
+
+        load_img_form_storage();
+        //image added -------------------------------------------------------------------
+
+        //back------------------------------------------------------
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                startActivity(new Intent(Act_Custom_Mala.this, Act_Home_All_Mala.class));
+                finishAffinity();
+            }
+        });
+        //back------------------------------------------------------
+
+    }//on create====================================================================
+
+    //vibration--------------------------
+    private void vibrate(){                     //vibrate
+
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+
+        vibrator.vibrate(50);
+
+    }
+
+    //save--------------------------
+    private void save(){
+
+        save1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String ed_mantra1 = ed_autocomplete_textview1.getText().toString();
+
+                if (ed_mantra1.length() > 0){
+
+                    SharedPreferences.Editor editor1 = save_text1.edit();
+                    editor1.putString("ed_saved1",ed_mantra1);
+                    editor1.apply();
+
+                    tv_mantras1.setText("‘‘"+ed_mantra1+"’’");
+                    ed_autocomplete_textview1.setText("");
+
+                }else {
+
+                    tv_mantras1.setText("জপ মন্ত্র");
+
+                }
+
+            }
+        });
+
+
+        save2.setOnClickListener(new View.OnClickListener() {   //save button2
+            @Override
+            public void onClick(View view) {
+
+                String ed_mantra2 = ed_autocomplete_textview2.getText().toString();
+
+                if (ed_mantra2.length() > 0){
+
+                    SharedPreferences.Editor editor2 = save_text2.edit();
+                    editor2.putString("ed_saved2",ed_mantra2);
+                    editor2.apply();
+
+                    tv_mantras2.setText("‘‘"+ed_mantra2+"’’");
+                    ed_autocomplete_textview2.setText("");
+
+                }else {
+
+                    tv_mantras2.setText("জপ মন্ত্র");
+
+
+                }
+
+            }
+        });
+
+        save3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String ed_mantra3 = ed_autocomplete_textview3.getText().toString();
+
+                if (ed_mantra3.length() > 0){
+
+                    SharedPreferences.Editor editor3 = save_text3.edit();
+                    editor3.putString("ed_saved3",ed_mantra3);
+                    editor3.apply();
+
+                    tv_mantras3.setText("‘‘"+ed_mantra3+"’’");
+                    ed_autocomplete_textview3.setText("");
+
+                }else {
+
+                    tv_mantras3.setText("জপ মন্ত্র");
+
+                }
+
+            }
+        });
+
+
+        save4.setOnClickListener(new View.OnClickListener() {   //save button2
+            @Override
+            public void onClick(View view) {
+
+                String ed_mantra4 = ed_autocomplete_textview4.getText().toString();
+
+                if (ed_mantra4.length() > 0){
+
+                    SharedPreferences.Editor editor4 = save_text4.edit();
+                    editor4.putString("ed_saved4",ed_mantra4);
+                    editor4.apply();
+
+                    tv_mantras4.setText("‘‘"+ed_mantra4+"’’");
+                    ed_autocomplete_textview4.setText("");
+
+                }else {
+
+                    tv_mantras4.setText("জপ মন্ত্র");
+
+
+                }
+
+            }
+        });
+
+    }
+
+    private void load_img_form_storage(){
+
+
+        try {
+
+            FileInputStream fileInputStream = openFileInput("saved_image.png");
+
+           Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
+           iv_upload_image.setImageBitmap(bitmap);
+           fileInputStream.close();
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+
+
+        }
+
+    }
+
+    private void save_img_to_internal_storage(Bitmap bitmap){
+
+        try {
+
+            File file = new File(getFilesDir(),"saved_image.png");
+            if (file.exists()){
+                file.delete();
+
+            }
+
+
+            //file created-----
+            FileOutputStream fos = openFileOutput("saved_image.png", MODE_PRIVATE);
+
+            //image compressed----
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+
+
+
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+            Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
+    private void delete_img(){
+
+        File file = new File(getFilesDir(),"saved_image.png");
+
+        if (file.exists()){
+
+            if (file.delete()){
+
+                iv_upload_image.setImageDrawable(null);
+                iv_upload_image.setImageResource(R.drawable.img_gallery);
+
+            }
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_IMG_PICK && resultCode == RESULT_OK && data != null){
+
+            try {
+
+                Uri img_uri = data.getData();
+
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(Act_Custom_Mala.this.getContentResolver(), img_uri);
+
+                iv_upload_image.setImageBitmap(bitmap);
+
+                save_img_to_internal_storage(bitmap);
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+    //eye button-----------------------------------------
+    private void eye(){
 
         ed_autocomplete_textview1.setVisibility(View.VISIBLE);
         ed_autocomplete_textview2.setVisibility(View.VISIBLE);
@@ -290,6 +548,10 @@ public class Act_Custom_Mala extends AppCompatActivity {
             }
         });
         //eye button--------------------------------
+    }
+
+    //delete mantra----------------------------------------------
+    private void deleteMantra(){
 
         //delete_button----------------------
         iv_delete1.setOnClickListener(new View.OnClickListener() {
@@ -349,13 +611,27 @@ public class Act_Custom_Mala extends AppCompatActivity {
         });
         //delete_button----------------------
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    }
 
-                startActivity(new Intent(Act_Custom_Mala.this, Act_Home_All_Mala.class));
+    //mantra counter-----------------------------------------------------------------
+    private void countMantra(){
 
-            }
+        cd_save_count1.setOnClickListener(view -> {
+
+            count_save(firstCount);
+
+        });
+
+        cd_save_count2.setOnClickListener(view -> {
+
+            count_save(secondCount);
+
+        });
+
+        cd_save_count3.setOnClickListener(view -> {
+
+            count_save(thirdCount);
+
         });
 
         //1st step started++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -368,6 +644,9 @@ public class Act_Custom_Mala extends AppCompatActivity {
                 if (count > 0 && count < 109){
 
                     text1.setText(banglaNumber[count - 1]);
+
+                    firstCount = text1.getText().toString();
+
 
                 }
 
@@ -382,6 +661,7 @@ public class Act_Custom_Mala extends AppCompatActivity {
                 count = 0;
 
                 text1.setText(zero[count - 0]);
+                firstCount = text1.getText().toString();
 
                 vibrate();
 
@@ -400,6 +680,7 @@ public class Act_Custom_Mala extends AppCompatActivity {
                 if (i > 0 && i < 17) {
 
                     text2.setText(banglaNumber[i - 1]);
+                    secondCount = text2.getText().toString();
 
                 }
                 vibrate();
@@ -414,6 +695,7 @@ public class Act_Custom_Mala extends AppCompatActivity {
                 i = 0;
 
                 text2.setText(zero[i - 0]);
+                secondCount = text2.getText().toString();
 
                 vibrate();
 
@@ -431,6 +713,7 @@ public class Act_Custom_Mala extends AppCompatActivity {
                 if (j > 0 && j < 5) {
 
                     text3.setText(banglaNumber[j - 1]);
+                    thirdCount = text3.getText().toString();
 
                 }
                 vibrate();
@@ -445,6 +728,7 @@ public class Act_Custom_Mala extends AppCompatActivity {
                 j = 0;
 
                 text3.setText(zero[j - 0]);
+                thirdCount = text3.getText().toString();
 
                 vibrate();
 
@@ -452,249 +736,77 @@ public class Act_Custom_Mala extends AppCompatActivity {
         });
         //3rd step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-        //image added -------------------------------------------------------------------
-        iv_upload_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    }
 
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, REQUEST_IMG_PICK);
+    //show saved mantra---------------------------------------------------------------
+    private void savedMantra(){
 
-            }
-        });
+        save_text1 = getSharedPreferences("text_save1",MODE_PRIVATE);
+        String saved_text1 = save_text1.getString("ed_saved1","");
 
-        iv_delete_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        save_text2 = getSharedPreferences("text_save2",MODE_PRIVATE);
+        String saved_text2 = save_text2.getString("ed_saved2","");
 
-                delete_img();
+        save_text3 = getSharedPreferences("text_save3",MODE_PRIVATE);
+        String saved_text3 = save_text3.getString("ed_saved3","");
 
-            }
-        });
+        save_text4 = getSharedPreferences("text_save4",MODE_PRIVATE);
+        String saved_text4 = save_text4.getString("ed_saved4","");
 
-        load_img_form_storage();
-        //image added -------------------------------------------------------------------
+        tv_mantras1.setText("‘‘ "+saved_text1+" ’’");
+        tv_mantras2.setText("‘‘ "+saved_text2+" ’’");
 
-        //back------------------------------------------------------
-        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                startActivity(new Intent(Act_Custom_Mala.this, Act_Home_All_Mala.class));
-                finishAffinity();
-            }
-        });
-        //back------------------------------------------------------
-
-    }//on create====================================
-
-    //vibration--------------------------
-    private void vibrate(){                     //vibrate
-
-        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-
-        vibrator.vibrate(50);
+        tv_mantras3.setText("‘‘ "+saved_text3+" ’’");
+        tv_mantras4.setText("‘‘ "+saved_text4+" ’’");
 
     }
 
-    //save--------------------------
-    private void save(){
+    //jopa count save-----------------------------------------------------------------
+    private void count_save(String count){
 
-        save1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.lay_japa_history);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        Window window = dialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-                String ed_mantra1 = ed_autocomplete_textview1.getText().toString();
+        AppCompatEditText ed_note = dialog.findViewById(R.id.ed_note);
+        AppCompatEditText ed_count = dialog.findViewById(R.id.ed_count);
+        CardView cd_close = dialog.findViewById(R.id.cd_close);
+        CardView cd_save = dialog.findViewById(R.id.cd_save);
 
-                if (ed_mantra1.length() > 0){
+        ed_note.requestFocus();
+        ed_count.setText(count);
 
-                    SharedPreferences.Editor editor1 = save_text1.edit();
-                    editor1.putString("ed_saved1",ed_mantra1);
-                    editor1.apply();
+        cd_close.setOnClickListener(view -> {
 
-                    tv_mantras1.setText("‘‘"+ed_mantra1+"’’");
-                    ed_autocomplete_textview1.setText("");
+            dialog.dismiss();
 
-                }else {
-
-                    tv_mantras1.setText("জপ মন্ত্র");
-
-                }
-
-            }
         });
 
+        cd_save.setOnClickListener(view -> {
 
-        save2.setOnClickListener(new View.OnClickListener() {   //save button2
-            @Override
-            public void onClick(View view) {
+            String note = ed_note.getText().toString().trim();
 
-                String ed_mantra2 = ed_autocomplete_textview2.getText().toString();
+            if (note == null || note.isEmpty()){
 
-                if (ed_mantra2.length() > 0){
+                ed_note.setError("দিতে হবে");
 
-                    SharedPreferences.Editor editor2 = save_text2.edit();
-                    editor2.putString("ed_saved2",ed_mantra2);
-                    editor2.apply();
+            } else {
 
-                    tv_mantras2.setText("‘‘"+ed_mantra2+"’’");
-                    ed_autocomplete_textview2.setText("");
+                Toast.makeText(this, note+count, Toast.LENGTH_SHORT).show();
 
-                }else {
-
-                    tv_mantras2.setText("জপ মন্ত্র");
-
-
-                }
+                dialog.dismiss();
 
             }
+
         });
 
-        save3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String ed_mantra3 = ed_autocomplete_textview3.getText().toString();
-
-                if (ed_mantra3.length() > 0){
-
-                    SharedPreferences.Editor editor3 = save_text3.edit();
-                    editor3.putString("ed_saved3",ed_mantra3);
-                    editor3.apply();
-
-                    tv_mantras3.setText("‘‘"+ed_mantra3+"’’");
-                    ed_autocomplete_textview3.setText("");
-
-                }else {
-
-                    tv_mantras3.setText("জপ মন্ত্র");
-
-                }
-
-            }
-        });
-
-
-        save4.setOnClickListener(new View.OnClickListener() {   //save button2
-            @Override
-            public void onClick(View view) {
-
-                String ed_mantra4 = ed_autocomplete_textview4.getText().toString();
-
-                if (ed_mantra4.length() > 0){
-
-                    SharedPreferences.Editor editor4 = save_text4.edit();
-                    editor4.putString("ed_saved4",ed_mantra4);
-                    editor4.apply();
-
-                    tv_mantras4.setText("‘‘"+ed_mantra4+"’’");
-                    ed_autocomplete_textview4.setText("");
-
-                }else {
-
-                    tv_mantras4.setText("জপ মন্ত্র");
-
-
-                }
-
-            }
-        });
+        dialog.show();
 
     }
 
-    private void load_img_form_storage(){
-
-
-        try {
-
-            FileInputStream fileInputStream = openFileInput("saved_image.png");
-
-           Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
-           iv_upload_image.setImageBitmap(bitmap);
-           fileInputStream.close();
-
-        }catch (Exception e){
-
-            e.printStackTrace();
-
-
-        }
-
-    }
-
-
-    private void save_img_to_internal_storage(Bitmap bitmap){
-
-        try {
-
-            File file = new File(getFilesDir(),"saved_image.png");
-            if (file.exists()){
-                file.delete();
-
-            }
-
-
-            //file created-----
-            FileOutputStream fos = openFileOutput("saved_image.png", MODE_PRIVATE);
-
-            //image compressed----
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-            fos.close();
-
-
-
-
-        }catch (Exception e){
-
-            e.printStackTrace();
-            Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show();
-
-        }
-
-    }
-
-
-
-    private void delete_img(){
-
-        File file = new File(getFilesDir(),"saved_image.png");
-
-        if (file.exists()){
-
-            if (file.delete()){
-
-                iv_upload_image.setImageDrawable(null);
-                iv_upload_image.setImageResource(R.drawable.img_gallery);
-
-            }
-        }
-
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_IMG_PICK && resultCode == RESULT_OK && data != null){
-
-            try {
-
-                Uri img_uri = data.getData();
-
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(Act_Custom_Mala.this.getContentResolver(), img_uri);
-
-                iv_upload_image.setImageBitmap(bitmap);
-
-                save_img_to_internal_storage(bitmap);
-
-            } catch (Exception e) {
-
-                e.printStackTrace();
-            }
-
-        }
-
-    }
 
 
 }//public class ===============================

@@ -54,7 +54,6 @@
     <!-- MainActivity2 -->
 
 
-
     <!-- Others information -->
 
     <string name="app_info_normal_text">আমরা অ্যাপ এর মধ্যে নিয়মিত আপডেট দিই এবং প্রতিটি আপডেটে নতুন নতুন ফিচার যুক্ত করি। আমাদের অ্যাপ ব্যবহার করতে যদি কোনো প্রকার সমস্যা হয় তবে দয়া করে আমাদের জানান। আমরা আপনার সমস্যা সমাধানের যথাসাধ্য চেষ্টা করবো।</string>
@@ -69,8 +68,9 @@
     <string name="rules_of_jopa">জপের নিয়ম</string>
     <string name="japa_descri">জপের কারন</string>
     <!-- TODO: Remove or change this placeholder text -->
-
-
     <!-- 2 Button -->
+
+    <string name="open">open</string>
+    <string name="close">close</string>
 
 </resources>

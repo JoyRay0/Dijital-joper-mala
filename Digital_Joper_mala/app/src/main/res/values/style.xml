@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="custom_menu_text" parent="TextAppearance.AppCompat.Menu">
+
+        <item name="fontFamily">@font/noto_serif_bengali</item>
+
+    </style>
+
+</resources>

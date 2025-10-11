@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +24,14 @@ import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
@@ -38,6 +42,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
@@ -94,6 +99,9 @@ public class Act_Home_All_Mala extends AppCompatActivity {
     private AppCompatTextView tv_notification_description;
 
     private AppCompatTextView tv_no_notification;
+
+    private DrawerLayout drawer;
+    private NavigationView nv_drawer;
     
 
     //XML id's----------------------------------------------------------------------
@@ -106,8 +114,8 @@ public class Act_Home_All_Mala extends AppCompatActivity {
         //identity period-------------------------------------------------------------------
 
         toolbar = findViewById(R.id.toolbar);
-        //all_mala_gridview = findViewById(R.id.all_mala_gridview);
-        //radio_button_home = findViewById(R.id.radio_button_home);
+        drawer = findViewById(R.id.drawer);
+        nv_drawer = findViewById(R.id.nv_drawer);
         //radio_button_rules = findViewById(R.id.radio_button_rules);
         //radio_button_info = findViewById(R.id.radio_button_info);
         //radio_group = findViewById(R.id.radio_group);
@@ -134,6 +142,9 @@ public class Act_Home_All_Mala extends AppCompatActivity {
         check_update();
         //in ap update------------------------------------------------------
 
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(Act_Home_All_Mala.this, drawer, toolbar,R.string.open, R.string.close);
+        drawer.addDrawerListener(toggle);
+        drawer_navigation();
         //feedback_dialog();
         /*
         //in app notification--------------------------------------------------
@@ -204,26 +215,7 @@ public class Act_Home_All_Mala extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
 
 
-                if (item.getItemId() == R.id.share){
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.setType("text/plain");
-                    String Body = "Download this App";
-                    String sub = "https://play.google.com/store/apps/details?id="+appPackageName;
-                    intent.putExtra(Intent.EXTRA_TEXT,Body);
-                    intent.putExtra(Intent.EXTRA_TEXT,sub);
-                    startActivity(Intent.createChooser(intent,null));
-
-                } else if (item.getItemId() == R.id.rating) {
-
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                        finishAffinity();
-                    } catch (ActivityNotFoundException e) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                        finishAffinity();
-                    }
-
-                } else if (item.getItemId() ==R.id.add) {
+                if (item.getItemId() ==R.id.add){
 
                     startActivity(new Intent(Act_Home_All_Mala.this, Act_add_mantra.class));
                     finishAffinity();
@@ -468,6 +460,46 @@ public class Act_Home_All_Mala extends AppCompatActivity {
                 }
 
             }
+        });
+
+    }
+
+    //drawer navigation--------------------------------------------------
+    private void drawer_navigation(){
+
+        nv_drawer.setNavigationItemSelectedListener(menuItem -> {
+
+
+            int id = menuItem.getItemId();
+            
+            if (id == R.id.share){
+
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String Body = "Download this App";
+                String sub = "https://play.google.com/store/apps/details?id="+appPackageName;
+                intent.putExtra(Intent.EXTRA_TEXT,Body);
+                intent.putExtra(Intent.EXTRA_TEXT,sub);
+                startActivity(Intent.createChooser(intent,null));
+                
+            } else if (id == R.id.star) {
+
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                    finishAffinity();
+                } catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                    finishAffinity();
+                }
+                
+            } else if (id == R.id.feature) {
+
+                startActivity(new Intent(Act_Home_All_Mala.this, Act_NewFeatures.class));
+                finishAffinity();
+
+            }
+
+            return true;
         });
 
     }

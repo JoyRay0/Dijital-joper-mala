@@ -25,7 +25,7 @@
             android:id="@+id/tv_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="অনলিমিটেড মন্ত্র সেভ করুন – নিজের পছন্দমতো!"
+            android:text="আনলিমিটেড মন্ত্র সেভ করুন – নিজের পছন্দমতো!"
             android:textSize="17sp"
             android:textColor="@color/normal_text_color"
             android:fontFamily="@font/noto_serif_bengali"

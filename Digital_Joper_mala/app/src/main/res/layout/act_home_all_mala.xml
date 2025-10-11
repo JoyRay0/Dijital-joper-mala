@@ -1,100 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.Act_Home_All_Mala">
+    tools:context=".Activity.Act_Home_All_Mala"
+    tools:openDrawer="start"
+    >
 
 
-    <include
-        android:id="@+id/appbar"
-        layout="@layout/lay_appbar"
-
-        />
-    <!--
-    <RadioGroup
-        android:id="@+id/radio_group"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/appbar"
-        android:layout_margin="5dp"
-        android:orientation="horizontal"
-        android:weightSum="3"
+        android:layout_height="match_parent">
 
-        >
-
-        <RadioButton
-            android:id="@+id/radio_button_home"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/radio_checked"
-            android:button="@android:color/transparent"
-            android:checked="true"
-            android:fontFamily="@font/noto_serif_bengali"
-            android:gravity="center"
-            android:text="হোম"
-            android:textColor="#000"
-            android:textSize="17sp" />
-
-        <RadioButton
-            android:id="@+id/radio_button_rules"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/radio_checked"
-            android:button="@android:color/transparent"
-            android:fontFamily="@font/noto_serif_bengali"
-            android:gravity="center"
-            android:text="জপের নিয়ম"
-            android:textColor="#fff"
-            android:textSize="17sp"
+        <include
+            android:id="@+id/appbar"
+            layout="@layout/lay_appbar"
 
             />
 
-        <RadioButton
-            android:id="@+id/radio_button_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/radio_checked"
-            android:button="@android:color/transparent"
-            android:fontFamily="@font/noto_serif_bengali"
-            android:gravity="center"
-            android:text="জপের উপকারীতা"
-            android:textColor="#fff"
-            android:textSize="17sp" />
+        <FrameLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/appbar"
+            android:layout_above="@id/bottom_nav"
+            />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/sh_bottom_nav_design"
+            app:itemIconSize="25dp"
+            app:itemIconTint="@drawable/sh_selected_nav_icon"
+            app:itemTextColor="@color/bottom_nav_item_text_color"
+            app:labelVisibilityMode="selected"
+            style="@style/Bottom_Navigation_Style"
+            app:menu="@menu/bottom_menu" />
+
+    </RelativeLayout>
 
 
-    </RadioGroup>
-    -->
-
-
-    <FrameLayout
-        android:id="@+id/frame_layout"
-        android:layout_width="match_parent"
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nv_drawer"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_below="@id/appbar"
-        android:layout_above="@id/bottom_nav"
+        android:layout_gravity="start"
+        app:menu="@menu/drawer"
+        app:headerLayout="@layout/lay_drawer_navigation"
+        app:itemTextAppearance="@style/custom_menu_text"
+        app:itemIconPadding="25dp"
+        android:background="@color/card_view_color"
+        app:itemTextColor="@color/normal_text_color"
+        app:itemIconTint="@color/icon_color"
         />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:background="@drawable/sh_bottom_nav_design"
-        app:itemIconSize="25dp"
-        app:itemIconTint="@drawable/sh_selected_nav_icon"
-        app:itemTextColor="@color/bottom_nav_item_text_color"
-        app:labelVisibilityMode="selected"
-        style="@style/Bottom_Navigation_Style"
-        app:menu="@menu/bottom_menu" />
 
-</RelativeLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

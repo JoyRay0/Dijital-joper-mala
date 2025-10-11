@@ -30,7 +30,7 @@ public class Request_link {
 
         Gson gson = new Gson();
 
-        String url = "https://jopamala.rksoftwares.xyz/api_config";
+        String url = "https://jopamala.rksoftwares.fun/api_config";
 
         Request request = new Request.Builder().url(url).build();
 

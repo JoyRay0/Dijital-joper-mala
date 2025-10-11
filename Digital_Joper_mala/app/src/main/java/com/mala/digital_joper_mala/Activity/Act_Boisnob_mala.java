@@ -6,21 +6,28 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.cardview.widget.CardView;
 
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.provider.MediaStore;
+import android.view.Gravity;
 import android.view.View;
 
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,7 +60,13 @@ public class Act_Boisnob_mala extends AppCompatActivity {
 
     private AppCompatImageView  iv_upload_image;
 
+    private CardView cd_save_count1, cd_save_count2, cd_save_count3;
+
     private Vibrator vibrator;
+
+    String firstCount = "";
+    String secondCount = "";
+    String thirdCount = "";
 
     SharedPreferences sharedPreferences;
     boolean nightMode;
@@ -81,9 +94,6 @@ public class Act_Boisnob_mala extends AppCompatActivity {
 
     // XML id's----------------------------------------------------------------
 
-
-
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,28 +105,27 @@ public class Act_Boisnob_mala extends AppCompatActivity {
         tv_count_display1 = findViewById(R.id.tv_count_display1);
         tv_count_display2 = findViewById(R.id.tv_count_display2);
         tv_count_display3 = findViewById(R.id.tv_count_display3);
+
         add1 = findViewById(R.id.add1);
         add2 = findViewById(R.id.add2);
         add3 = findViewById(R.id.add3);
         reset1 = findViewById(R.id.reset1);
         reset2 = findViewById(R.id.reset2);
         reset3 = findViewById(R.id.reset3);
-        //firstpage = findViewById(R.id.firstpage);
-        //secondpage = findViewById(R.id.secondpage);
+
         back = findViewById(R.id.back);
+
         iv_upload_button = findViewById(R.id.iv_upload_button);
         iv_delete_button = findViewById(R.id.iv_delete_button);
         iv_upload_image = findViewById(R.id.iv_upload_image);
+
         ib_rules = findViewById(R.id.ib_rules);
 
-
+        cd_save_count1 = findViewById(R.id.cd_save_count1);
+        cd_save_count2 = findViewById(R.id.cd_save_count2);
+        cd_save_count3 = findViewById(R.id.cd_save_count3);
 
         //Identity period end+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
-
-        /* Display and Button started */
 
         //back button-----------------------------------------------
         back.setOnClickListener(new View.OnClickListener() {
@@ -143,127 +152,8 @@ public class Act_Boisnob_mala extends AppCompatActivity {
         //custom floating button--------------------------------
 
 
-        //1st step started++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        add1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+       counter();
 
-                    count++;
-
-
-                    if (count > 0 && count < 109){
-
-                        tv_count_display1.setText(banglaNumber[count - 1]);
-
-                    }
-
-                vibrate();
-            }
-        });
-
-        reset1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-               count = 0;
-
-                tv_count_display1.setText(zero[count - 0]);
-
-                vibrate();
-
-            }
-
-        });
-        //1st step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-        //2nd step started++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        add2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                i++;
-
-                if (i > 0 && i < 17) {
-
-                    tv_count_display2.setText(banglaNumber[i - 1]);
-
-                }
-                vibrate();
-
-            }
-        });
-
-        reset2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                i = 0;
-
-                tv_count_display2.setText(zero[i - 0]);
-
-                vibrate();
-
-            }
-        });
-        //2nd step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-        //3rd step started++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        add3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                j++;
-
-                if (j > 0 && j < 5) {
-
-                    tv_count_display3.setText(banglaNumber[j - 1]);
-
-                }
-                vibrate();
-
-            }
-        });
-
-        reset3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                j = 0;
-
-                tv_count_display3.setText(zero[j -0]);
-
-                vibrate();
-
-            }
-        });
-        //3rd step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-        /*
-
-        //Other pages-------------------------------------------------------------------------------
-        firstpage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent mypage = new Intent(Boisnob_mala.this,MainActivity2.class);
-                startActivity(mypage);
-
-            }
-        });
-
-        secondpage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(Boisnob_mala.this, MainActivity3.class);
-                startActivity(intent);
-
-            }
-        });
-        //Other pages-------------------------------------------------------------------------------
-
-
-         */
         //image added -------------------------------------------------------------------
         iv_upload_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -395,6 +285,177 @@ public class Act_Boisnob_mala extends AppCompatActivity {
 
     }
     //image methods=======================================
+
+    //counter ---------------------------------------------------------
+    private void counter(){
+
+        cd_save_count1.setOnClickListener(view -> {
+
+            count_save(firstCount);
+
+        });
+
+        cd_save_count2.setOnClickListener(view -> {
+
+            count_save(secondCount);
+
+        });
+
+        cd_save_count3.setOnClickListener(view -> {
+
+            count_save(thirdCount);
+
+        });
+
+        //1st step started++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        add1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                count++;
+
+
+                if (count > 0 && count < 109){
+
+                    tv_count_display1.setText(banglaNumber[count - 1]);
+
+                    firstCount = tv_count_display1.getText().toString();
+
+                }
+
+                vibrate();
+            }
+        });
+
+        reset1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                count = 0;
+
+                tv_count_display1.setText(zero[count - 0]);
+                firstCount = tv_count_display1.getText().toString();
+
+                vibrate();
+
+            }
+
+        });
+        //1st step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        //2nd step started++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        add2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                i++;
+
+                if (i > 0 && i < 17) {
+
+                    tv_count_display2.setText(banglaNumber[i - 1]);
+                    secondCount = tv_count_display2.getText().toString();
+
+                }
+                vibrate();
+
+            }
+        });
+
+        reset2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                i = 0;
+
+                tv_count_display2.setText(zero[i - 0]);
+                secondCount = tv_count_display2.getText().toString();
+
+                vibrate();
+
+            }
+        });
+        //2nd step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        //3rd step started++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        add3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                j++;
+
+                if (j > 0 && j < 5) {
+
+                    tv_count_display3.setText(banglaNumber[j - 1]);
+                    thirdCount = tv_count_display3.getText().toString();
+
+                }
+                vibrate();
+
+            }
+        });
+
+        reset3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                j = 0;
+
+                tv_count_display3.setText(zero[j -0]);
+                thirdCount = tv_count_display3.getText().toString();
+
+                vibrate();
+
+            }
+        });
+        //3rd step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    }
+
+    //jopa count save-----------------------------------------------------------------
+    private void count_save(String count){
+
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.lay_japa_history);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        Window window = dialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        AppCompatEditText ed_note = dialog.findViewById(R.id.ed_note);
+        AppCompatEditText ed_count = dialog.findViewById(R.id.ed_count);
+        CardView cd_close = dialog.findViewById(R.id.cd_close);
+        CardView cd_save = dialog.findViewById(R.id.cd_save);
+
+        ed_note.requestFocus();
+        ed_count.setText(count);
+
+        cd_close.setOnClickListener(view -> {
+
+            dialog.dismiss();
+
+        });
+
+        cd_save.setOnClickListener(view -> {
+
+            String note = ed_note.getText().toString().trim();
+
+            if (note == null || note.isEmpty()){
+
+                ed_note.setError("দিতে হবে");
+
+            } else {
+
+                Toast.makeText(this, note+count, Toast.LENGTH_SHORT).show();
+
+                dialog.dismiss();
+
+            }
+
+        });
+
+        dialog.show();
+
+    }
 
 
 }//public class ===========================

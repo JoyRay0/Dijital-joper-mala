@@ -7,19 +7,6 @@
         >
 
         <item
-            android:id="@+id/share"
-            android:title="শেয়ার"
-            android:icon="@drawable/ic_share"
-            app:showAsAction="always"/>
-
-
-        <item
-            android:id="@+id/rating"
-            android:title="রিভিউ"
-            android:icon="@drawable/ic_star"
-            app:showAsAction="always"/>
-
-        <item
             android:id="@+id/add"
             android:title="আমার মন্ত্র"
             android:icon="@drawable/ic_add"
