@@ -41,7 +41,7 @@ public class Act_NewFeatures extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(Act_NewFeatures.this, Act_Setting.class);
+                Intent intent = new Intent(Act_NewFeatures.this, Act_Home_All_Mala.class);
                 startActivity(intent);
 
             }
@@ -53,7 +53,7 @@ public class Act_NewFeatures extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                startActivity(new Intent(Act_NewFeatures.this, Act_Setting.class));
+                startActivity(new Intent(Act_NewFeatures.this, Act_Home_All_Mala.class));
                 finishAffinity();
             }
         });

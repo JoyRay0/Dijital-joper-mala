@@ -4,6 +4,7 @@ public class Api_links {
 
     private String jopa_info;
     private String inAppnotification;
+    private String mantra;
 
     public String getInAppnotification() {
         return inAppnotification;
@@ -11,5 +12,9 @@ public class Api_links {
 
     public String getJopa_info() {
         return jopa_info;
+    }
+
+    public String getMantra() {
+        return mantra;
     }
 }

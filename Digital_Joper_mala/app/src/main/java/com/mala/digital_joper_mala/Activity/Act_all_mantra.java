@@ -4,44 +4,59 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.mala.digital_joper_mala.Adapter.All_mantra;
+import com.google.gson.Gson;
+import com.mala.digital_joper_mala.Adapter.Mantras;
+import com.mala.digital_joper_mala.Api.Request_link;
 import com.mala.digital_joper_mala.Database.Mantra;
+import com.mala.digital_joper_mala.Model.Api_links;
+import com.mala.digital_joper_mala.Model.Data;
+import com.mala.digital_joper_mala.Model.Main_response;
 import com.mala.digital_joper_mala.R;
+import com.mala.digital_joper_mala.Utils.ApiResponseListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class Act_all_mantra extends AppCompatActivity {
 
-    //XML id's------------------------------------------------------
+    //XML id's-----------2-------------------------------------------
 
-    All_mantra mantra;
+   private LinearLayout ll_no_mantra;
 
-    private ListView lv_mantra;
+    private Mantras mantrasAdapter;
+
+    private RecyclerView rv_mantra;
 
     private ImageButton back;
 
-    List<HashMap<String, String>> mapList = new ArrayList<>();
+    private List<HashMap<String, String>> mapList = new ArrayList<>();
 
-    HashMap<String, String> map;
+    private HashMap<String, String> map;
 
-    private Mantra my_mantra;
+    private Mantra my_mantraDB;
 
-    private AppCompatImageView iv_alert_info;
+    private AppCompatImageView iv_alert_info, iv_refresh;
 
     //XML id's------------------------------------------------------
 
@@ -50,43 +65,46 @@ public class Act_all_mantra extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_all_mantra);
 
+
         //identity period-----------------------------------
-        lv_mantra = findViewById(R.id.lv_mantra);
         back = findViewById(R.id.back);
+        rv_mantra = findViewById(R.id.rv_mantra);
         iv_alert_info = findViewById(R.id.iv_alert_info);
+        iv_refresh = findViewById(R.id.iv_refresh);
+        ll_no_mantra = findViewById(R.id.ll_no_mantra);
         //identity period-----------------------------------
 
-        mantra = new All_mantra(this, mapList);
-        lv_mantra.setAdapter(mantra);
-        mantras();
+        //mantraAdapter = new All_mantra(this, mapList);
+        //lv_mantra.setAdapter(mantraAdapter);
+        //mantras();
 
-        /*
-        my_mantra = new Mantra(this);
+        mantrasAdapter = new Mantras(this, mapList);
+        rv_mantra.setAdapter(mantrasAdapter);
 
-        my_mantra.insert("non", "Test");
 
-        List<HashMap<String, String>> allData = my_mantra.get_All_data();
+        my_mantraDB = new Mantra(this);
+
+
+        List<HashMap<String, String>> allData = my_mantraDB.get_All_data();
+        mapList.clear();
 
         if (allData == null || allData.isEmpty()){
 
-            Toast.makeText(this, "no data", Toast.LENGTH_SHORT).show();
-        }
+            ll_no_mantra.setVisibility(View.VISIBLE);
+            rv_mantra.setVisibility(View.GONE);
 
-        for (HashMap<String, String> hashMap: allData) {
+        }else {
 
-            String title = hashMap.get("title");
-            String mantra = hashMap.get("mantra");
+            mapList.addAll(allData);
 
+            rv_mantra.setVisibility(View.VISIBLE);
+            ll_no_mantra.setVisibility(View.GONE);
 
-            map = new HashMap<>();
-            map.put("দেবতার নাম",title);
-            map.put("জপ মন্ত্র",mantra);
-            mapList.add(map);
+            mantrasAdapter.notifyDataSetChanged();
 
         }
 
-         */
-
+        refresh();
 
         back.setOnClickListener(view -> {
 
@@ -126,7 +144,7 @@ public class Act_all_mantra extends AppCompatActivity {
         //back---------------------------------------------------
 
 
-    }//on create===================================
+    }//on create====================================================================
 
     //all mantras----------------------------
     private void mantras(){
@@ -333,4 +351,120 @@ public class Act_all_mantra extends AppCompatActivity {
 
     }
 
+    //link --------------------------------------------------------------------------
+    private void link(){
+
+        try {
+
+            Request_link link = new Request_link(new ApiResponseListener() {
+                @Override
+                public void onApiResponse(Api_links apiLinks) {
+
+                    String url = apiLinks.getMantra();
+
+                    mantra_from_server(url);
+
+                }
+
+                @Override
+                public void onApiFailed(String error) {
+
+                }
+            });
+            link.Apis();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    //refresh---------------------------------------------------------------------------
+    private void refresh(){
+
+        iv_refresh.setOnClickListener(view -> {
+
+            link();
+
+        });
+
+    }
+
+    //data from sever------------------------------------------------------------------
+    private void mantra_from_server(String url){
+
+        Gson gson = new Gson();
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder().url(url).build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+
+
+
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+                if (response.isSuccessful() && response.body() != null){
+
+                    String mantra = response.body().string();
+
+                    try {
+
+                        Main_response mainResponse = gson.fromJson(mantra, Main_response.class);
+
+                        List<Data> data = mainResponse.getData();
+
+                        my_mantraDB.DeleteAll();
+
+                        for ( Data data1 : data) {
+
+                            my_mantraDB.insert(data1.getTitle(), data1.getMantra());
+
+                        }
+
+                        new Handler(Looper.getMainLooper()).post(() -> {
+
+                            mapList.clear();
+                            mapList.addAll(my_mantraDB.get_All_data());
+                            mantrasAdapter.notifyDataSetChanged();
+
+                            if (mapList.isEmpty()){
+
+                                ll_no_mantra.setVisibility(View.VISIBLE);
+                                rv_mantra.setVisibility(View.GONE);
+
+                            }else {
+
+                                rv_mantra.setVisibility(View.VISIBLE);
+                                ll_no_mantra.setVisibility(View.GONE);
+
+                            }
+
+                        });
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }
+        });
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        my_mantraDB.closeDB();
+    }
 }//public class=====================================

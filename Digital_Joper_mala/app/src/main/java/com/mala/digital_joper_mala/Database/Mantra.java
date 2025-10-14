@@ -15,9 +15,10 @@ import java.util.List;
 
 public class Mantra extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "my_mantra.db";
-    public static final String TABLE_NAME = "my_mantra_table";
-    public static final int VERSION = 2;
+    public static final String DATABASE_NAME = "mantra.db";
+    public static final String TABLE_NAME = "my_mantra";
+    public static final int VERSION = 7;
+    SQLiteDatabase db;
 
 
     public Mantra(@Nullable Context context) {
@@ -41,13 +42,14 @@ public class Mantra extends SQLiteOpenHelper {
 
     public void insert(String title, String mantra){
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        if (db == null || !db.isOpen()){
+
+            db = this.getWritableDatabase();
+        }
 
         String sql = " INSERT INTO " +TABLE_NAME+ "(title, mantra) VALUES (?, ?)";
 
-
         db.execSQL(sql, new Object[]{title, mantra});
-
 /*
         ContentValues values = new ContentValues();
 
@@ -55,19 +57,18 @@ public class Mantra extends SQLiteOpenHelper {
         values.put("mantra", "worked");
 
         db.insert(TABLE_NAME, null, values);
-
  */
-
-
-
-        db.close();
-
     }
+
     public List<HashMap<String, String>> get_All_data(){
 
         List<HashMap<String, String>> list = new ArrayList<>();
 
-        SQLiteDatabase db = this.getReadableDatabase();
+        if (db == null || !db.isOpen()){
+
+            db = this.getReadableDatabase();
+
+        }
 
         Cursor cursor = db.rawQuery("SELECT title,mantra FROM "+TABLE_NAME, null);
 
@@ -82,8 +83,24 @@ public class Mantra extends SQLiteOpenHelper {
         Log.d("data", "="+list.size());
 
         cursor.close();
-        db.close();
 
         return list;
+    }
+
+    public void DeleteAll(){
+
+        if (db == null || !db.isOpen()) db = this.getWritableDatabase();
+
+        db.execSQL("DELETE FROM " +TABLE_NAME);
+
+    }
+
+    public void closeDB(){
+
+        if (db != null && db.isOpen()){
+
+            db.close();
+        }
+
     }
 }

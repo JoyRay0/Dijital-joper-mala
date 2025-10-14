@@ -16,7 +16,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mala.digital_joper_mala.R;
-import com.mala.digital_joper_mala.Database.Database_helper;
+import com.mala.digital_joper_mala.Database.UserMantra;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ public class User_mantra extends RecyclerView.Adapter<User_mantra.mantra> {
 
     private Context context;
     private List<HashMap<String, String>> mapList = new ArrayList<>();
-    private Database_helper helper;
+    private UserMantra helper;
 
     public User_mantra(Context context, List<HashMap<String, String>> mapList) {
         this.context = context;
@@ -45,7 +45,7 @@ public class User_mantra extends RecyclerView.Adapter<User_mantra.mantra> {
     @Override
     public void onBindViewHolder(@NonNull mantra holder, int position) {
 
-        helper = new Database_helper(context);
+        helper = new UserMantra(context);
 
         HashMap<String, String> map = mapList.get(position);
 

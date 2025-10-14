@@ -21,26 +21,75 @@
             android:layout_height="wrap_content"
             />
 
-        <ListView
-            android:id="@+id/lv_mantra"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_mantra"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@android:color/transparent"
-            android:listSelector="@android:color/transparent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:visibility="gone"
             />
+
+        <LinearLayout
+            android:id="@+id/ll_no_mantra"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="50dp"
+            android:visibility="visible"
+            >
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/img_empty"
+                android:layout_gravity="center"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="কোন মন্ত্র পাওয়া যায়নি। ইন্টারনেট চালু করে রিফ্রেশ করুন।"
+                android:textSize="17sp"
+                android:textColor="@color/normal_text_color"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+
+                />
+
+        </LinearLayout>
 
     </LinearLayout>
 
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_alert_info"
-        android:layout_width="27dp"
-        android:layout_height="27dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_alert_info"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="13dp"
         android:layout_marginEnd="15dp"
         android:background="?attr/actionBarItemBackground"
+        android:tooltipText="Info"
+        />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_refresh"
+        android:layout_toStartOf="@id/iv_alert_info"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="15dp"
+        android:background="?attr/actionBarItemBackground"
+        android:tooltipText="Refresh"
         />
 
 </RelativeLayout>

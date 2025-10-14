@@ -19,7 +19,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mala.digital_joper_mala.Adapter.User_mantra;
-import com.mala.digital_joper_mala.Database.Database_helper;
+import com.mala.digital_joper_mala.Database.UserMantra;
 import com.mala.digital_joper_mala.R;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class Act_add_mantra extends AppCompatActivity {
 
     private List<HashMap<String, String>> list_show = new ArrayList<>();
     private HashMap<String, String> map_show;
-    private Database_helper helper;
+    private UserMantra helper;
 
 
 
@@ -60,7 +60,7 @@ public class Act_add_mantra extends AppCompatActivity {
 
         //identity period----------------------------------------
 
-        helper = new Database_helper(this);
+        helper = new UserMantra(this);
 
         back.setOnClickListener(view -> {
 
@@ -159,7 +159,7 @@ public class Act_add_mantra extends AppCompatActivity {
             }else {
 
 
-                helper = new Database_helper(this);
+                helper = new UserMantra(this);
 
                 helper.insert(ed_name, ed_mantra);
 
@@ -181,7 +181,7 @@ public class Act_add_mantra extends AppCompatActivity {
     //show inserted data----------------------------------------------------
     private void showData(){
 
-        helper = new Database_helper(this);
+        helper = new UserMantra(this);
 
         List<HashMap<String, String>> list = helper.getData();
 

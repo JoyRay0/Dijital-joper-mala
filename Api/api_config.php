@@ -20,9 +20,14 @@ if($method !== 'GET'){
 
 $apis = [
 
-    'jopa_info' => 'https://jopamala.rksoftwares.xyz/arrayDatabase?res=get_info',
-    'jopa_info_db' => 'https://jopamala.rksoftwares.xyz/Jopa_info?res=get_info',
-    'inAppnotification' => 'https://jopamala.rksoftwares.xyz/InAppNotification',
+    //'jopa_info' => 'https://jopamala.rksoftwares.xyz/arrayDatabase?res=get_info',
+    'mantra' => 'https://jopamala.rksoftwares.fun/Jopa_info?res=get_mantra',
+    'jopa_info_db' => 'https://jopamala.rksoftwares.fun/Jopa_info?res=get_info',
+    'inAppnotification' => 'https://jopamala.rksoftwares.fun/InAppNotification',
+
+    //'jopa_info' => 'https://jopamala.rksoftwares.fun/arrayDatabase?res=get_info',
+    //'jopa_info_db' => 'https://jopamala.rksoftwares.fun/Jopa_info?res=get_info',
+    //'inAppnotification' => 'https://jopamala.rksoftwares.fun/InAppNotification',
 
 ];
 

@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         app:menu="@menu/toolbar_menu"
-
         app:navigationIcon="@drawable/ic_equal"
         android:background="@color/toolbar_color"
         />

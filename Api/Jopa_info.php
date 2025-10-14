@@ -2,12 +2,13 @@
 require 'db.php';
 //require 'middleware.php';
 //require 'ID_middleware.php';
+require_once __DIR__. '/Cache.php';
 
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 
 header('Content-Type: application/json; charset=utf-8');
 
-header("Access-Control-Allow-Origin: https://rksoftwares.xyz");
+header("Access-Control-Allow-Origin:*");
 
 // Strict-Transport-Security হেডার
 header('Strict-Transport-Security:max-age=31536000; includeSubDomains');
@@ -42,15 +43,17 @@ function jopa_mala(){
     $res = $_GET['res'] ?? '';
     global $pdo;
 
+    $cache = new Cache();
+
     if($method !== 'GET'){
 
-        echo json_encode([
+        die (json_encode([
 
             "status" => "Falied",
             "message" => "Method not supported"
 
-        ]);
-        exit;
+        ]));
+       
 
     }
 
@@ -58,11 +61,43 @@ function jopa_mala(){
 
         case 'get_info':
 
-            //$sql = "SELECT * FROM jop_mala_info1";
+           
+            $data =  $cache->getCache($res.'_cache');
+
+            if($data){
+
+                echo json_encode([
+
+                    "status" => "sucess",
+                    "form" => "Cache",
+                    "data" => $data
+                ]);
+                exit;
+            }
+
             $stmt = $pdo->prepare("SELECT * FROM jop_mala_info1");
+
             break;
         
-        
+        case 'get_mantra':
+
+             $data =  $cache->getCache($res.'_cache');
+
+            if($data){
+
+                echo json_encode([
+
+                    "status" => "sucess",
+                    "form" => "Cache",
+                    "data" => $data
+                ]);
+                exit;
+            }
+
+            $stmt = $pdo->prepare("SELECT * FROM mantras");
+
+            break;    
+
         default:
         
             echo json_encode([
@@ -90,14 +125,16 @@ function jopa_mala(){
 
     }
 
+    $cache->setCache($res."_cache", $sql_query, 5);
+
     echo json_encode([
 
         "status" => "Success",
+        "from" => "database",
         "data" => $sql_query
 
     ]);
 
 }
-
 
 ?>

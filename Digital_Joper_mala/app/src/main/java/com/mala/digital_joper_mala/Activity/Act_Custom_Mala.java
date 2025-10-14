@@ -22,7 +22,6 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -32,6 +31,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
+import com.mala.digital_joper_mala.Database.History;
 import com.mala.digital_joper_mala.R;
 
 import java.io.File;
@@ -62,6 +62,9 @@ public class Act_Custom_Mala extends AppCompatActivity {
     private Vibrator vibrator;
 
     private CardView cd_save_count1, cd_save_count2, cd_save_count3;
+
+    //other
+    private History historyDB;
 
     SharedPreferences sharedPreferences, save_text1, save_text2, save_text3, save_text4;
 
@@ -147,6 +150,9 @@ public class Act_Custom_Mala extends AppCompatActivity {
         cd_save_count3 = findViewById(R.id.cd_save_count3);
 
         //identity period -----------------------------------------------------------
+
+
+        historyDB = new History(this);
 
         savedMantra();
 
@@ -765,7 +771,7 @@ public class Act_Custom_Mala extends AppCompatActivity {
     private void count_save(String count){
 
         Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.lay_japa_history);
+        dialog.setContentView(R.layout.lay_japa_history_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
@@ -793,9 +799,15 @@ public class Act_Custom_Mala extends AppCompatActivity {
 
                 ed_note.setError("দিতে হবে");
 
+            } else if (count == null || count.isEmpty()) {
+
+                ed_count.setError("দিতে হবে");
+
             } else {
 
-                Toast.makeText(this, note+count, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "সেভ হয়েছে।", Toast.LENGTH_SHORT).show();
+
+                addDataToDatabase(note, count);
 
                 dialog.dismiss();
 
@@ -807,6 +819,28 @@ public class Act_Custom_Mala extends AppCompatActivity {
 
     }
 
+    //data added to database---------------------------------------------------------
+    private void addDataToDatabase(String titles, String counts){
 
+        /*
+        new Thread(()-> {
 
+            History history = new History();
+            history.title = titles;
+            history.counter = counts;
+            db.historyDao().Insert(history);
+
+        }).start();
+         */
+
+        historyDB.insert(titles, counts);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        historyDB.CloseDB();
+    }
 }//public class ===============================

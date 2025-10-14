@@ -35,5 +35,11 @@
 
     </style>
 
+    <style name="check_box" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
+
+        <item name="buttonTint">@color/check_box</item>
+
+    </style>
+
 
 </resources>

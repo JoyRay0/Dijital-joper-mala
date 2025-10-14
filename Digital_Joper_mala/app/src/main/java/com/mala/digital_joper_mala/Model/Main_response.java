@@ -40,4 +40,7 @@ public class Main_response {
     public String getMsize() {
         return msize;
     }
+
 }
+
+

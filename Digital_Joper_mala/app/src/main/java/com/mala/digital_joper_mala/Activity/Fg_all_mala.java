@@ -165,33 +165,5 @@ public class Fg_all_mala extends Fragment {
     }
     //adapter class -----------------------------------------------------------
 
-    //fab button----------------------------------------------
-
-    private void fab_button(){
-
-        anim_fab.setOnClickListener(view -> {
-
-            Dialog dialog = new Dialog(getActivity());
-            dialog.setContentView(R.layout.lay_bangla_date);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-            dialog.show();
-
-            AppCompatTextView banglaDate_tv = dialog.findViewById(R.id.banglaDate_tv);
-
-            String bangla_full_date = BanglaDateUtils.getBanglafullDate();
-            String week = BanglaDateUtils.getWeekDay();
-            String day = BanglaDateUtils.getBanglaDay();
-            String month = BanglaDateUtils.getBanglaMonth();
-            String season = BanglaDateUtils.getBanglaSeason();
-
-            banglaDate_tv.setText("তারিখ: "+bangla_full_date+"\nবার: "+week);
-
-
-
-        });
-
-    }
-
-    //fab button----------------------------------------------
 
 }//public class===========================

@@ -45,4 +45,8 @@
 
     <color name="jopa_count">#1B2D2B</color>
 
+    <color name="history_count">#808080</color>
+
+    <color name="check_box">#008080</color>
+
 </resources>
