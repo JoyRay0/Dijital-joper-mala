@@ -20,6 +20,7 @@ import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
@@ -438,7 +439,6 @@ public class Act_Home_All_Mala extends AppCompatActivity {
 
             cv_dialog.setVisibility(View.VISIBLE);
             tv_no_notification.setVisibility(View.VISIBLE);
-
 
         }else {
 

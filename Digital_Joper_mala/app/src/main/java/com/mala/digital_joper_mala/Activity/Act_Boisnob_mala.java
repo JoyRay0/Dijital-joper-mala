@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.mala.digital_joper_mala.Database.History;
 import com.mala.digital_joper_mala.Database.Mantra;
 import com.mala.digital_joper_mala.R;
+import com.mala.digital_joper_mala.Utils.ImageUploadHelper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -66,6 +67,8 @@ public class Act_Boisnob_mala extends AppCompatActivity {
     private Vibrator vibrator;
 
     private History historyDB;
+
+    private ImageUploadHelper uploadHelper;
 
     String firstCount = "";
     String secondCount = "";
@@ -131,6 +134,7 @@ public class Act_Boisnob_mala extends AppCompatActivity {
         //Identity period end+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         historyDB = new History(this);
+        uploadHelper = new ImageUploadHelper(Act_Boisnob_mala.this, "rk.png", iv_upload_image, iv_upload_button, iv_delete_button);
 
         //back button-----------------------------------------------
         back.setOnClickListener(new View.OnClickListener() {
@@ -159,28 +163,8 @@ public class Act_Boisnob_mala extends AppCompatActivity {
 
        counter();
 
-        //image added -------------------------------------------------------------------
-        iv_upload_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, REQUEST_IMG_PICK);
-
-            }
-        });
-
-        iv_delete_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                delete_img();
-
-            }
-        });
-
-        load_img_form_storage();
-        //image added -------------------------------------------------------------------
+       uploadHelper.imageButtons();
+       uploadHelper.loadImage();
 
 
         //back-----------------------------------------------------------------
@@ -206,87 +190,12 @@ public class Act_Boisnob_mala extends AppCompatActivity {
     //vibrator-------------------------------------------------
 
     //image methods===================================================
-    private void load_img_form_storage(){
-
-        try {
-
-            FileInputStream fileInputStream = openFileInput("saved_image2.png");
-
-            Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
-            iv_upload_image.setImageBitmap(bitmap);
-            fileInputStream.close();
-
-        }catch (Exception e){
-
-            e.printStackTrace();
-
-        }
-
-    }
-
-    private void save_img_to_internal_storage(Bitmap bitmap){
-
-        try {
-
-            File file = new File(getFilesDir(),"saved_image2.png");
-            if (file.exists()){
-                file.delete();
-
-            }
-
-            //file created-----
-            FileOutputStream fos = openFileOutput("saved_image2.png", MODE_PRIVATE);
-
-            //image compressed----
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-            fos.close();
-
-        }catch (Exception e){
-
-            e.printStackTrace();
-            Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show();
-
-        }
-    }
-
-    private void delete_img(){
-
-        File file = new File(getFilesDir(),"saved_image2.png");
-
-        if (file.exists()){
-
-            if (file.delete()){
-
-                iv_upload_image.setImageDrawable(null);
-                iv_upload_image.setImageResource(R.drawable.img_gallery);
-
-            }
-        }
-
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_IMG_PICK && resultCode == RESULT_OK && data != null){
-
-            try {
-
-                Uri img_uri = data.getData();
-
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(Act_Boisnob_mala.this.getContentResolver(), img_uri);
-
-                iv_upload_image.setImageBitmap(bitmap);
-
-                save_img_to_internal_storage(bitmap);
-
-            } catch (Exception e) {
-
-                e.printStackTrace();
-            }
-
-        }
+        uploadHelper.ActivityResult(requestCode, resultCode, data);
 
     }
     //image methods=======================================

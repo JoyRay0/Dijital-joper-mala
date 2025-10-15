@@ -22,6 +22,7 @@ import android.widget.FrameLayout;
 import android.widget.GridView;
 
 
+import com.mala.digital_joper_mala.Adapter.Mala;
 import com.mala.digital_joper_mala.Utils.BanglaDateUtils;
 import com.mala.digital_joper_mala.R;
 
@@ -61,8 +62,9 @@ public class Fg_all_mala extends Fragment {
         //Identity period --------------------------------------------
 
         hashmap();
-        Myadapter myadapter = new Myadapter();
-        all_mala_gridview.setAdapter(myadapter);
+        //Myadapter myadapter = new Myadapter();
+        Mala mala = new Mala(requireActivity(), arrayList);
+        all_mala_gridview.setAdapter(mala);
         //fab_button();
 
         iv_mantras.setOnClickListener(view1 -> {
@@ -89,81 +91,12 @@ public class Fg_all_mala extends Fragment {
         hashMap.put("name_mala","বৈষ্ণব মালা");
         arrayList.add(hashMap);
 
-        /*
         hashMap = new HashMap<>();
         hashMap.put("name_mala","শিব মালা");
         arrayList.add(hashMap);
 
-         */
+
 
     }
-    //hashmap----------------------------------------
-
-    //adapter class -----------------------------------------------------------
-    private class Myadapter extends BaseAdapter {
-
-
-        @Override
-        public int getCount() {
-            return arrayList.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return position;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View view, ViewGroup viewGroup) {
-
-            LayoutInflater layoutInflater = getLayoutInflater();
-            @SuppressLint("ViewHolder") View view1 =  layoutInflater.inflate(R.layout.lay_desgin_for_all_mala_home, viewGroup,false);
-
-            CardView cardview = view1.findViewById(R.id.cardview);
-            AppCompatTextView all_mala_name_textview = view1.findViewById(R.id.all_mala_name_textview);
-            AppCompatImageView all_mala_imageview = view1.findViewById(R.id.all_mala_imageview);
-
-
-            HashMap<String, String> hashMap1 = arrayList.get(position);
-
-            //hashmap to string
-            String text_item = hashMap1.get("name_mala");
-
-            all_mala_name_textview.setText(text_item);
-
-
-
-            cardview.setOnClickListener(new View.OnClickListener() { //mala button
-                @Override
-                public void onClick(View view) {
-
-                    if (position == 0){
-
-                        startActivity(new Intent(getActivity(), Act_Custom_Mala.class));
-
-                    } else if (position == 1) {
-
-                        startActivity(new Intent(getActivity(), Act_Boisnob_mala.class));
-
-                    } else if (position == 2) {
-
-                        startActivity(new Intent(getActivity(), Act_ShivMala.class));
-
-                    }
-
-                }
-            });
-
-
-            return view1;
-        }
-    }
-    //adapter class -----------------------------------------------------------
-
 
 }//public class===========================

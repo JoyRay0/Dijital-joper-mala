@@ -33,6 +33,7 @@ import androidx.cardview.widget.CardView;
 
 import com.mala.digital_joper_mala.Database.History;
 import com.mala.digital_joper_mala.R;
+import com.mala.digital_joper_mala.Utils.ImageUploadHelper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -65,6 +66,7 @@ public class Act_Custom_Mala extends AppCompatActivity {
 
     //other
     private History historyDB;
+    private ImageUploadHelper uploadHelper;
 
     SharedPreferences sharedPreferences, save_text1, save_text2, save_text3, save_text4;
 
@@ -153,6 +155,7 @@ public class Act_Custom_Mala extends AppCompatActivity {
 
 
         historyDB = new History(this);
+        uploadHelper = new ImageUploadHelper(Act_Custom_Mala.this, "custom.png", iv_upload_image, iv_upload_button, iv_delete_button);
 
         savedMantra();
 
@@ -175,28 +178,8 @@ public class Act_Custom_Mala extends AppCompatActivity {
 
 
 
-        //image added -------------------------------------------------------------------
-        iv_upload_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, REQUEST_IMG_PICK);
-
-            }
-        });
-
-        iv_delete_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                delete_img();
-
-            }
-        });
-
-        load_img_form_storage();
-        //image added -------------------------------------------------------------------
+        uploadHelper.imageButtons();
+        uploadHelper.loadImage();
 
         //back------------------------------------------------------
         getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
@@ -324,94 +307,12 @@ public class Act_Custom_Mala extends AppCompatActivity {
 
     }
 
-    private void load_img_form_storage(){
-
-
-        try {
-
-            FileInputStream fileInputStream = openFileInput("saved_image.png");
-
-           Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
-           iv_upload_image.setImageBitmap(bitmap);
-           fileInputStream.close();
-
-        }catch (Exception e){
-
-            e.printStackTrace();
-
-
-        }
-
-    }
-
-    private void save_img_to_internal_storage(Bitmap bitmap){
-
-        try {
-
-            File file = new File(getFilesDir(),"saved_image.png");
-            if (file.exists()){
-                file.delete();
-
-            }
-
-
-            //file created-----
-            FileOutputStream fos = openFileOutput("saved_image.png", MODE_PRIVATE);
-
-            //image compressed----
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-            fos.close();
-
-
-
-
-        }catch (Exception e){
-
-            e.printStackTrace();
-            Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show();
-
-        }
-
-    }
-
-    private void delete_img(){
-
-        File file = new File(getFilesDir(),"saved_image.png");
-
-        if (file.exists()){
-
-            if (file.delete()){
-
-                iv_upload_image.setImageDrawable(null);
-                iv_upload_image.setImageResource(R.drawable.img_gallery);
-
-            }
-        }
-
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_IMG_PICK && resultCode == RESULT_OK && data != null){
-
-            try {
-
-                Uri img_uri = data.getData();
-
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(Act_Custom_Mala.this.getContentResolver(), img_uri);
-
-                iv_upload_image.setImageBitmap(bitmap);
-
-                save_img_to_internal_storage(bitmap);
-
-            } catch (Exception e) {
-
-                e.printStackTrace();
-            }
-
-        }
+        uploadHelper.ActivityResult(requestCode, resultCode, data);
 
     }
 
@@ -821,17 +722,6 @@ public class Act_Custom_Mala extends AppCompatActivity {
 
     //data added to database---------------------------------------------------------
     private void addDataToDatabase(String titles, String counts){
-
-        /*
-        new Thread(()-> {
-
-            History history = new History();
-            history.title = titles;
-            history.counter = counts;
-            db.historyDao().Insert(history);
-
-        }).start();
-         */
 
         historyDB.insert(titles, counts);
 

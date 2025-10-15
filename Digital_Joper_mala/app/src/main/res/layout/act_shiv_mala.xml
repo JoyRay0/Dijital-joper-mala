@@ -1,38 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.Act_ShivMala">
+    tools:context=".Activity.Act_ShivMala"
+    android:background="@color/background_color"
+    >
 
-    <include layout="@layout/lay_back_appbar"
-        android:id="@+id/back_button"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        android:layout_height="match_parent">
 
-    <include layout="@layout/lay_add_img"
-        android:id="@+id/iv_addImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/back_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        <!-- back -->
+        <FrameLayout
+            android:id="@+id/fl_back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            >
 
-    <include layout="@layout/lay_jopa"
-        android:id="@+id/count_jopa"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/iv_addImage"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+            <include layout="@layout/lay_back_appbar" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </FrameLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/fl_back"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <!-- image -->
+                <FrameLayout
+                    android:id="@+id/fl_add_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    >
+
+                    <include layout="@layout/lay_add_img" />
+
+                </FrameLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="5dp"
+                    android:text="মালা জপের পূর্বের মন্ত্র:"
+                    android:textColor="@color/normal_text_color"
+                    android:fontFamily="@font/noto_serif_bengali"
+                    android:textSize="18sp"
+                    android:textStyle="normal" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=" “ধ্যায়েত পদ্মাসনস্থং প্রখট বিমল পদ্মাভিরামং মহান্তং।
+ধ্যানমূর্তিং ত্রিনেত্রং কমল গরলধরং নীলকণ্ঠং প্রসন্নম” "
+                    android:textSize="20sp"
+                    android:textColor="@color/bold_text_color"
+                    android:fontFamily="@font/noto_serif_bengali"
+                    android:textStyle="bold"
+                    android:layout_margin="15dp"
+                    android:gravity="center"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="5dp"
+                    android:text="মূল মন্ত্র:"
+                    android:textColor="@color/normal_text_color"
+                    android:fontFamily="@font/noto_serif_bengali"
+                    android:textSize="18sp"
+                    android:textStyle="normal" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=" “ ওঁ নমঃ শিবায় ” "
+                    android:textSize="20sp"
+                    android:textColor="@color/bold_text_color"
+                    android:fontFamily="@font/noto_serif_bengali"
+                    android:textStyle="bold"
+                    android:layout_margin="15dp"
+                    android:gravity="center"
+                    />
+
+                <!-- jopa -->
+                <FrameLayout
+                    android:id="@+id/fl_jopa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <include layout="@layout/lay_jopa" />
+
+                </FrameLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="5dp"
+                    android:text="মালা জপের সমাপনী মন্ত্র:"
+                    android:textColor="@color/normal_text_color"
+                    android:fontFamily="@font/noto_serif_bengali"
+                    android:textSize="18sp"
+                    android:textStyle="normal" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=" “ কপূর-গৌরং, করুণাবতারং, সংসারসারং, ভুজগেন্দ্রহারং। সদা বসন্তং হৃদয়ারবিন্দে, ভবং ভবানীসহিতং নমামি” "
+                    android:textSize="20sp"
+                    android:textColor="@color/bold_text_color"
+                    android:fontFamily="@font/noto_serif_bengali"
+                    android:textStyle="bold"
+                    android:layout_margin="15dp"
+                    android:gravity="center"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:background="@android:color/transparent"
+                    />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
