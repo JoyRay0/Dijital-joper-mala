@@ -20,6 +20,9 @@
         android:usesCleartextTraffic="false"
         tools:targetApi="34">
         <activity
+            android:name=".Activity.Act_search"
+            android:exported="false" />
+        <activity
             android:name=".Activity.Act_jopa_history"
             android:exported="false" />
         <activity

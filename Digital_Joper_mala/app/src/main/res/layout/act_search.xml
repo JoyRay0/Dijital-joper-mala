@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.Act_search"
+    android:background="@color/background_color"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/fl_back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include layout="@layout/lay_back_appbar"/>
+
+        </FrameLayout>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/ed_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="দেব-দেবীর নামের প্রথম অক্ষর লিখুন..."
+            android:textColorHint="@color/hint_color"
+            android:textSize="17sp"
+            android:textColor="@color/normal_text_color"
+            android:textStyle="normal"
+            android:fontFamily="@font/noto_serif_bengali"
+            android:padding="10dp"
+            android:inputType="text"
+            android:imeOptions="actionSearch"
+            android:drawableStart="@drawable/ic_search2"
+            android:drawablePadding="12dp"
+            android:background="@drawable/sh_edit_text_design"
+            android:layout_below="@id/fl_back"
+            android:layout_margin="10dp"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_below="@id/ed_search"
+            android:visibility="gone"
+            />
+
+        <LinearLayout
+            android:id="@+id/ll_no_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ed_search"
+            android:layout_marginTop="90dp"
+            android:orientation="vertical"
+            android:visibility="visible"
+            >
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                app:lottie_loop="true"
+                app:lottie_autoPlay="true"
+                app:lottie_rawRes="@raw/search"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="পছন্দের মন্ত্র খুজুন।"
+                android:textSize="17sp"
+                android:textColor="@color/normal_text_color"
+                android:fontFamily="@font/noto_serif_bengali"
+                android:layout_gravity="center"
+                />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

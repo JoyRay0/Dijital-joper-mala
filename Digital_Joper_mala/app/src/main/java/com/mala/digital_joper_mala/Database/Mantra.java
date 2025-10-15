@@ -87,6 +87,27 @@ public class Mantra extends SQLiteOpenHelper {
         return list;
     }
 
+    public List<HashMap<String, String>> getSearchItem(String title){
+
+        List<HashMap<String, String>> searchList = new ArrayList<>();
+
+        if (db == null || !db.isOpen()) db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT title, mantra FROM " +TABLE_NAME+ " WHERE title LIKE ?", new String[]{"%" +title+ "%"});
+
+        while (cursor.moveToNext()){
+
+            HashMap<String, String> hashMap = new HashMap<>();
+            hashMap.put("title", cursor.getString(cursor.getColumnIndexOrThrow("title")));
+            hashMap.put("mantra", cursor.getString(cursor.getColumnIndexOrThrow("mantra")));
+            searchList.add(hashMap);
+        }
+        cursor.close();
+
+        return searchList;
+
+    }
+
     public void DeleteAll(){
 
         if (db == null || !db.isOpen()) db = this.getWritableDatabase();

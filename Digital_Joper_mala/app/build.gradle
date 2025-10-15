@@ -52,8 +52,6 @@ dependencies {
     implementation "androidx.work:work-runtime:2.10.5"
     implementation 'androidx.core:core:1.17.0'
 
-    implementation "androidx.room:room-runtime:2.8.2" // Core runtime
-    annotationProcessor "androidx.room:room-compiler:2.8.2" // For Java annotation processing
 
 
 }

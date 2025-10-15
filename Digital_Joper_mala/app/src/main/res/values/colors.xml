@@ -49,4 +49,6 @@
 
     <color name="check_box">#008080</color>
 
+    <color name="hint_color">#9D8686</color>
+
 </resources>

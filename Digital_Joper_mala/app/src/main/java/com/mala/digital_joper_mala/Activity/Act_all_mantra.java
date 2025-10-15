@@ -56,7 +56,7 @@ public class Act_all_mantra extends AppCompatActivity {
 
     private Mantra my_mantraDB;
 
-    private AppCompatImageView iv_alert_info, iv_refresh;
+    private AppCompatImageView iv_alert_info, iv_refresh, iv_search;
 
     //XML id's------------------------------------------------------
 
@@ -72,11 +72,8 @@ public class Act_all_mantra extends AppCompatActivity {
         iv_alert_info = findViewById(R.id.iv_alert_info);
         iv_refresh = findViewById(R.id.iv_refresh);
         ll_no_mantra = findViewById(R.id.ll_no_mantra);
+        iv_search = findViewById(R.id.iv_search);
         //identity period-----------------------------------
-
-        //mantraAdapter = new All_mantra(this, mapList);
-        //lv_mantra.setAdapter(mantraAdapter);
-        //mantras();
 
         mantrasAdapter = new Mantras(this, mapList);
         rv_mantra.setAdapter(mantrasAdapter);
@@ -142,6 +139,13 @@ public class Act_all_mantra extends AppCompatActivity {
         });
 
         //back---------------------------------------------------
+
+        iv_search.setOnClickListener(view -> {
+
+            startActivity(new Intent(this, Act_search.class));
+            finishAffinity();
+
+        });
 
 
     }//on create====================================================================

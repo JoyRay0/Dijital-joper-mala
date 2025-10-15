@@ -25,7 +25,7 @@
                 android:id="@+id/tv_no_notification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="কোন নোটিফিকেশন নেই"
+                android:text="কোন নোটিফিকেশন নেই।"
                 android:fontFamily="@font/noto_serif_bengali"
                 android:textSize="17sp"
                 android:textColor="@color/normal_text_color"
