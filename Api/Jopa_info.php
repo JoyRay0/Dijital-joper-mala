@@ -1,41 +1,17 @@
 <?php
 require 'db.php';
-//require 'middleware.php';
-//require 'ID_middleware.php';
 require_once __DIR__. '/Cache.php';
+require_once __DIR__. '/Header.php';
+require __DIR__. '/JsonMessages.php';
 
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+$header = new HeadersManager();
 
-header('Content-Type: application/json; charset=utf-8');
+$header->setAllHeaders();
 
-header("Access-Control-Allow-Origin:*");
-
-// Strict-Transport-Security হেডার
-header('Strict-Transport-Security:max-age=31536000; includeSubDomains');
-
-// X-Content-Type-Options হেডার
-header('X-Content-Type-Options: nosniff');
-
-// XSS সুরক্ষা হেডার
-header('X-XSS-Protection: 1; mode=block');
-
-// X-Frame-Options হেডার
-header('X-Frame-Options: DENY');
-
-// Referrer-Policy হেডার
-header('Referrer-Policy: no-referrer');
-
-header("Cache-Control: public, max-age=3600");
-
-
-//All database table with one api in Routing Logic
-
-//rate_limt();
-
-//check_deviceIds();
 
 jopa_mala();
 
+$Messages = new JsonMessages();
 
 function jopa_mala(){
 
@@ -44,36 +20,19 @@ function jopa_mala(){
     global $pdo;
 
     $cache = new Cache();
+    global $Messages;
 
     if($method !== 'GET'){
-
-        die (json_encode([
-
-            "status" => "Falied",
-            "message" => "Method not supported"
-
-        ]));
+     
+        $Messages->dieMessage("Falied", "Method not supported");
        
-
     }
 
     switch($res){
 
         case 'get_info':
 
-           
-            $data =  $cache->getCache($res.'_cache');
-
-            if($data){
-
-                echo json_encode([
-
-                    "status" => "sucess",
-                    "form" => "Cache",
-                    "data" => $data
-                ]);
-                exit;
-            }
+            cacheData($res, $cache);
 
             $stmt = $pdo->prepare("SELECT * FROM jop_mala_info1");
 
@@ -81,32 +40,15 @@ function jopa_mala(){
         
         case 'get_mantra':
 
-             $data =  $cache->getCache($res.'_cache');
-
-            if($data){
-
-                echo json_encode([
-
-                    "status" => "sucess",
-                    "form" => "Cache",
-                    "data" => $data
-                ]);
-                exit;
-            }
+            cacheData($res, $cache);
 
             $stmt = $pdo->prepare("SELECT * FROM mantras");
 
             break;    
 
         default:
-        
-            echo json_encode([
 
-                "status" => "Failed",
-                "message" => "Invalid resource type"
-
-            ]);
-            exit;
+            $Messages->errorMessage("Failed", "Invalid resource type");
 
     }
 
@@ -116,25 +58,28 @@ function jopa_mala(){
 
     if(!$sql_query){
 
-        echo json_encode([
-
-            "status" => "Falied",
-            "message" => "Database query failed"
-        ]);
-        exit;
+        $Messages->errorMessage("Falied", "Database query failed");
 
     }
 
     $cache->setCache($res."_cache", $sql_query, 5);
 
-    echo json_encode([
+    $Messages->successMessage("Success", "database", $sql_query);
 
-        "status" => "Success",
-        "from" => "database",
-        "data" => $sql_query
+}
 
-    ]);
+function cacheData($res, $cache){
 
+    global $Messages;
+    
+    $data =  $cache->getCache($res.'_cache');
+
+    if($data){
+
+        $Messages->successMessage("sucess", "Cache", $data);
+
+    }
+    
 }
 
 ?>

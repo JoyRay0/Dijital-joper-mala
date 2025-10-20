@@ -1,6 +1,10 @@
 <?php
 
-header('Content-Type: application/json');
+require_once __DIR__. '/Header.php';
+
+$header = new HeadersManager();
+
+$header->setAllHeaders();
 
 $method = $_SERVER["REQUEST_METHOD"];
 $res = $_GET["res"];

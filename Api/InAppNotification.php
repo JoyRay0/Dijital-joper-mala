@@ -1,6 +1,10 @@
 <?php
 
-header('Content-Type: application/json; charset=utf-8');
+require_once __DIR__. '/Header.php';
+
+$header = new HeadersManager();
+
+$header->setAllHeaders();
 
 $title = ""; // your notification title
 $description = ""; // your notification message
