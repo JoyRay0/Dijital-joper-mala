@@ -6,7 +6,10 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+
 
     <application
         android:allowBackup="true"
@@ -19,6 +22,9 @@
         android:theme="@style/Base.Theme.Digital_Joper_mala"
         android:usesCleartextTraffic="false"
         tools:targetApi="34">
+        <activity
+            android:name=".Activity.Act_User_mala"
+            android:exported="false" />
         <activity
             android:name=".Activity.Act_search"
             android:exported="false" />

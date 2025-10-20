@@ -10,8 +10,8 @@ android {
         applicationId "com.mala.digital_joper_mala"
         minSdk 23
         targetSdk 36
-        versionCode 15
-        versionName "2.2"
+        versionCode 16
+        versionName "2.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -51,7 +51,5 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation "androidx.work:work-runtime:2.10.5"
     implementation 'androidx.core:core:1.17.0'
-
-
 
 }

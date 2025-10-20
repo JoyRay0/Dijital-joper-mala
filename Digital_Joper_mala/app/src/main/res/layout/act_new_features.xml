@@ -39,11 +39,12 @@
                 tools:ignore="HardcodedText"
                 />
 
+                -->
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="১। এখন থেকে মন্ত্রে ক্লিক করলেই কপি হয়ে যাবে ।"
+                android:text="১। আপনার পছন্দের মন্ত্র দিয়ে মালা তৈরি করুন।"
                 android:textSize="18sp"
                 android:textColor="@color/bold_text_color"
                 android:fontFamily="@font/noto_serif_bengali"
@@ -52,11 +53,47 @@
             />
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:src="@drawable/img_click_mantra"
+                android:layout_height="250dp"
+                android:src="@drawable/img_create"
                 android:background="#744141"
+
                 />
-            -->
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="২। আপনার জপের সংখ্যা সেভ করুন।"
+                android:textSize="18sp"
+                android:textColor="@color/bold_text_color"
+                android:fontFamily="@font/noto_serif_bengali"
+                tools:ignore="HardcodedText"
+                android:layout_margin="10dp"
+                />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:src="@drawable/img_history"
+                android:background="#744141"
+
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="৩। আপনার পছন্দের মন্ত্র আরো সহজে খুজে বের করুন। "
+                android:textSize="18sp"
+                android:textColor="@color/bold_text_color"
+                android:fontFamily="@font/noto_serif_bengali"
+                tools:ignore="HardcodedText"
+                android:layout_margin="10dp"
+                />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:src="@drawable/img_search"
+                android:background="#744141"
+
+                />
 
 
         </LinearLayout>

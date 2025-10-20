@@ -526,6 +526,18 @@ public class Act_Home_All_Mala extends AppCompatActivity {
 
                 startActivity(new Intent(Act_Home_All_Mala.this, Act_jopa_history.class));
                 finishAffinity();
+
+            } else if (id == R.id.create) {
+
+                Intent intent = new Intent(this, Act_User_mala.class);
+                intent.putExtra("create", "Fg_Create_mala");
+                startActivity(intent);
+
+            } else if (id == R.id.all_mantra) {
+
+                startActivity(new Intent(Act_Home_All_Mala.this, Act_all_mantra.class));
+                finishAffinity();
+
             }
 
             return true;

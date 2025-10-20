@@ -58,6 +58,7 @@
         android:background="@color/card_view_color"
         app:itemTextColor="@color/normal_text_color"
         app:itemIconTint="@color/icon_color"
+
         />
 
 

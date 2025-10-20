@@ -29,12 +29,17 @@
 
             >
             <!-- upload img -->
-            <include android:id="@+id/upload_img"
-                android:layout_margin="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/lay_add_img"/>
 
+            <FrameLayout
+                android:id="@+id/fl_upload_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                >
+
+                <include layout="@layout/lay_add_img"/>
+
+            </FrameLayout>
             <!-- upload img -->
 
             <!-- mantra1 -->
@@ -50,7 +55,7 @@
                 android:textColor="@color/normal_text_color"
                 android:textSize="17sp"
                 android:textStyle="normal"
-                android:layout_below="@id/upload_img"
+                android:layout_below="@id/fl_upload_img"
                 />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -58,7 +63,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_margin="10dp"
-                android:layout_below="@id/upload_img"
+                android:layout_below="@id/fl_upload_img"
                 android:layout_toEndOf="@id/appcompat_textview1"
                 android:tag="open_eye"
                 app:srcCompat="@drawable/ic_open_eye"

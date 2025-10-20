@@ -23,12 +23,13 @@ public class ImageUploadHelper {
 
     private String imageName;
     private Activity activity;
-    private AppCompatImageButton ivUpload;
-    private AppCompatImageButton ivDelete;
+    private AppCompatImageView ivUpload;
+    private AppCompatImageView ivDelete;
     private AppCompatImageView ivUploadView;
     private static final int REQUEST_IMG_PICK = 1;
+    private String img = "";
 
-    public ImageUploadHelper(Activity activity, String imageName, AppCompatImageView ivUploadView ,AppCompatImageButton ivUpload, AppCompatImageButton ivDelete) {
+    public ImageUploadHelper(Activity activity, String imageName, AppCompatImageView ivUploadView ,AppCompatImageView ivUpload, AppCompatImageView ivDelete) {
         this.activity = activity;
         this.imageName = imageName;
         this.ivUpload = ivUpload;
@@ -121,11 +122,13 @@ public class ImageUploadHelper {
 
     public void ActivityResult(int requestCode, int resultCode, Intent data){
 
-        if (requestCode == REQUEST_IMG_PICK && resultCode == Activity.RESULT_OK && data != null){
+        if (requestCode == REQUEST_IMG_PICK && resultCode == activity.RESULT_OK && data != null){
 
             try {
 
                 Uri img_uri = data.getData();
+
+                img = img_uri.toString();
 
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), img_uri);
 
@@ -142,5 +145,10 @@ public class ImageUploadHelper {
 
     }
 
+    public String getImgUri(){
+
+        return (img == null || img.isEmpty()) ? img = null : img;
+
+    }
 
 }

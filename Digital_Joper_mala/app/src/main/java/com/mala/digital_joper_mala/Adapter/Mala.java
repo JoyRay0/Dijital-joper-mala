@@ -51,8 +51,8 @@ public class Mala extends BaseAdapter {
 
 
         CardView cardview = view1.findViewById(R.id.cardview);
-        AppCompatTextView all_mala_name_textview = view1.findViewById(R.id.all_mala_name_textview);
-        AppCompatImageView all_mala_imageview = view1.findViewById(R.id.all_mala_imageview);
+        AppCompatTextView all_mala_name_textview = view1.findViewById(R.id.tv_all_mala_name);
+        AppCompatImageView all_mala_imageview = view1.findViewById(R.id.iv_all_mala_image);
 
 
         HashMap<String, String> hashMap1 = list.get(position);

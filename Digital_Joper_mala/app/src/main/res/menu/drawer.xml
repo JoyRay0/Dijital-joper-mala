@@ -1,16 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group>
+    <group
+        android:id="@+id/group_one"
+        >
+
+        <item android:id="@+id/all_mantra"
+            android:title="মন্ত্র ভান্ডার"
+            android:icon="@drawable/ic_list_all"
+            />
 
         <item android:id="@+id/history"
             android:title="জপ সংখ্যা"
             android:icon="@drawable/ic_history"
             />
 
+        <item
+            android:id="@+id/create"
+            android:title="আমার মালা"
+            android:icon="@drawable/ic_write"
+            />
+
     </group>
 
-    <group>
+    <group
+        android:id="@+id/group_two"
+        >
 
         <item android:id="@+id/share"
             android:title="শেয়ার অ্যাপ"

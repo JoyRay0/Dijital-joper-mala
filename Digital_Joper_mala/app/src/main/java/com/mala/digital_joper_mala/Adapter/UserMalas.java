@@ -1,6 +1,8 @@
 package com.mala.digital_joper_mala.Adapter;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,36 +15,36 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mala.digital_joper_mala.Database.History;
+import com.mala.digital_joper_mala.Activity.Act_Home_All_Mala;
+import com.mala.digital_joper_mala.Database.UserMala;
 import com.mala.digital_joper_mala.R;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class JopaHistory extends RecyclerView.Adapter<JopaHistory.Histotyholder> {
+public class UserMalas extends RecyclerView.Adapter<UserMalas.holder> {
 
-    private ArrayList<HashMap<String, String>> list;
-    private Activity  activity;
-    private History historyDB;
+    private List<HashMap<String, String>> list;
+    private Activity activity;
+    private UserMala mala;
 
-    public JopaHistory(Activity  activity, ArrayList<HashMap<String, String>> list) {
+    public UserMalas(Activity activity, List<HashMap<String, String>> list) {
         this.activity = activity;
         this.list = list;
-        this.historyDB = new History(activity);
-
+        this.mala = new UserMala(activity);
     }
 
     @NonNull
     @Override
-    public Histotyholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(activity).inflate(R.layout.lay_jopa_history, parent, false);
+        View view = LayoutInflater.from(activity).inflate(R.layout.lay_user_mala, parent, false);
 
-        return new Histotyholder(view);
+        return new holder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Histotyholder holder, int position) {
+    public void onBindViewHolder(@NonNull holder holder, int position) {
 
         HashMap<String, String> map = list.get(position);
 
@@ -50,7 +52,9 @@ public class JopaHistory extends RecyclerView.Adapter<JopaHistory.Histotyholder>
         holder.iv_delete.setVisibility(View.GONE);
         holder.cb_check.setChecked(false);
 
-        holder.cv_jopa_list.setOnLongClickListener(view -> {
+        holder.tv_title.setText(map.get("mala_name"));
+
+        holder.cv_title.setOnLongClickListener(view -> {
 
             holder.cb_check.setVisibility(View.VISIBLE);
             holder.iv_delete.setVisibility(View.VISIBLE);
@@ -67,49 +71,52 @@ public class JopaHistory extends RecyclerView.Adapter<JopaHistory.Histotyholder>
 
         });
 
+        holder.cv_title.setOnClickListener(view -> {
+
+            activity.startActivity(new Intent(activity, Act_Home_All_Mala.class));
+            activity.finishAffinity();
+
+        });
+
         holder.iv_delete.setOnClickListener(view -> {
 
-            boolean delete  =  historyDB.DeleteOne(map.get("title"));
+            boolean delete  =  mala.deleteOne(map.get("mala_name"));
             int currentPosition = holder.getAdapterPosition();
 
             if (currentPosition != RecyclerView.NO_POSITION && currentPosition < list.size()){
-
 
                 list.remove(currentPosition);
                 notifyItemRemoved(currentPosition);
                 notifyDataSetChanged();
 
-                if (delete) Toast.makeText(activity, "ডিলিট হয়েছে।", Toast.LENGTH_SHORT).show();
             }
 
-        });
+            if (delete) Toast.makeText(activity, "ডিলিট হয়েছে।", Toast.LENGTH_SHORT).show();
 
-        holder.tv_title.setText(map.get("title"));
-        holder.tv_count.setText(map.get("counter"));
+        });
 
     }
 
     @Override
     public int getItemCount() {
-
         return list.size();
     }
 
-    public static class Histotyholder extends RecyclerView.ViewHolder{
+    public static class holder extends RecyclerView.ViewHolder{
 
-        AppCompatCheckBox cb_check;
         AppCompatImageView iv_delete;
-        CardView cv_jopa_list;
-        AppCompatTextView tv_title, tv_count;
+        AppCompatCheckBox cb_check;
+        CardView cv_title;
+        AppCompatTextView tv_title;
 
-        public Histotyholder(@NonNull View itemView) {
+
+        public holder(@NonNull View itemView) {
             super(itemView);
 
-            cb_check = itemView.findViewById(R.id.cb_check);
             iv_delete = itemView.findViewById(R.id.iv_delete);
-            cv_jopa_list = itemView.findViewById(R.id.cv_jopa_list);
+            cb_check = itemView.findViewById(R.id.cb_check);
+            cv_title = itemView.findViewById(R.id.cv_title);
             tv_title = itemView.findViewById(R.id.tv_title);
-            tv_count = itemView.findViewById(R.id.tv_count);
 
         }
     }

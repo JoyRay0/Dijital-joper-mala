@@ -33,6 +33,7 @@ import androidx.cardview.widget.CardView;
 
 import com.mala.digital_joper_mala.Database.History;
 import com.mala.digital_joper_mala.R;
+import com.mala.digital_joper_mala.Utils.CounterHelper;
 import com.mala.digital_joper_mala.Utils.ImageUploadHelper;
 
 import java.io.File;
@@ -52,7 +53,7 @@ public class Act_Custom_Mala extends AppCompatActivity {
 
     private AppCompatButton add1, add2, add3, reset1, reset2, reset3;
 
-    private AppCompatImageButton iv_upload_button, iv_delete_button;
+    private AppCompatImageView iv_upload_button, iv_delete_button;
 
     private AppCompatImageView save1, save2, save3, save4 ,iv_eye1, iv_eye2, iv_eye3, iv_eye4, iv_upload_image, iv_delete1, iv_delete2, iv_delete3, iv_delete4;
 
@@ -60,41 +61,14 @@ public class Act_Custom_Mala extends AppCompatActivity {
 
     private ImageButton back;
 
-    private Vibrator vibrator;
-
     private CardView cd_save_count1, cd_save_count2, cd_save_count3;
 
     //other
     private History historyDB;
     private ImageUploadHelper uploadHelper;
+    private CounterHelper counterHelper;
 
     SharedPreferences sharedPreferences, save_text1, save_text2, save_text3, save_text4;
-
-    int count = 0, i = 0, j = 0;
-
-    String firstCount = "";
-    String secondCount = "";
-    String thirdCount = "";
-
-    private static final String PREF_NAME = "dark_light_mode";
-    private static final String KEY_NAME = "dark_mode";
-    private static final String appPackageName = "com.mala.digital_joper_mala";
-    private static final int REQUEST_IMG_PICK = 1;
-
-    String[] banglaNumber = {"১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯", "১০",
-
-            "১১", "১২", "১৩", "১৪", "১৫", "১৬", "১৭", "১৮", "১৯", "২০",
-            "২১", "২২", "২৩", "২৪", "২৫", "২৬", "২৭", "২৮", "২৯", "৩০",
-            "৩১", "৩২", "৩৩", "৩৪", "৩৫", "৩৬", "৩৭", "৩৮", "৩৯", "৪০",
-            "৪১", "৪২", "৪৩", "৪৪", "৪৫", "৪৬", "৪৭", "৪৮", "৪৯", "৫০",
-            "৫১", "৫২", "৫৩", "৫৪", "৫৫", "৫৬", "৫৭", "৫৮", "৫৯", "৬০",
-            "৬১", "৬২", "৬৩", "৬৪", "৬৫", "৬৬", "৬৭", "৬৮", "৬৯", "৭০",
-            "৭১", "৭২", "৭৩", "৭৪", "৭৫", "৭৬", "৭৭", "৭৮", "৭৯", "৮০",
-            "৮১", "৮২", "৮৩", "৮৪", "৮৫", "৮৬", "৮৭", "৮৮", "৮৯", "৯০",
-            "৯১", "৯২", "৯৩", "৯৪", "৯৫", "৯৬", "৯৭", "৯৮", "৯৯", "১০০",
-            "১০১", "১০২", "১০৩", "১০৪", "১০৫", "১০৬", "১০৭", "১০৮"};
-
-    String[] zero = {"০"};
 
     //XML id's--------------------------------------------------
 
@@ -157,6 +131,8 @@ public class Act_Custom_Mala extends AppCompatActivity {
         historyDB = new History(this);
         uploadHelper = new ImageUploadHelper(Act_Custom_Mala.this, "custom.png", iv_upload_image, iv_upload_button, iv_delete_button);
 
+        counterHelper = new CounterHelper(this, text1, text2, text3);
+
         savedMantra();
 
         save();
@@ -176,8 +152,6 @@ public class Act_Custom_Mala extends AppCompatActivity {
             }
         });
 
-
-
         uploadHelper.imageButtons();
         uploadHelper.loadImage();
 
@@ -192,15 +166,6 @@ public class Act_Custom_Mala extends AppCompatActivity {
         //back------------------------------------------------------
 
     }//on create====================================================================
-
-    //vibration--------------------------
-    private void vibrate(){                     //vibrate
-
-        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-
-        vibrator.vibrate(50);
-
-    }
 
     //save--------------------------
     private void save(){
@@ -523,125 +488,29 @@ public class Act_Custom_Mala extends AppCompatActivity {
     //mantra counter-----------------------------------------------------------------
     private void countMantra(){
 
+        counterHelper.setFirstCount(add1, reset1);
+        counterHelper.setSecondCount(add2, reset2);
+        counterHelper.setThirdCount(add3, reset3);
+
+
         cd_save_count1.setOnClickListener(view -> {
 
-            count_save(firstCount);
+            count_save(counterHelper.getFirstCount());
 
         });
 
         cd_save_count2.setOnClickListener(view -> {
 
-            count_save(secondCount);
+            count_save(counterHelper.getSecondCount());
 
         });
 
         cd_save_count3.setOnClickListener(view -> {
 
-            count_save(thirdCount);
+            count_save(counterHelper.getThirdCount());
 
         });
 
-        //1st step started++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        add1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                count++;
-
-                if (count > 0 && count < 109){
-
-                    text1.setText(banglaNumber[count - 1]);
-
-                    firstCount = text1.getText().toString();
-
-
-                }
-
-                vibrate();
-            }
-        });
-
-        reset1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                count = 0;
-
-                text1.setText(zero[count - 0]);
-                firstCount = text1.getText().toString();
-
-                vibrate();
-
-            }
-
-        });
-        //1st step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-        //2nd step started++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        add2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                i++;
-
-                if (i > 0 && i < 17) {
-
-                    text2.setText(banglaNumber[i - 1]);
-                    secondCount = text2.getText().toString();
-
-                }
-                vibrate();
-
-            }
-        });
-
-        reset2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                i = 0;
-
-                text2.setText(zero[i - 0]);
-                secondCount = text2.getText().toString();
-
-                vibrate();
-
-            }
-        });
-        //2nd step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-        //3rd step started++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        add3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                j++;
-
-                if (j > 0 && j < 5) {
-
-                    text3.setText(banglaNumber[j - 1]);
-                    thirdCount = text3.getText().toString();
-
-                }
-                vibrate();
-
-            }
-        });
-
-        reset3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                j = 0;
-
-                text3.setText(zero[j - 0]);
-                thirdCount = text3.getText().toString();
-
-                vibrate();
-
-            }
-        });
-        //3rd step ended++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     }
 
