@@ -8,23 +8,23 @@ $header = new HeadersManager();
 
 $header->setAllHeaders();
 
+$Messages = new JsonMessages();
+$cache = new Cache();
 
 jopa_mala();
-
-$Messages = new JsonMessages();
 
 function jopa_mala(){
 
     $method = $_SERVER['REQUEST_METHOD'];
     $res = $_GET['res'] ?? '';
-    global $pdo;
 
-    $cache = new Cache();
+    global $pdo;
+    global $cache;
     global $Messages;
 
     if($method !== 'GET'){
      
-        $Messages->dieMessage("Falied", "Method not supported");
+        $Messages->dieMessage("Failed", "Method not supported");
        
     }
 
@@ -32,7 +32,7 @@ function jopa_mala(){
 
         case 'get_info':
 
-            cacheData($res, $cache);
+            cacheData($res);
 
             $stmt = $pdo->prepare("SELECT * FROM jop_mala_info1");
 
@@ -40,7 +40,7 @@ function jopa_mala(){
         
         case 'get_mantra':
 
-            cacheData($res, $cache);
+            cacheData($res);
 
             $stmt = $pdo->prepare("SELECT * FROM mantras");
 
@@ -58,25 +58,26 @@ function jopa_mala(){
 
     if(!$sql_query){
 
-        $Messages->errorMessage("Falied", "Database query failed");
+        $Messages->errorMessage("Failed", "Database query failed");
 
     }
 
     $cache->setCache($res."_cache", $sql_query, 5);
 
-    $Messages->successMessage("Success", "database", $sql_query);
+    $Messages->successMessage("success", "database", $sql_query);
 
 }
 
-function cacheData($res, $cache){
+function cacheData($res){
 
     global $Messages;
+    global $cache;
     
     $data =  $cache->getCache($res.'_cache');
 
     if($data){
 
-        $Messages->successMessage("sucess", "Cache", $data);
+        $Messages->successMessage("success", "Cache", $data);
 
     }
     

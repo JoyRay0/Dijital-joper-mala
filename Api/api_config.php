@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__. '/Header.php';
+require __DIR__. '/JsonMessages.php';
 
 $header = new HeadersManager();
 

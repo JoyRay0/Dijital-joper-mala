@@ -30,10 +30,11 @@ class JsonMessages{
         echo json_encode([
 
             'status' => $status,
-            'from' => $$from,
+            'from' => $from,
             'data' => $data,
 
         ]);
+        exit;
 
     }
 

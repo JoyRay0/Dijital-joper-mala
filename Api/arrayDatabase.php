@@ -1,7 +1,9 @@
 <?php
 
 require_once __DIR__. '/Header.php';
+require __DIR__. '/JsonMessages.php';
 
+$Messages = new JsonMessages();
 $header = new HeadersManager();
 
 $header->setAllHeaders();
@@ -11,15 +13,10 @@ $res = $_GET["res"];
 
 if($method !== 'GET'){
 
-    die(json_encode([
-
-        'status' => 'failed',
-        'message' => 'Worng Request method'
-
-    ]));
+    
+    $Messages->dieMessage("failed", "Worng Request method");
 
 }
-
 
 switch($res){
 
@@ -285,18 +282,9 @@ switch($res){
         break;
 
     default:
-        die(json_encode([
 
-            'status' => 'failed',
-            'message' => 'Worng res denied'
-
-        ]));
+        $Messages->dieMessage("failed", "Worng res denied");
 
 }
 
-echo json_encode([
-
-    "status" => "Success",
-    "data" => $data
-
-]);
+$Messages->successMessage("Success", "array", $data);
