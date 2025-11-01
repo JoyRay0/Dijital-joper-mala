@@ -19,7 +19,6 @@ $time = "23:59:59";   // end time
 
 $end_time = $date. " " .$time;
 
-
 if(time() <= strtotime($end_time)){
 
     $tm = ($title && $description) || ($img_link || $web_link);
@@ -54,7 +53,6 @@ if(time() <= strtotime($end_time)){
 
         'msize' => 'short',
         
-
     ]);
 
 }

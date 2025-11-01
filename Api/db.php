@@ -1,11 +1,15 @@
 <?php
 
-$database_host = "localhost";
-$database_user = "jekkhjpw_softwares";
-$database_password = "qKAz40Y2@2A]dg";
-$database_name = "jekkhjpw_rk_softwares";
+require_once 'EnvHelper.php';
 
-//10
+loadEnv();
+
+$database_host = getenv('DB_HOST');
+$database_user = getenv('DB_USER');
+$database_password = getenv('DB_PASSWORD');
+$database_name = getenv('DB_NAME');
+
+
 $dsn = "mysql:host=$database_host; dbname=$database_name; charset=utf8";
 
 try{
@@ -17,7 +21,15 @@ try{
 
 }catch(PDOException $e){
 
-    echo "not connected = ".$e->getMessage();
+    if(getenv('DEBUG') === 'true'){
+
+        echo $e->getMessage();
+       
+    }else{
+
+        echo "Database connection failed";
+
+    }
 
 }
 ?>
