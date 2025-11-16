@@ -1,7 +1,0 @@
-
-key alias = key0
-
-city = Bangladsh
-
-jks password:
-radakrishna
