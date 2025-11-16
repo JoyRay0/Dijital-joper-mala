@@ -5,7 +5,20 @@
 
 ## 📸 আমাদের অ্যাপের কিছু ছবি
 
-![ছবি](images/home.jpg) ![](images/rules.jpg) ![](images/info.jpg) ![](images/cus.jpg) ![](images/counter.jpg) ![](images/bois.jpg) ![](images/helper.jpg) ![](images/mantra.jpg) ![](images/sqlite.jpg) ![](images/feature.jpg) ![](images/setting.jpg)
+<p align="start">
+<img src="images/home_n.png" height="600"/>
+<img src="images/counter_n.png" height="600"/>
+<img src="images/user_image_n.png" height="600"/>
+<img src="images/user_info_n.png" height="600"/>
+<img src="images/user_mantra_n.png" height="600"/>
+<img src="images/history_n.png" height="600"/>
+<img src="images/custom_mala_n.png" height="600"/>
+<img src="images/all_mantras_n.png" height="600"/>
+<img src="images/search_n.png" height="600"/>
+<img src="images/setting_n.png" height="600"/>
+<img src="images/user_rules_n.png" height="600"/>
+</p>
+
 
 ## 🤔 কেন আমাদের অ্যাপ ব্যবহার করবেন?
 
