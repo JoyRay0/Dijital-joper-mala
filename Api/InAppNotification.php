@@ -1,28 +1,56 @@
 <?php
 
 require_once __DIR__. '/Header.php';
+require_once __DIR__.'/JsonMessages.php';
 
 $header = new HeadersManager();
+$jsonMessage = new JsonMessages();
+
+$method = $_SERVER["REQUEST_METHOD"];
+
+if($method !== "GET"){
+
+    $jsonMessage->dieMessage("error", "Invalid method");
+
+}
 
 $header->setAllHeaders();
 
-$title = ""; // your notification title
-$description = ""; // your notification message
-$img_link = ""; // yuor image link
-$web_link = ""; //your website link
-$count = 0;
+$jsonFile = "notification.json";
+
+if(!file_exists($jsonFile)){
+
+     echo json_encode([
+
+        'msize' => 'short',
+        
+    ]);
+    exit;
+
+}
+
+$data = json_decode(file_get_contents($jsonFile), true);
+
+$title = $data["title"];
+$description = $data["description"];
+$img_link = $data["imageLink"];
+$web_link = $data["webLink"];
+
 
 // notification end time
 
-$date = "2025-05-05";  // end date
+$date = $data["endDate"];  // end date
 $time = "23:59:59";   // end time
 
 $end_time = $date. " " .$time;
 
 if(time() <= strtotime($end_time)){
 
-    $tm = ($title && $description) || ($img_link || $web_link);
-    if($tm > $count){
+
+    if(
+        (!empty($title) && !empty($description)) || 
+        (!empty($img_link) || !empty($web_link))
+        ){
 
         echo json_encode([
 
@@ -33,6 +61,7 @@ if(time() <= strtotime($end_time)){
             'web_link' => $web_link
 
         ]);
+        exit;
 
     }else{
 
@@ -43,11 +72,14 @@ if(time() <= strtotime($end_time)){
             'description' => 'no message'
 
         ]);
+        exit;
 
     }
 
 }else{
 
+    if(file_exists($jsonFile)) unlink($jsonFile);
+    
     // time expired
     echo json_encode([
 
@@ -55,6 +87,7 @@ if(time() <= strtotime($end_time)){
         
     ]);
 
+    exit;
 }
 
 ?>

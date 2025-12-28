@@ -27,32 +27,30 @@ if($method !== "POST"){
 $data = json_decode(file_get_contents("php://input"), true);
 
 
-check($data, $res);
-insertData($res);
+verifyAdmin($data);
 
-function check($data, $res){
+if($res === "notify"){
 
-    global $cache, $pdo, $jsonMessage;
+    setNotification($data);
+
+}
+
+insertData($res, $data);
+
+
+
+function verifyAdmin($data){
+
+    global $pdo, $jsonMessage;
 
     $email = trim(filter_var($data["email"], FILTER_SANITIZE_EMAIL) ?? "");
     $password = $data["password"] ?? "";
 
-    $title = trim(htmlspecialchars($data["title"], ENT_QUOTES, 'UTF-8') ?? "");
-    $description = trim(htmlspecialchars($data["description"], ENT_QUOTES, 'UTF-8') ?? "");
+    if(empty($email) || empty($password)){
 
-    if(empty($email) || empty($password) || empty($title) || empty($description)){
-
-        $jsonMessage->errorMessage("failed", "Some filed are empty");
+        $jsonMessage->errorMessage("failed", "email or password filed can not be empty");
 
     }
-
-    //saving data in cache
-    $cache->setCache($res."_cache", [
-
-        "title" => $title,
-        "description" => $description
-
-    ], 1);
 
     //db connection
 
@@ -66,8 +64,6 @@ function check($data, $res){
 
             $jsonMessage->errorMessage("failed", "user not found");
 
-            $cache->clearCache();
-
         }
 
         //verifying user password
@@ -75,65 +71,52 @@ function check($data, $res){
 
             $jsonMessage->errorMessage("failed", "invalid password");
 
-            $cache->clearCache();
-
         }
 
-        $jsonMessage->successMessage("success", "database", "verification successful");
+       // $jsonMessage->successMessage("success", "database", "verification successful");
 
 
     }catch(PDOException $e){
 
        $jsonMessage->errorMessage("error", "Server error");
 
-       $cache->clearCache();
-
     }
     
 }//function end
 
-function insertData($res){
+function insertData($res, $data){
 
-    global $pdo, $jsonMessage, $cache;
+    global $pdo, $jsonMessage;
+
+    $title = trim(htmlspecialchars($data["title"], ENT_QUOTES, "UTF-8") ?? "");
+    $description = trim(htmlspecialchars($data["description"], ENT_QUOTES, "UTF-8") ?? "");
+
+    if(empty($title) || empty($description)){
+
+        $jsonMessage->errorMessage("failed", "title or description can not be empty");
+
+    }
 
     switch($res){
 
         case "jopa_info":
 
-            if(!$cache->exists("jopa_info_cache")){
-
-                $jsonMessage->errorMessage("failed","Please try again");
-
-            }
-
-            $data = $cache->getCache("jopa_info_cache");
-
             $stmt = $pdo->prepare("INSERT INTO jop_mala_info1 (question, answer) VALUES (?, ?)");
 
-            $params = [$data["title"], $data["description"]];
+            $params = [$title, $description];
 
             break;
 
         case "mantra":
 
-            if(!$cache->exists("mantra_cache")){
-
-                $jsonMessage->errorMessage("failed","Please try again");
-
-            }
-
-            $data = $cache->getCache("mantra_cache");
-
             $stmt = $pdo->prepare("INSERT INTO mantras (title, mantra) VALUES (?, ?)");
 
-            $params = [$data["title"], $data["description"]];
+            $params = [$title, $description];
 
             break;
 
         default:
             $jsonMessage->errorMessage("failed", "wrong res method");
-
-            $cache->clearCache();
 
     }
 
@@ -147,13 +130,9 @@ function insertData($res){
 
             $jsonMessage->successMessage("success", "database", "Insert successfuly");
 
-            $cache->clearCache();
-
         }else{
 
             $jsonMessage->errorMessage("failed", "Data not inserted");
-
-            $cache->clearCache();
 
         }
 
@@ -161,8 +140,60 @@ function insertData($res){
 
         $jsonMessage->errorMessage("error", "data not inserted server error");
 
-        $cache->clearCache();
+    }
+
+}//function end
+
+function setNotification($data){
+
+    global $jsonMessage;
+
+    $title = trim(htmlspecialchars($data["title"], ENT_QUOTES, "UTF-8") ?? "");
+    $description = trim(htmlspecialchars($data["description"], ENT_QUOTES,"UTF-8") ?? "");
+    $imageLink = trim(htmlspecialchars($data["image"], ENT_QUOTES, "UTF-8") ?? "");
+    $webLink = trim(htmlspecialchars($data["web"], ENT_QUOTES, "UTF-8") ?? "");
+    $endDate = trim(htmlspecialchars($data["date"], ENT_QUOTES, "UTF-8") ?? "");
+
+    if(empty($title) || empty($description) || empty($endDate)){
+
+        $jsonMessage->errorMessage("failed", "main filed are missing");
 
     }
+
+    //formating date
+
+    $dt = DateTime::createFromFormat("d-m-Y", $endDate);
+
+    if(!$dt) $jsonMessage->errorMessage("failed", "invalid date format use this (-)");
+
+    $date = $dt->format("Y-m-d");
+
+    //formating date
+
+    $notification = [
+
+        "title" => $title,
+        "description" => $description,
+        "imageLink" => $imageLink,
+        "webLink" => $webLink,
+        "endDate" => $date
+
+    ];
+
+    if(file_exists("notification.json")) unlink("notification.json");
+
+    $file =  file_put_contents("notification.json", json_encode($notification, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+
+    if($file){
+
+        $jsonMessage->successMessage("successful","api", "json file created");
+
+    }else{
+
+        $jsonMessage->errorMessage("failed","json file not created");
+
+    }
+
 
 }//function end
