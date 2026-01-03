@@ -7,6 +7,7 @@ require_once __DIR__ ."/JsonMessages.php";
 
 $method = $_SERVER["REQUEST_METHOD"];
 $res = $_GET["res"] ?? "";
+$deleteRes = $_GET["delete_res"] ??"";
 
 $jsonMessage = new JsonMessages();
 $header = new HeadersManager();
@@ -29,13 +30,24 @@ $data = json_decode(file_get_contents("php://input"), true);
 
 verifyAdmin($data);
 
-if($res === "notify"){
+switch($res){
 
-    setNotification($data);
+    case "notify":
+
+        setNotification($data);
+
+        break;
+
+    case "delete":
+
+        delete($deleteRes, $data);
+
+        break;
+
+    default:
+        insertData($res, $data);
 
 }
-
-insertData($res, $data);
 
 
 
@@ -197,3 +209,106 @@ function setNotification($data){
 
 
 }//function end
+
+function delete($deleteRes, $data){
+
+    global $jsonMessage, $pdo, $cache;
+
+    $title = trim(htmlspecialchars($data["title"], ENT_QUOTES, "UTF-8") ?? "");
+
+    switch($deleteRes){
+
+        case "delete_jopa_info":
+
+            deleteHelper($title, "jop_mala_info1", "question");
+
+            $stmt = $pdo->prepare("DELETE FROM jop_mala_info1 WHERE question = ?");
+            $params = [$title];
+
+            break;
+
+        case "delete_mantra":
+
+            deleteHelper($title, "mantras", "title");
+
+            $stmt = $pdo->prepare("DELETE FROM mantras WHERE title = ?");
+            $params = [$title];
+
+            break;
+
+        case "delete_notification":
+
+            if(file_exists("notification.json")){
+
+                unlink("notification.json"); 
+                
+                $jsonMessage->successMessage("success", "api", "notification delete successfully");
+
+            }else{
+
+                $jsonMessage->errorMessage("failed", "notification not deleted");
+
+            }
+
+            break;
+
+        default:
+            
+            $jsonMessage->errorMessage("error", "wrong delete res");
+
+    }
+
+    try{
+
+        $stmt->execute($params);
+        
+        $result = $stmt->rowCount();
+
+        if($result > 0){
+
+            $jsonMessage->successMessage("success", "database", "delete successfuly");
+
+            $cache->clearCache();
+
+        }else{
+
+            $jsonMessage->errorMessage("failed", "Data not deleted");
+
+        }
+
+    }catch(PDOException $e){
+
+        $jsonMessage->errorMessage("error", "data not deleted server error");
+
+    }
+
+}//function
+
+function deleteHelper($title, $table_name, $title_name){
+
+    global $jsonMessage, $pdo;
+
+    if(empty($title)) $jsonMessage->errorMessage("failed", "title can not be empty");
+
+    $stmt = $pdo->prepare("SELECT {$title_name} FROM {$table_name} WHERE {$title_name} = ?");
+
+    try{
+
+        $stmt->execute([$title]);
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if(!$data){
+
+            $jsonMessage->errorMessage("failed", "title not found");
+
+        }
+
+    }catch(PDOException $e){
+
+        $jsonMessage->errorMessage("error", "data not found in server");
+
+    }
+
+
+}//function
