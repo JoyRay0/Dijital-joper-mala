@@ -59,7 +59,14 @@ public class Act_Setting extends AppCompatActivity {
 
         setContentView(R.layout.act_setting);
 
-        //identity-------------------------------------------
+        init();
+
+        buttons();
+
+
+    }//on create==================================
+
+    private void init(){
 
         back = findViewById(R.id.back);
         privacy = findViewById(R.id.privacy);
@@ -72,7 +79,9 @@ public class Act_Setting extends AppCompatActivity {
         more_app = findViewById(R.id.more_app);
         main = findViewById(R.id.main);
 
-        //identity-------------------------------------------
+    }
+
+    private void buttons(){
 
         mode_day_night.setOnClickListener(view -> {
 
@@ -86,8 +95,7 @@ public class Act_Setting extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(Act_Setting.this, Act_Home_All_Mala.class));
-                finishAffinity();
+                finish();
 
             }
         });
@@ -219,21 +227,10 @@ public class Act_Setting extends AppCompatActivity {
                 startActivity( new Intent(Act_Setting.this, Act_MoreApps.class));
             }
         });
-        
+
         //more app-------------------------------------------------
 
-        //back-----------------------------------------------------
-        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                startActivity(new Intent(Act_Setting.this, Act_Home_All_Mala.class));
-                finishAffinity();
-            }
-        });
-        //back-----------------------------------------------------
-
-    }//on create==================================
-
+    }
 
     //selected theme---------------------------------------------------
     private void mytheme() {

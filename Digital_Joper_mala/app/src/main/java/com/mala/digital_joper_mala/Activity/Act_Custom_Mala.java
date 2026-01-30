@@ -77,7 +77,33 @@ public class Act_Custom_Mala extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_custom_mala);
 
-        //identity period -----------------------------------------------------------
+        init();
+
+        savedMantra();
+
+        save();
+
+        eye();
+
+        deleteMantra();
+
+        countMantra();
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                finish();
+            }
+        });
+
+        uploadHelper.imageButtons();
+        uploadHelper.loadImage();
+
+
+    }//on create====================================================================
+
+    private void init(){
 
         ed_autocomplete_textview1 = findViewById(R.id.ed_autocomplete_textview1);
         ed_autocomplete_textview2 = findViewById(R.id.ed_autocomplete_textview2);
@@ -125,47 +151,12 @@ public class Act_Custom_Mala extends AppCompatActivity {
         cd_save_count2 = findViewById(R.id.cd_save_count2);
         cd_save_count3 = findViewById(R.id.cd_save_count3);
 
-        //identity period -----------------------------------------------------------
-
-
         historyDB = new History(this);
         uploadHelper = new ImageUploadHelper(Act_Custom_Mala.this, "custom.png", iv_upload_image, iv_upload_button, iv_delete_button);
 
         counterHelper = new CounterHelper(this, text1, text2, text3);
 
-        savedMantra();
-
-        save();
-
-        eye();
-
-        deleteMantra();
-
-        countMantra();
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                startActivity(new Intent(Act_Custom_Mala.this, Act_Home_All_Mala.class));
-
-            }
-        });
-
-        uploadHelper.imageButtons();
-        uploadHelper.loadImage();
-
-        //back------------------------------------------------------
-        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                startActivity(new Intent(Act_Custom_Mala.this, Act_Home_All_Mala.class));
-                finishAffinity();
-            }
-        });
-        //back------------------------------------------------------
-
-    }//on create====================================================================
+    }
 
     //save--------------------------
     private void save(){

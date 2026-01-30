@@ -20,11 +20,6 @@
         android:icon="@drawable/ic_list"
         />
 
-    <item
-        android:id="@+id/bottom_nav_setting"
-        android:title="সেটিংস"
-        android:icon="@drawable/ic_setting"
-        />
 
 
 </menu>

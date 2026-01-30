@@ -1,11 +1,20 @@
 package com.mala.digital_joper_mala.Utils;
 
 import android.app.Activity;
+import android.icu.util.Calendar;
+import android.os.Build;
 import android.os.Vibrator;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.mala.digital_joper_mala.Database.JopaChartDB;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CounterHelper {
@@ -14,6 +23,8 @@ public class CounterHelper {
     private TextView tvDisplay1;
     private TextView tvDisplay2;
     private TextView tvDisplay3;
+
+    private JopaChartDB jopaDB;
 
     String[] banglaNumber = {"১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯", "১০",
 
@@ -41,6 +52,7 @@ public class CounterHelper {
         this.tvDisplay1 = tvDisplay1;
         this.tvDisplay2 = tvDisplay2;
         this.tvDisplay3 = tvDisplay3;
+        this.jopaDB = new  JopaChartDB(activity);
     }
 
     public void setFirstCount(AppCompatButton add, AppCompatButton reset){
@@ -84,6 +96,8 @@ public class CounterHelper {
 
                 tvDisplay2.setText(banglaNumber[secondCount - 1]);
                 seCount = getCount(tvDisplay2);
+
+                setDataInDB(1);
 
             }
             vibrate();
@@ -163,6 +177,39 @@ public class CounterHelper {
     public String getThirdCount(){
 
         return (thCount == null || thCount.isEmpty()) ? "" : thCount;
+
+    }
+
+    private void setDataInDB(int count){
+
+        int year = 0;
+        String month = "";
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            year = LocalDate.now().getYear();
+
+            month = LocalDate.now().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+
+        }else {
+
+            Calendar cal = Calendar.getInstance();
+            year = cal.get(Calendar.YEAR);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("MMMM", Locale.ENGLISH);
+            month = sdf.format(cal.getTime());
+
+        }
+
+        //String[] monthList = {"january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"};
+
+        if (year > 2025 && !month.isEmpty() && !month.equals("null")){
+
+            jopaDB.insert(year, month.toLowerCase(Locale.ENGLISH), count);
+
+            //Log.d("date", "year = "+year+"  "+"month = "+month.toLowerCase()+" "+"count = "+count);
+
+        }
 
     }
 

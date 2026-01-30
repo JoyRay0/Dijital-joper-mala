@@ -6,17 +6,23 @@
     <group
         >
 
-
         <item
             android:id="@+id/notification"
             android:title="আমার নোটিফিকেশন"
             android:icon="@drawable/ic_notifications"
-            app:showAsAction="always"/>
+            app:showAsAction="always"
+            />
 
         <item
             android:id="@+id/add"
             android:title="আমার মন্ত্র"
             android:icon="@drawable/ic_add"
+            app:showAsAction="always"/>
+
+        <item
+            android:id="@+id/setting"
+            android:title="সেটিংস"
+            android:icon="@drawable/ic_setting"
             app:showAsAction="always"/>
 
 

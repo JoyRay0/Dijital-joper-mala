@@ -55,40 +55,33 @@ public class Act_search extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_search);
 
-        //identity period---------------------------------------------------
+        init();
+
+        search();
+
+        back.setOnClickListener(view -> {
+
+            finish();
+
+        });
+
+
+    }// on create==============================================================
+
+    private void init(){
 
         back = findViewById(R.id.back);
         rv_item = findViewById(R.id.rv_item);
         ed_search = findViewById(R.id.ed_search);
         ll_no_item = findViewById(R.id.ll_no_item);
 
-        //identity period---------------------------------------------------
 
         mantra = new Mantra(this);
 
         searchAdapter = new Search(this, s_list);
         rv_item.setAdapter(searchAdapter);
 
-        search();
-
-        back.setOnClickListener(view -> {
-
-            startActivity(new Intent(this, Act_all_mantra.class));
-            finishAffinity();
-
-        });
-
-        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-
-                startActivity(new Intent(Act_search.this, Act_all_mantra.class));
-                finishAffinity();
-
-            }
-        });
-
-    }// on create==============================================================
+    }
 
     //search from database------------------------------------------------------------
     private void search(){

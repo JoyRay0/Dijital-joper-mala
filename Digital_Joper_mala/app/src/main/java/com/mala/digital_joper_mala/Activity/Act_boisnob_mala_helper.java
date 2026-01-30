@@ -39,24 +39,14 @@ public class Act_boisnob_mala_helper extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
-                Intent myback = new Intent(Act_boisnob_mala_helper.this, Act_Boisnob_mala.class);
-                startActivity(myback);
+                finish();
 
             }
         });
 
         //---------------------------------------------------------------------
 
-        //back-----------------------------------------------
-        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                startActivity(new Intent(Act_boisnob_mala_helper.this, Act_Boisnob_mala.class));
-                finishAffinity();
-            }
-        });
-        //back-----------------------------------------------
+
         
     }//on create=========================
 

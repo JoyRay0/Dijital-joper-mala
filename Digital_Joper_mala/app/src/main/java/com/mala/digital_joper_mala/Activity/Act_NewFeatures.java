@@ -41,23 +41,13 @@ public class Act_NewFeatures extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(Act_NewFeatures.this, Act_Home_All_Mala.class);
-                startActivity(intent);
+               finish();
 
             }
         });
 
         //back button---------------------------------------
 
-        //back-----------------------------------------------------
-        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                startActivity(new Intent(Act_NewFeatures.this, Act_Home_All_Mala.class));
-                finishAffinity();
-            }
-        });
-        //back-----------------------------------------------------
 
     }//on create======================================
 }//public class=====================================

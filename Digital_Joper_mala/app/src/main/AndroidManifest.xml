@@ -6,10 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-
 
     <application
         android:allowBackup="true"
@@ -22,6 +20,16 @@
         android:theme="@style/Base.Theme.Digital_Joper_mala"
         android:usesCleartextTraffic="false"
         tools:targetApi="34">
+        <activity
+            android:name=".Activity.Act_easy_mala"
+            android:exported="false"
+            android:label="@string/title_activity_act_easy_mala"
+            android:theme="@style/Base.Theme.Digital_Joper_mala" />
+        <activity
+            android:name=".Activity.Act_chart"
+            android:exported="false"
+            android:label="@string/title_activity_act_chart"
+            android:theme="@style/Base.Theme.Digital_Joper_mala" />
         <activity
             android:name=".Activity.Act_User_mala"
             android:exported="false" />

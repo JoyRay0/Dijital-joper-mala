@@ -42,7 +42,6 @@ public class Act_add_mantra extends AppCompatActivity {
     private UserMantra helper;
 
 
-
     //XML id's------------------------------------------------
 
 
@@ -51,26 +50,14 @@ public class Act_add_mantra extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_add_mantra);
 
-        //identity period----------------------------------------
-
-        back = findViewById(R.id.back);
-        rv_item = findViewById(R.id.rv_item);
-        tv_text = findViewById(R.id.tv_text);
-        iv_add = findViewById(R.id.iv_add);
-
-        //identity period----------------------------------------
-
-        helper = new UserMantra(this);
+        init();
 
         back.setOnClickListener(view -> {
 
-            startActivity(new Intent(this, Act_Home_All_Mala.class));
-            finishAffinity();
+            finish();
 
         });
 
-        mantra = new User_mantra(this, list_show);
-        rv_item.setAdapter(mantra);
 
         showData();
 
@@ -92,20 +79,21 @@ public class Act_add_mantra extends AppCompatActivity {
 
         });
 
-
-        //back-----------------------------------------------------
-        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-
-                startActivity(new Intent(Act_add_mantra.this, Act_Home_All_Mala.class));
-                finishAffinity();
-
-            }
-        });
-        //back-----------------------------------------------------
-
     }//on create====================
+
+    private void init(){
+
+        back = findViewById(R.id.back);
+        rv_item = findViewById(R.id.rv_item);
+        tv_text = findViewById(R.id.tv_text);
+        iv_add = findViewById(R.id.iv_add);
+
+        helper = new UserMantra(this);
+
+        mantra = new User_mantra(this, list_show);
+        rv_item.setAdapter(mantra);
+
+    }
 
     //user input-------------------------------------------
     private void userInput(){

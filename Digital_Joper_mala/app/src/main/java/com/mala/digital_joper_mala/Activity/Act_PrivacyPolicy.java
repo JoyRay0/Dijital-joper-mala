@@ -42,8 +42,7 @@ public class Act_PrivacyPolicy extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                startActivity(new Intent(Act_PrivacyPolicy.this, Act_Setting.class));
-                finishAffinity();
+               finish();
             }
         });
         //back-----------------------------------------------------

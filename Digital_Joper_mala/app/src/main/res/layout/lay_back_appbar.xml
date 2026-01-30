@@ -12,7 +12,6 @@
        android:background="@color/toolbar_color" />
 
 
-
         <ImageButton
             android:id="@+id/back"
             android:layout_width="wrap_content"

@@ -79,44 +79,14 @@ public class Act_Boisnob_mala extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_boisnob_mala);
 
-        //Identity period start+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-        tv_count_display1 = findViewById(R.id.tv_count_display1);
-        tv_count_display2 = findViewById(R.id.tv_count_display2);
-        tv_count_display3 = findViewById(R.id.tv_count_display3);
-
-        add1 = findViewById(R.id.add1);
-        add2 = findViewById(R.id.add2);
-        add3 = findViewById(R.id.add3);
-        reset1 = findViewById(R.id.reset1);
-        reset2 = findViewById(R.id.reset2);
-        reset3 = findViewById(R.id.reset3);
-
-        back = findViewById(R.id.back);
-
-        iv_upload_button = findViewById(R.id.iv_upload_button);
-        iv_delete_button = findViewById(R.id.iv_delete_button);
-        iv_upload_image = findViewById(R.id.iv_upload_image);
-
-        ib_rules = findViewById(R.id.ib_rules);
-
-        cd_save_count1 = findViewById(R.id.cd_save_count1);
-        cd_save_count2 = findViewById(R.id.cd_save_count2);
-        cd_save_count3 = findViewById(R.id.cd_save_count3);
-
-        //Identity period end+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-        historyDB = new History(this);
-        uploadHelper = new ImageUploadHelper(Act_Boisnob_mala.this, "rk.png", iv_upload_image, iv_upload_button, iv_delete_button);
-
-        counterHelper = new CounterHelper(this, tv_count_display1, tv_count_display2, tv_count_display3);
+        init();
 
         //back button-----------------------------------------------
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(Act_Boisnob_mala.this, Act_Home_All_Mala.class));
+                finish();
 
             }
         });
@@ -142,19 +112,40 @@ public class Act_Boisnob_mala extends AppCompatActivity {
        uploadHelper.loadImage();
 
 
-        //back-----------------------------------------------------------------
-        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-
-                startActivity(new Intent(Act_Boisnob_mala.this, Act_Home_All_Mala.class));
-                finishAffinity();
-
-            }
-        });
-        //back-----------------------------------------------------------------
-
     }//on create===================================================================
+
+    private void init(){
+
+        tv_count_display1 = findViewById(R.id.tv_count_display1);
+        tv_count_display2 = findViewById(R.id.tv_count_display2);
+        tv_count_display3 = findViewById(R.id.tv_count_display3);
+
+        add1 = findViewById(R.id.add1);
+        add2 = findViewById(R.id.add2);
+        add3 = findViewById(R.id.add3);
+        reset1 = findViewById(R.id.reset1);
+        reset2 = findViewById(R.id.reset2);
+        reset3 = findViewById(R.id.reset3);
+
+        back = findViewById(R.id.back);
+
+        iv_upload_button = findViewById(R.id.iv_upload_button);
+        iv_delete_button = findViewById(R.id.iv_delete_button);
+        iv_upload_image = findViewById(R.id.iv_upload_image);
+
+        ib_rules = findViewById(R.id.ib_rules);
+
+        cd_save_count1 = findViewById(R.id.cd_save_count1);
+        cd_save_count2 = findViewById(R.id.cd_save_count2);
+        cd_save_count3 = findViewById(R.id.cd_save_count3);
+
+        historyDB = new History(this);
+        uploadHelper = new ImageUploadHelper(Act_Boisnob_mala.this, "rk.png", iv_upload_image, iv_upload_button, iv_delete_button);
+
+        counterHelper = new CounterHelper(this, tv_count_display1, tv_count_display2, tv_count_display3);
+
+
+    }
 
     //image methods===================================================
 

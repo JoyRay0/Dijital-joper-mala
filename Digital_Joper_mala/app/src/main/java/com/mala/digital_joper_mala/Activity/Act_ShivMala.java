@@ -70,7 +70,30 @@ public class Act_ShivMala extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_shiv_mala);
 
-        //identity period---------------------------------------
+        init();
+
+        //back button-----------------------------------------------
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                finish();
+
+            }
+        });
+        //back button-----------------------------------------------
+
+        counter();
+
+        uploadHelper.loadImage();
+        uploadHelper.imageButtons();
+
+
+
+    }//on create===========================================
+
+    private void init(){
+
         tv_count_display1 = findViewById(R.id.tv_count_display1);
         tv_count_display2 = findViewById(R.id.tv_count_display2);
         tv_count_display3 = findViewById(R.id.tv_count_display3);
@@ -92,42 +115,13 @@ public class Act_ShivMala extends AppCompatActivity {
         cd_save_count2 = findViewById(R.id.cd_save_count2);
         cd_save_count3 = findViewById(R.id.cd_save_count3);
 
-        //identity period---------------------------------------
-
         historyDB = new History(this);
         uploadHelper = new ImageUploadHelper(Act_ShivMala.this, "shiv_image.png", iv_upload_image , iv_upload_button, iv_delete_button);
 
         counterHelper = new CounterHelper(this, tv_count_display1, tv_count_display2, tv_count_display3);
 
-        //back button-----------------------------------------------
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                startActivity(new Intent(Act_ShivMala.this, Act_Home_All_Mala.class));
-                finishAffinity();
-
-            }
-        });
-        //back button-----------------------------------------------
-
-        counter();
-
-        uploadHelper.loadImage();
-        uploadHelper.imageButtons();
-
-        //back-----------------------------------------------------
-        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                startActivity(new Intent(Act_ShivMala.this, Act_Home_All_Mala.class));
-                finishAffinity();
-            }
-        });
-        //back-----------------------------------------------------
-
-    }//on create===========================================
-
+    }
 
     private void counter(){
 

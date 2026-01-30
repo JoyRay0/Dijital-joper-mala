@@ -34,14 +34,15 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
             android:background="@drawable/sh_bottom_nav_design"
             app:itemIconSize="25dp"
             app:itemIconTint="@drawable/sh_selected_nav_icon"
             app:itemTextColor="@color/bottom_nav_item_text_color"
             app:labelVisibilityMode="selected"
             style="@style/Bottom_Navigation_Style"
-            app:menu="@menu/bottom_menu" />
+            app:menu="@menu/bottom_menu"
+
+            />
 
     </RelativeLayout>
 
@@ -58,6 +59,7 @@
         android:background="@color/card_view_color"
         app:itemTextColor="@color/normal_text_color"
         app:itemIconTint="@color/icon_color"
+        android:visibility="visible"
 
         />
 

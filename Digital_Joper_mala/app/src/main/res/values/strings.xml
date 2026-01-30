@@ -74,5 +74,10 @@
     <string name="close">close</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">This is an app widget description</string>
+    <string name="title_activity_act_chart">Act_chart</string>
+    <string name="title_activity_act_easy_mala">Act_easy_mala</string>
 
 </resources>

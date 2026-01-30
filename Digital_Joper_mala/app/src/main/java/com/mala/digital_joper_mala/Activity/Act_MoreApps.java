@@ -41,8 +41,7 @@ public class Act_MoreApps extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                startActivity(new Intent(Act_MoreApps.this, Act_Setting.class));
-                finishAffinity();
+                finish();
             }
         });
         //back-----------------------------------------------------

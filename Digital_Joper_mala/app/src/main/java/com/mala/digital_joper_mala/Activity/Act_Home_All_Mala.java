@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +19,6 @@ import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
@@ -133,7 +131,7 @@ public class Act_Home_All_Mala extends AppCompatActivity {
 
         }
 
-        tooLbar(); //Toolbar
+        toolBar(); //Toolbar
         bottom_nav();//Bottom navigation view
 
         //in ap update------------------------------------------------------
@@ -187,7 +185,7 @@ public class Act_Home_All_Mala extends AppCompatActivity {
     }//on create============================================================
 
     //toolbar-------------------------------------------------------------------
-    private void tooLbar(){                     //toolbar
+    private void toolBar(){                     //toolbar
 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -197,11 +195,14 @@ public class Act_Home_All_Mala extends AppCompatActivity {
                 if (item.getItemId() ==R.id.add){
 
                     startActivity(new Intent(Act_Home_All_Mala.this, Act_add_mantra.class));
-                    finishAffinity();
 
                 } else if (item.getItemId() == R.id.notification) {
 
                     notification_dialog(Act_Home_All_Mala.this);
+
+                } else if (item.getItemId() == R.id.setting) {
+
+                    startActivity(new Intent(Act_Home_All_Mala.this, Act_Setting.class));
 
                 }
 
@@ -230,10 +231,6 @@ public class Act_Home_All_Mala extends AppCompatActivity {
 
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.frame_layout, new Fg_Advantage_of_jopa()).commit();
-
-                }else if (item.getItemId() == R.id.bottom_nav_setting){
-
-                    startActivity(new Intent(Act_Home_All_Mala.this, Act_Setting.class));
 
                 } else if (item.getItemId() == R.id.bottom_nav_home) {
 
@@ -471,7 +468,7 @@ public class Act_Home_All_Mala extends AppCompatActivity {
                 mb_send.setVisibility(View.GONE);
 
             } else {
-                mb_send.setText(notificationButton);
+                //mb_send.setText(notificationButton);
                 mb_send.setVisibility(View.VISIBLE);
 
                 mb_send.setOnClickListener(view -> {
@@ -520,12 +517,10 @@ public class Act_Home_All_Mala extends AppCompatActivity {
             } else if (id == R.id.feature) {
 
                 startActivity(new Intent(Act_Home_All_Mala.this, Act_NewFeatures.class));
-                finishAffinity();
 
             } else if (id == R.id.history) {
 
                 startActivity(new Intent(Act_Home_All_Mala.this, Act_jopa_history.class));
-                finishAffinity();
 
             } else if (id == R.id.create) {
 
@@ -536,7 +531,11 @@ public class Act_Home_All_Mala extends AppCompatActivity {
             } else if (id == R.id.all_mantra) {
 
                 startActivity(new Intent(Act_Home_All_Mala.this, Act_all_mantra.class));
-                finishAffinity();
+
+
+            } else if (id == R.id.chart) {
+
+                startActivity(new Intent(Act_Home_All_Mala.this, Act_chart.class));
 
             }
 

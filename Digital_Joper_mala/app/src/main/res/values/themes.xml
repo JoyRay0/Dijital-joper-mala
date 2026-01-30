@@ -2,10 +2,10 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Digital_Joper_mala" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
-         <item name="colorPrimary">@color/status_bar_color</item>
+        <item name="colorPrimary">@color/status_bar_color</item>
 
-       <!-- <item name="android:forceDarkAllowed">false</item> -->
-        
+        <!-- <item name="android:forceDarkAllowed">false</item> -->
+
     </style>
 
 
@@ -18,8 +18,7 @@
         <item name="itemTextAppearanceActive">@style/ActiveTextApperence</item>
 
         <item name="itemTextAppearanceInactive">@style/InActiveTextApperence</item>
-        
-        
+
 
     </style>
 

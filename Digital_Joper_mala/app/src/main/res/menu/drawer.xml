@@ -22,6 +22,12 @@
             android:icon="@drawable/ic_write"
             />
 
+        <item
+            android:id="@+id/chart"
+            android:title="মাসিক হিসাব"
+            android:icon="@drawable/ic_chart"
+            />
+
     </group>
 
     <group
