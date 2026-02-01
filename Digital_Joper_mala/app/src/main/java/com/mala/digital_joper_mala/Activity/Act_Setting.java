@@ -95,7 +95,18 @@ public class Act_Setting extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                finish();
+                startActivity(new Intent(Act_Setting.this, Act_Home_All_Mala.class));
+                finishAffinity();
+
+            }
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+
+                startActivity(new Intent(Act_Setting.this, Act_Home_All_Mala.class));
+                finishAffinity();
 
             }
         });

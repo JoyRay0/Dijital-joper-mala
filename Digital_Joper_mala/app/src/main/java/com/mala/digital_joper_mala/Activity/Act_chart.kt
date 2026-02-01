@@ -1,18 +1,12 @@
 package com.mala.digital_joper_mala.Activity
 
-import android.R.id.input
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,11 +22,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Colors
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,11 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
-import androidx.compose.ui.modifier.ModifierLocal
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -66,7 +53,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mala.digital_joper_mala.Activity.ui.theme.DarkBackground
 import com.mala.digital_joper_mala.Activity.ui.theme.DarkChartBackground
 import com.mala.digital_joper_mala.Activity.ui.theme.DarkCounterText
@@ -83,6 +69,7 @@ import com.mala.digital_joper_mala.Activity.ui.theme.LightToolBar
 import com.mala.digital_joper_mala.Database.JopaChartDB
 import com.mala.digital_joper_mala.Model.JopaChartModel
 import com.mala.digital_joper_mala.R
+import com.mala.digital_joper_mala.Utils.BanglaHelper
 import com.mala.digital_joper_mala.Utils.ThemeHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -107,7 +94,7 @@ class Act_chart : ComponentActivity() {
             ThemeHelper.SystemUi(
                 statusBarColor = if (isDark) DarkStatusBar else LightStatusBar,
                 navColor = if (isDark) Color.Black else Color.White,
-                darkIcons = !isDark
+                darkIcons = false
             )
 
             init()
@@ -336,7 +323,7 @@ private fun Toolbar(
 ) {
 
     //val bgColor = colorResource(R.color.toolbar_color)
-    val isDark = isSystemInDarkTheme()
+    //val isDark = isSystemInDarkTheme()
 
     Box(
 
@@ -427,8 +414,7 @@ private fun Toolbar(
 @Composable
 private fun CounterChart(nMonth : String = "মাস", count : String = "১৯২০", isDark : Boolean = false) {
 
-    val font = FontFamily(Font(R.font.noto_serif_bengali))
-    //val isDark = isSystemInDarkTheme()
+    
 
     Box(
 
@@ -459,7 +445,7 @@ private fun CounterChart(nMonth : String = "মাস", count : String = "১৯
                 
                 Text(nMonth,
                     fontSize = 15.sp,
-                    fontFamily = font,
+                    fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Normal,
                     color = if (isDark) DarkMonthText else LightMonthText,
                     style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = false)),
@@ -474,16 +460,16 @@ private fun CounterChart(nMonth : String = "মাস", count : String = "১৯
 
                         color = if (isDark) DarkCounterText else LightCounterText,
                         fontSize = 15.sp,
-                        fontFamily = font,
+                        fontFamily = BanglaHelper.banglaFont(),
                         fontWeight = if (count.toInt() >= 1920) FontWeight.Bold else FontWeight.Normal
 
-                    )){append(readInt(count.toInt()))}
+                    )){append(BanglaHelper.readInt(count.toInt()))}
 
                     withStyle(style = SpanStyle(
 
                         color = if (isDark) DarkCounterText else LightCounterText,
                         fontSize = 15.sp,
-                        fontFamily = font
+                        fontFamily = BanglaHelper.banglaFont()
 
                     )){append(" /")}
 
@@ -491,7 +477,7 @@ private fun CounterChart(nMonth : String = "মাস", count : String = "১৯
 
                         color = if (isDark) DarkCounterText else LightCounterText,
                         fontSize = 15.sp,
-                        fontFamily = font
+                        fontFamily = BanglaHelper.banglaFont()
 
                     )){append("১৯২০")}
 
@@ -514,14 +500,6 @@ private fun CounterChart(nMonth : String = "মাস", count : String = "১৯
         
 
     }//box
-
-}//fun end
-
-
-@Composable
-private fun readInt( number : Int) : String {
-
-    return String.format(Locale.forLanguageTag("bn"), "%d", number)
 
 }//fun end
 

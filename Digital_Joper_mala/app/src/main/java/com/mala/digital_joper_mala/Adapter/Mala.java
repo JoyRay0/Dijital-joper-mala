@@ -14,6 +14,7 @@ import androidx.cardview.widget.CardView;
 import com.mala.digital_joper_mala.Activity.Act_Boisnob_mala;
 import com.mala.digital_joper_mala.Activity.Act_Custom_Mala;
 import com.mala.digital_joper_mala.Activity.Act_ShivMala;
+import com.mala.digital_joper_mala.Activity.Act_easy_mala;
 import com.mala.digital_joper_mala.R;
 
 import java.util.HashMap;
@@ -62,25 +63,27 @@ public class Mala extends BaseAdapter {
 
         all_mala_name_textview.setText(text_item);
 
-        cardview.setOnClickListener(new View.OnClickListener() { //mala button
-            @Override
-            public void onClick(View view) {
+        //mala button
+        cardview.setOnClickListener(view2 -> {
 
-                if (position == 0){
+            if (position == 0){
 
-                    context.startActivity(new Intent(context, Act_Custom_Mala.class));
+                context.startActivity(new Intent(context, Act_easy_mala.class));
 
-                } else if (position == 1) {
+            } else if (position == 1) {
 
-                    context.startActivity(new Intent(context, Act_Boisnob_mala.class));
+                context.startActivity(new Intent(context, Act_Custom_Mala.class));
 
-                } else if (position == 2) {
+            } else if (position == 2) {
 
-                    context.startActivity(new Intent(context, Act_ShivMala.class));
+                context.startActivity(new Intent(context, Act_Boisnob_mala.class));
 
-                }
+            } else if (position == 3) {
+
+                context.startActivity(new Intent(context, Act_ShivMala.class));
 
             }
+
         });
 
         return view1;

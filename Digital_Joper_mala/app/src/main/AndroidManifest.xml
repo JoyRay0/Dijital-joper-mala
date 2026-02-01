@@ -24,7 +24,9 @@
             android:name=".Activity.Act_easy_mala"
             android:exported="false"
             android:label="@string/title_activity_act_easy_mala"
-            android:theme="@style/Base.Theme.Digital_Joper_mala" />
+            android:theme="@style/Base.Theme.Digital_Joper_mala"
+            android:windowSoftInputMode="adjustResize"
+            />
         <activity
             android:name=".Activity.Act_chart"
             android:exported="false"

@@ -84,6 +84,10 @@ public class Fg_all_mala extends Fragment {
     private void hashmap(){
 
         hashMap = new HashMap<>();
+        hashMap.put("name_mala","সহজ মালা");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
         hashMap.put("name_mala","মালা");
         arrayList.add(hashMap);
 
