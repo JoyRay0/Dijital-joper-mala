@@ -17,6 +17,7 @@
 <img src="images/search_n.png" height="600"/>
 <img src="images/setting_n.png" height="600"/>
 <img src="images/user_rules_n.png" height="600"/>
+<img src="images/chart.png" height="600"/>
 </p>
 
 
