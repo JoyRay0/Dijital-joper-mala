@@ -24,7 +24,7 @@ public class CacheHelper {
     public String getCache(String key){
 
         sp = context.getSharedPreferences(preference, Context.MODE_PRIVATE);
-        String values = sp.getString(key, null);
+        String values = sp.getString(key, "");
 
         return values;
     }

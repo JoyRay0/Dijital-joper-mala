@@ -64,8 +64,19 @@ public class Act_User_mala extends AppCompatActivity {
 
         back.setOnClickListener(view -> {
 
-            finish();
+            startActivity(new Intent(Act_User_mala.this, Act_Home_All_Mala.class));
+            finishAffinity();
 
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+
+                startActivity(new Intent(Act_User_mala.this, Act_Home_All_Mala.class));
+                finishAffinity();
+
+            }
         });
 
         if (iv_delete.getVisibility() == View.VISIBLE){

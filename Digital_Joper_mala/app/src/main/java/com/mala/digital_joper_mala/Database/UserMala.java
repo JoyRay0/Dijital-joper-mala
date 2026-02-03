@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -16,7 +17,7 @@ public class UserMala extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "Mala.db";
     public static final String TABLE_NAME = "user_mala";
-    public static final int VERSION = 5;
+    public static final int VERSION = 9;
     SQLiteDatabase db;
 
     public UserMala(@Nullable Context context) {
@@ -26,7 +27,7 @@ public class UserMala extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String create_sql = "CREATE TABLE "+TABLE_NAME+ "(id INTEGER PRIMARY KEY AUTOINCREMENT, mala_name TEXT NOT NULL, mantra1 TEXT, mantra2 TEXT, mantra3 TEXT, mantra4 TEXT)";
+        String create_sql = "CREATE TABLE "+TABLE_NAME+ "(id INTEGER PRIMARY KEY AUTOINCREMENT, mala_name TEXT NOT NULL, image_uri TEXT , mantra1 TEXT, mantra2 TEXT, mantra3 TEXT, mantra4 TEXT)";
         db.execSQL(create_sql);
 
     }
@@ -41,7 +42,13 @@ public class UserMala extends SQLiteOpenHelper {
 
     }
 
-    public void insert(String mala_name, String mantra1, String mantra2, String mantra3, String mantra4){
+    public void insert(
+            String mala_name,
+            String imageUri,
+            String mantra1,
+            String mantra2,
+            String mantra3,
+            String mantra4){
 
         if (db == null || !db.isOpen()){
 
@@ -51,6 +58,15 @@ public class UserMala extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put("mala_name", mala_name);
+
+        if (imageUri != null &&!imageUri.isEmpty()){
+
+            values.put("image_uri", imageUri);
+
+        }else {
+
+            values.putNull("image_uri");
+        }
 
         if (mantra1 == null || mantra1.isEmpty()){
 
@@ -128,9 +144,13 @@ public class UserMala extends SQLiteOpenHelper {
             map.put("mantra2", cursor.getString(cursor.getColumnIndexOrThrow("mantra2")));
             map.put("mantra3", cursor.getString(cursor.getColumnIndexOrThrow("mantra3")));
             map.put("mantra4", cursor.getString(cursor.getColumnIndexOrThrow("mantra4")));
-           // map.put("image", cursor.getString(cursor.getColumnIndexOrThrow("image")));
+            map.put("image_uri", cursor.getString(cursor.getColumnIndexOrThrow("image_uri")));
             list.add(map);
+
+            Log.d("map", map.keySet().toString());
         }
+
+
 
         cursor.close();
 
@@ -143,7 +163,7 @@ public class UserMala extends SQLiteOpenHelper {
 
         if (db == null || !db.isOpen()) db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT mantra1, mantra2, mantra3, mantra4 FROM " +TABLE_NAME+ " WHERE mala_name = ?", new String[]{mala_name});
+        Cursor cursor = db.rawQuery("SELECT * FROM " +TABLE_NAME+ " WHERE mala_name = ?", new String[]{mala_name});
 
         while (cursor.moveToNext()){
 
@@ -152,7 +172,7 @@ public class UserMala extends SQLiteOpenHelper {
             hashMap.put("mantra2", cursor.getString(cursor.getColumnIndexOrThrow("mantra2")));
             hashMap.put("mantra3", cursor.getString(cursor.getColumnIndexOrThrow("mantra3")));
             hashMap.put("mantra4", cursor.getString(cursor.getColumnIndexOrThrow("mantra4")));
-            //hashMap.put("image", cursor.getString(cursor.getColumnIndexOrThrow("image")));
+            hashMap.put("image_uri", cursor.getString(cursor.getColumnIndexOrThrow("image_uri")));
             searchList.add(hashMap);
         }
         cursor.close();

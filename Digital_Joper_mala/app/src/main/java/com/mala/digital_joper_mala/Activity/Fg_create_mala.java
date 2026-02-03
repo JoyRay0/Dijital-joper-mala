@@ -1,7 +1,6 @@
 package com.mala.digital_joper_mala.Activity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -22,15 +21,18 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Toast;
 
-import com.google.errorprone.annotations.Var;
 import com.mala.digital_joper_mala.Adapter.UserMalas;
 import com.mala.digital_joper_mala.Database.UserMala;
 import com.mala.digital_joper_mala.R;
+import com.mala.digital_joper_mala.Utils.GalleryHelper;
 import com.mala.digital_joper_mala.Utils.onDataDeleteListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 
 public class Fg_create_mala extends Fragment implements onDataDeleteListener {
@@ -53,11 +55,14 @@ public class Fg_create_mala extends Fragment implements onDataDeleteListener {
     String th_mantra = "";
     String fo_mantra = "";
     String img_uri = "";
-    public static final int REQUEST_IMG_PICK = 1;
+
+
 
     //other
     private UserMalas userMalaAdapter;
     private UserMala mala;
+
+    private GalleryHelper permissionHelper;
 
     //XML id's-------------------------------------------------------------------------
 
@@ -80,6 +85,15 @@ public class Fg_create_mala extends Fragment implements onDataDeleteListener {
 
         mala = new UserMala(requireActivity());
 
+        permissionHelper = new GalleryHelper(Fg_create_mala.this, new Function1<Uri, Unit>() {
+            @Override
+            public Unit invoke(Uri uri) {
+
+                img_uri = uri.toString();
+
+                return null;
+            }
+        });
 
         List<HashMap<String, String>> allList = mala.getAll();
         m_list.clear();
@@ -128,15 +142,20 @@ public class Fg_create_mala extends Fragment implements onDataDeleteListener {
         CardView cd_cancel = dialog.findViewById(R.id.cd_cancel);
         CardView cd_ok = dialog.findViewById(R.id.cd_ok);
 
+
+
         tv_image.setOnClickListener(view -> {
 
-            Toast.makeText(requireActivity(), "পরবর্তী আপডেটে এটি যুক্ত করা হবে।", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(requireActivity(), "পরবর্তী আপডেটে এটি যুক্ত করা হবে।", Toast.LENGTH_SHORT).show();
+
+            permissionHelper.pickImage();
 
         });
 
         cd_cancel.setOnClickListener(view -> {
 
             dialog.dismiss();
+            img_uri = "";
 
         });
 
@@ -147,6 +166,8 @@ public class Fg_create_mala extends Fragment implements onDataDeleteListener {
             String mantra2 = ed_mala2.getText().toString().trim();
             String mantra3 = ed_mala3.getText().toString().trim();
             String mantra4 = ed_mala4.getText().toString().trim();
+
+            String image = permissionHelper.getImageUri(img_uri).toString();
 
             if (mala_title == null || mala_title.isEmpty()){
 
@@ -194,16 +215,10 @@ public class Fg_create_mala extends Fragment implements onDataDeleteListener {
 
                 }
 
-
-                if (img_uri.isEmpty()){
-
-                    img_uri = null;
-
-
-                }
+                Log.d("dbInsert", image);
 
                 m_list.clear();
-                mala.insert(mala_title, fi_mantra, se_mantra, th_mantra, fo_mantra);
+                mala.insert(mala_title, image, fi_mantra, se_mantra, th_mantra, fo_mantra);
                 m_list.addAll(mala.getAll());
 
                 if (m_list == null || m_list.isEmpty()){
@@ -221,6 +236,7 @@ public class Fg_create_mala extends Fragment implements onDataDeleteListener {
 
                 Toast.makeText(requireActivity(), "সেভ হয়েছে।", Toast.LENGTH_SHORT).show();
 
+                img_uri = "";
                 dialog.dismiss();
 
             }
@@ -246,5 +262,6 @@ public class Fg_create_mala extends Fragment implements onDataDeleteListener {
         userMalaAdapter.notifyDataSetChanged();
 
     }
+
 
 }// public class=========================================================================

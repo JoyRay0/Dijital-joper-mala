@@ -2,6 +2,7 @@ package com.mala.digital_joper_mala.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,25 +20,35 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.mala.digital_joper_mala.Adapter.UserShowMala;
 import com.mala.digital_joper_mala.Database.History;
 import com.mala.digital_joper_mala.Database.UserMala;
 import com.mala.digital_joper_mala.R;
 import com.mala.digital_joper_mala.Utils.CounterHelper;
+import com.mala.digital_joper_mala.Utils.GalleryHelper;
 import com.mala.digital_joper_mala.Utils.ImageUploadHelper;
 import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class Fg_show_user_mala extends Fragment {
 
@@ -52,9 +63,10 @@ public class Fg_show_user_mala extends Fragment {
     private FrameLayout fl_add_image;
 
     private AppCompatButton add1, reset1, add2, reset2, add3, reset3;
-    private AppCompatTextView tv_count_display1, tv_count_display2, tv_count_display3;
+    private TextView tv_count_display1, tv_count_display2, tv_count_display3;
 
     private CardView cd_save_count1, cd_save_count2, cd_save_count3;
+
 
     //other
     private UserMala userMala;
@@ -71,6 +83,66 @@ public class Fg_show_user_mala extends Fragment {
         View view = inflater.inflate(R.layout.fg_show_user_mala, container, false);
 
         //identity period-------------------------------------------------
+
+        init(view);
+
+        String name = Act_User_mala.MALA_NAME;
+        fl_add_image.setVisibility(View.VISIBLE);
+
+        List<HashMap<String, String>> user_mala_list = userMala.getSearchItem(name);
+
+        if (user_mala_list == null || user_mala_list.isEmpty()){
+
+            tv_mantra1.setVisibility(View.GONE);
+            tv_save_mantras1.setVisibility(View.GONE);
+            tv_mantra2.setVisibility(View.GONE);
+            tv_save_mantras2.setVisibility(View.GONE);
+            tv_mantra3.setVisibility(View.GONE);
+            tv_save_mantras3.setVisibility(View.GONE);
+            tv_mantra4.setVisibility(View.GONE);
+            tv_save_mantras4.setVisibility(View.GONE);
+
+        }else {
+
+            HashMap<String, String> s_map = user_mala_list.get(0);
+
+            String fi_mantra = s_map.get("mantra1");
+            String se_mantra = s_map.get("mantra2");
+            String th_mantra = s_map.get("mantra3");
+            String fo_mantra = s_map.get("mantra4");
+            String image = s_map.get("image_uri");
+
+
+            showMatra(tv_mantra1, tv_save_mantras1, fi_mantra);
+            showMatra(tv_mantra2, tv_save_mantras2, se_mantra);
+            showMatra(tv_mantra3, tv_save_mantras3, th_mantra);
+            showMatra(tv_mantra4, tv_save_mantras4, fo_mantra);
+
+            if ( image == null ||image.isEmpty()){
+
+                fl_add_image.setVisibility(View.GONE);
+
+            }else {
+
+                fl_add_image.setVisibility(View.VISIBLE);
+                iv_upload_button.setVisibility(View.GONE);
+                iv_delete_button.setVisibility(View.GONE);
+
+                Uri uri = Uri.parse(image);
+
+                Glide.with(requireContext()).load(uri).into(iv_upload_image);
+
+            }
+
+
+        }
+
+        counter();
+
+        return view;
+    }// on create===========================================================
+
+    private void init(View view){
 
         tv_mantra1 = view.findViewById(R.id.tv_mantra1);
         tv_mantra2 = view.findViewById(R.id.tv_mantra2);
@@ -102,64 +174,13 @@ public class Fg_show_user_mala extends Fragment {
         cd_save_count2 = view.findViewById(R.id.cd_save_count2);
         cd_save_count3 = view.findViewById(R.id.cd_save_count3);
 
-        //identity period-------------------------------------------------
-
-        String name = Act_User_mala.MALA_NAME;
-        fl_add_image.setVisibility(View.GONE);
-
         counterHelper = new CounterHelper(requireActivity(), tv_count_display1, tv_count_display2, tv_count_display3);
 
         historyDB = new History(requireActivity());
 
-        uploadHelper = new ImageUploadHelper(requireActivity(), "user_mala.png", iv_upload_image, iv_upload_button, iv_delete_button);
-        uploadHelper.imageButtons();
-        uploadHelper.loadImage();
-
         userMala = new UserMala(requireActivity());
-        List<HashMap<String, String>> user_mala_list = userMala.getSearchItem(name);
 
-        if (user_mala_list == null || user_mala_list.isEmpty()){
-
-            tv_mantra1.setVisibility(View.GONE);
-            tv_save_mantras1.setVisibility(View.GONE);
-            tv_mantra2.setVisibility(View.GONE);
-            tv_save_mantras2.setVisibility(View.GONE);
-            tv_mantra3.setVisibility(View.GONE);
-            tv_save_mantras3.setVisibility(View.GONE);
-            tv_mantra4.setVisibility(View.GONE);
-            tv_save_mantras4.setVisibility(View.GONE);
-
-        }else {
-
-            HashMap<String, String> s_map = user_mala_list.get(0);
-
-            String fi_mantra = s_map.get("mantra1");
-            String se_mantra = s_map.get("mantra2");
-            String th_mantra = s_map.get("mantra3");
-            String fo_mantra = s_map.get("mantra4");
-            //String image = s_map.get("image");
-
-            showMatra(tv_mantra1, tv_save_mantras1, fi_mantra);
-            showMatra(tv_mantra2, tv_save_mantras2, se_mantra);
-            showMatra(tv_mantra3, tv_save_mantras3, th_mantra);
-            showMatra(tv_mantra4, tv_save_mantras4, fo_mantra);
-
-            Uri uri = Uri.parse("content://media/external/file/20748");
-            try {
-                InputStream inputStream = requireActivity().getContentResolver().openInputStream(uri);
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                iv_upload_image.setImageBitmap(bitmap);
-                inputStream.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        counter();
-
-        return view;
-    }// on create===========================================================
+    }
 
     //show mantra-----------------------------------------------------------
     private void showMatra(AppCompatTextView tv_mantra, AppCompatTextView tv_save_mantras, String mantra){

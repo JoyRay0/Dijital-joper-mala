@@ -103,10 +103,12 @@ class Act_easy_mala : ComponentActivity() {
                         cacheHelper.setCache("counter_limit", counter.toString())
                                 },
                     counter = { counter = it },
-                    readCounter = if (cacheData.isNotEmpty() && cacheData != "null") cacheData else "0L"
+                    readCounter = if (cacheData.isNotEmpty() && cacheData != null) cacheData else ""
                 )
 
+
             }
+
 
         }
     }// on create==============================================
@@ -133,7 +135,7 @@ private fun FullScreen(
     var isInputFiledVisible by remember { mutableStateOf(false) }
     var totalCount by remember { mutableStateOf(0L) }
 
-    if (readCounter.isNotEmpty() && readCounter != "null") totalCount = readCounter.toLong()
+    if (readCounter.isNotEmpty() && readCounter != "null") totalCount = readCounter.toLong() else totalCount = 0L
 
     Scaffold(
         topBar = {Toolbar(

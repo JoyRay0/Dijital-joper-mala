@@ -61,7 +61,7 @@ public class Fg_all_mala extends Fragment {
 
         //Identity period --------------------------------------------
 
-        hashmap();
+        Mala();
 
         Mala mala = new Mala(requireActivity(), arrayList);
         all_mala_gridview.setAdapter(mala);
@@ -81,7 +81,7 @@ public class Fg_all_mala extends Fragment {
 
 
    //hashmap----------------------------------------
-    private void hashmap(){
+    private void Mala(){
 
         hashMap = new HashMap<>();
         hashMap.put("name_mala","সহজ মালা");

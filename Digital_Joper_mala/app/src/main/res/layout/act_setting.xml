@@ -102,7 +102,6 @@
             </androidx.cardview.widget.CardView>
 
 
-
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -117,8 +116,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     >
-
-                    <!-- more app -->
 
                     <!-- app theme -->
                     <androidx.appcompat.widget.AppCompatTextView
@@ -146,6 +143,50 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
                         />
+
+                    <TextView
+                        android:id="@+id/app_language"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:drawablePadding="20dp"
+                        android:focusable="true"
+                        android:gravity="start"
+                        android:padding="12dp"
+                        android:text="ভাষা"
+                        android:fontFamily="@font/noto_serif_bengali"
+                        android:textColor="@color/bold_text_color"
+                        android:textSize="16sp"
+                        android:textStyle="normal"
+                        app:drawableEndCompat="@drawable/ic_right"
+                        app:drawableStartCompat="@drawable/ic_languages"
+                        android:enabled="false"
+                        android:alpha="0.5"
+                        />
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="3dp"
+                app:cardCornerRadius="10dp"
+                android:layout_margin="5dp"
+                app:cardBackgroundColor="@color/card_view_color"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <!-- more app -->
 
                     <TextView
                         android:id="@+id/more_app"
