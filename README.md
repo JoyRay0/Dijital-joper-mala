@@ -1,4 +1,4 @@
-# Japa Mala - জপ মালা
+# Japa Mala Counter - জপ মালা
 
 ## 📥 অ্যাপ ডাউনলোড লিংক  
 [Download on google play](https://play.google.com/store/apps/details?id=com.mala.digital_joper_mala)
