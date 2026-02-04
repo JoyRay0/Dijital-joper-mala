@@ -7,6 +7,7 @@
 
 <p align="start">
 <img src="images/home_n.png" height="600"/>
+<img src="images/508.jpg" height="600"/>
 <img src="images/counter_n.png" height="600"/>
 <img src="images/user_image_n.png" height="600"/>
 <img src="images/user_info_n.png" height="600"/>
