@@ -1,9 +1,9 @@
-package com.mala.digital_joper_mala.Activity
+package com.mala.digital_joper_mala.View
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -17,15 +17,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -44,12 +42,9 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -57,18 +52,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mala.digital_joper_mala.Activity.ui.theme.DarkBackground
-import com.mala.digital_joper_mala.Activity.ui.theme.DarkStatusBar
-import com.mala.digital_joper_mala.Activity.ui.theme.DarkToolBar
-import com.mala.digital_joper_mala.Activity.ui.theme.Digital_Joper_malaTheme
-import com.mala.digital_joper_mala.Activity.ui.theme.LightBackground
-import com.mala.digital_joper_mala.Activity.ui.theme.LightStatusBar
-import com.mala.digital_joper_mala.Activity.ui.theme.LightToolBar
+import com.mala.digital_joper_mala.View.main_theme_ui.theme.DarkBackground
+import com.mala.digital_joper_mala.View.main_theme_ui.theme.DarkStatusBar
+import com.mala.digital_joper_mala.View.main_theme_ui.theme.DarkToolBar
+import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightBackground
+import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightStatusBar
+import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightToolBar
 import com.mala.digital_joper_mala.R
-import com.mala.digital_joper_mala.Utils.BanglaHelper
-import com.mala.digital_joper_mala.Utils.CacheHelper
-import com.mala.digital_joper_mala.Utils.ThemeHelper
-import java.nio.file.WatchEvent
+import com.mala.digital_joper_mala.Helper.BanglaHelper
+import com.mala.digital_joper_mala.Helper.CacheHelper
+import com.mala.digital_joper_mala.Helper.ThemeHelper
+import com.mala.digital_joper_mala.View.main_theme_ui.theme.Digital_Joper_malaTheme
 
 class Act_easy_mala : ComponentActivity() {
 
@@ -76,6 +70,7 @@ class Act_easy_mala : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
 
             init()
@@ -93,9 +88,9 @@ class Act_easy_mala : ComponentActivity() {
 
             val cacheData = cacheHelper.getCache("counter_limit")
 
-            Digital_Joper_malaTheme {
+            Digital_Joper_malaTheme{
 
-                FullScreen(
+                EasyMalaFullScreen(
                     isDark = isDark,
                     backClick = { finish() },
                     saveClick = {
@@ -123,7 +118,7 @@ class Act_easy_mala : ComponentActivity() {
 
 @Preview(showBackground = true)
 @Composable
-private fun FullScreen(
+private fun EasyMalaFullScreen(
     isDark : Boolean = false,
     backClick: () -> Unit = {},
     saveClick: () -> Unit = {},
@@ -144,7 +139,11 @@ private fun FullScreen(
             editClick = { isInputFiledVisible = true },
             count = totalCount
         )},
-        modifier = Modifier.fillMaxSize()) { innerPadding ->
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = if (isDark) DarkStatusBar else LightStatusBar)
+            .systemBarsPadding()
+    ) { innerPadding ->
 
         Box(
 
@@ -298,6 +297,17 @@ private fun Counter(
     
     var number by remember { mutableStateOf(0L) }
 
+    val maxWidth = 120.dp
+
+    val width = if (number.toString().length > 5){
+
+        maxWidth + ((number.toString().length - 5) * 5).dp
+
+    }else maxWidth
+
+
+
+
     Box(
 
         modifier = modifier
@@ -317,9 +327,9 @@ private fun Counter(
             Box(
 
                 modifier = Modifier
-                    .width(120.dp)
-                    .height(120.dp)
-                    .clip(shape = CircleShape)
+                    .width(width)
+                    .height(70.dp)
+                    .clip(shape = RoundedCornerShape(12.dp))
                     .background(color =  if (isDark) Color(0xFFB48E8E) else Color(0xFFEADADA))
                     //.padding(40.dp)
                     .align(Alignment.CenterHorizontally)
@@ -327,13 +337,14 @@ private fun Counter(
             ) {
 
                 Text(BanglaHelper.readLong(number),
-                    fontSize = 30.sp,
+                    fontSize = 25.sp,
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.SemiBold,
                     color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
                     textAlign = TextAlign.Center,
+                    maxLines = 1,
                     modifier = Modifier
-                        .wrapContentWidth()
+                        .fillMaxWidth()
                         .align(Alignment.Center)
                         .padding(10.dp)
                 )

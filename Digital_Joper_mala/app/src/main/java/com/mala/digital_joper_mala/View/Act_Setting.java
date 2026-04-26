@@ -1,11 +1,11 @@
-package com.mala.digital_joper_mala.Activity;
+package com.mala.digital_joper_mala.View;
 
 
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,8 +25,9 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.transition.Fade;
 
+import com.mala.digital_joper_mala.Helper.IntentHelper;
+import com.mala.digital_joper_mala.Helper.KeyHelper;
 import com.mala.digital_joper_mala.R;
 
 
@@ -145,8 +146,9 @@ public class Act_Setting extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                startActivity( new Intent(Act_Setting.this, Act_PrivacyPolicy.class));
-
+                Intent intent = new Intent(Act_Setting.this, Act_webview.class);
+                intent.putExtra("webview", "policy");
+                startActivity(intent);
             }
         });
 
@@ -179,7 +181,7 @@ public class Act_Setting extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(Act_Setting.this, Act_NewFeatures.class));
+                startActivity(new Intent(Act_Setting.this, Act_new_feature.class));
             }
         });
 
@@ -235,7 +237,9 @@ public class Act_Setting extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                startActivity( new Intent(Act_Setting.this, Act_MoreApps.class));
+                Intent intent = new Intent(Act_Setting.this, Act_webview.class);
+                intent.putExtra("webview", "more_app");
+                startActivity(intent);
             }
         });
 
