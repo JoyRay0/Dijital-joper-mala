@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.Act_boisnob_mala_helper"
+    tools:context=".View.Act_boisnob_mala_helper"
     android:background="@color/background_color"
     >
 

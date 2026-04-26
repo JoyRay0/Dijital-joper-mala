@@ -11,10 +11,10 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
 
-import com.mala.digital_joper_mala.Activity.Act_Boisnob_mala;
-import com.mala.digital_joper_mala.Activity.Act_Custom_Mala;
-import com.mala.digital_joper_mala.Activity.Act_ShivMala;
-import com.mala.digital_joper_mala.Activity.Act_easy_mala;
+import com.mala.digital_joper_mala.View.Act_Boisnob_mala;
+import com.mala.digital_joper_mala.View.Act_Custom_Mala;
+import com.mala.digital_joper_mala.View.Act_ShivMala;
+import com.mala.digital_joper_mala.View.Act_easy_mala;
 import com.mala.digital_joper_mala.R;
 
 import java.util.HashMap;

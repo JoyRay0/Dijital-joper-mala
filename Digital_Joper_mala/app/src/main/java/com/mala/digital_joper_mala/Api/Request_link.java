@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.mala.digital_joper_mala.Model.Api_links;
-import com.mala.digital_joper_mala.Utils.ApiResponseListener;
+import com.mala.digital_joper_mala.Helper.ApiResponseListener;
 
 
 import java.io.IOException;

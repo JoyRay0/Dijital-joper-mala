@@ -11,7 +11,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mala.digital_joper_mala.Activity.Act_User_mala;
+import com.mala.digital_joper_mala.View.Act_User_mala;
 import com.mala.digital_joper_mala.R;
 import com.squareup.picasso.Picasso;
 

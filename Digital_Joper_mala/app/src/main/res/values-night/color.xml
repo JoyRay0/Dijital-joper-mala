@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="status_bar_color">#322D2D</color>
+    <color name="status_bar_color">#34414B</color>
 
     <color name="toolbar_color">#34414B</color>
 

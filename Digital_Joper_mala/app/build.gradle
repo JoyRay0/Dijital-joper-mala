@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace 'com.mala.digital_joper_mala'
-    compileSdk 36
+    compileSdk 37
 
     defaultConfig {
         applicationId "com.mala.digital_joper_mala"
         minSdk 25
-        targetSdk 36
+        targetSdk 37
         versionCode 17
         versionName "2.4"
 
@@ -56,7 +56,7 @@ dependencies {
     implementation 'androidx.activity:activity:1.13.0'
     implementation 'androidx.core:core-ktx:1.18.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.10.0'
-    implementation platform('androidx.compose:compose-bom:2026.03.01')
+    implementation platform('androidx.compose:compose-bom:2026.04.01')
     implementation 'androidx.compose.ui:ui-graphics'
     implementation 'androidx.compose.material3:material3'
     testImplementation 'junit:junit:4.13.2'
@@ -65,8 +65,8 @@ dependencies {
     implementation 'com.google.android.play:app-update:2.1.0'
     implementation 'com.airbnb.android:lottie:6.7.1'
     implementation("com.squareup.okhttp3:okhttp:5.3.2")
-    implementation 'com.mikepenz:actionitembadge:4.0.0'
-    implementation 'com.google.code.gson:gson:2.13.2'
+    //implementation 'com.mikepenz:actionitembadge:4.0.0'
+    implementation 'com.google.code.gson:gson:2.14.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation "androidx.work:work-runtime:2.11.2"
     implementation 'androidx.core:core:1.18.0'
@@ -77,17 +77,17 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:5.0.7'
 
     // Compose dependencies
-    implementation("androidx.compose.ui:ui:1.10.6")
-    implementation("androidx.compose.material:material:1.10.6")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.10.6")
+    implementation("androidx.compose.ui:ui:1.11.0")
+    implementation("androidx.compose.material:material:1.11.0")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.11.0")
     implementation("androidx.activity:activity-compose:1.13.0")
-    implementation("androidx.compose.animation:animation:1.10.6")
+    implementation("androidx.compose.animation:animation:1.11.0")
 
     implementation("io.coil-kt.coil3:coil-compose:3.4.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.4.0")
 
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.36.0")
-    androidTestImplementation platform('androidx.compose:compose-bom:2026.03.01')
+    androidTestImplementation platform('androidx.compose:compose-bom:2026.04.01')
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'

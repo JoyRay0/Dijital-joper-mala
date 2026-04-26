@@ -1,7 +1,6 @@
 package com.mala.digital_joper_mala.Adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mala.digital_joper_mala.Activity.Act_Home_All_Mala;
+import com.mala.digital_joper_mala.View.Act_Home_All_Mala;
 import com.mala.digital_joper_mala.Database.UserMala;
 import com.mala.digital_joper_mala.R;
 
