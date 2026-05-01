@@ -80,19 +80,6 @@ public class Act_Boisnob_mala extends AppCompatActivity {
         });
         //back button-----------------------------------------------
 
-        //custom floating button--------------------------------
-
-        ib_rules.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                startActivity(new Intent(Act_Boisnob_mala.this, Act_boisnob_mala_helper.class));
-
-            }
-        });
-
-        //custom floating button--------------------------------
-
 
        counter();
 
@@ -120,8 +107,6 @@ public class Act_Boisnob_mala extends AppCompatActivity {
         iv_upload_button = findViewById(R.id.iv_upload_button);
         iv_delete_button = findViewById(R.id.iv_delete_button);
         iv_upload_image = findViewById(R.id.iv_upload_image);
-
-        ib_rules = findViewById(R.id.ib_rules);
 
         cd_save_count1 = findViewById(R.id.cd_save_count1);
         cd_save_count2 = findViewById(R.id.cd_save_count2);

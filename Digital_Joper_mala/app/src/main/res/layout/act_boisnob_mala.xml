@@ -158,19 +158,4 @@
 
     </ScrollView>
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/ib_rules"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_law"
-        android:background="@drawable/sh_custom_fab"
-        android:elevation="5dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="15dp"
-        android:tooltipText="জপের নিয়ম"
-
-        />
-
-
 </RelativeLayout>
