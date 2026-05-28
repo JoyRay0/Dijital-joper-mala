@@ -6,14 +6,14 @@ import android.content.Intent
 
 object IntentHelper {
 
-    fun dataIntent(
+    fun <T> dataIntent(
         context: Context,
-        cls : Class <*>,
+        cls : Class <T>,
         key : String,
         value : String
     ){
 
-        val intent = Intent(context, cls::class.java)
+        val intent = Intent(context, cls)
         intent.putExtra(key, value)
         context.startActivity(intent)
 
