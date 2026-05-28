@@ -20,8 +20,10 @@ val LightMonthText = Color(0xFF000000)
 val LightCounterText = Color(0xFF776666)
 val LightChartBackground = Color(0xFFFFFFFF)
 
-//setting text color
+//setting text color========================
 val LightSettingText = Color(0xFF353935)
+
+val LightSettingItemBackground = Color(0xFFFFFFFF)
 
 //Icon color
 val LightDefaultIconColor = Color(0xFF000000)
@@ -37,8 +39,9 @@ val DarkMonthText = Color(0xFFFFFFFF)
 val DarkCounterText = Color(0xFFD2CBCB)
 val DarkChartBackground = Color(0xFF4F4848)
 
-//setting text color
+//setting text color===========================
 val DarkSettingText = Color(0xFFFAF9F6)
+val DarkSettingItemBackground = Color(0xFF443C3C)
 
 //Icon color
 val DarkDefaultIconColor = Color(0xFFFFFFFF)
