@@ -60,13 +60,13 @@ import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightStatusBar
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightToolBar
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.Helper.BanglaHelper
-import com.mala.digital_joper_mala.Helper.CacheHelper
+import com.mala.digital_joper_mala.Helper.CacheHelper_
 import com.mala.digital_joper_mala.Helper.ThemeHelper
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.Digital_Joper_malaTheme
 
 class Act_easy_mala : ComponentActivity() {
 
-    private lateinit var cacheHelper: CacheHelper
+    private lateinit var cacheHelper: CacheHelper_
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +86,7 @@ class Act_easy_mala : ComponentActivity() {
                 darkIcons = false
             )
 
-            val cacheData = cacheHelper.getCache("counter_limit")
+            val cacheData = cacheHelper.getCache("counter_limit", "")
 
             Digital_Joper_malaTheme{
 
@@ -110,7 +110,7 @@ class Act_easy_mala : ComponentActivity() {
 
     private fun init(){
 
-        cacheHelper = CacheHelper(this, "easy_mala")
+        cacheHelper = CacheHelper_(this, "easy_mala")
 
     }
 
