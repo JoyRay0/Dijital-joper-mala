@@ -29,17 +29,34 @@ object ThemeHelper {
     @Composable
     fun isDarkTheme(context: Context) : Boolean{
 
-        val themePref = context.getSharedPreferences("my_theme", Context.MODE_PRIVATE)
-        val savedTheme = themePref.getInt("app_theme", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        val themePref = context.getSharedPreferences("Theme", Context.MODE_PRIVATE)
+        val savedTheme = themePref.getString("my_theme", "0")
 
         return when(savedTheme){
 
-            AppCompatDelegate.MODE_NIGHT_YES -> true
-            AppCompatDelegate.MODE_NIGHT_NO -> false
-            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> isSystemInDarkTheme()
+            "0" -> isSystemInDarkTheme()
+            "1" -> true
+            "2" -> false
+
             else -> false
+        }
+
+    }
+
+
+    fun applyTheme(context: Context){
+
+        val themePref = context.getSharedPreferences("Theme", Context.MODE_PRIVATE)
+        val savedTheme = themePref.getString("my_theme", "0")
+
+        val mode = when(savedTheme){
+
+            "0" -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            "1" -> AppCompatDelegate.MODE_NIGHT_YES
+            else -> AppCompatDelegate.MODE_NIGHT_NO
 
         }
+        AppCompatDelegate.setDefaultNightMode(mode)
 
     }
 
