@@ -8,12 +8,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -23,10 +25,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import androidx.core.net.toUri
 import com.mala.digital_joper_mala.Helper.*
+import com.mala.digital_joper_mala.Presenter.Setting
+import com.mala.digital_joper_mala.Presenter.SettingPresenter
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
 
-class Act_setting : ComponentActivity() {
+class Act_setting : ComponentActivity(), Setting {
 
     companion object{
 
@@ -34,12 +38,21 @@ class Act_setting : ComponentActivity() {
 
     }
 
+    //init===============================
+    private lateinit var cacheHelper : CacheHelper_
+    private lateinit var presenter : SettingPresenter
+
+    private var themeData = mutableStateOf("")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        setContent {
+        init()
 
+        presenter.getCache("my_theme", "0")
+
+        setContent {
 
             var isDark by remember { mutableStateOf(false) }
 
@@ -71,7 +84,12 @@ class Act_setting : ComponentActivity() {
                         startActivity(Intent(this, Act_new_feature::class.java))
 
                     },
-                    appTheme = {},
+                    appTheme = {
+
+                        presenter.setCache("my_theme", it.toString())
+                        recreate()
+
+                               },
                     appLanguage = {},
                     otherApp = {
 
@@ -126,12 +144,31 @@ class Act_setting : ComponentActivity() {
                         )
 
                     },
-                    appInfo = {}
+                    getAppTheme = themeData.value.toInt()
                 )
 
             }
         }
     }//on create===============================
+
+    private fun init(){
+
+        cacheHelper = CacheHelper_(this, "Theme")
+        presenter = SettingPresenter(this, cacheHelper)
+
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDestroy()
+
+    }
+
+    override fun cache(value: String) {
+        themeData.value = value
+    }
+
 }//class=======================================
 
 
@@ -142,14 +179,17 @@ private fun SettingFullScreen(
     backClick: () -> Unit = {},
     feedback : () -> Unit = {},
     newFeature : () -> Unit = {},
-    appTheme : () -> Unit = {},
+    appTheme : (Int) -> Unit = {},
     appLanguage : () -> Unit = {},
     otherApp : () -> Unit = {},
     appShare : () -> Unit = {},
     appRating : () -> Unit = {},
     appPrivacy : () -> Unit = {},
-    appInfo : () -> Unit = {},
+    getAppTheme : Int  = 0
 ) {
+
+    var isInfoVisible = remember { mutableStateOf(false) }
+    var isThemeVisble = remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = { Toolbar(
@@ -192,7 +232,7 @@ private fun SettingFullScreen(
                     rightTopCornerRadios = 14.dp
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(3.dp))
 
                 TextButtonHelper(
                     "নতুন ফিচারগুলো",
@@ -211,13 +251,13 @@ private fun SettingFullScreen(
                     "অ্যাপ থিম",
                     icon = R.drawable.ic_day_night,
                     iconSize = 22.dp,
-                    btnClick = { appTheme() },
+                    btnClick = { isThemeVisble.value = !isThemeVisble.value },
                     isDark = isDark,
                     leftTopCornerRadios = 14.dp,
                     rightTopCornerRadios = 14.dp
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(3.dp))
 
                 TextButtonHelper(
                     "ভাষা",
@@ -244,7 +284,7 @@ private fun SettingFullScreen(
                     rightTopCornerRadios = 14.dp
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(3.dp))
 
                 TextButtonHelper(
                     "অ্যাপটি শেয়ার করুন",
@@ -254,7 +294,7 @@ private fun SettingFullScreen(
                     isDark = isDark,
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(3.dp))
 
                 TextButtonHelper(
                     "আমাদের অ্যাপকে ফাইভ স্টার রেটিং দিন",
@@ -279,19 +319,120 @@ private fun SettingFullScreen(
                     rightTopCornerRadios = 14.dp
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(3.dp))
 
                 TextButtonHelper(
                     "কিছু ইনফরমেশন",
                     icon = R.drawable.ic_info,
                     iconSize = 22.dp,
-                    btnClick = { appInfo() },
+                    btnClick = { isInfoVisible.value = true },
                     isDark = isDark,
                     rightBottomCornerRadios = 14.dp,
                     leftBottomCornerRadios = 14.dp
                 )
 
             }//column
+
+            if (isThemeVisble.value){
+
+                AppTheme(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter),
+                    modeClick = {
+
+                        appTheme(it)
+                        isThemeVisble.value = false
+
+                    },
+                    userSelectedMode = getAppTheme,
+                    isDark = isDark
+                )
+
+            }
+
+            if (isInfoVisible.value){
+
+                Box(
+
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(7.dp)
+                        .align(Alignment.BottomCenter)
+
+                ) {
+
+                    Column(
+
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .shadow(elevation = 10.dp, shape = RoundedCornerShape(14.dp))
+                            .clip(shape = RoundedCornerShape(14.dp))
+                            .background(color = if (isDark) DarkSettingItemBackground else LightSettingItemBackground)
+                            .padding(5.dp)
+                            .align(Alignment.Center)
+
+                    ) {
+
+                        Text( text = "ধন্যবাদ আমাদের অ্যাপ ব্যবহার করার জন্য",
+                            fontSize = 17.sp,
+                            fontFamily = BanglaHelper.banglaFont(),
+                            fontWeight = FontWeight.SemiBold,
+                            color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF3A3434),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(5.dp)
+                                .align(Alignment.CenterHorizontally)
+
+                        )
+
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        Text( text = "আমরা অ্যাপ এর মধ্যে নিয়মিত আপডেট দিই এবং প্রতিটি আপডেটে নতুন নতুন ফিচার যুক্ত করি। আমাদের অ্যাপ ব্যবহার করতে যদি কোনো প্রকার সমস্যা হয় তবে দয়া করে আমাদের জানান। আমরা আপনার সমস্যা সমাধানের যথাসাধ্য চেষ্টা করবো।",
+                            fontSize = 15.sp,
+                            fontFamily = BanglaHelper.banglaFont(),
+                            fontWeight = FontWeight.Normal,
+                            color = if (isDark) Color(0xFFD5D5D5) else Color(0xFF000000),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(5.dp)
+                                .align(Alignment.CenterHorizontally)
+
+                        )
+
+                        Spacer(modifier = Modifier.height(7.dp))
+                        
+                        Text( text = "ঠিক আছে",
+                            fontSize = 13.sp,
+                            fontFamily = BanglaHelper.banglaFont(),
+                            fontWeight = FontWeight.Normal,
+                            color = if (isDark) Color(0xFFFFDDDD) else Color(0xFF3A3434),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .clip(shape = RoundedCornerShape(12.dp))
+                                .clickable(
+                                    indication = ripple(
+                                        bounded = true,
+                                        color = if (isDark) Color(0xFFD3CFCF) else Color(0xFF3D3838),
+                                        radius = 40.dp
+                                    ),
+                                    interactionSource = remember { MutableInteractionSource() }
+                                ) { isInfoVisible.value = false }
+                                .padding(start = 9.dp, end = 9.dp, top = 5.dp, bottom = 5.dp)
+                                .align(Alignment.End)
+
+                        )
+
+                        Spacer(modifier = Modifier.height(5.dp))
+
+                    }//column
+
+                }//box
+
+            }
 
         }//box
 
@@ -369,7 +510,7 @@ private fun TextButtonHelper(
             modifier = Modifier
                 .fillMaxWidth()
                 .shadow(
-                    elevation = 3.dp,
+                    elevation = 4.dp,
                     shape = RoundedCornerShape(
                         topStart = leftTopCornerRadios,
                         bottomStart = leftBottomCornerRadios,
@@ -388,7 +529,7 @@ private fun TextButtonHelper(
                 .clickable(
                     enabled = isEnabled
                 ) { btnClick() }
-                .background(color = Color(0xFFFFFFFF))
+                .background(color = if (isDark) DarkSettingItemBackground else LightSettingItemBackground)
                 .alpha(alpha = if (isEnabled) 1f else 0.5f)
                 //.padding(10.dp)
                 .align(Alignment.Center)
@@ -454,6 +595,112 @@ private fun TextButtonHelper(
             }//box
 
         }//box
+
+    }//box
+    
+}//fun end
+
+
+@Preview(showBackground = true)
+@Composable
+private fun AppTheme(
+    modifier: Modifier = Modifier,
+    modeClick : (Int) -> Unit = {},
+    userSelectedMode : Int = 0,
+    isDark: Boolean = false
+) {
+
+    var themeIndex = remember(userSelectedMode) { mutableStateOf(userSelectedMode) }
+
+    Box(
+
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(9.dp)
+
+    ) {
+
+        Column(
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .shadow(elevation = 5.dp, shape = RoundedCornerShape(16.dp))
+                .clip(shape = RoundedCornerShape(16.dp))
+                .background(color = if (isDark) DarkSettingItemBackground else LightSettingItemBackground)
+                .padding(9.dp)
+
+        ) {
+
+            val themeText = arrayOf("সিস্টেম ডিফল্ট", "ডার্ক মোড", "লাইট মোড")
+
+            themeText.forEachIndexed { index, text ->
+
+                Row(
+
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(shape = RoundedCornerShape(10.dp))
+                        .clickable{
+                            themeIndex.value = index
+                            modeClick(index)
+                        }
+                        .background(color = if (themeIndex.value == index){
+
+                            if (isDark){
+
+                                Color(0xFF947D7D)
+
+                            }else{
+
+                                Color(0xFFFFEBEB)
+
+                            }
+
+                        } else Color.Transparent)
+                        .padding(7.dp)
+                        .align(Alignment.Start)
+
+                ) {
+
+                    if (themeIndex.value == index){
+
+                        Icon( painter = painterResource(R.drawable.ic_ok),
+                            contentDescription = "",
+                            tint = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .size(21.dp)
+                                .align(Alignment.CenterVertically)
+
+                        )
+
+                    }else{
+
+                        Spacer(modifier = Modifier.width(22.dp))
+
+                    }
+
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    Text( text = text,
+                        fontSize = 14.sp,
+                        fontFamily = BanglaHelper.banglaFont(),
+                        fontWeight = FontWeight.Normal,
+                        color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .padding(3.dp)
+                            .align(Alignment.CenterVertically)
+
+                    )
+
+
+                }//row
+
+            }//loop
+
+        }//column
 
     }//box
     
