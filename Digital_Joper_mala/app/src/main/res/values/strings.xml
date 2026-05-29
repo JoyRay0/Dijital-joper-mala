@@ -82,5 +82,6 @@
     <string name="title_activity_act_new_feature">Act_new_feature</string>
     <string name="title_activity_act_webview">Act_webview</string>
     <string name="title_activity_act_setting">Act_setting</string>
+    <string name="title_activity_act_splash_screen">Act_splash_screen</string>
 
 </resources>
