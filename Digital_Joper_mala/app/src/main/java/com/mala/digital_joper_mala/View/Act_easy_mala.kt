@@ -1,6 +1,7 @@
 package com.mala.digital_joper_mala.View
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -61,6 +62,7 @@ import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightToolBar
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.Helper.BanglaHelper
 import com.mala.digital_joper_mala.Helper.CacheHelper_
+import com.mala.digital_joper_mala.Helper.SanitizeHelper
 import com.mala.digital_joper_mala.Helper.ThemeHelper
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.Digital_Joper_malaTheme
 
@@ -151,6 +153,7 @@ private fun EasyMalaFullScreen(
                 .fillMaxSize()
                 .background(color = if (isDark) DarkBackground else LightBackground)
                 .padding(innerPadding)
+                .imePadding()
 
         ) {
 
@@ -460,7 +463,7 @@ private fun CounterLimit(
                 .shadow(elevation = 5.dp, shape = RoundedCornerShape(10.dp))
                 .clip(shape = RoundedCornerShape(10.dp))
                 .background(color = Color.White)
-                .padding(15.dp)
+                .padding(12.dp)
 
         ) {
 
@@ -469,13 +472,13 @@ private fun CounterLimit(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(shape = RoundedCornerShape(10.dp))
-                    .border(width = 1.dp, color = Color(0xFF000000), shape = RoundedCornerShape(10.dp))
-                    .padding(10.dp)
-                    .imePadding()
+                    .border(width = 1.dp, color = Color(0xFF9A7A7A), shape = RoundedCornerShape(10.dp))
+                    .padding(6.dp)
+                    .align(Alignment.CenterHorizontally)
 
             ) {
 
-                if (counterInput.isEmpty()){
+                if (counterInput.isBlank()){
 
                     Text("জপের লিমিট",
                         fontSize = 15.sp,
@@ -485,6 +488,7 @@ private fun CounterLimit(
                         color = Color.Gray,
                         modifier = Modifier
                             .wrapContentWidth()
+                            .padding(3.dp)
                             .align(Alignment.CenterStart)
                     )
 
@@ -500,8 +504,9 @@ private fun CounterLimit(
 
                         }},
                     textStyle = TextStyle(
-                        platformStyle = PlatformTextStyle(includeFontPadding = false),
                         fontSize = 15.sp,
+                        fontFamily = BanglaHelper.banglaFont(),
+                        fontWeight = FontWeight.Normal,
                         color = Color(0xFF000000)
                     ),
                     keyboardOptions = KeyboardOptions(
@@ -512,11 +517,37 @@ private fun CounterLimit(
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(23.dp)
+                        .padding(3.dp)
                         .focusRequester(focus)
                         .align(Alignment.CenterStart)
 
                 )
+
+                if (counterInput.isNotEmpty()){
+
+                    IconButton(
+                        onClick = { counterInput = "" },
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .clip(shape = CircleShape)
+                            //.background(color = Color.LightGray)
+                            .size(27.dp)
+                            .align(Alignment.CenterEnd)
+                    ) {
+
+                        Icon( painter = painterResource(R.drawable.ic_clear),
+                            contentDescription = "",
+                            tint = Color(0xFF5E4F4F),
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .size(19.dp)
+                                .align(Alignment.Center)
+
+                        )
+
+                    }
+
+                }
 
                 LaunchedEffect(Unit) {
 
@@ -524,11 +555,9 @@ private fun CounterLimit(
 
                 }
 
-                if (counterInput.isNotEmpty()) input(counterInput.toLong())
-
             }//box
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Row(
 
@@ -543,7 +572,7 @@ private fun CounterLimit(
                         .clip(shape = RoundedCornerShape(15.dp))
                         .clickable{ closeClick() }
                         .background(color = Color(0xFFDEE0DE))
-                        .padding(7.dp)
+                        .padding(5.dp)
                         .align(Alignment.CenterVertically)
 
                 ) {
@@ -562,7 +591,7 @@ private fun CounterLimit(
 
                 }
 
-                Spacer(modifier = Modifier.width(10.dp))
+                Spacer(modifier = Modifier.width(12.dp))
 
                 Box(
 
@@ -574,12 +603,16 @@ private fun CounterLimit(
                             enabled = if (counterInput.isEmpty()) false else true
                         ){
 
+                            input(SanitizeHelper.sanitizeNumber(counterInput))
+
+                            Log.d("input", SanitizeHelper.sanitizeNumber(counterInput).toString())
+
                             saveClick()
 
                         }
                         .alpha(if (counterInput.isEmpty()) 0.5f else 1f)
                         .background(color = Color(0xFF4CAF50))
-                        .padding(7.dp)
+                        .padding(5.dp)
                         .align(Alignment.CenterVertically)
 
                 ) {
