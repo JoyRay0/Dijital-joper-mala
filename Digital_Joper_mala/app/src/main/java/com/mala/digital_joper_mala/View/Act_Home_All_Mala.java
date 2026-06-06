@@ -204,7 +204,6 @@ public class Act_Home_All_Mala extends AppCompatActivity {
                 } else if (item.getItemId() == R.id.setting) {
 
                     startActivity(new Intent(Act_Home_All_Mala.this, Act_setting.class));
-                    finishAffinity();
 
                 }
 
