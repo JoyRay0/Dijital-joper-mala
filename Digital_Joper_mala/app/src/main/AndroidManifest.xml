@@ -22,11 +22,7 @@
         android:theme="@style/Base.Theme.Digital_Joper_mala"
         android:usesCleartextTraffic="false"
         tools:targetApi="34">
-        <activity
-            android:name=".View.Act_splash_screen"
-            android:exported="false"
-            android:label="@string/title_activity_act_splash_screen"
-            android:theme="@style/Base.Theme.Digital_Joper_mala" />
+
         <activity
             android:name=".View.Act_setting"
             android:exported="false"
@@ -82,7 +78,7 @@
             android:name=".View.Act_Boisnob_mala"
             android:exported="false" />
         <activity
-            android:name=".View.Act_SplashScreen"
+            android:name=".View.Act_splash_screen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
