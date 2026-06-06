@@ -189,7 +189,7 @@ private fun SettingFullScreen(
 ) {
 
     var isInfoVisible = remember { mutableStateOf(false) }
-    var isThemeVisble = remember { mutableStateOf(false) }
+    var isThemeVisible = remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = { Toolbar(
@@ -251,7 +251,7 @@ private fun SettingFullScreen(
                     "অ্যাপ থিম",
                     icon = R.drawable.ic_day_night,
                     iconSize = 22.dp,
-                    btnClick = { isThemeVisble.value = !isThemeVisble.value },
+                    btnClick = { isThemeVisible.value = !isThemeVisible.value },
                     isDark = isDark,
                     leftTopCornerRadios = 14.dp,
                     rightTopCornerRadios = 14.dp
@@ -333,7 +333,7 @@ private fun SettingFullScreen(
 
             }//column
 
-            if (isThemeVisble.value){
+            if (isThemeVisible.value){
 
                 AppTheme(
                     modifier = Modifier
@@ -342,7 +342,7 @@ private fun SettingFullScreen(
                     modeClick = {
 
                         appTheme(it)
-                        isThemeVisble.value = false
+                        isThemeVisible.value = false
 
                     },
                     userSelectedMode = getAppTheme,
