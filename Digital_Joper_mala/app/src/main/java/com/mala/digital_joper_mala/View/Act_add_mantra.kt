@@ -1,7 +1,6 @@
 package com.mala.digital_joper_mala.View
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -17,7 +16,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
-import androidx.compose.ui.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -25,11 +23,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.modifier.modifierLocalConsumer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -38,8 +33,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import com.mala.digital_joper_mala.Database.UserMantraDatabase
 import com.mala.digital_joper_mala.Helper.*
 import com.mala.digital_joper_mala.Model.UserMantra
@@ -47,7 +40,6 @@ import com.mala.digital_joper_mala.Presenter.UserMantraPresenter
 import com.mala.digital_joper_mala.Presenter.UserMantras
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
-import kotlinx.coroutines.delay
 
 class Act_add_mantra : ComponentActivity(), UserMantras {
 
@@ -97,7 +89,13 @@ class Act_add_mantra : ComponentActivity(), UserMantras {
                         presenter.deleteOne(it)
 
                     },
-                    mantraLongClick = {}
+                    mantraLongClick = {
+
+                        Clipboard.clipData(this, it)
+
+                        ShortMessageHelper.toast(this, "কপি হয়েছে")
+
+                    }
                 )
 
             }
