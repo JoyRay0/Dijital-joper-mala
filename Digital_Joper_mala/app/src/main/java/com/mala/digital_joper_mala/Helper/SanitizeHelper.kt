@@ -12,7 +12,7 @@ object SanitizeHelper {
 
     fun sanitizeText(text : String) : String{
 
-        val _text = text.replace(Regex("""[\p{L}\p{P}\p{M}]+"""), "")
+        val _text = text.replace(Regex("""[^\p{L}\p{P}\p{M}\s]+"""), "")
 
         return _text
 
