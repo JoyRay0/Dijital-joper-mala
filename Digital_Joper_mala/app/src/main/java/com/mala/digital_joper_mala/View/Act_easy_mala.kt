@@ -516,7 +516,7 @@ private fun CounterLimit(
 
                     ),
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth(0.92f)
                         .padding(3.dp)
                         .focusRequester(focus)
                         .align(Alignment.CenterStart)
