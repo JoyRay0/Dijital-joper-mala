@@ -172,6 +172,7 @@ class Act_setting : ComponentActivity(), Setting {
 }//class=======================================
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 private fun SettingFullScreen(
@@ -335,19 +336,26 @@ private fun SettingFullScreen(
 
             if (isThemeVisible.value){
 
-                AppTheme(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.BottomCenter),
-                    modeClick = {
+                ModalBottomSheet(
+                    onDismissRequest = { isThemeVisible.value = false },
+                    containerColor = if (isDark) DarkSettingItemBackground else LightSettingItemBackground,
+                    dragHandle = null
+                ) {
 
-                        appTheme(it)
-                        isThemeVisible.value = false
+                    AppTheme(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        modeClick = {
 
-                    },
-                    userSelectedMode = getAppTheme,
-                    isDark = isDark
-                )
+                            appTheme(it)
+                            isThemeVisible.value = false
+
+                        },
+                        userSelectedMode = getAppTheme,
+                        isDark = isDark
+                    )
+
+                }
 
             }
 
@@ -616,7 +624,7 @@ private fun AppTheme(
 
         modifier = modifier
             .fillMaxWidth()
-            .padding(9.dp)
+            .padding(7.dp)
 
     ) {
 
@@ -624,9 +632,9 @@ private fun AppTheme(
 
             modifier = Modifier
                 .fillMaxWidth()
-                .shadow(elevation = 5.dp, shape = RoundedCornerShape(16.dp))
-                .clip(shape = RoundedCornerShape(16.dp))
-                .background(color = if (isDark) DarkSettingItemBackground else LightSettingItemBackground)
+                //.shadow(elevation = 5.dp, shape = RoundedCornerShape(16.dp))
+                //.clip(shape = RoundedCornerShape(16.dp))
+                //.background(color = if (isDark) DarkSettingItemBackground else LightSettingItemBackground)
                 .padding(9.dp)
 
         ) {
