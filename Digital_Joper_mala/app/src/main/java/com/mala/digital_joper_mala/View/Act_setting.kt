@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.*
@@ -68,7 +69,10 @@ class Act_setting : ComponentActivity(), Setting {
 
                 SettingFullScreen(
                     isDark = isDark,
-                    backClick = { finish() },
+                    backClick = {
+                        IntentHelper.normalIntent(this, Act_home::class.java)
+                        finishAffinity()
+                                },
                     feedback = {
 
                         val intent = Intent(Intent.ACTION_SENDTO)
@@ -148,6 +152,14 @@ class Act_setting : ComponentActivity(), Setting {
                 )
 
             }
+
+            BackHandler() {
+
+                IntentHelper.normalIntent(this, Act_home::class.java)
+                finishAffinity()
+
+            }
+
         }
     }//on create===============================
 

@@ -40,6 +40,8 @@ import com.mala.digital_joper_mala.Presenter.UserMantraPresenter
 import com.mala.digital_joper_mala.Presenter.UserMantras
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 
 class Act_add_mantra : ComponentActivity(), UserMantras {
 
@@ -50,6 +52,7 @@ class Act_add_mantra : ComponentActivity(), UserMantras {
     //init==============
     private var userMantraList = mutableStateListOf<UserMantra>()
     private var deleteStatus = mutableStateOf("")
+    private var isFirstLoaded = mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,7 +98,7 @@ class Act_add_mantra : ComponentActivity(), UserMantras {
 
                         ShortMessageHelper.toast(this, "কপি হয়েছে")
 
-                    }
+                    },
                 )
 
             }
@@ -116,6 +119,7 @@ class Act_add_mantra : ComponentActivity(), UserMantras {
     }
 
     override fun getMantra(list: List<UserMantra>) {
+
         userMantraList.clear()
         userMantraList.addAll(list)
 
@@ -136,10 +140,11 @@ private fun AddMantraFullScreen(
     mantraList : List<UserMantra> = emptyList(),
     addUserMantra : (UserMantra) -> Unit = {},
     deleteClick: (String) -> Unit = {},
-    mantraLongClick: (String) -> Unit = {}
+    mantraLongClick: (String) -> Unit = {},
 ) {
 
     var isAddMantraDialogVisible = remember { mutableStateOf(false) }
+    val lazyState = rememberLazyListState()
 
     Scaffold(
         topBar = { Toolbar(
@@ -203,7 +208,7 @@ private fun AddMantraFullScreen(
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    state = rememberLazyListState()
+                    state = lazyState
 
                 ) {
 
@@ -599,8 +604,8 @@ private fun AddDialog(
                         ) {
                             inputFiled(
                                 UserMantra(
-                                    title = name.value,
-                                    mantra = mantra.value
+                                    title = SanitizeHelper.sanitizeText(name.value),
+                                    mantra = SanitizeHelper.sanitizeText(mantra.value)
                                 )
                             )
 

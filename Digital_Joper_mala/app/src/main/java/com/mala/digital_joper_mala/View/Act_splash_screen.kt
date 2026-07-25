@@ -56,7 +56,7 @@ class Act_splash_screen : ComponentActivity() {
 
                     }
 
-                    IntentHelper.normalIntent(this@Act_splash_screen, Act_Home_All_Mala::class.java)
+                    IntentHelper.normalIntent(this@Act_splash_screen, Act_home::class.java)
                     finishAffinity()
 
                 }

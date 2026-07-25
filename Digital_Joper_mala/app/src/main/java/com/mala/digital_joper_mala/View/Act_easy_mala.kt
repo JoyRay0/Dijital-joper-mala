@@ -25,8 +25,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,6 +45,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -118,6 +121,7 @@ class Act_easy_mala : ComponentActivity() {
 
 }//class=======================================================
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 private fun EasyMalaFullScreen(
@@ -169,16 +173,23 @@ private fun EasyMalaFullScreen(
 
             if (isInputFiledVisible){
 
-                CounterLimit(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.BottomCenter),
-                    saveClick = {
-                        saveClick()
-                        isInputFiledVisible = false },
-                    closeClick = { isInputFiledVisible = false },
-                    input = { totalCount = it }
-                )
+                ModalBottomSheet(
+                    onDismissRequest = {isInputFiledVisible = false},
+                    containerColor = if (isDark) Color(0xFF644646) else Color(0xFFFFFFFF),
+                    dragHandle = null,
+
+                ) {
+
+                    CounterLimit(
+                        saveClick = {
+                            saveClick()
+                            isInputFiledVisible = false },
+                        closeClick = { isInputFiledVisible = false },
+                        input = { totalCount = it },
+                        isDark = isDark
+                    )
+
+                }//dialog
 
                 counter(totalCount)
 
@@ -440,18 +451,19 @@ private fun Counter(
 @Preview(showBackground = true)
 @Composable
 private fun CounterLimit(
-    modifier: Modifier = Modifier,
     saveClick : () -> Unit = {},
     closeClick : () -> Unit = {},
-    input : (Long) -> Unit = {}
+    input : (Long) -> Unit = {},
+    isDark: Boolean = false
 ) {
 
     var counterInput by remember { mutableStateOf("") }
     val focus = remember { FocusRequester() }
 
     Box(
-       modifier = modifier
+       modifier = Modifier
            .fillMaxWidth()
+           //.background(color = if (isDark) Color(0xFF644646) else Color(0xFFFFFFFF))
            .padding(7.dp)
         
     ) {
@@ -460,9 +472,6 @@ private fun CounterLimit(
 
             modifier = Modifier
                 .fillMaxWidth()
-                .shadow(elevation = 5.dp, shape = RoundedCornerShape(10.dp))
-                .clip(shape = RoundedCornerShape(10.dp))
-                .background(color = Color.White)
                 .padding(12.dp)
 
         ) {
@@ -472,7 +481,10 @@ private fun CounterLimit(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(shape = RoundedCornerShape(10.dp))
-                    .border(width = 1.dp, color = Color(0xFF9A7A7A), shape = RoundedCornerShape(10.dp))
+                    .border(
+                        width = 1.dp,
+                        color = if (isDark) Color(0xFFE3E0E0) else Color(0xFF9A7A7A),
+                        shape = RoundedCornerShape(10.dp))
                     .padding(6.dp)
                     .align(Alignment.CenterHorizontally)
 
@@ -485,7 +497,7 @@ private fun CounterLimit(
                         fontFamily = BanglaHelper.banglaFont(),
                         fontWeight = FontWeight.Normal,
                         textAlign = TextAlign.Start,
-                        color = Color.Gray,
+                        color = if (isDark) Color.LightGray else Color.Gray,
                         modifier = Modifier
                             .wrapContentWidth()
                             .padding(3.dp)
@@ -507,7 +519,7 @@ private fun CounterLimit(
                         fontSize = 15.sp,
                         fontFamily = BanglaHelper.banglaFont(),
                         fontWeight = FontWeight.Normal,
-                        color = Color(0xFF000000)
+                        color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000)
                     ),
                     keyboardOptions = KeyboardOptions(
 
@@ -515,6 +527,7 @@ private fun CounterLimit(
                         imeAction = ImeAction.Done
 
                     ),
+                    cursorBrush = if (isDark) SolidColor(Color.White) else SolidColor(Color.Black),
                     modifier = Modifier
                         .fillMaxWidth(0.92f)
                         .padding(3.dp)
