@@ -14,15 +14,11 @@ class UserMantraModel(
 
     fun insert(title: String, mantra : String){
 
-        println("INSERT CALLED")
-
         db.insert(title, mantra)
 
     }
 
     fun getMantra() : List<UserMantra>{
-
-        println("GET MANTRA CALLED")
 
         val data = db.getAllMantra()
 
@@ -35,6 +31,5 @@ class UserMantraModel(
         return db.deleteOne(mantra)
 
     }
-
 
 }

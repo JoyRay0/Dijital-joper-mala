@@ -9,7 +9,7 @@ import com.mala.digital_joper_mala.Model.UserMantra
 
 class UserMantraDatabase(
     context: Context
-) : SQLiteOpenHelper(context, "user_mantra.db", null, 5) {
+) : SQLiteOpenHelper(context, "user_mantra.db", null, 9) {
 
     companion object{
 
@@ -64,7 +64,7 @@ class UserMantraDatabase(
 
     }
 
-    fun getAllMantra() : List<UserMantra>{
+    fun getAllMantra(page : Int = 0) : List<UserMantra>{
 
         val list : MutableList<UserMantra> = mutableListOf()
 
@@ -74,7 +74,7 @@ class UserMantraDatabase(
 
         try {
 
-            cursor = db.rawQuery("SELECT * FROM $TABLE_NAME", null)
+            cursor = db.rawQuery("SELECT * FROM $TABLE_NAME ORDER BY id DESC", null)
 
             while (cursor.moveToNext()){
 

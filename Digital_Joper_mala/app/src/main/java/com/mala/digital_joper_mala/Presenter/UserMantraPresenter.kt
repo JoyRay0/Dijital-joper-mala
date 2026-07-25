@@ -29,6 +29,7 @@ class UserMantraPresenter(
     private val scopeIO = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val scopeMain = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
+
     fun insert(title : String, mantra : String){
 
         scopeIO.launch {
@@ -68,6 +69,7 @@ class UserMantraPresenter(
         scopeIO.launch {
 
             val isDeleted =  model.delete(mantra)
+
             val data = model.getMantra()
 
             withContext(Dispatchers.Main){
