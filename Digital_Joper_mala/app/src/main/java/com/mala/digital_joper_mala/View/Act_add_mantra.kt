@@ -183,7 +183,7 @@ private fun AddMantraFullScreen(
                         contentDescription = "Empty",
                         modifier = Modifier
                             .fillMaxWidth()
-                            .size(120.dp)
+                            .size(90.dp)
                             .align(Alignment.CenterHorizontally)
 
                     )
