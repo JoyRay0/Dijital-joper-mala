@@ -70,9 +70,6 @@
             android:name=".View.Act_ShivMala"
             android:exported="false" />
         <activity
-            android:name=".View.Act_Home_All_Mala"
-            android:exported="false" />
-        <activity
             android:name=".View.Act_Custom_Mala"
             android:exported="false" />
         <activity
