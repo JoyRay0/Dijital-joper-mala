@@ -21,7 +21,7 @@ data class HomeData(
 
     val id : Int = 0,
     val question : String = "",
-    //val title : String = "",
+    val image : String = "",
     val answer : String = "",
 
 )
@@ -30,9 +30,7 @@ class HomeModel() {
 
     fun getRules() : List<HomeData>{
 
-        val list : MutableList<HomeData> = emptyList()
-
-        list.clear()
+        val list : MutableList<HomeData> = mutableListOf()
 
         list.add(HomeData(
             id = 1,
@@ -72,6 +70,7 @@ class HomeModel() {
 
         return list
 
+
     }
 
     fun dataFromServer(
@@ -82,6 +81,41 @@ class HomeModel() {
 
         OkHttpWrapper()
             .url("https://jopamala.rksoftwares.fun/Jopa_info?res=get_info")
+            .header()
+            .execute(Home::class.java, onSuccess = {
+
+                if (it.status == "Success"){
+
+                    onSuccess(it.data)
+
+                }else{
+
+                    onFailed(true)
+
+                }
+
+
+            }, onFailed = {
+
+                onFailed(it)
+
+            }, onError = {
+
+                onError(it)
+
+            })
+
+
+    }
+
+    fun pagerDataFromServer(
+        onSuccess : (List<HomeData>) -> Unit = {},
+        onFailed : (Boolean) -> Unit = {},
+        onError : (String) -> Unit = {}
+    ){
+
+        OkHttpWrapper()
+            .url("https://jopamala.rksoftwares.fun/Pager")
             .header()
             .execute(Home::class.java, onSuccess = {
 

@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -24,9 +26,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import com.mala.digital_joper_mala.Helper.*
@@ -35,6 +40,11 @@ import com.mala.digital_joper_mala.Presenter.Home
 import com.mala.digital_joper_mala.Presenter.HomePresenter
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
+import java.util.Locale
+import java.util.Locale.getDefault
+import androidx.compose.ui.platform.LocalLocale
+import coil3.compose.AsyncImage
+import kotlinx.coroutines.delay
 
 
 class Act_home : ComponentActivity(), Home {
@@ -44,6 +54,7 @@ class Act_home : ComponentActivity(), Home {
     //init
     private val rulesList = mutableStateListOf<HomeData>()
     private val infoList = mutableStateListOf<HomeData>()
+    private val pagerList = mutableStateListOf<HomeData>()
     private var serverStatus = mutableStateOf("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,19 +81,30 @@ class Act_home : ComponentActivity(), Home {
                     notificationClick = {},
                     addMantraClick = { IntentHelper.normalIntent(this, Act_add_mantra::class.java) },
                     settingClick = { IntentHelper.normalIntent(this, Act_setting::class.java) },
-                    homeClick = {},
+                    homeClick = {
+
+                        rulesList.clear()
+                        infoList.clear()
+                        presenter.pagerDataFromServer()
+
+                    },
                     rulesClick = {
 
+                        pagerList.clear()
+                        infoList.clear()
                         presenter.getRules()
 
                                  },
                     infoClick = {
 
+                        pagerList.clear()
+                        rulesList.clear()
                         presenter.dataFromServer()
 
                     },
                     rulesList = rulesList,
                     infoList = infoList,
+                    pagerList = pagerList,
                     status = serverStatus.value
                 )
 
@@ -107,6 +129,11 @@ class Act_home : ComponentActivity(), Home {
         infoList.clear()
         infoList.addAll(list)
 
+    }
+
+    override fun pagerList(list: List<HomeData>) {
+        pagerList.clear()
+        pagerList.addAll(list)
     }
 
     override fun serverStatus(status: String) {
@@ -134,6 +161,7 @@ private fun HomeFullScreen(
     infoClick: () -> Unit = {},
     rulesList : List<HomeData> = emptyList(),
     infoList : List<HomeData> = emptyList(),
+    pagerList: List<HomeData> = emptyList(),
     status: String = ""
 ) {
 
@@ -184,7 +212,8 @@ private fun HomeFullScreen(
                 0 -> {
 
                     Home(
-                        isDark = isDark
+                        isDark = isDark,
+                        pagerList = pagerList
                     )
 
                 }
@@ -409,7 +438,8 @@ private fun BottonNav(
 @Preview(showBackground = true)
 @Composable
 private fun Home(
-    isDark: Boolean = false
+    isDark: Boolean = false,
+    pagerList : List<HomeData> = emptyList()
 ) {
 
     Box(
@@ -419,66 +449,100 @@ private fun Home(
 
     ) {
 
-        Row(
+        Column(
 
             modifier = Modifier
                 .fillMaxWidth()
 
         ) {
 
-            val mala = arrayOf("সহজ মালা", "বৈষ্ণব মালা", "শিব মালা")
+            if (pagerList.isNotEmpty()){
 
-            mala.forEachIndexed { index, text ->
-
-                Column(
+                Box(
 
                     modifier = Modifier
-                        .weight(1f)
                         .fillMaxWidth()
-                        .padding(5.dp)
+                        .padding(12.dp)
 
                 ) {
 
-                    Box(
-
+                    PagerHelper().Pager(
                         modifier = Modifier
-                            .wrapContentWidth()
-                            .shadow(elevation = 2.dp, shape = RoundedCornerShape(12.dp))
-                            .clip(shape = RoundedCornerShape(12.dp))
-                            .background(color = if (isDark) Color(0xFFAFADAD) else Color(0xFFFFFFFF))
-                            .size(60.dp)
-                            .padding(5.dp)
-                            .align(Alignment.CenterHorizontally)
-
-                    ) {
-
-                        Image( painter = painterResource(R.drawable.img_splash),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .fillMaxSize()
-
-                        )
-
-                    }//image box
-
-                    Spacer(modifier = Modifier.height(5.dp))
-
-                    Text( text = text,
-                        fontSize = 14.sp,
-                        fontFamily = BanglaHelper.banglaFont(),
-                        fontWeight = FontWeight.Normal,
-                        color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
-                        modifier = Modifier
-                            .wrapContentWidth()
-                            .align(Alignment.CenterHorizontally)
+                            .fillMaxWidth(),
+                        list = pagerList,
+                        placeHolder = painterResource(R.drawable.img_loader),
+                        height = 150.dp
 
                     )
 
-                }//column
+                }//box
 
-            }//loop
+                Spacer(modifier = Modifier.height(5.dp))
 
-        }//row
+            }
+
+            Row(
+
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            ) {
+
+                val mala = arrayOf("সহজ মালা", "বৈষ্ণব মালা", "শিব মালা")
+
+                mala.forEachIndexed { index, text ->
+
+                    Column(
+
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth()
+                            .padding(5.dp)
+
+                    ) {
+
+                        Box(
+
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .shadow(elevation = 2.dp, shape = RoundedCornerShape(12.dp))
+                                .clip(shape = RoundedCornerShape(12.dp))
+                                .background(color = if (isDark) Color(0xFFAFADAD) else Color(0xFFFFFFFF))
+                                .size(60.dp)
+                                .padding(5.dp)
+                                .align(Alignment.CenterHorizontally)
+
+                        ) {
+
+                            Image( painter = painterResource(R.drawable.img_splash),
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .fillMaxSize()
+
+                            )
+
+                        }//image box
+
+                        Spacer(modifier = Modifier.height(5.dp))
+
+                        Text( text = text,
+                            fontSize = 14.sp,
+                            fontFamily = BanglaHelper.banglaFont(),
+                            fontWeight = FontWeight.Normal,
+                            color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .align(Alignment.CenterHorizontally)
+
+                        )
+
+                    }//column
+
+                }//loop
+
+            }//row
+
+        }//column
 
     }//box
 
@@ -539,7 +603,7 @@ private fun Rules(
 @Preview(showBackground = true)
 @Composable
 private fun Info(
-    status : String = "",
+    status : String = "pending",
     list: List<HomeData> = emptyList(),
     isDark: Boolean = false
 ) {
@@ -547,41 +611,69 @@ private fun Info(
     Box(
 
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
 
     ) {
         
 
-        if (list.isNotEmpty()){
+        when(status){
 
-            LazyColumn(
+            "pending" -> {
 
-                state = rememberLazyListState(),
-                modifier = Modifier
-                    .fillMaxWidth()
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .align(Alignment.Center),
+                    color = Color(0xFF009688)
+                )
 
-            ) {
+            }
 
-                items(
-                    items = list,
-                    //key = { it.id }
-                ){
+            "failed" -> {
 
-                    Item(
-                        question = it.question,
-                        answer = it.answer,
-                        isDark = isDark
-                    )
+                Image( painter = painterResource(R.drawable.img_empty_box),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .size(90.dp)
+                        .align(Alignment.Center)
 
-                }
+                )
 
-                items(count = 1){
+            }
 
-                    Spacer(modifier = Modifier.height(60.dp))
+            "success" -> {
 
-                }
+                LazyColumn(
 
-            }//lazy column
+                    state = rememberLazyListState(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+
+                ) {
+
+                    items(
+                        items = list,
+                        //key = { it.id }
+                    ){
+
+                        Item(
+                            question = it.question,
+                            answer = it.answer,
+                            isDark = isDark
+                        )
+
+                    }
+
+                    items(count = 1){
+
+                        Spacer(modifier = Modifier.height(60.dp))
+
+                    }
+
+                }//lazy column
+
+            }
 
         }
 

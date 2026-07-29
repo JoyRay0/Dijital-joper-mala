@@ -13,6 +13,7 @@ interface Home{
 
     fun rulesList(list : List<HomeData>)
     fun infoList(list : List<HomeData>)
+    fun pagerList(list: List<HomeData>)
     fun serverStatus(status : String)
 
 }
@@ -79,9 +80,51 @@ class HomePresenter(
 
     }
 
+    fun pagerDataFromServer(){
+
+        view.serverStatus(HomeStatus.Pending.value)
+
+        scopeIO.launch {
+
+            model.pagerDataFromServer(onSuccess = {
+
+                scopeMain.launch {
+
+                    if (it.isNotEmpty()){
+
+                        view.serverStatus(HomeStatus.Success.value)
+                        view.pagerList(it)
+
+                    }else{
+
+                        view.serverStatus(HomeStatus.Failed.value)
+
+                    }
+
+                }
+
+            }, onFailed = {
+
+                if (it){
+
+                    scopeMain.launch {
+
+                        view.serverStatus(HomeStatus.Failed.value)
+
+                    }
+
+                }
+
+            })
+
+        }
+
+    }
+
     fun getRules(){
 
         val data = model.getRules()
+
 
         if (data.isNotEmpty()){
 
