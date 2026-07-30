@@ -2,6 +2,7 @@ package com.mala.digital_joper_mala.Model
 
 import android.util.Log
 import com.google.gson.annotations.SerializedName
+import com.mala.digital_joper_mala.Helper.ApiLinkHelper
 import com.mala.digital_joper_mala.Helper.OkHttpWrapper
 import com.mala.digital_joper_mala.Helper.header
 import kotlinx.serialization.Serializable
@@ -11,6 +12,8 @@ data class Home(
 
     val status : String = "",
     val message : String = "",
+
+    val version : String = "",
 
     @SerializedName("data")
     val data : List<HomeData> = emptyList()
@@ -80,7 +83,7 @@ class HomeModel() {
     ){
 
         OkHttpWrapper()
-            .url("https://jopamala.rksoftwares.fun/Jopa_info?res=get_info")
+            .url(ApiLinkHelper.jopa_info())
             .header()
             .execute(Home::class.java, onSuccess = {
 
@@ -115,7 +118,7 @@ class HomeModel() {
     ){
 
         OkHttpWrapper()
-            .url("https://jopamala.rksoftwares.fun/Pager")
+            .url(ApiLinkHelper.pager())
             .header()
             .execute(Home::class.java, onSuccess = {
 
@@ -137,6 +140,36 @@ class HomeModel() {
             }, onError = {
 
                 onError(it)
+
+            })
+
+
+    }
+
+    fun app_update(
+        onSuccess : (String) -> Unit = {},
+        onFailed : (Boolean) -> Unit = {}
+    ){
+
+        OkHttpWrapper()
+            .url(ApiLinkHelper.app_update())
+            .header()
+            .execute(Home::class.java, onSuccess = {
+
+                if (it.status == "Success"){
+
+                    onSuccess(it.version)
+
+                }else{
+
+                    onFailed(true)
+
+                }
+
+
+            }, onFailed = {
+
+                onFailed(it)
 
             })
 

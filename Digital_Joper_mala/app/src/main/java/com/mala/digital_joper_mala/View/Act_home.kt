@@ -1,5 +1,8 @@
 package com.mala.digital_joper_mala.View
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -43,6 +46,8 @@ import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
 import java.util.Locale
 import java.util.Locale.getDefault
 import androidx.compose.ui.platform.LocalLocale
+import androidx.compose.ui.text.style.TextAlign
+import androidx.core.net.toUri
 import coil3.compose.AsyncImage
 import kotlinx.coroutines.delay
 
@@ -56,14 +61,23 @@ class Act_home : ComponentActivity(), Home {
     private val infoList = mutableStateListOf<HomeData>()
     private val pagerList = mutableStateListOf<HomeData>()
     private var serverStatus = mutableStateOf("")
+    private var version = mutableStateOf("")
+    private var currentVersion = mutableStateOf("")
+    private var isUpdateAvailable = mutableStateOf(false)
+
+    private companion object{
+
+        const val APP_PACKAGE_NAME = "com.mala.digital_joper_mala"
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        setContent {
+        init()
 
-            init()
+        setContent {
 
             var isDark by remember { mutableStateOf(false) }
 
@@ -74,6 +88,27 @@ class Act_home : ComponentActivity(), Home {
                 navColor = if (isDark) Color.Black else Color.White,
                 darkIcons = false
             )
+
+            presenter.appUpdate()
+
+            try {
+
+                currentVersion.value = packageManager.getPackageInfo(packageName, 0).versionName ?: ""
+
+            }catch (e : PackageManager.NameNotFoundException){
+                e.printStackTrace()
+            }
+
+            // Checking For App Update
+
+            val newVersion = version.value.toDoubleOrNull()
+            val currentVersion = currentVersion.value.toDoubleOrNull()
+
+            if (newVersion != null && currentVersion != null){
+
+                if (newVersion > currentVersion) isUpdateAvailable.value = true else isUpdateAvailable.value = false
+
+            }
 
             Digital_Joper_malaTheme {
                 HomeFullScreen(
@@ -105,7 +140,29 @@ class Act_home : ComponentActivity(), Home {
                     rulesList = rulesList,
                     infoList = infoList,
                     pagerList = pagerList,
-                    status = serverStatus.value
+                    status = serverStatus.value,
+                    isUpdateAvailable = isUpdateAvailable.value,
+                    updateClick = {
+
+                        try {
+                            startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    ("https://play.google.com/store/apps/details?id=$APP_PACKAGE_NAME").toUri()
+                                )
+                            )
+                            finishAffinity()
+                        } catch (e: ActivityNotFoundException) {
+                            startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    ("market://details?id=$APP_PACKAGE_NAME").toUri()
+                                )
+                            )
+                            finishAffinity()
+                        }
+
+                    }
                 )
 
             }
@@ -141,6 +198,10 @@ class Act_home : ComponentActivity(), Home {
 
     }
 
+    override fun updateStatus(status: String) {
+        version.value = status
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 
@@ -162,7 +223,9 @@ private fun HomeFullScreen(
     rulesList : List<HomeData> = emptyList(),
     infoList : List<HomeData> = emptyList(),
     pagerList: List<HomeData> = emptyList(),
-    status: String = ""
+    status: String = "",
+    isUpdateAvailable: Boolean = false,
+    updateClick: () -> Unit = {}
 ) {
 
     var index = remember { mutableStateOf(0) }
@@ -213,7 +276,9 @@ private fun HomeFullScreen(
 
                     Home(
                         isDark = isDark,
-                        pagerList = pagerList
+                        pagerList = pagerList,
+                        isUpdateAvailable = isUpdateAvailable,
+                        updateClick = { updateClick() }
                     )
 
                 }
@@ -439,8 +504,18 @@ private fun BottonNav(
 @Composable
 private fun Home(
     isDark: Boolean = false,
-    pagerList : List<HomeData> = emptyList()
+    pagerList : List<HomeData> = emptyList(),
+    isUpdateAvailable : Boolean = false,
+    updateClick : () -> Unit = {}
 ) {
+
+    var isUpdate by remember { mutableStateOf(false) }
+
+    LaunchedEffect(isUpdateAvailable) {
+
+        if (isUpdateAvailable) isUpdate = true else isUpdate = false
+
+    }
 
     Box(
 
@@ -507,7 +582,11 @@ private fun Home(
                                 .wrapContentWidth()
                                 .shadow(elevation = 2.dp, shape = RoundedCornerShape(12.dp))
                                 .clip(shape = RoundedCornerShape(12.dp))
-                                .background(color = if (isDark) Color(0xFFAFADAD) else Color(0xFFFFFFFF))
+                                .background(
+                                    color = if (isDark) Color(0xFFAFADAD) else Color(
+                                        0xFFFFFFFF
+                                    )
+                                )
                                 .size(60.dp)
                                 .padding(5.dp)
                                 .align(Alignment.CenterHorizontally)
@@ -543,6 +622,17 @@ private fun Home(
             }//row
 
         }//column
+
+        if (isUpdate){
+
+            UpdateApp(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Center),
+                updateClick = { updateClick() }
+            )
+
+        }
 
     }//box
 
@@ -718,9 +808,10 @@ private fun Item(
                     .border(
                         width = 1.dp,
                         color = if (isDark) Color(0xFF7E7D7D) else Color(0xFFDEDBDB),
-                        shape = RoundedCornerShape(12.dp))
+                        shape = RoundedCornerShape(12.dp)
+                    )
                     .clip(shape = RoundedCornerShape(12.dp))
-                    .clickable{ isAnswerVisible = !isAnswerVisible }
+                    .clickable { isAnswerVisible = !isAnswerVisible }
                     .padding(9.dp)
 
             ) {
@@ -765,7 +856,8 @@ private fun Item(
                             .border(
                                 width = 1.dp,
                                 color = if (isDark) Color(0xFF5E5E5E) else Color(0xFFECE9E9),
-                                shape = RoundedCornerShape(12.dp))
+                                shape = RoundedCornerShape(12.dp)
+                            )
                             .clip(shape = RoundedCornerShape(12.dp))
                             .padding(12.dp)
 
@@ -785,6 +877,65 @@ private fun Item(
                 }//box
 
             }
+
+        }//column
+
+    }//box
+
+}//fun end
+
+@Preview(showBackground = true)
+@Composable
+private fun UpdateApp(
+    modifier: Modifier = Modifier,
+    updateClick : () -> Unit = {}
+) {
+    
+    Box(
+
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(9.dp)
+
+    ) {
+
+        Column(
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .shadow(elevation = 3.dp, shape = RoundedCornerShape(14.dp))
+                .clip(shape = RoundedCornerShape(14.dp))
+                .clickable(
+                    indication = null,
+                    interactionSource = null
+                ){ updateClick() }
+                .background(color = Color(0xFFFFFFFF))
+                .padding(15.dp)
+
+        ) {
+
+            Image( painter = painterResource(R.drawable.img_update),
+                contentDescription = "",
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .size(70.dp)
+                    .align(Alignment.CenterHorizontally)
+
+            )
+
+            Spacer(modifier = Modifier.height(7.dp))
+
+            Text( text = "নতুন আপডেট উপলব্ধ! আরও ভালো অভিজ্ঞতার জন্য এখনই আপডেট করুন।",
+                fontSize = 17.sp,
+                fontFamily = BanglaHelper.banglaFont(),
+                fontWeight = FontWeight.Normal,
+                color = Color(0xFF000000),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+
+            )
 
         }//column
 
