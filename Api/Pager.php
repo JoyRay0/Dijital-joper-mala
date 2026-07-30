@@ -2,7 +2,6 @@
 
 require_once __DIR__. '/Header.php';
 require __DIR__. '/JsonMessages.php';
-require_once 'EnvHelper.php';
 
 $header = new HeadersManager();
 
