@@ -1,7 +1,6 @@
 package com.mala.digital_joper_mala.View
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -15,8 +14,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -26,12 +23,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import com.mala.digital_joper_mala.Helper.*
@@ -40,16 +33,13 @@ import com.mala.digital_joper_mala.Presenter.Home
 import com.mala.digital_joper_mala.Presenter.HomePresenter
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
-import java.util.Locale
-import java.util.Locale.getDefault
-import androidx.compose.ui.platform.LocalLocale
-import coil3.compose.AsyncImage
-import kotlinx.coroutines.delay
 
 
 class Act_home : ComponentActivity(), Home {
 
     private lateinit var presenter : HomePresenter
+
+    private lateinit var tracker : TrackScreen
 
     //init
     private val rulesList = mutableStateListOf<HomeData>()
@@ -61,9 +51,9 @@ class Act_home : ComponentActivity(), Home {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        setContent {
+        init()
 
-            init()
+        setContent {
 
             var isDark by remember { mutableStateOf(false) }
 
@@ -116,6 +106,7 @@ class Act_home : ComponentActivity(), Home {
 
         presenter = HomePresenter(this)
 
+        tracker = TrackScreen(this)
     }
 
     override fun rulesList(list: List<HomeData>) {
@@ -141,9 +132,22 @@ class Act_home : ComponentActivity(), Home {
 
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        tracker.start()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        tracker.stop(ACTIVITY.Act_home)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 
+        tracker.destroy()
         presenter.onDestroy()
     }
 

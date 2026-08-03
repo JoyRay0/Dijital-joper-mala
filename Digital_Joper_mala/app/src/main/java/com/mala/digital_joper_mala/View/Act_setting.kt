@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import androidx.core.net.toUri
 import com.mala.digital_joper_mala.Helper.*
+import com.mala.digital_joper_mala.Model.Tracker
 import com.mala.digital_joper_mala.Presenter.Setting
 import com.mala.digital_joper_mala.Presenter.SettingPresenter
 import com.mala.digital_joper_mala.R
@@ -33,7 +34,7 @@ import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
 
 class Act_setting : ComponentActivity(), Setting {
 
-    companion object{
+    private companion object{
 
         const val APP_PACKAGE_NAME = "com.mala.digital_joper_mala"
 
@@ -42,6 +43,7 @@ class Act_setting : ComponentActivity(), Setting {
     //init===============================
     private lateinit var cacheHelper : CacheHelper_
     private lateinit var presenter : SettingPresenter
+    private lateinit var tracker : TrackScreen
 
     private var themeData = mutableStateOf("")
 
@@ -167,9 +169,21 @@ class Act_setting : ComponentActivity(), Setting {
 
         cacheHelper = CacheHelper_(this, "Theme")
         presenter = SettingPresenter(this, cacheHelper)
+        tracker = TrackScreen(this)
 
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        tracker.start()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        tracker.stop(ACTIVITY.Act_setting)
+    }
 
     override fun onDestroy() {
         super.onDestroy()

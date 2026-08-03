@@ -41,8 +41,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mala.digital_joper_mala.Helper.ACTIVITY
 import com.mala.digital_joper_mala.Helper.BanglaHelper
 import com.mala.digital_joper_mala.Helper.ThemeHelper
+import com.mala.digital_joper_mala.Helper.TrackScreen
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.DarkBackground
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.DarkStatusBar
@@ -53,9 +55,15 @@ import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightStatusBar
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightToolBar
 
 class Act_new_feature : ComponentActivity() {
+
+    private lateinit var tracker : TrackScreen
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        init()
+
         setContent {
 
             var isDark by remember { mutableStateOf(false) }
@@ -80,6 +88,25 @@ class Act_new_feature : ComponentActivity() {
             }
         }
     }// on create================================
+
+    private fun init(){
+
+        tracker = TrackScreen(this)
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        tracker.start()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        tracker.stop(ACTIVITY.Act_new_feature)
+    }
+
 }//class ==========================================
 
 
@@ -92,15 +119,9 @@ private fun NewFeatureFullScreen(
 
     //===================================================
 
-    val textList = arrayOf(
-        "১। এখানে খুব সহজে মালা জপ করা যাবে।",
+    val textList = emptyList<String>()
 
-    )
-
-    val imageList = arrayOf(
-        R.drawable.img_easy,
-
-    )
+    val imageList = emptyList<Int>()
 
     //=================================================
 
@@ -108,6 +129,7 @@ private fun NewFeatureFullScreen(
     Scaffold(
 
         topBar = { Toolbar(
+            isDark = isDark,
             backClick = { backClick() }
         ) },
 
@@ -135,9 +157,23 @@ private fun NewFeatureFullScreen(
 
             ) {
 
-                Spacer(modifier = Modifier.height(7.dp))
+                if (textList.isEmpty() || imageList.isEmpty()){
 
-                if (!textList.isEmpty() || !imageList.isEmpty()){
+                    Text( text = "কোন নতুন ফিচার যুক্ত হয়নি ।",
+                        fontSize = 16.sp,
+                        fontFamily = BanglaHelper.banglaFont(),
+                        fontWeight = FontWeight.Normal,
+                        color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.CenterHorizontally)
+
+                    )
+
+                }else{
+
+                    Spacer(modifier = Modifier.height(7.dp))
 
                     textList.forEachIndexed { index, text ->
 
@@ -151,7 +187,7 @@ private fun NewFeatureFullScreen(
                                 .wrapContentWidth()
                                 .padding(4.dp)
                                 .align(Alignment.Start)
-                            )
+                        )
 
                         Spacer(modifier = Modifier.height(7.dp))
 

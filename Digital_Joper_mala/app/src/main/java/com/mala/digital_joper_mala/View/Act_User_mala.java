@@ -52,7 +52,7 @@ public class Act_User_mala extends AppCompatActivity {
 
         back.setOnClickListener(view -> {
 
-            startActivity(new Intent(Act_User_mala.this, Act_Home_All_Mala.class));
+            startActivity(new Intent(Act_User_mala.this, Act_home.class));
             finishAffinity();
 
         });
@@ -61,7 +61,7 @@ public class Act_User_mala extends AppCompatActivity {
             @Override
             public void handleOnBackPressed() {
 
-                startActivity(new Intent(Act_User_mala.this, Act_Home_All_Mala.class));
+                startActivity(new Intent(Act_User_mala.this, Act_home.class));
                 finishAffinity();
 
             }

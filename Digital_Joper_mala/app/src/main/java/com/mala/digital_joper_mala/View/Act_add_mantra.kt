@@ -47,6 +47,8 @@ class Act_add_mantra : ComponentActivity(), UserMantras {
 
     private lateinit var presenter : UserMantraPresenter
 
+    private lateinit var tracker : TrackScreen
+
     private lateinit var userMantraDatabase : UserMantraDatabase
 
     //init==============
@@ -111,6 +113,20 @@ class Act_add_mantra : ComponentActivity(), UserMantras {
 
         presenter = UserMantraPresenter(userMantraDatabase, this)
 
+        tracker = TrackScreen(this)
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        tracker.start()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        tracker.stop(ACTIVITY.Act_add_mantra)
     }
 
     override fun onDestroy() {
