@@ -173,40 +173,6 @@ class HomePresenter(
 
     }
 
-    fun appUpdate(){
-
-        scopeIO.launch {
-
-            model.app_update(onSuccess = {
-
-                scopeMain.launch {
-
-                    if (it.isNotEmpty()){
-
-                        view.updateStatus(it)
-
-                    }
-
-                }
-
-            }, onFailed = {
-
-                if (it){
-
-                    scopeMain.launch {
-
-                        view.updateStatus("0.0")
-
-                    }
-
-                }
-
-            })
-
-        }
-
-    }
-
     fun onDestroy(){
 
         scopeIO.cancel()

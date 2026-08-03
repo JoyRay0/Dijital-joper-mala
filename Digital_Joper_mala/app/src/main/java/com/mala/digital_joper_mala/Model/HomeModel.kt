@@ -2,7 +2,7 @@ package com.mala.digital_joper_mala.Model
 
 import android.util.Log
 import com.google.gson.annotations.SerializedName
-import com.mala.digital_joper_mala.Helper.ApiLinkHelper
+//import com.mala.digital_joper_mala.Helper.ApiLinkHelper
 import com.mala.digital_joper_mala.Helper.OkHttpWrapper
 import com.mala.digital_joper_mala.Helper.header
 import kotlinx.serialization.Serializable
@@ -81,7 +81,7 @@ class HomeModel() {
     ){
 
         OkHttpWrapper()
-            .url(ApiLinkHelper.jopa_info())
+            .url("")
             .header()
             .execute(Home::class.java, onSuccess = {
 
@@ -116,7 +116,7 @@ class HomeModel() {
     ){
 
         OkHttpWrapper()
-            .url(ApiLinkHelper.pager())
+            .url("")
             .header()
             .execute(Home::class.java, onSuccess = {
 
@@ -150,7 +150,7 @@ class HomeModel() {
     ){
 
         OkHttpWrapper()
-            .url(ApiLinkHelper.app_update())
+            .url("")
             .header()
             .execute(Home::class.java, onSuccess = {
 
