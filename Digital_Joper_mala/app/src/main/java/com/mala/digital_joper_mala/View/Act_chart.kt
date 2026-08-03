@@ -69,21 +69,27 @@ import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightMonthText
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightStatusBar
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightToolBar
 import com.mala.digital_joper_mala.Database.JopaChartDB
+import com.mala.digital_joper_mala.Helper.ACTIVITY
 import com.mala.digital_joper_mala.Model.JopaChartModel
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.Helper.BanglaHelper
 import com.mala.digital_joper_mala.Helper.ThemeHelper
+import com.mala.digital_joper_mala.Helper.TrackScreen
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class Act_chart : ComponentActivity() {
 
-    //DB
     private lateinit var jopaChartDB : JopaChartDB
+
+    private lateinit var tracker : TrackScreen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        init()
+
         setContent {
 
             val chartList = remember { mutableStateListOf<JopaChartModel>() }
@@ -98,8 +104,6 @@ class Act_chart : ComponentActivity() {
                 navColor = if (isDark) Color.Black else Color.White,
                 darkIcons = false
             )
-
-            init()
 
             LaunchedEffect(Unit) {
 
@@ -157,6 +161,20 @@ class Act_chart : ComponentActivity() {
 
         jopaChartDB = JopaChartDB(this)
 
+        tracker = TrackScreen(this)
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        tracker.start()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        tracker.stop(ACTIVITY.Act_chart)
     }
 
     override fun onDestroy() {

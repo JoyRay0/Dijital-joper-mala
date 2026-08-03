@@ -33,8 +33,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.mala.digital_joper_mala.Helper.ACTIVITY
 import com.mala.digital_joper_mala.Helper.KeyHelper
 import com.mala.digital_joper_mala.Helper.ThemeHelper
+import com.mala.digital_joper_mala.Helper.TrackScreen
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.DarkBackground
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.DarkStatusBar
@@ -45,9 +47,15 @@ import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightStatusBar
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightToolBar
 
 class Act_webview : ComponentActivity() {
+
+    private lateinit var tracker : TrackScreen
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        init()
+
         setContent {
 
             var isDark by remember { mutableStateOf(false) }
@@ -95,6 +103,25 @@ class Act_webview : ComponentActivity() {
             }
         }
     }// on create==============================
+
+    private fun init(){
+
+        tracker = TrackScreen(this)
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        tracker.start()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        tracker.stop(ACTIVITY.Act_webview)
+    }
+
 }//class =======================================
 
 @Preview(showBackground = true)

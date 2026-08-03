@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -18,8 +17,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -29,40 +26,31 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.toLowerCase
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
+import androidx.core.net.toUri
 import com.mala.digital_joper_mala.Helper.*
 import com.mala.digital_joper_mala.Model.HomeData
 import com.mala.digital_joper_mala.Presenter.Home
 import com.mala.digital_joper_mala.Presenter.HomePresenter
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
-import java.util.Locale
-import java.util.Locale.getDefault
-import androidx.compose.ui.platform.LocalLocale
-import androidx.compose.ui.text.style.TextAlign
-import androidx.core.net.toUri
-import coil3.compose.AsyncImage
-import kotlinx.coroutines.delay
 
 
-class Act_home : ComponentActivity(), Home {
+class Act_home : ComponentActivity(), Home {//class===================================================
 
     private lateinit var presenter : HomePresenter
+
+    private lateinit var tracker : TrackScreen
 
     //init
     private val rulesList = mutableStateListOf<HomeData>()
     private val infoList = mutableStateListOf<HomeData>()
     private val pagerList = mutableStateListOf<HomeData>()
     private var serverStatus = mutableStateOf("")
-    private var version = mutableStateOf("")
-    private var currentVersion = mutableStateOf("")
     private var isUpdateAvailable = mutableStateOf(false)
 
     private companion object{
@@ -70,6 +58,9 @@ class Act_home : ComponentActivity(), Home {
         const val APP_PACKAGE_NAME = "com.mala.digital_joper_mala"
 
     }
+
+    private var currentVersion = mutableStateOf("")
+    private var version = mutableStateOf("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -141,7 +132,6 @@ class Act_home : ComponentActivity(), Home {
                     infoList = infoList,
                     pagerList = pagerList,
                     status = serverStatus.value,
-                    isUpdateAvailable = isUpdateAvailable.value,
                     updateClick = {
 
                         try {
@@ -173,6 +163,7 @@ class Act_home : ComponentActivity(), Home {
 
         presenter = HomePresenter(this)
 
+        tracker = TrackScreen(this)
     }
 
     override fun rulesList(list: List<HomeData>) {
@@ -202,13 +193,26 @@ class Act_home : ComponentActivity(), Home {
         version.value = status
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        tracker.start()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        tracker.stop(ACTIVITY.Act_home)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 
+        tracker.destroy()
         presenter.onDestroy()
     }
 
-}//class===================================================
+}
 
 @Preview(showBackground = true)
 @Composable
@@ -505,8 +509,8 @@ private fun BottonNav(
 private fun Home(
     isDark: Boolean = false,
     pagerList : List<HomeData> = emptyList(),
-    isUpdateAvailable : Boolean = false,
-    updateClick : () -> Unit = {}
+    isUpdateAvailable: Boolean = false,
+    updateClick: () -> Unit = {}
 ) {
 
     var isUpdate by remember { mutableStateOf(false) }
@@ -582,11 +586,7 @@ private fun Home(
                                 .wrapContentWidth()
                                 .shadow(elevation = 2.dp, shape = RoundedCornerShape(12.dp))
                                 .clip(shape = RoundedCornerShape(12.dp))
-                                .background(
-                                    color = if (isDark) Color(0xFFAFADAD) else Color(
-                                        0xFFFFFFFF
-                                    )
-                                )
+                                .background(color = if (isDark) Color(0xFFAFADAD) else Color(0xFFFFFFFF))
                                 .size(60.dp)
                                 .padding(5.dp)
                                 .align(Alignment.CenterHorizontally)
@@ -808,10 +808,9 @@ private fun Item(
                     .border(
                         width = 1.dp,
                         color = if (isDark) Color(0xFF7E7D7D) else Color(0xFFDEDBDB),
-                        shape = RoundedCornerShape(12.dp)
-                    )
+                        shape = RoundedCornerShape(12.dp))
                     .clip(shape = RoundedCornerShape(12.dp))
-                    .clickable { isAnswerVisible = !isAnswerVisible }
+                    .clickable{ isAnswerVisible = !isAnswerVisible }
                     .padding(9.dp)
 
             ) {
@@ -856,8 +855,7 @@ private fun Item(
                             .border(
                                 width = 1.dp,
                                 color = if (isDark) Color(0xFF5E5E5E) else Color(0xFFECE9E9),
-                                shape = RoundedCornerShape(12.dp)
-                            )
+                                shape = RoundedCornerShape(12.dp))
                             .clip(shape = RoundedCornerShape(12.dp))
                             .padding(12.dp)
 
@@ -890,7 +888,7 @@ private fun UpdateApp(
     modifier: Modifier = Modifier,
     updateClick : () -> Unit = {}
 ) {
-    
+
     Box(
 
         modifier = modifier

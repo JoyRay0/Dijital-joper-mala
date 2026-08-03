@@ -56,6 +56,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mala.digital_joper_mala.Helper.ACTIVITY
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.DarkBackground
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.DarkStatusBar
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.DarkToolBar
@@ -67,18 +68,22 @@ import com.mala.digital_joper_mala.Helper.BanglaHelper
 import com.mala.digital_joper_mala.Helper.CacheHelper_
 import com.mala.digital_joper_mala.Helper.SanitizeHelper
 import com.mala.digital_joper_mala.Helper.ThemeHelper
+import com.mala.digital_joper_mala.Helper.TrackScreen
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.Digital_Joper_malaTheme
 
 class Act_easy_mala : ComponentActivity() {
 
     private lateinit var cacheHelper: CacheHelper_
 
+    private lateinit var tracker : TrackScreen
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent {
 
-            init()
+        init()
+
+        setContent {
 
             var isDark by remember { mutableStateOf(false) }
             var counter by remember { mutableStateOf(0L) }
@@ -117,6 +122,18 @@ class Act_easy_mala : ComponentActivity() {
 
         cacheHelper = CacheHelper_(this, "easy_mala")
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        tracker.start()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        tracker.stop(ACTIVITY.Act_easy_mala)
     }
 
 }//class=======================================================
