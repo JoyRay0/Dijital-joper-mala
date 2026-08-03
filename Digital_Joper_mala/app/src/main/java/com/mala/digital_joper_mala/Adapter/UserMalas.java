@@ -13,10 +13,9 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.mala.digital_joper_mala.View.Act_Home_All_Mala;
 import com.mala.digital_joper_mala.Database.UserMala;
 import com.mala.digital_joper_mala.R;
+import com.mala.digital_joper_mala.View.Act_home;
 
 import java.util.HashMap;
 import java.util.List;
@@ -72,7 +71,7 @@ public class UserMalas extends RecyclerView.Adapter<UserMalas.holder> {
 
         holder.cv_title.setOnClickListener(view -> {
 
-            activity.startActivity(new Intent(activity, Act_Home_All_Mala.class));
+            activity.startActivity(new Intent(activity, Act_home.class));
             activity.finishAffinity();
 
         });
