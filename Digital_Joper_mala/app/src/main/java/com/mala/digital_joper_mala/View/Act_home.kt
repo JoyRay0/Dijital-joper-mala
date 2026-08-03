@@ -28,6 +28,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import androidx.core.net.toUri
@@ -279,7 +280,9 @@ private fun HomeFullScreen(
 
                     Home(
                         isDark = isDark,
-                        pagerList = pagerList
+                        pagerList = pagerList,
+                        isUpdateAvailable = isUpdateAvailable,
+                        updateClick = { updateClick() }
                     )
 
                 }
@@ -505,8 +508,18 @@ private fun BottonNav(
 @Composable
 private fun Home(
     isDark: Boolean = false,
-    pagerList : List<HomeData> = emptyList()
+    pagerList : List<HomeData> = emptyList(),
+    isUpdateAvailable: Boolean = false,
+    updateClick: () -> Unit = {}
 ) {
+
+    var isUpdate by remember { mutableStateOf(false) }
+
+    LaunchedEffect(isUpdateAvailable) {
+
+        if (isUpdateAvailable) isUpdate = true else isUpdate = false
+
+    }
 
     Box(
 
@@ -609,6 +622,17 @@ private fun Home(
             }//row
 
         }//column
+
+        if (isUpdate){
+
+            UpdateApp(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Center),
+                updateClick = { updateClick() }
+            )
+
+        }
 
     }//box
 
@@ -851,6 +875,65 @@ private fun Item(
                 }//box
 
             }
+
+        }//column
+
+    }//box
+
+}//fun end
+
+@Preview(showBackground = true)
+@Composable
+private fun UpdateApp(
+    modifier: Modifier = Modifier,
+    updateClick : () -> Unit = {}
+) {
+
+    Box(
+
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(9.dp)
+
+    ) {
+
+        Column(
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .shadow(elevation = 3.dp, shape = RoundedCornerShape(14.dp))
+                .clip(shape = RoundedCornerShape(14.dp))
+                .clickable(
+                    indication = null,
+                    interactionSource = null
+                ){ updateClick() }
+                .background(color = Color(0xFFFFFFFF))
+                .padding(15.dp)
+
+        ) {
+
+            Image( painter = painterResource(R.drawable.img_update),
+                contentDescription = "",
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .size(70.dp)
+                    .align(Alignment.CenterHorizontally)
+
+            )
+
+            Spacer(modifier = Modifier.height(7.dp))
+
+            Text( text = "নতুন আপডেট উপলব্ধ! আরও ভালো অভিজ্ঞতার জন্য এখনই আপডেট করুন।",
+                fontSize = 17.sp,
+                fontFamily = BanglaHelper.banglaFont(),
+                fontWeight = FontWeight.Normal,
+                color = Color(0xFF000000),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+
+            )
 
         }//column
 
