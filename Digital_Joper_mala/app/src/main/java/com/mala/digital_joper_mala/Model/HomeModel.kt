@@ -12,7 +12,7 @@ data class Home(
 
     val status : String = "",
     val message : String = "",
-
+    val version : String = "",
     @SerializedName("data")
     val data : List<HomeData> = emptyList()
 
