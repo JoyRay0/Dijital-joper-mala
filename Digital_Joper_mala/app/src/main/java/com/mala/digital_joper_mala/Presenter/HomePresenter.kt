@@ -15,6 +15,7 @@ interface Home{
     fun infoList(list : List<HomeData>)
     fun pagerList(list: List<HomeData>)
     fun serverStatus(status : String)
+    fun updateStatus(status : String)
 
 }
 
@@ -133,6 +134,40 @@ class HomePresenter(
                 view.rulesList(data)
 
             }
+
+        }
+
+    }
+
+    fun appUpdate(){
+
+        scopeIO.launch {
+
+            model.app_update(onSuccess = {
+
+                scopeMain.launch {
+
+                    if (it.isNotEmpty()){
+
+                        view.updateStatus(it)
+
+                    }
+
+                }
+
+            }, onFailed = {
+
+                if (it){
+
+                    scopeMain.launch {
+
+                        view.updateStatus("0.0")
+
+                    }
+
+                }
+
+            })
 
         }
 

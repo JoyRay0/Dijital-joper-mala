@@ -1,5 +1,8 @@
 package com.mala.digital_joper_mala.View
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -27,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
+import androidx.core.net.toUri
 import com.mala.digital_joper_mala.Helper.*
 import com.mala.digital_joper_mala.Model.HomeData
 import com.mala.digital_joper_mala.Presenter.Home
@@ -35,7 +39,7 @@ import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
 
 
-class Act_home : ComponentActivity(), Home {
+class Act_home : ComponentActivity(), Home {//class===================================================
 
     private lateinit var presenter : HomePresenter
 
@@ -46,6 +50,16 @@ class Act_home : ComponentActivity(), Home {
     private val infoList = mutableStateListOf<HomeData>()
     private val pagerList = mutableStateListOf<HomeData>()
     private var serverStatus = mutableStateOf("")
+    private var isUpdateAvailable = mutableStateOf(false)
+
+    private companion object{
+
+        const val APP_PACKAGE_NAME = "com.mala.digital_joper_mala"
+
+    }
+
+    private var currentVersion = mutableStateOf("")
+    private var version = mutableStateOf("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +78,27 @@ class Act_home : ComponentActivity(), Home {
                 navColor = if (isDark) Color.Black else Color.White,
                 darkIcons = false
             )
+
+            presenter.appUpdate()
+
+            try {
+
+                currentVersion.value = packageManager.getPackageInfo(packageName, 0).versionName ?: ""
+
+            }catch (e : PackageManager.NameNotFoundException){
+                e.printStackTrace()
+            }
+
+            // Checking For App Update
+
+            val newVersion = version.value.toDoubleOrNull()
+            val currentVersion = currentVersion.value.toDoubleOrNull()
+
+            if (newVersion != null && currentVersion != null){
+
+                if (newVersion > currentVersion) isUpdateAvailable.value = true else isUpdateAvailable.value = false
+
+            }
 
             Digital_Joper_malaTheme {
                 HomeFullScreen(
@@ -95,7 +130,28 @@ class Act_home : ComponentActivity(), Home {
                     rulesList = rulesList,
                     infoList = infoList,
                     pagerList = pagerList,
-                    status = serverStatus.value
+                    status = serverStatus.value,
+                    updateClick = {
+
+                        try {
+                            startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    ("https://play.google.com/store/apps/details?id=$APP_PACKAGE_NAME").toUri()
+                                )
+                            )
+                            finishAffinity()
+                        } catch (e: ActivityNotFoundException) {
+                            startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    ("market://details?id=$APP_PACKAGE_NAME").toUri()
+                                )
+                            )
+                            finishAffinity()
+                        }
+
+                    }
                 )
 
             }
@@ -132,6 +188,10 @@ class Act_home : ComponentActivity(), Home {
 
     }
 
+    override fun updateStatus(status: String) {
+        version.value = status
+    }
+
     override fun onStart() {
         super.onStart()
 
@@ -151,7 +211,7 @@ class Act_home : ComponentActivity(), Home {
         presenter.onDestroy()
     }
 
-}//class===================================================
+}
 
 @Preview(showBackground = true)
 @Composable
@@ -166,7 +226,9 @@ private fun HomeFullScreen(
     rulesList : List<HomeData> = emptyList(),
     infoList : List<HomeData> = emptyList(),
     pagerList: List<HomeData> = emptyList(),
-    status: String = ""
+    status: String = "",
+    isUpdateAvailable: Boolean = false,
+    updateClick: () -> Unit = {}
 ) {
 
     var index = remember { mutableStateOf(0) }

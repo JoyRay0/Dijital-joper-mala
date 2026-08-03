@@ -144,4 +144,34 @@ class HomeModel() {
 
     }
 
+    fun app_update(
+        onSuccess : (String) -> Unit = {},
+        onFailed : (Boolean) -> Unit = {}
+    ){
+
+        OkHttpWrapper()
+            .url(ApiLinkHelper.app_update())
+            .header()
+            .execute(Home::class.java, onSuccess = {
+
+                if (it.status == "Success"){
+
+                    onSuccess(it.version)
+
+                }else{
+
+                    onFailed(true)
+
+                }
+
+
+            }, onFailed = {
+
+                onFailed(it)
+
+            })
+
+
+    }
+
 }
