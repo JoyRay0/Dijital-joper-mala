@@ -14,7 +14,7 @@ class ScreenTrackerDatabase(val context: Context) : SQLiteOpenHelper(
 
     private companion object{
 
-        const val TABLE_NAME = "screen_tracker"
+        const val ACTIVITY_TABLE_NAME = "screen_tracker"
         const val ID = "id"
         const val ACTIVITY_ = "activity"
         const val DURATION = "duration"
@@ -23,15 +23,15 @@ class ScreenTrackerDatabase(val context: Context) : SQLiteOpenHelper(
 
     override fun onCreate(db: SQLiteDatabase?) {
 
-        val sql = """
-CREATE TABLE IF NOT EXISTS $TABLE_NAME (
+        val activityTracker = """
+CREATE TABLE IF NOT EXISTS $ACTIVITY_TABLE_NAME (
 $ID INTEGER PRIMARY KEY AUTOINCREMENT,
 $ACTIVITY_ TEXT NOT NULL UNIQUE,
 $DURATION INTEGER DEFAULT 0
 )
 """.trimIndent()
 
-        db?.execSQL(sql)
+        db?.execSQL(activityTracker)
 
     }
 
@@ -41,7 +41,7 @@ $DURATION INTEGER DEFAULT 0
         newVersion: Int
     ) {
 
-        db?.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
+        db?.execSQL("DROP TABLE IF EXISTS $ACTIVITY_TABLE_NAME")
         onCreate(db)
 
     }
@@ -63,13 +63,13 @@ $DURATION INTEGER DEFAULT 0
                 cv.put(ACTIVITY_, act.value)
                 cv.put(DURATION, duration)
 
-                db.insert(TABLE_NAME, null, cv)
+                db.insert(ACTIVITY_TABLE_NAME, null, cv)
 
             }else{
 
                 cv.put(DURATION, oldTrackedData + duration)
 
-                db.update(TABLE_NAME, cv, "$ACTIVITY_ = ?", arrayOf(act.value))
+                db.update(ACTIVITY_TABLE_NAME, cv, "$ACTIVITY_ = ?", arrayOf(act.value))
 
             }
 
@@ -91,7 +91,7 @@ $DURATION INTEGER DEFAULT 0
 
         try {
 
-            cursor = db.rawQuery("SELECT * FROM $TABLE_NAME", null)
+            cursor = db.rawQuery("SELECT * FROM $ACTIVITY_TABLE_NAME", null)
 
             while (cursor.moveToNext()){
 
@@ -129,7 +129,7 @@ $DURATION INTEGER DEFAULT 0
 
             cv.put(DURATION, 0)
 
-            db.update(TABLE_NAME, cv, null, null)
+            db.update(ACTIVITY_TABLE_NAME, cv, null, null)
 
         }catch (e : Exception){
 
@@ -155,7 +155,8 @@ $DURATION INTEGER DEFAULT 0
 
         try {
 
-            cursor = db.rawQuery("SELECT $DURATION FROM $TABLE_NAME WHERE $ACTIVITY_ = ?", arrayOf(act))
+            cursor = db.rawQuery("SELECT $DURATION FROM $ACTIVITY_TABLE_NAME WHERE $ACTIVITY_ = ?", arrayOf(act))
+
 
             if (cursor.moveToFirst()){
 
