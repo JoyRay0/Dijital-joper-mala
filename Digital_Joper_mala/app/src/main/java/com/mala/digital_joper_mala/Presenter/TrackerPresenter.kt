@@ -1,25 +1,38 @@
 package com.mala.digital_joper_mala.Presenter
 
+import com.mala.digital_joper_mala.Database.DeviceInfoDatabase
 import com.mala.digital_joper_mala.Database.ScreenTrackerDatabase
 import com.mala.digital_joper_mala.Helper.ACTIVITY
-import com.mala.digital_joper_mala.Model.TrackerData
+import com.mala.digital_joper_mala.Model.Tracker
 import com.mala.digital_joper_mala.Model.TrackerModel
 import kotlinx.coroutines.*
 
 class TrackerPresenter(
-    private val db : ScreenTrackerDatabase
-) {
+    private val activityDB : ScreenTrackerDatabase,
+    private val deviceInfoDB : DeviceInfoDatabase
 
-    private val model = TrackerModel(db)
+    ) {
+
+    private val model = TrackerModel(activityDB, deviceInfoDB)
 
     private val scopeIO = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val scopeMain = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-    fun insert(act : ACTIVITY, duration : Long, deviceVersion : String, deviceSDK : Int, deviceCountryCode : String){
+    fun insertActivityData(act : ACTIVITY, duration : Long){
 
         scopeIO.launch {
 
-            model.insert(act, duration, deviceVersion, deviceSDK, deviceCountryCode)
+            model.insertActivityTracker(act, duration)
+
+        }
+
+    }
+
+    fun insertDeviceInfo(androidVersion : String, sdkVersion : Int, countryCode : String){
+
+        scopeIO.launch {
+
+            model.insertDeviceInfo(androidVersion, sdkVersion, countryCode)
 
         }
 
@@ -29,16 +42,23 @@ class TrackerPresenter(
 
         scopeIO.launch {
 
-            val data = model.getAll()
+            val activityData = model.getAllActivityData()
+            val deviceData = model.getDeviceInfo()
 
             model.sendTrackerDataToServer(
-                tracker = data,
+                tracker = Tracker(
+                    androidVersion = deviceData!!.androidVersion,
+                    sdkVersion = deviceData.sdkVersion,
+                    countryCode = deviceData.countryCode,
+                    data = activityData
+                ),
 
                 onSuccess = { status ->
 
                     if (status){
 
-                        model.resetAll()
+                        model.resetAllActivity()
+                        model.resetDeviceInfo()
 
                     }
 

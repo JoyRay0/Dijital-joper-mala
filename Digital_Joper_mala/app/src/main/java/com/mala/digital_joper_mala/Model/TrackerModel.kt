@@ -1,5 +1,7 @@
 package com.mala.digital_joper_mala.Model
 
+import com.google.gson.annotations.SerializedName
+import com.mala.digital_joper_mala.Database.DeviceInfoDatabase
 import com.mala.digital_joper_mala.Database.ScreenTrackerDatabase
 import com.mala.digital_joper_mala.Helper.ACTIVITY
 import com.mala.digital_joper_mala.Helper.ApiLinkHelper
@@ -10,6 +12,16 @@ data class Tracker(
 
     val status : String = "",
     val message : String = "",
+
+    @SerializedName("android_version")
+    val androidVersion : String = "",
+
+    @SerializedName("sdk_version")
+    val sdkVersion : String = "",
+
+    @SerializedName("country_code")
+    val countryCode : String = "",
+
     val data : List<TrackerData> = emptyList()
 
 )
@@ -22,16 +34,17 @@ data class TrackerData(
 )
 
 class TrackerModel(
-    private val db : ScreenTrackerDatabase
+    private val activityDB : ScreenTrackerDatabase,
+    private val deviceInfoDB : DeviceInfoDatabase
 ) {
 
     fun sendTrackerDataToServer(
-        tracker : List<TrackerData> = emptyList(),
+        tracker : Tracker? = null,
         onSuccess : (Boolean) -> Unit = {},
         onFailed : (Boolean) -> Unit = {},
     ){
 
-        if (tracker.isEmpty()) return
+        if (tracker == null) return
 
         OkHttpWrapper()
             .url(ApiLinkHelper.tracker())
@@ -58,23 +71,43 @@ class TrackerModel(
 
     }
 
-    fun insert(act : ACTIVITY, duration : Long, deviceVersion : String, deviceSDK : Int, deviceCountryCode : String){
+    fun insertActivityTracker(act : ACTIVITY, duration : Long){
 
-        if (duration <= 0 || deviceVersion.isEmpty() || deviceSDK <= 0 || deviceCountryCode.isEmpty()) return
+        if (duration <= 0 ) return
 
-        db.insert(act, duration)
-
-    }
-
-    fun getAll() : List<TrackerData>{
-
-        return db.getAll()
+        activityDB.insert(act, duration)
 
     }
 
-    fun resetAll(){
+    fun getAllActivityData() : List<TrackerData>{
 
-        db.resetAll()
+        return activityDB.getAll()
+
+    }
+
+    fun resetAllActivity(){
+
+        activityDB.resetAll()
+
+    }
+
+    fun insertDeviceInfo(androidVersion : String, sdkVersion : Int, countryCode : String){
+
+        if (androidVersion.isEmpty() || sdkVersion <= 0 || countryCode.isEmpty()) return
+
+        deviceInfoDB.insertDeviceInfo(androidVersion, sdkVersion, countryCode)
+
+    }
+
+    fun getDeviceInfo() : Tracker?{
+
+        return deviceInfoDB.getDeviceInfo()
+
+    }
+
+    fun resetDeviceInfo(){
+
+        deviceInfoDB.resetDeviceInfo()
 
     }
 

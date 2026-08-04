@@ -3,16 +3,9 @@ package com.mala.digital_joper_mala.Helper
 import android.content.Context
 import android.os.Build
 import android.os.SystemClock
-import androidx.activity.ComponentActivity
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.ui.Modifier
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
+import android.telephony.TelephonyManager
+import androidx.core.content.ContextCompat.getSystemService
+import com.mala.digital_joper_mala.Database.DeviceInfoDatabase
 import com.mala.digital_joper_mala.Database.ScreenTrackerDatabase
 import com.mala.digital_joper_mala.Presenter.TrackerPresenter
 import java.util.Locale
@@ -40,8 +33,9 @@ class TrackScreen(
     val context : Context
 ){
 
-    private val db = ScreenTrackerDatabase(context)
-    private val presenter = TrackerPresenter(db)
+    private val activityDB = ScreenTrackerDatabase(context)
+    private val deviceInfoDB = DeviceInfoDatabase(context)
+    private val presenter = TrackerPresenter(activityDB, deviceInfoDB)
 
     private var startTime = 0L
 
@@ -63,11 +57,19 @@ class TrackScreen(
 
         val currentAndroidVersion = Build.VERSION.RELEASE
         val currentAndroidSdk = Build.VERSION.SDK_INT
-        val currentCountryCode = Locale.getDefault().country
 
-        if (totalSeconds > 0L || currentAndroidVersion.isNotEmpty() || currentAndroidSdk > 0 || currentCountryCode.isNotEmpty()){
+        val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        val currentCountryCode = telephonyManager.networkCountryIso.ifEmpty { Locale.getDefault().displayCountry }.uppercase()
 
-            presenter.insert(screen, totalSeconds, currentAndroidVersion, currentAndroidSdk, currentCountryCode)
+        if (totalSeconds > 0L){
+
+            presenter.insertActivityData(screen, totalSeconds)
+
+        }
+
+        if (currentAndroidVersion.isNotEmpty() && currentAndroidSdk > 0 && currentCountryCode.isNotEmpty()){
+
+            presenter.insertDeviceInfo(androidVersion = currentAndroidVersion, sdkVersion = currentAndroidSdk, countryCode = currentCountryCode)
 
         }
 
