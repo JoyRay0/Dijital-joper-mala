@@ -1,11 +1,9 @@
 package com.mala.digital_joper_mala.Model
 
-import android.util.Log
 import com.google.gson.annotations.SerializedName
-//import com.mala.digital_joper_mala.Helper.ApiLinkHelper
+import com.mala.digital_joper_mala.Helper.ApiLinkHelper
 import com.mala.digital_joper_mala.Helper.OkHttpWrapper
 import com.mala.digital_joper_mala.Helper.header
-import kotlinx.serialization.Serializable
 import java.util.Collections.emptyList
 
 data class Home(
@@ -81,8 +79,7 @@ class HomeModel() {
     ){
 
         OkHttpWrapper()
-            .url("")
-            .header()
+            .url(ApiLinkHelper.info())
             .execute(Home::class.java, onSuccess = {
 
                 if (it.status == "Success"){
@@ -105,7 +102,6 @@ class HomeModel() {
                 onError(it)
 
             })
-
 
     }
 
@@ -116,8 +112,7 @@ class HomeModel() {
     ){
 
         OkHttpWrapper()
-            .url("")
-            .header()
+            .url(ApiLinkHelper.pager())
             .execute(Home::class.java, onSuccess = {
 
                 if (it.status == "Success"){
@@ -144,14 +139,13 @@ class HomeModel() {
 
     }
 
-    fun app_update(
+    fun appUpdate(
         onSuccess : (String) -> Unit = {},
         onFailed : (Boolean) -> Unit = {}
     ){
 
         OkHttpWrapper()
-            .url("")
-            .header()
+            .url(ApiLinkHelper.appUpdate())
             .execute(Home::class.java, onSuccess = {
 
                 if (it.status == "Success"){
@@ -170,7 +164,6 @@ class HomeModel() {
                 onFailed(it)
 
             })
-
 
     }
 

@@ -126,7 +126,7 @@ class HomePresenter(
 
         scopeIO.launch {
 
-            model.app_update(onSuccess = {
+            model.appUpdate(onSuccess = {
 
                 scopeMain.launch {
 
