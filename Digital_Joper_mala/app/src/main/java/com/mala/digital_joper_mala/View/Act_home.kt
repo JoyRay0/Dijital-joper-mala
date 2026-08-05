@@ -196,7 +196,9 @@ class Act_home : ComponentActivity(), Home {//class=============================
     override fun onStart() {
         super.onStart()
 
-        tracker.start()
+        tracker.start(ACTIVITY.Act_home)
+
+        tracker.send()
     }
 
     override fun onStop() {
