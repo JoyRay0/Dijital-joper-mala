@@ -6,6 +6,10 @@ import com.mala.digital_joper_mala.Helper.ACTIVITY
 import com.mala.digital_joper_mala.Model.Tracker
 import com.mala.digital_joper_mala.Model.TrackerModel
 import kotlinx.coroutines.*
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.UUID
 
 class TrackerPresenter(
     private val activityDB : ScreenTrackerDatabase,
@@ -38,7 +42,28 @@ class TrackerPresenter(
 
     }
 
-    fun sendTrackerDataToServer(){
+    fun updateLastOpen(){
+
+        scopeIO.launch {
+
+            val id = model.getDeviceId()
+            val timeStamp = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
+
+            if (id.isEmpty()){
+
+                model.insertDeviceId(UUID.randomUUID().toString())
+
+            }
+
+            model.updateLastOpen(timeStamp)
+
+        }
+
+    }
+
+    fun sendTrackerDataToServer(
+        result : (Boolean) -> Unit
+    ){
 
         scopeIO.launch {
 
@@ -61,6 +86,8 @@ class TrackerPresenter(
                         model.resetDeviceInfo()
 
                     }
+
+                    result(status)
 
                 },
                 onFailed = {}

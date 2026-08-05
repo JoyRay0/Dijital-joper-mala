@@ -13,6 +13,9 @@ data class Tracker(
     val status : String = "",
     val message : String = "",
 
+    @SerializedName("device_id")
+    val deviceId : String = "",
+
     @SerializedName("android_version")
     val androidVersion : String = "",
 
@@ -21,6 +24,9 @@ data class Tracker(
 
     @SerializedName("country_code")
     val countryCode : String = "",
+
+    @SerializedName("last_open")
+    val lastOpen : String = "",
 
     val data : List<TrackerData> = emptyList()
 
@@ -93,15 +99,37 @@ class TrackerModel(
 
     fun insertDeviceInfo(androidVersion : String, sdkVersion : Int, countryCode : String){
 
-        if (androidVersion.isEmpty() || sdkVersion <= 0 || countryCode.isEmpty()) return
+        if (androidVersion.isEmpty() || sdkVersion <= 0 || countryCode.isEmpty() ) return
 
         deviceInfoDB.insertDeviceInfo(androidVersion, sdkVersion, countryCode)
+
+    }
+
+    fun insertDeviceId(deviceId : String){
+
+        if (deviceId.isEmpty()) return
+
+        deviceInfoDB.insertDeviceId(deviceId)
+
+    }
+
+    fun updateLastOpen(lastOpen : String){
+
+        if (lastOpen.isEmpty()) return
+
+        deviceInfoDB.updateLastOpen(lastOpen)
 
     }
 
     fun getDeviceInfo() : Tracker?{
 
         return deviceInfoDB.getDeviceInfo()
+
+    }
+
+    fun getDeviceId() : String {
+
+        return deviceInfoDB.getDeviceId()
 
     }
 

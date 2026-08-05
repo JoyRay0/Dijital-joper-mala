@@ -4,11 +4,16 @@ import android.content.Context
 import android.os.Build
 import android.os.SystemClock
 import android.telephony.TelephonyManager
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.getSystemService
 import com.mala.digital_joper_mala.Database.DeviceInfoDatabase
 import com.mala.digital_joper_mala.Database.ScreenTrackerDatabase
 import com.mala.digital_joper_mala.Presenter.TrackerPresenter
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.Date
 import java.util.Locale
+import java.util.UUID
 
 enum class ACTIVITY(val value : String){
 
@@ -37,17 +42,53 @@ class TrackScreen(
     private val deviceInfoDB = DeviceInfoDatabase(context)
     private val presenter = TrackerPresenter(activityDB, deviceInfoDB)
 
+    private val cache = CacheHelper_(context, "analytics")
+
     private var startTime = 0L
+
 
     fun send(){
 
-        presenter.sendTrackerDataToServer()
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
+        val lastSyncDate = cache.getCache("last_sync", "")
+
+        if (today != lastSyncDate){
+
+            presenter.sendTrackerDataToServer { isSuccess ->
+
+                if (isSuccess) cache.setCache("last_sync", today)
+
+            }
+
+        }
 
     }
 
-    fun start(){
+    fun start(activity: ACTIVITY? = null){
 
         startTime = SystemClock.elapsedRealtime()
+
+        if (activity == ACTIVITY.Act_home){
+
+            val currentAndroidVersion = Build.VERSION.RELEASE
+            val currentAndroidSdk = Build.VERSION.SDK_INT
+
+            val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+            val currentCountryCode = telephonyManager.networkCountryIso.ifEmpty { Locale.getDefault().displayCountry }.uppercase()
+
+            if (currentAndroidVersion.isNotEmpty() && currentAndroidSdk > 0 && currentCountryCode.isNotEmpty()){
+
+                presenter.insertDeviceInfo(
+                    androidVersion = currentAndroidVersion,
+                    sdkVersion = currentAndroidSdk,
+                    countryCode = currentCountryCode,
+                )
+
+            }
+
+            presenter.updateLastOpen()
+
+        }
 
     }
 
@@ -55,21 +96,9 @@ class TrackScreen(
 
         val totalSeconds = (SystemClock.elapsedRealtime() - startTime) / 1000
 
-        val currentAndroidVersion = Build.VERSION.RELEASE
-        val currentAndroidSdk = Build.VERSION.SDK_INT
-
-        val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        val currentCountryCode = telephonyManager.networkCountryIso.ifEmpty { Locale.getDefault().displayCountry }.uppercase()
-
         if (totalSeconds > 0L){
 
             presenter.insertActivityData(screen, totalSeconds)
-
-        }
-
-        if (currentAndroidVersion.isNotEmpty() && currentAndroidSdk > 0 && currentCountryCode.isNotEmpty()){
-
-            presenter.insertDeviceInfo(androidVersion = currentAndroidVersion, sdkVersion = currentAndroidSdk, countryCode = currentCountryCode)
 
         }
 
