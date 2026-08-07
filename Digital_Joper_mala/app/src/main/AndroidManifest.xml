@@ -55,6 +55,13 @@
             android:label="@string/title_activity_act_chart"
             android:theme="@style/Base.Theme.Digital_Joper_mala" />
         <activity
+            android:name=".View.Act_all_mantra"
+            android:exported="false"
+            android:label="@string/title_activity_act_all_mantra"
+            android:theme="@style/Base.Theme.Digital_Joper_mala"
+            android:windowSoftInputMode="adjustResize"
+            />
+        <activity
             android:name=".View.Act_User_mala"
             android:exported="false" />
         <activity
@@ -64,7 +71,7 @@
             android:name=".View.Act_jopa_history"
             android:exported="false" />
         <activity
-            android:name=".View.Act_all_mantra"
+            android:name=".View.Act_all_mantra_"
             android:exported="false" />
         <activity
             android:name=".View.Act_ShivMala"
