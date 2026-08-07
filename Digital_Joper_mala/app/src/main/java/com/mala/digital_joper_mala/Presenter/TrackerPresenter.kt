@@ -43,7 +43,6 @@ class TrackerPresenter(
     }
 
     fun updateLastOpen(){
-
         scopeIO.launch {
 
             val id = model.getDeviceId()

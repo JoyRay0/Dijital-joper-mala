@@ -41,9 +41,7 @@ class TrackScreen(
     private val activityDB = ScreenTrackerDatabase(context)
     private val deviceInfoDB = DeviceInfoDatabase(context)
     private val presenter = TrackerPresenter(activityDB, deviceInfoDB)
-
     private val cache = CacheHelper_(context, "analytics")
-
     private var startTime = 0L
 
 
