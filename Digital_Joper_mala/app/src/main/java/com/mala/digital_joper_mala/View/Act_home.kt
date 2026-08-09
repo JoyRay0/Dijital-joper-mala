@@ -152,6 +152,11 @@ class Act_home : ComponentActivity(), Home {//class=============================
                             finishAffinity()
                         }
 
+                    },
+                    easyMalaClick = {
+
+                        IntentHelper.normalIntent(this, Act_all_mantra::class.java)
+
                     }
                 )
 
@@ -231,7 +236,10 @@ private fun HomeFullScreen(
     pagerList: List<HomeData> = emptyList(),
     status: String = "",
     isUpdateAvailable: Boolean = false,
-    updateClick: () -> Unit = {}
+    updateClick: () -> Unit = {},
+    easyMalaClick: () -> Unit = {},
+    boisnobMalaClick: () -> Unit = {},
+    shivMalaClick: () -> Unit = {}
 ) {
 
     var index = remember { mutableStateOf(0) }
@@ -284,7 +292,10 @@ private fun HomeFullScreen(
                         isDark = isDark,
                         pagerList = pagerList,
                         isUpdateAvailable = isUpdateAvailable,
-                        updateClick = { updateClick() }
+                        updateClick = { updateClick() },
+                        easyMalaClick = easyMalaClick,
+                        boisnobMalaClick = boisnobMalaClick,
+                        shivMalaClick = shivMalaClick
                     )
 
                 }
@@ -512,7 +523,10 @@ private fun Home(
     isDark: Boolean = false,
     pagerList : List<HomeData> = emptyList(),
     isUpdateAvailable: Boolean = false,
-    updateClick: () -> Unit = {}
+    updateClick: () -> Unit = {},
+    easyMalaClick : () -> Unit = {},
+    boisnobMalaClick : () -> Unit = {},
+    shivMalaClick : () -> Unit = {}
 ) {
 
     var isUpdate by remember { mutableStateOf(false) }
@@ -578,6 +592,20 @@ private fun Home(
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth()
+                            .clickable(
+                                indication = null,
+                                interactionSource = null
+                            ){
+
+                                when(index){
+
+                                    0 -> easyMalaClick()
+                                    1 -> boisnobMalaClick()
+                                    2 -> shivMalaClick()
+
+                                }
+
+                            }
                             .padding(5.dp)
 
                     ) {
