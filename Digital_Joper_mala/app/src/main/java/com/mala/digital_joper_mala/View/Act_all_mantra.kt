@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.BasicTooltipDefaults
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -37,16 +37,28 @@ import androidx.compose.ui.unit.*
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.Helper.*
 import com.mala.digital_joper_mala.Model.MantraItem
+import com.mala.digital_joper_mala.Presenter.AllMantra
+import com.mala.digital_joper_mala.Presenter.AllMantraPresenter
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.Digital_Joper_malaTheme
+import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.milliseconds
 
-class Act_all_mantra : ComponentActivity() {
+class Act_all_mantra : ComponentActivity(), AllMantra {
 
+    private lateinit var presenter : AllMantraPresenter
 
+    private lateinit var tracker : TrackScreen
+
+    //init
+    private var dialogStatus = mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        init()
+
         setContent {
 
             var isDark by remember { mutableStateOf(false) }
@@ -59,24 +71,62 @@ class Act_all_mantra : ComponentActivity() {
                 darkIcons = false
             )
 
+            presenter.getAllMantraCache()
+
             Digital_Joper_malaTheme {
 
                 AllMantraFullScreen(
-                    isDark = isDark
+                    isDark = isDark,
+                    backClick = { finish() },
+                    alertDialogStatus = dialogStatus.value,
+                    alertDialogUserData = { presenter.setAllMantraCache(it) }
                 )
 
             }
         }
     }//on create=================================
 
-}//class=========================================
+    private fun init(){
 
-@OptIn(ExperimentalMaterial3Api::class)
+        presenter = AllMantraPresenter(this, this)
+
+        tracker = TrackScreen(this)
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        tracker.start(ACTIVITY.Act_all_mantra)
+
+        tracker.send()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        tracker.stop(ACTIVITY.Act_all_mantra)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        presenter.onDestroy()
+    }
+
+    override fun dialogStatus(value: Boolean) {
+        dialogStatus.value = value
+    }
+
+} //class=========================================
+
 @Preview(showBackground = true)
 @Composable
 private fun AllMantraFullScreen(
     isDark : Boolean = false,
     backClick: () -> Unit = {},
+    alertDialogStatus : Boolean = false,
+    alertDialogUserData : (Boolean) -> Unit = {},
     mantraList : List<MantraItem> = emptyList(),
     mantraClick : (String) -> Unit = {},
     searchList: List<MantraItem> = emptyList(),
@@ -85,13 +135,47 @@ private fun AllMantraFullScreen(
 
     val lazyState = rememberLazyListState()
     var isSearchDialogVisible = remember { mutableStateOf(false) }
+    var isAlertDialogVisible = remember { mutableStateOf(true) }
+    var isDialogShowing = remember { mutableStateOf(false) }
+
+    LaunchedEffect(alertDialogStatus) {
+
+        if (alertDialogStatus){
+            isAlertDialogVisible.value = false
+
+        } else{
+
+            //delay(200.milliseconds)
+            isAlertDialogVisible.value = true
+
+        }
+
+    }
+
+    LaunchedEffect(isSearchDialogVisible.value, isAlertDialogVisible.value) {
+
+        if (isSearchDialogVisible.value){
+
+            isDialogShowing.value = true
+
+        }else if (isAlertDialogVisible.value){
+
+            isDialogShowing.value = true
+
+        }else{
+
+            isDialogShowing.value = false
+
+        }
+
+    }
 
     Scaffold(
         topBar = { Toolbar(
             isDark = isDark,
             backClick = { backClick() },
             searchClick = { isSearchDialogVisible.value = true },
-            loadClick = {}
+            isAnyDialogShowing = isDialogShowing.value
         ) },
 
         modifier = Modifier
@@ -110,51 +194,105 @@ private fun AllMantraFullScreen(
 
         ) {
 
-            LazyColumn(
+            if (mantraList.isEmpty()){
 
-                modifier = Modifier
-                    .fillMaxWidth(),
-                state = lazyState
+                Column(
 
-            ) {
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.Center)
 
-                items(
-                    items = mantraList,
-                    key = null
-                ){ it ->
+                ) {
 
-                    Item(
-                        isDark = isDark,
-                        title = it.title,
-                        mantra = it.mantra,
-                        mantraClick = { mantraClick(it.mantra) }
+                    Image( painter = painterResource(R.drawable.img_empty),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .size(120.dp)
+                            .align(Alignment.CenterHorizontally)
 
                     )
-
-                }
-
-            }//lazyColumn
-
-            if (isSearchDialogVisible.value){
-
-                ModalBottomSheet(
-                    onDismissRequest = { isSearchDialogVisible.value = false },
-                    containerColor = if (isDark) Color(0xFF5D5C5C) else Color(0xFFFFFFFF),
-                    dragHandle = null
-                ) {
 
                     Spacer(modifier = Modifier.height(7.dp))
 
-                    SearchDialog(
-                        isDark = isDark,
-                        searchFiled = { searchFiled(it) },
-                        searchList = searchList,
-                        mantraClick = { mantraClick(it) }
+                    Text( text = "কোন মন্ত্র নেই ।",
+                        fontSize = 16.sp,
+                        fontFamily = BanglaHelper.banglaFont(),
+                        fontWeight = FontWeight.Normal,
+                        color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .align(Alignment.CenterHorizontally)
+
                     )
 
-                }
+                }//column
+
+
+            }else{
+
+                LazyColumn(
+
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    state = lazyState
+
+                ) {
+
+                    items(
+                        items = mantraList,
+                        key = null
+                    ){ it ->
+
+                        Item(
+                            isDark = isDark,
+                            title = it.title,
+                            mantra = it.mantra,
+                            mantraClick = { mantraClick(it.mantra) }
+
+                        )
+
+                    }
+
+                }//lazyColumn
 
             }
+
+
+            if (isSearchDialogVisible.value){
+
+                SearchDialog(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(alpha = 0.5f)),
+                    isDark = isDark,
+                    searchFiled = { searchFiled(it) },
+                    searchList = searchList,
+                    mantraClick = { mantraClick(it) },
+                    closeClick = { isSearchDialogVisible.value = false }
+                )
+
+            }
+
+            if (isAlertDialogVisible.value){
+
+                AlertDialog(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background( color = if (isDark) Color.LightGray.copy(alpha = 0.5f) else
+                            Color.Black.copy(alpha = 0.5f)
+                        ),
+                    isDark = isDark,
+                    userClick = {
+
+                        alertDialogUserData(true)
+                        isAlertDialogVisible.value = false
+
+                    }
+                )
+
+            }//condition
 
         }//box
 
@@ -168,7 +306,7 @@ private fun Toolbar(
     isDark : Boolean = false,
     backClick : () -> Unit = {},
     searchClick : () -> Unit = {},
-    loadClick : () -> Unit = {}
+    isAnyDialogShowing : Boolean = false
 ) {
 
     Box(
@@ -202,8 +340,7 @@ private fun Toolbar(
         }
 
         val iconList = listOf(
-            R.drawable.ic_search,
-            R.drawable.ic_refresh
+            R.drawable.ic_search
         )
 
         Row(
@@ -227,13 +364,11 @@ private fun Toolbar(
                     IconButton(
                         onClick = {
 
-                            when(index){
+                            if (!isAnyDialogShowing){
 
-                                0 -> searchClick()
-                                1 -> loadClick()
+                                searchClick()
 
                             }
-
                         },
                         modifier = Modifier
                             .wrapContentWidth()
@@ -344,23 +479,23 @@ private fun Item(
 @Preview(showBackground = true)
 @Composable
 private fun SearchDialog(
+    modifier: Modifier = Modifier,
     isDark: Boolean = false,
     searchFiled : (String) -> Unit = {},
     searchList : List<MantraItem> = emptyList(),
-    mantraClick: (String) -> Unit = {}
+    mantraClick: (String) -> Unit = {},
+    closeClick : () -> Unit = {}
 ) {
 
     var searchInput = remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
     val lazState = rememberLazyListState()
 
-
     Box(
 
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(5.dp)
-            .imePadding()
+            .padding(9.dp)
 
     ) {
 
@@ -368,9 +503,65 @@ private fun SearchDialog(
 
             modifier = Modifier
                 .fillMaxWidth()
+                .height(550.dp)
+                .clip(shape = RoundedCornerShape(18.dp))
+                .background(color = if (isDark) Color(0xFF5D5C5C) else Color(0xFFFFFFFF))
                 .padding(7.dp)
+                .imePadding()
+                .align(Alignment.BottomCenter)
 
         ) {
+
+            Spacer(modifier = Modifier.height(7.dp))
+
+            Box(
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+
+            ) {
+
+                Text( text = "মন্ত্র সার্চ",
+                    fontSize = 18.sp,
+                    fontFamily = BanglaHelper.banglaFont(),
+                    fontWeight = FontWeight.Bold,
+                    color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .align(Alignment.Center)
+
+                )
+
+                /* close button */
+                Box(
+
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .clip(shape = CircleShape)
+                        //.background(color = Color.Gray)
+                        .clickable{ closeClick() }
+                        .size(30.dp)
+                        .align(Alignment.CenterEnd)
+
+                ) {
+
+                    Icon( painter = painterResource(R.drawable.ic_wrong),
+                        contentDescription = "",
+                        tint = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .size(18.dp)
+                            .align(Alignment.Center)
+
+                    )
+
+                }
+
+            }//box
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             /* search input filed */
             Box(
@@ -381,7 +572,7 @@ private fun SearchDialog(
                         width = 1.dp,
                         color = if (isDark) Color(0xFFCECDCD) else Color(0xFFA4A1A1),
                         shape = RoundedCornerShape(12.dp)
-                        )
+                    )
                     .clip(shape = RoundedCornerShape(12.dp))
                     .padding(5.dp)
 
@@ -439,12 +630,12 @@ private fun SearchDialog(
                             .wrapContentWidth()
                             .clip(shape = CircleShape)
                             //.background(color = Color(0xFFDEDCDC))
-                            .clickable{ searchInput.value = "" }
+                            .clickable { searchInput.value = "" }
                             .size(30.dp)
                             .align(Alignment.CenterEnd)
                     ) {
 
-                        Icon( painter = painterResource(R.drawable.ic_wrong),
+                        Icon( painter = painterResource(R.drawable.ic_clear),
                             contentDescription = "",
                             tint = if (isDark) Color(0xFFE1E1E1) else Color(0xFF3F3E3E),
                             modifier = Modifier
@@ -462,31 +653,132 @@ private fun SearchDialog(
 
             Spacer(modifier = Modifier.height(7.dp))
 
-            LazyColumn(
+            if (searchList.isEmpty()){
 
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp)
-                    .align(Alignment.CenterHorizontally),
-                state = lazState
+                Box(
 
-            ) {
+                    modifier = Modifier
+                        .fillMaxSize()
 
-                items(
-                    items = searchList,
-                    key = null
-                ){ it ->
 
-                    Item(
-                        isDark = isDark,
-                        title = it.title,
-                        mantra = it.mantra,
-                        mantraClick = { mantraClick(it.mantra) }
+                ) {
+
+                    Image( painter = painterResource(R.drawable.img_empty_file),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .size(100.dp)
+                            .align(Alignment.Center)
+
                     )
 
-                }
+                }//box
 
-            }//lazyColumn
+            }else{
+
+                LazyColumn(
+
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(5.dp)
+                        .align(Alignment.CenterHorizontally),
+                    state = lazState
+
+                ) {
+
+                    items(
+                        items = searchList,
+                        key = null
+                    ){ it ->
+
+                        Item(
+                            isDark = isDark,
+                            title = it.title,
+                            mantra = it.mantra,
+                            mantraClick = { mantraClick(it.mantra) }
+                        )
+
+                    }
+
+                }//lazyColumn
+
+            }
+
+        }//column
+
+    }//box
+
+}//fun end
+
+
+@Preview(showBackground = true)
+@Composable
+private fun AlertDialog(
+    modifier: Modifier = Modifier,
+    isDark: Boolean = false,
+    userClick : () -> Unit = {}
+) {
+
+    Box(
+
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(17.dp)
+
+    ) {
+
+        Column(
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(shape = RoundedCornerShape(14.dp))
+                .background(color = if (isDark) Color(0xFF5D5C5C) else Color(0xFFFFFFFF))
+                .padding(15.dp)
+                .align(Alignment.BottomCenter)
+
+        ) {
+
+            Text( text = "সর্তকবার্তা",
+                fontSize = 18.sp,
+                fontFamily = BanglaHelper.banglaFont(),
+                fontWeight = FontWeight.Bold,
+                color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .padding(3.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
+
+            Spacer(modifier = Modifier.height(5.dp))
+
+            Text(text = "দেব-দেবীর বিশেষ শক্তিসম্ভারযুক্ত মন্ত্রসমূহ অত্যন্ত সূক্ষ্ম ও প্রভাবশালী। এই ধরনের মন্ত্র সাধারণত গুরু/আচার্যের দীক্ষা বা অনুমতি নিয়ে জপ করা উচিত।",
+                fontSize = 16.sp,
+                fontFamily = BanglaHelper.banglaFont(),
+                fontWeight = FontWeight.Normal,
+                color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(3.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
+
+            Spacer(modifier = Modifier.height(5.dp))
+
+            Text( text = "ঠিক আছে",
+                fontSize = 15.sp,
+                fontFamily = BanglaHelper.banglaFont(),
+                fontWeight = FontWeight.Normal,
+                color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                textAlign = TextAlign.End,
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .clip(shape = RoundedCornerShape(12.dp))
+                    .clickable { userClick() }
+                    .padding(9.dp)
+                    .align(Alignment.End)
+            )
 
         }//column
 
