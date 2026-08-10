@@ -5,12 +5,14 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import com.google.gson.internal.GsonTypes.arrayOf
 import com.mala.digital_joper_mala.Model.MantraItem
+import androidx.core.database.sqlite.transaction
 
 class AllMantraDatabase(
     val context: Context
-) : SQLiteOpenHelper(context, "all_mantra.db", null, 1) {
+) : SQLiteOpenHelper(context, "all_mantra.db", null, 3) {
 
     private companion object{
 
@@ -53,9 +55,11 @@ $MANTRA TEXT
         db?.execSQL("DROP TABLE IF EXISTS $ALL_MANTRA_TABLE")
         db?.execSQL("DROP TABLE IF EXISTS $USER_FAVORITE_MANTRA_TABLE")
 
+        onCreate(db)
+
     }
 
-    fun allMantraInsert(list: List<MantraItem>){
+    fun allMantraInsert(list: List<MantraItem>, onSuccess : (Boolean) -> Unit){
 
         if (list.isEmpty()) return
 
@@ -69,29 +73,33 @@ $MANTRA TEXT
 
             list.forEach { it ->
 
-                if (isDuplicate(it.title, it.mantra)) {
-
-                    return@forEach
-
-                }
-
                 val cv = ContentValues()
 
                 cv.put(TITLE, it.title)
                 cv.put(MANTRA, it.mantra)
 
-                db.insert(ALL_MANTRA_TABLE, null, cv)
+                 db.insertOrThrow(ALL_MANTRA_TABLE, null, cv)
+
+                /*
+                if (result != -1L) {
+
+                    throw Exception("Insert Failed")
+                }
+
+                 */
 
             }
 
             db.setTransactionSuccessful()
+            onSuccess(true)
 
-        }catch (e : Exception){
-
-            db.endTransaction()
+        } catch (e: Exception) {
 
             e.printStackTrace()
+            onSuccess(false)
 
+        }finally {
+            db.endTransaction()
         }
 
     }
@@ -131,6 +139,43 @@ $MANTRA TEXT
         return mantraList
     }
 
+    fun searchALlMantra(title: String) : List<MantraItem>{
+
+        if (title.isEmpty()) return emptyList()
+
+        val searchList : MutableList<MantraItem> = mutableListOf()
+
+        val db = dbOpen()
+
+        var cursor : Cursor? = null
+
+        try {
+
+            cursor = db.rawQuery("SELECT * FROM $ALL_MANTRA_TABLE WHERE $TITLE LIKE ?", arrayOf("%$title%"))
+
+            while (cursor.moveToNext()){
+
+                val title = cursor.getString(cursor.getColumnIndexOrThrow(TITLE))
+                val mantra = cursor.getString(cursor.getColumnIndexOrThrow(MANTRA))
+
+                searchList.add(
+                    MantraItem(
+                        title = title,
+                        mantra = mantra
+                    )
+                )
+
+            }
+
+        }catch (e : Exception){
+            e.printStackTrace()
+        }finally {
+            cursor?.close()
+        }
+
+        return searchList
+    }
+
     /*
 
      - User Favorite Mantras
@@ -141,7 +186,7 @@ $MANTRA TEXT
 
         if (title.isEmpty() || mantra.isEmpty()) return
 
-        if (isDuplicate(title, mantra)) return
+        if (isDuplicate(title, mantra, USER_FAVORITE_MANTRA_TABLE)) return
 
         val db = dbOpen(true)
 
@@ -172,7 +217,7 @@ $MANTRA TEXT
 
         try {
 
-            cursor = db.rawQuery("SELECT * FROM $ALL_MANTRA_TABLE", null)
+            cursor = db.rawQuery("SELECT * FROM $USER_FAVORITE_MANTRA_TABLE", null)
 
             while (cursor.moveToNext()){
 
@@ -216,7 +261,7 @@ $MANTRA TEXT
 
     }
 
-    private fun isDuplicate(title: String, mantra: String) : Boolean{
+    private fun isDuplicate(title: String, mantra: String, tableName : String) : Boolean{
 
         val db = dbOpen()
 
@@ -226,7 +271,7 @@ $MANTRA TEXT
 
         try {
 
-            cursor = db.rawQuery("SELECT 1 FROM $ALL_MANTRA_TABLE WHERE $TITLE = ? AND $MANTRA = ?", arrayOf(title, mantra))
+            cursor = db.rawQuery("SELECT 1 FROM $tableName WHERE $TITLE = ? AND $MANTRA = ?", arrayOf(title, mantra))
 
             if (cursor.moveToFirst()) isExists = true
 
