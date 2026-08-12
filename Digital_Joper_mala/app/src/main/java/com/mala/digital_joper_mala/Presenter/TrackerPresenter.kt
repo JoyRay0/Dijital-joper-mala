@@ -3,6 +3,7 @@ package com.mala.digital_joper_mala.Presenter
 import com.mala.digital_joper_mala.Database.DeviceInfoDatabase
 import com.mala.digital_joper_mala.Database.ScreenTrackerDatabase
 import com.mala.digital_joper_mala.Helper.ACTIVITY
+import com.mala.digital_joper_mala.Helper.RetryHelper
 import com.mala.digital_joper_mala.Model.Tracker
 import com.mala.digital_joper_mala.Model.TrackerModel
 import kotlinx.coroutines.*
@@ -21,6 +22,8 @@ class TrackerPresenter(
 
     private val scopeIO = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val scopeMain = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
+    private val retryHelper = RetryHelper(scopeIO)
 
     fun insertActivityData(act : ACTIVITY, duration : Long){
 
@@ -61,38 +64,68 @@ class TrackerPresenter(
     }
 
     fun sendTrackerDataToServer(
-        result : (Boolean) -> Unit
+        onSuccessResult : (Boolean) -> Unit
     ){
 
-        scopeIO.launch {
+        var isSuccess = false
 
-            val activityData = model.getAllActivityData()
-            val deviceData = model.getDeviceInfo()
+        retryHelper.retry(
+            maxTime = 3_00_000,
+            delayTime = 5_000,
+            request = {success, failed ->
 
-            model.sendTrackerDataToServer(
-                tracker = Tracker(
-                    androidVersion = deviceData!!.androidVersion,
-                    sdkVersion = deviceData.sdkVersion,
-                    countryCode = deviceData.countryCode,
-                    data = activityData
-                ),
+                scopeIO.launch {
 
-                onSuccess = { status ->
+                    val activityData = model.getAllActivityData()
+                    val deviceData = model.getDeviceInfo()
 
-                    if (status){
+                    model.sendTrackerDataToServer(
+                        tracker = Tracker(
+                            androidVersion = deviceData!!.androidVersion,
+                            sdkVersion = deviceData.sdkVersion,
+                            countryCode = deviceData.countryCode,
+                            data = activityData
+                        ),
+
+                        onSuccess = { status ->
+
+                            success()
+
+                            scopeMain.launch {
+
+                                isSuccess = status
+
+                            }
+
+                        },
+                        onFailed = {
+
+                            failed()
+
+                        }
+                    )
+
+                }
+
+            },
+            onSuccess = {
+
+                if (isSuccess){
+
+                    scopeIO.launch {
 
                         model.resetAllActivity()
                         model.resetDeviceInfo()
 
                     }
 
-                    result(status)
+                }
 
-                },
-                onFailed = {}
-            )
+                onSuccessResult(isSuccess)
 
-        }
+            },
+            onFailed = {}
+        )
 
     }
 

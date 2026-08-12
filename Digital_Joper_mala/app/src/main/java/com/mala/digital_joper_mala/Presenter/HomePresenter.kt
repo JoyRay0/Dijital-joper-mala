@@ -1,6 +1,7 @@
 package com.mala.digital_joper_mala.Presenter
 
 import android.util.Log
+import com.mala.digital_joper_mala.Helper.RetryHelper
 import com.mala.digital_joper_mala.Model.HomeData
 import com.mala.digital_joper_mala.Model.HomeModel
 import kotlinx.coroutines.CoroutineScope
@@ -32,24 +33,52 @@ class HomePresenter(
 ) {
 
     private val model = HomeModel()
-
     private val scopeIO = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val scopeMain = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
+    private val retryHelper = RetryHelper(scopeIO)
 
     fun dataFromServer(){
 
         view.serverStatus(HomeStatus.Pending.value)
 
-        scopeIO.launch {
+        val infoList : MutableList<HomeData> = mutableListOf()
 
-            model.dataFromServer(onSuccess = {
+        retryHelper.retry(
+            maxTime = 3_00_000,
+            delayTime = 5_000,
+            request = { success, failed ->
+
+                scopeIO.launch {
+
+                    model.dataFromServer(onSuccess = {
+
+                        success()
+
+                        scopeMain.launch {
+
+                            infoList.clear()
+                            infoList.addAll(it)
+
+                        }
+
+                    }, onFailed = {
+
+                        failed()
+
+                    })
+
+                }
+
+            },
+            onSuccess = {
 
                 scopeMain.launch {
 
-                    if (it.isNotEmpty()){
+                    if (infoList.isNotEmpty()){
 
                         view.serverStatus(HomeStatus.Success.value)
-                        view.infoList(it)
+                        view.infoList(infoList)
 
                     }else{
 
@@ -59,25 +88,17 @@ class HomePresenter(
 
                 }
 
-            }, onFailed = {
+            },
+            onFailed = {
 
-                if (it){
+                scopeMain.launch {
 
-                    scopeMain.launch {
-
-                        view.serverStatus(HomeStatus.Failed.value)
-
-                    }
+                    view.serverStatus(HomeStatus.Failed.value)
 
                 }
 
-            }, onError = {
-
-                Log.d("err", it)
-
-            })
-
-        }
+            }
+        )
 
     }
 
@@ -85,16 +106,43 @@ class HomePresenter(
 
         view.serverStatus(HomeStatus.Pending.value)
 
-        scopeIO.launch {
+        val pagerList : MutableList<HomeData> = mutableListOf()
 
-            model.pagerDataFromServer(onSuccess = {
+        retryHelper.retry(
+            maxTime = 3_00_000,
+            delayTime = 5_000,
+            request = {success, failed ->
+
+                scopeIO.launch {
+
+                    model.pagerDataFromServer(onSuccess = {
+
+                        success()
+
+                        scopeMain.launch {
+
+                            pagerList.clear()
+                            pagerList.addAll(it)
+
+                        }
+
+                    }, onFailed = {
+
+                        failed()
+
+                    })
+
+                }
+
+            },
+            onSuccess = {
 
                 scopeMain.launch {
 
-                    if (it.isNotEmpty()){
+                    if (pagerList.isNotEmpty()){
 
                         view.serverStatus(HomeStatus.Success.value)
-                        view.pagerList(it)
+                        view.pagerList(pagerList)
 
                     }else{
 
@@ -104,55 +152,73 @@ class HomePresenter(
 
                 }
 
-            }, onFailed = {
+            },
+            onFailed = {
 
-                if (it){
+                scopeMain.launch {
 
-                    scopeMain.launch {
-
-                        view.serverStatus(HomeStatus.Failed.value)
-
-                    }
+                    view.serverStatus(HomeStatus.Failed.value)
 
                 }
 
-            })
-
-        }
+            }
+        )
 
     }
 
     fun appUpdate(){
 
-        scopeIO.launch {
+        var version = ""
 
-            model.appUpdate(onSuccess = {
+        retryHelper.retry(
+            maxTime = 3_00_000,
+            delayTime = 5_000,
+            request = {success, failed ->
+
+                scopeIO.launch {
+
+                    model.appUpdate(onSuccess = {
+
+                        success()
+
+                        scopeMain.launch {
+
+                            version = it
+
+                        }
+
+                    }, onFailed = {
+
+                        failed()
+
+                    })
+
+                }
+
+            },
+            onSuccess = {
 
                 scopeMain.launch {
 
-                    if (it.isNotEmpty()){
+                    if (version.isNotEmpty()){
 
-                        view.updateStatus(it)
-
-                    }
-
-                }
-
-            }, onFailed = {
-
-                if (it){
-
-                    scopeMain.launch {
-
-                        view.updateStatus("0.0")
+                        view.updateStatus(version)
 
                     }
 
                 }
 
-            })
+            },
+            onFailed = {
 
-        }
+                scopeMain.launch {
+
+                    view.updateStatus("0.0")
+
+                }
+
+            }
+        )
 
     }
 
