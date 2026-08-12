@@ -182,7 +182,7 @@ $MANTRA TEXT
 
     */
 
-    fun favoriteInsert(title: String, mantra: String){
+    fun favoriteInsert(title: String, mantra: String, isInserted : (Boolean) -> Unit) {
 
         if (title.isEmpty() || mantra.isEmpty()) return
 
@@ -197,7 +197,9 @@ $MANTRA TEXT
             cv.put(TITLE, title)
             cv.put(MANTRA, mantra)
 
-            db.insert(USER_FAVORITE_MANTRA_TABLE, null, cv)
+            val inserted =  db.insert(USER_FAVORITE_MANTRA_TABLE, null, cv)
+
+            isInserted( if (inserted != -1L) true else false )
 
         }catch (e : Exception){
 
@@ -217,7 +219,7 @@ $MANTRA TEXT
 
         try {
 
-            cursor = db.rawQuery("SELECT * FROM $USER_FAVORITE_MANTRA_TABLE", null)
+            cursor = db.rawQuery("SELECT * FROM $USER_FAVORITE_MANTRA_TABLE ORDER BY id DESC", null)
 
             while (cursor.moveToNext()){
 
