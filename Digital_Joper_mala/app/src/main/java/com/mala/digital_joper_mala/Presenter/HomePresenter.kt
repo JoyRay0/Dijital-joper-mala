@@ -53,14 +53,14 @@ class HomePresenter(
 
                     model.dataFromServer(onSuccess = {
 
-                        success()
-
                         scopeMain.launch {
 
                             infoList.clear()
                             infoList.addAll(it)
 
                         }
+
+                        success()
 
                     }, onFailed = {
 
@@ -117,14 +117,14 @@ class HomePresenter(
 
                     model.pagerDataFromServer(onSuccess = {
 
-                        success()
-
                         scopeMain.launch {
 
                             pagerList.clear()
                             pagerList.addAll(it)
 
                         }
+
+                        success()
 
                     }, onFailed = {
 
@@ -179,13 +179,13 @@ class HomePresenter(
 
                     model.appUpdate(onSuccess = {
 
-                        success()
-
                         scopeMain.launch {
 
                             version = it
 
                         }
+
+                        success()
 
                     }, onFailed = {
 
