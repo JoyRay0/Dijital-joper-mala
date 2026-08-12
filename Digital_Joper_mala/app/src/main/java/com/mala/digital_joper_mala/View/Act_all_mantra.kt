@@ -1,13 +1,16 @@
 package com.mala.digital_joper_mala.View
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -52,6 +55,9 @@ class Act_all_mantra : ComponentActivity(), AllMantra {
 
     //init
     private var dialogStatus = mutableStateOf(false)
+    private val allMantraList = mutableStateListOf<MantraItem>()
+    private val favoriteMantraList = mutableStateListOf<MantraItem>()
+    private val searchMantraList = mutableStateListOf<MantraItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,13 +79,40 @@ class Act_all_mantra : ComponentActivity(), AllMantra {
 
             presenter.getAllMantraCache()
 
+            if (dialogStatus.value){
+
+                presenter.getAllMantraFromServer()
+
+            }
+
+            presenter.getAllMantra()
+
             Digital_Joper_malaTheme {
 
                 AllMantraFullScreen(
                     isDark = isDark,
                     backClick = { finish() },
                     alertDialogStatus = dialogStatus.value,
-                    alertDialogUserData = { presenter.setAllMantraCache(it) }
+                    alertDialogUserData = { presenter.setAllMantraCache(it) },
+                    mantraList = allMantraList,
+                    copyMantraClick = {
+
+                        Clipboard.clipData(this, it)
+
+                        ShortMessageHelper.toast(this, "কপি হয়েছে")
+
+                    },
+                    searchList = searchMantraList,
+                    searchFiled = { presenter.searchMantraInAllMantra(it) },
+                    favoriteClick = { presenter.getAllFavoriteMantra() },
+                    favoriteMantraList = favoriteMantraList,
+                    saveInFavorite = { title, mantra ->
+                        presenter.favoriteMantraInsert(title, mantra)
+                    },
+                    removeFavoriteClick = {
+                        presenter.deleteFavoriteMantra(it)
+                    }
+
                 )
 
             }
@@ -118,7 +151,31 @@ class Act_all_mantra : ComponentActivity(), AllMantra {
         dialogStatus.value = value
     }
 
-} //class=========================================
+    override fun allMantraList(list: List<MantraItem>) {
+        allMantraList.clear()
+        allMantraList.addAll(list)
+    }
+
+    override fun favoriteMantraList(list: List<MantraItem>) {
+        favoriteMantraList.clear()
+        favoriteMantraList.addAll(list)
+
+    }
+
+    override fun searchMantraList(list: List<MantraItem>) {
+        searchMantraList.clear()
+        searchMantraList.addAll(list)
+    }
+
+    override fun deleteFavoriteMantraStatus(status: String) {
+        ShortMessageHelper.toast(this, status)
+    }
+
+    override fun insertStatus(status: String) {
+        ShortMessageHelper.toast(this, status)
+    }
+
+}//class=========================================
 
 @Preview(showBackground = true)
 @Composable
@@ -128,19 +185,27 @@ private fun AllMantraFullScreen(
     alertDialogStatus : Boolean = false,
     alertDialogUserData : (Boolean) -> Unit = {},
     mantraList : List<MantraItem> = emptyList(),
-    mantraClick : (String) -> Unit = {},
-    searchList: List<MantraItem> = emptyList(),
-    searchFiled: (String) -> Unit = {}
+    copyMantraClick : (String) -> Unit = {},
+    searchList: MutableList<MantraItem> = mutableListOf(),
+    searchFiled: (String) -> Unit = {},
+    favoriteClick: () -> Unit = {},
+    favoriteMantraList : List<MantraItem> = emptyList(),
+    saveInFavorite : (title : String, mantra : String) -> Unit = {_, _ ->},
+    removeFavoriteClick: (String) -> Unit = {}
+
 ) {
 
     val lazyState = rememberLazyListState()
     var isSearchDialogVisible = remember { mutableStateOf(false) }
     var isAlertDialogVisible = remember { mutableStateOf(true) }
     var isDialogShowing = remember { mutableStateOf(false) }
+    var isFavoriteVisible = remember { mutableStateOf(false) }
+
 
     LaunchedEffect(alertDialogStatus) {
 
         if (alertDialogStatus){
+
             isAlertDialogVisible.value = false
 
         } else{
@@ -152,7 +217,11 @@ private fun AllMantraFullScreen(
 
     }
 
-    LaunchedEffect(isSearchDialogVisible.value, isAlertDialogVisible.value) {
+    LaunchedEffect(
+        isSearchDialogVisible.value,
+        isAlertDialogVisible.value,
+        isFavoriteVisible.value
+    ) {
 
         if (isSearchDialogVisible.value){
 
@@ -162,7 +231,11 @@ private fun AllMantraFullScreen(
 
             isDialogShowing.value = true
 
-        }else{
+        } else if (isFavoriteVisible.value){
+
+            isDialogShowing.value = true
+
+        } else{
 
             isDialogShowing.value = false
 
@@ -175,6 +248,10 @@ private fun AllMantraFullScreen(
             isDark = isDark,
             backClick = { backClick() },
             searchClick = { isSearchDialogVisible.value = true },
+            favoriteClick = {
+                favoriteClick()
+                isFavoriteVisible.value = true
+                            },
             isAnyDialogShowing = isDialogShowing.value
         ) },
 
@@ -249,7 +326,8 @@ private fun AllMantraFullScreen(
                             isDark = isDark,
                             title = it.title,
                             mantra = it.mantra,
-                            mantraClick = { mantraClick(it.mantra) }
+                            mantraClick = { copyMantraClick(it.mantra) },
+                            favoriteClick = { saveInFavorite(it.title, it.mantra) }
 
                         )
 
@@ -269,8 +347,26 @@ private fun AllMantraFullScreen(
                     isDark = isDark,
                     searchFiled = { searchFiled(it) },
                     searchList = searchList,
-                    mantraClick = { mantraClick(it) },
-                    closeClick = { isSearchDialogVisible.value = false }
+                    mantraClick = { copyMantraClick(it) },
+                    closeClick = { isSearchDialogVisible.value = false },
+                    favoriteClick = { title, mantra ->
+                         saveInFavorite(title, mantra)
+                    }
+                )
+
+            }
+
+            if (isFavoriteVisible.value){
+
+                FavoriteDialog(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(alpha = 0.5f)),
+                    isDark = isDark,
+                    favoriteList = favoriteMantraList,
+                    mantraClick = { copyMantraClick(it) },
+                    closeClick = { isFavoriteVisible.value = false },
+                    removeFavoriteClick = {removeFavoriteClick(it)}
                 )
 
             }
@@ -306,6 +402,7 @@ private fun Toolbar(
     isDark : Boolean = false,
     backClick : () -> Unit = {},
     searchClick : () -> Unit = {},
+    favoriteClick : () -> Unit = {},
     isAnyDialogShowing : Boolean = false
 ) {
 
@@ -340,7 +437,8 @@ private fun Toolbar(
         }
 
         val iconList = listOf(
-            R.drawable.ic_search
+            R.drawable.ic_search,
+            R.drawable.ic_favorite
         )
 
         Row(
@@ -366,7 +464,12 @@ private fun Toolbar(
 
                             if (!isAnyDialogShowing){
 
-                                searchClick()
+                                when(index){
+
+                                    0 -> searchClick()
+                                    1 -> favoriteClick()
+
+                                }
 
                             }
                         },
@@ -406,7 +509,29 @@ private fun Item(
     title : String = "Test",
     mantra : String = "Test",
     mantraClick : () -> Unit = {},
+    favoriteClick : () -> Unit = {},
+    @DrawableRes favoriteIcon : Int = R.drawable.ic_outline_bookmark
 ) {
+
+    var isLongClicked by remember { mutableStateOf(false) }
+
+    var isVisible = remember { mutableStateOf(false) }
+
+    LaunchedEffect(isVisible) {
+
+        while (true){
+
+            delay(5000.milliseconds)
+
+            isVisible.value = true
+
+            delay(5000.milliseconds)
+
+            isVisible.value = false
+
+        }
+
+    }
 
     Box(
 
@@ -420,25 +545,70 @@ private fun Item(
 
             modifier = Modifier
                 .fillMaxWidth()
-                .shadow(elevation = 2.dp, shape = RoundedCornerShape(14.dp))
+                .shadow(elevation = 3.dp, shape = RoundedCornerShape(14.dp))
                 .clip(shape = RoundedCornerShape(14.dp))
-                .background(color = if (isDark) Color(0xFF757474) else Color(0xFFFFFFFF))
+                .combinedClickable(
+                    onClick = { isLongClicked = false },
+                    onLongClick = { isLongClicked = true },
+                    indication = null,
+                    interactionSource = null
+                )
+                .background(color = if (isDark) Color(0xFF626161) else Color(0xFFFFFFFF))
                 .padding(5.dp)
 
         ) {
 
-            Text( text = title,
-                fontSize = 15.sp,
-                fontFamily = BanglaHelper.banglaFont(),
-                fontWeight = FontWeight.Normal,
-                color = if (isDark) Color(0xFFEAE7E7) else Color(0xFF313030),
-                textAlign = TextAlign.Start,
+            Box(
+
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(3.dp)
-                    .align(Alignment.CenterHorizontally)
+                    .padding(5.dp)
 
-            )
+            ) {
+
+                Text( text = title,
+                    fontSize = 15.sp,
+                    fontFamily = BanglaHelper.banglaFont(),
+                    fontWeight = FontWeight.Normal,
+                    color = if (isDark) Color(0xFFEAE7E7) else Color(0xFF313030),
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .align(Alignment.CenterStart)
+
+                )
+
+                /* favorite button */
+
+                Box(
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .clip(shape = CircleShape)
+                        .clickable{
+                            favoriteClick()
+                            isLongClicked = false
+                        }
+                        .size(30.dp)
+                        .align(Alignment.CenterEnd)
+                ) {
+
+                    if (isLongClicked){
+
+                        Icon( painter = painterResource(favoriteIcon),
+                            contentDescription = "",
+                            tint = if (isDark) Color(0xFFEEEEEE) else Color(0xFF4D4C4C),
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .size(22.dp)
+                                .align(Alignment.Center)
+
+                        )
+
+                    }
+
+                }//box
+
+            }//box
 
             Spacer(modifier = Modifier.height(5.dp))
 
@@ -450,23 +620,37 @@ private fun Item(
                     .fillMaxWidth()
                     .clip(shape = RoundedCornerShape(12.dp))
                     .clickable { mantraClick() }
-                    .background(color = if (isDark) Color(0xFFC0B1B1) else Color(0xFFFFF5F5))
+                    .background(color = if (isDark) Color(0xFF8A8989) else Color(0xFFFFF1F1))
                     .padding(8.dp)
                     .align(Alignment.CenterHorizontally)
 
             ) {
 
                 Text( text = mantra,
-                    fontSize = 14.sp,
+                    fontSize = 15.sp,
                     fontFamily = BanglaHelper.banglaFont(),
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = FontWeight.Bold,
                     color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
                     textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth(0.8f)
                         .align(Alignment.Center)
 
                 )
+
+                if (isVisible.value){
+
+                    Icon( painter = painterResource(R.drawable.ic_copy),
+                        contentDescription = "",
+                        tint = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .size(24.dp)
+                            .align(Alignment.CenterEnd)
+
+                    )
+
+                }
 
             }//box
 
@@ -482,9 +666,10 @@ private fun SearchDialog(
     modifier: Modifier = Modifier,
     isDark: Boolean = false,
     searchFiled : (String) -> Unit = {},
-    searchList : List<MantraItem> = emptyList(),
+    searchList : MutableList<MantraItem> = mutableListOf(),
     mantraClick: (String) -> Unit = {},
-    closeClick : () -> Unit = {}
+    closeClick : () -> Unit = {},
+    favoriteClick: (title : String, mantra : String) -> Unit = {_, _->}
 ) {
 
     var searchInput = remember { mutableStateOf("") }
@@ -495,7 +680,12 @@ private fun SearchDialog(
 
         modifier = modifier
             .fillMaxWidth()
+            .clickable(
+                indication = null,
+                interactionSource = null
+            ){}
             .padding(9.dp)
+
 
     ) {
 
@@ -505,10 +695,15 @@ private fun SearchDialog(
                 .fillMaxWidth()
                 .height(550.dp)
                 .clip(shape = RoundedCornerShape(18.dp))
+                .clickable(
+                    indication = null,
+                    interactionSource = null
+                ){}
                 .background(color = if (isDark) Color(0xFF5D5C5C) else Color(0xFFFFFFFF))
                 .padding(7.dp)
                 .imePadding()
                 .align(Alignment.BottomCenter)
+
 
         ) {
 
@@ -519,6 +714,7 @@ private fun SearchDialog(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally)
+
 
             ) {
 
@@ -576,6 +772,7 @@ private fun SearchDialog(
                     .clip(shape = RoundedCornerShape(12.dp))
                     .padding(5.dp)
 
+
             ) {
 
                 if (searchInput.value.isBlank()){
@@ -629,8 +826,10 @@ private fun SearchDialog(
                         modifier = Modifier
                             .wrapContentWidth()
                             .clip(shape = CircleShape)
-                            //.background(color = Color(0xFFDEDCDC))
-                            .clickable { searchInput.value = "" }
+                            .clickable {
+                                searchInput.value = ""
+                                searchList.clear()
+                            }
                             .size(30.dp)
                             .align(Alignment.CenterEnd)
                     ) {
@@ -640,7 +839,7 @@ private fun SearchDialog(
                             tint = if (isDark) Color(0xFFE1E1E1) else Color(0xFF3F3E3E),
                             modifier = Modifier
                                 .wrapContentWidth()
-                                .size(15.dp)
+                                .size(22.dp)
                                 .align(Alignment.Center)
 
                         )
@@ -695,8 +894,17 @@ private fun SearchDialog(
                             isDark = isDark,
                             title = it.title,
                             mantra = it.mantra,
-                            mantraClick = { mantraClick(it.mantra) }
+                            mantraClick = { mantraClick(it.mantra) },
+                            favoriteClick = { favoriteClick(it.title, it.mantra) }
                         )
+
+                    }
+
+                    items(
+                        count = 1
+                    ){
+
+                        Spacer(modifier = Modifier.height(5.dp))
 
                     }
 
@@ -710,6 +918,164 @@ private fun SearchDialog(
 
 }//fun end
 
+@Preview(showBackground = true)
+@Composable
+private fun FavoriteDialog(
+    modifier: Modifier = Modifier,
+    isDark: Boolean = false,
+    favoriteList : List<MantraItem> = emptyList(),
+    mantraClick: (String) -> Unit = {},
+    closeClick: () -> Unit = {},
+    removeFavoriteClick: (String) -> Unit = {}
+) {
+
+    val lazState = rememberLazyListState()
+
+    Box(
+
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(
+                indication = null,
+                interactionSource = null
+            ){}
+            .padding(9.dp)
+
+    ) {
+
+        Column(
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(550.dp)
+                .clip(shape = RoundedCornerShape(18.dp))
+                .clickable(
+                    indication = null,
+                    interactionSource = null
+                ){}
+                .background(color = if (isDark) Color(0xFF5D5C5C) else Color(0xFFFFFFFF))
+                .padding(7.dp)
+                .align(Alignment.BottomCenter)
+
+        ) {
+
+            Spacer(modifier = Modifier.height(7.dp))
+
+            Box(
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+
+            ) {
+
+                Text( text = "পছন্দের মন্ত্র",
+                    fontSize = 18.sp,
+                    fontFamily = BanglaHelper.banglaFont(),
+                    fontWeight = FontWeight.Bold,
+                    color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .align(Alignment.Center)
+
+                )
+
+                /* close button */
+                Box(
+
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .clip(shape = CircleShape)
+                        //.background(color = Color.Gray)
+                        .clickable{ closeClick() }
+                        .size(30.dp)
+                        .align(Alignment.CenterEnd)
+
+                ) {
+
+                    Icon( painter = painterResource(R.drawable.ic_wrong),
+                        contentDescription = "",
+                        tint = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .size(18.dp)
+                            .align(Alignment.Center)
+
+                    )
+
+                }
+
+            }//box
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            if (favoriteList.isEmpty()){
+
+                Box(
+
+                    modifier = Modifier
+                        .fillMaxSize()
+
+
+                ) {
+
+                    Image( painter = painterResource(R.drawable.img_empty_file),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .size(100.dp)
+                            .align(Alignment.Center)
+
+                    )
+
+                }//box
+
+            }else{
+
+                LazyColumn(
+
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(5.dp)
+                        .align(Alignment.CenterHorizontally),
+                    state = lazState
+
+                ) {
+
+                    items(
+                        items = favoriteList,
+                        key = null
+                    ){ it ->
+
+                        Item(
+                            isDark = isDark,
+                            title = it.title,
+                            mantra = it.mantra,
+                            mantraClick = { mantraClick(it.mantra) },
+                            favoriteClick = { removeFavoriteClick(it.mantra) },
+                            favoriteIcon = R.drawable.ic_fill_bookmark
+                        )
+
+                    }
+
+                    items(
+                        count = 1
+                    ){
+
+                        Spacer(modifier = Modifier.height(5.dp))
+
+                    }
+
+                }//lazyColumn
+
+            }
+
+        }//column
+
+    }//box
+
+}//fun end
 
 @Preview(showBackground = true)
 @Composable
