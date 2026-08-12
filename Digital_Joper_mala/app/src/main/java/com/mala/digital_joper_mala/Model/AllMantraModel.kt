@@ -102,11 +102,11 @@ class AllMantraModel(
 
     }
 
-    fun favoriteInsert(title: String, mantra : String){
+    fun favoriteInsert(title: String, mantra : String, isInserted : (Boolean) -> Unit){
 
         if (title.isEmpty() || mantra.isEmpty()) return
 
-        db.favoriteInsert(title, mantra)
+        db.favoriteInsert(title, mantra, isInserted = {isInserted(it)})
 
     }
 

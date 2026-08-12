@@ -24,6 +24,7 @@ interface AllMantra{
     fun favoriteMantraList(list: List<MantraItem>)
     fun searchMantraList(list: List<MantraItem>)
     fun deleteFavoriteMantraStatus(status : String)
+    fun insertStatus(status : String)
 }
 
 class AllMantraPresenter(
@@ -145,7 +146,23 @@ class AllMantraPresenter(
 
         scopeIO.launch {
 
-            model.favoriteInsert(title, mantra)
+            model.favoriteInsert(title, mantra, isInserted = {
+
+                scopeMain.launch {
+
+                    if (it){
+
+                        view.insertStatus("সেভ হয়েছে")
+
+                    }else{
+
+                        view.insertStatus("সেভ হয়নি")
+
+                    }
+
+                }
+
+            })
 
             val data = model.getFavoriteMantra()
 
