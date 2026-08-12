@@ -71,9 +71,6 @@
             android:name=".View.Act_jopa_history"
             android:exported="false" />
         <activity
-            android:name=".View.Act_all_mantra_"
-            android:exported="false" />
-        <activity
             android:name=".View.Act_ShivMala"
             android:exported="false" />
         <activity
