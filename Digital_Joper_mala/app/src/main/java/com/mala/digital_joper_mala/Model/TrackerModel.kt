@@ -74,7 +74,6 @@ class TrackerModel(
 
             })
 
-
     }
 
     fun insertActivityTracker(act : ACTIVITY, duration : Long){
