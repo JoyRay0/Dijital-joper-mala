@@ -79,9 +79,13 @@ class Act_all_mantra : ComponentActivity(), AllMantra {
 
             presenter.getAllMantraCache()
 
-            if (dialogStatus.value){
+            LaunchedEffect(dialogStatus.value) {
 
-                presenter.getAllMantraFromServer()
+                if (dialogStatus.value){
+
+                    presenter.getAllMantraFromServer()
+
+                }
 
             }
 
@@ -149,6 +153,9 @@ class Act_all_mantra : ComponentActivity(), AllMantra {
 
     override fun dialogStatus(value: Boolean) {
         dialogStatus.value = value
+
+        Log.d("status", value.toString())
+
     }
 
     override fun allMantraList(list: List<MantraItem>) {
@@ -207,11 +214,6 @@ private fun AllMantraFullScreen(
         if (alertDialogStatus){
 
             isAlertDialogVisible.value = false
-
-        } else{
-
-            //delay(200.milliseconds)
-            isAlertDialogVisible.value = true
 
         }
 
@@ -664,7 +666,7 @@ private fun Item(
 @Composable
 private fun SearchDialog(
     modifier: Modifier = Modifier,
-    isDark: Boolean = false,
+    isDark: Boolean = true,
     searchFiled : (String) -> Unit = {},
     searchList : MutableList<MantraItem> = mutableListOf(),
     mantraClick: (String) -> Unit = {},
@@ -686,7 +688,6 @@ private fun SearchDialog(
             ){}
             .padding(9.dp)
 
-
     ) {
 
         Column(
@@ -699,7 +700,7 @@ private fun SearchDialog(
                     indication = null,
                     interactionSource = null
                 ){}
-                .background(color = if (isDark) Color(0xFF5D5C5C) else Color(0xFFFFFFFF))
+                .background(color = if (isDark) Color(0xFF494949) else Color(0xFFFFFFFF))
                 .padding(7.dp)
                 .imePadding()
                 .align(Alignment.BottomCenter)
@@ -953,7 +954,7 @@ private fun FavoriteDialog(
                     indication = null,
                     interactionSource = null
                 ){}
-                .background(color = if (isDark) Color(0xFF5D5C5C) else Color(0xFFFFFFFF))
+                .background(color = if (isDark) Color(0xFF494949) else Color(0xFFFFFFFF))
                 .padding(7.dp)
                 .align(Alignment.BottomCenter)
 
