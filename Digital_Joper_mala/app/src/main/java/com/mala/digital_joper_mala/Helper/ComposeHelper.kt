@@ -1,251 +1,184 @@
 package com.mala.digital_joper_mala.Helper
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.*
-import kotlinx.coroutines.delay
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.mala.digital_joper_mala.R
 
-@Preview
-@Composable
-fun FullView(){
+class ComposeHelper {
 
-    Column(
-
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color(0xFFFFFFFF))
-
+    @Preview(showBackground = true)
+    @Composable
+    fun Counter(
+        modifier: Modifier = Modifier,
+        counterLimit : Long = 0,
+        currentCount : (Long) -> Unit = {},
+        isDark: Boolean = false
     ) {
 
-        ComposeHelper.InternetDialog()
+        var number by remember { mutableStateOf(0L) }
 
-        ComposeHelper.SkeletonLoading()
+        val maxWidth = 120.dp
 
-        ComposeHelper.CircularProgressBar()
+        val width = if (number.toString().length > 5){
 
-        ComposeHelper.CustomSnackBar()
+            maxWidth + ((number.toString().length - 5) * 5).dp
 
-    }//column
+        }else maxWidth
 
-}//fun end
-
-object ComposeHelper {
-
-    //@Preview(showBackground = true)
-    @Composable
-    fun InternetDialog(
-        modifier: Modifier = Modifier,
-    ){
-
-        val context = LocalContext.current
 
         Box(
 
             modifier = modifier
                 .fillMaxWidth()
-                .padding(9.dp)
+                .padding(10.dp)
 
         ) {
 
             Column(
 
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .shadow(elevation = 2.dp, shape = RoundedCornerShape(14.dp))
-                    .clip(shape = RoundedCornerShape(14.dp))
-                    .background(color = Color(0xFFFFFFFF))
-                    .padding(3.dp)
-
-            ) {
-
-                Text(text = "ইন্টারনেট সংযোগ চালু করে আবার চেষ্টা করুন।",
-                    fontSize = 15.sp,
-                    fontFamily = BanglaHelper.banglaFont(),
-                    fontWeight = FontWeight.Normal,
-                    color = Color(0xFF564D4D),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .padding(7.dp)
-                        .align(Alignment.CenterHorizontally)
-                )
-
-            }//column
-
-        }//box
-
-    }//fun end
-
-    @Composable
-    fun SkeletonLoading(
-        modifier: Modifier = Modifier,
-        shape : Dp = 0.dp,
-        innerPadding : Dp = 10.dp
-    ){
-
-        val colors = arrayOf(
-            Color(0xFFFAE2E2),
-            Color(0xE2FAE2E2),
-            Color(0xCEFAE2E2),
-            Color(0xA1FAE2E2)
-
-        )
-
-        var index = remember { mutableStateOf(0) }
-
-        LaunchedEffect(Unit) {
-
-            while (true){
-
-                delay(200L)
-                index.value = (index.value + 1) % colors.size
-
-            }
-
-        }
-
-        Box(
-
-            modifier = modifier
-                .fillMaxWidth()
-
-
-        ){
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(shape = RoundedCornerShape(shape))
-                    .background(color = colors[index.value])
-                    .padding(innerPadding)
-            )
-            
-
-        }
-
-
-    }//fun end
-
-    @Composable
-    fun CircularProgressBar(
-        modifier: Modifier = Modifier
-    ) {
-
-        Box(
-
-            modifier = modifier
-                .wrapContentWidth()
-
-        ) {
-
-            CircularProgressIndicator(
-                modifier = Modifier
                     .wrapContentWidth()
-                    .size(45.dp)
-                    .align(Alignment.Center),
-                color = Color(0xFF009688),
-                strokeWidth = 4.dp,
-                trackColor = Color.LightGray
-
-            )
-
-        }//box
-
-    }//fun end
-
-
-    @Composable
-    fun CustomSnackBar(
-        message : String = "Hello",
-        backgroundColor : Color = Color.White,
-        fontColor : Color = Color.Black
-    ) {
-
-        var visible = remember { mutableStateOf(false) }
-
-        LaunchedEffect(Unit) {
-
-            delay(2000)
-            visible.value = true
-
-        }
-
-        LaunchedEffect(visible.value) {
-
-            if (visible.value){
-
-                delay(3000)
-                visible.value = false
-
-            }
-
-
-        }
-
-        AnimatedVisibility(
-            visible = visible.value,
-            enter = slideInVertically { it },
-            exit = slideOutHorizontally { it }
-        ) {
-
-            Box(
-
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(vertical = 20.dp, horizontal = 10.dp)
-                ,
-                contentAlignment = Alignment.BottomCenter
+                    .align(Alignment.Center)
 
             ) {
 
                 Box(
 
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .shadow(elevation = 4.dp, shape = RoundedCornerShape(14.dp))
-                        .background(color = backgroundColor)
-                        .padding(10.dp)
+                        .width(width)
+                        .height(70.dp)
+                        .clip(shape = RoundedCornerShape(12.dp))
+                        .background(color =  if (isDark) Color(0xFFB48E8E) else Color(0xFFEADADA))
+                        //.padding(40.dp)
+                        .align(Alignment.CenterHorizontally)
 
                 ) {
 
-                    Text(text = message,
-                        fontSize = 14.sp,
+                    Text(BanglaHelper.readLong(number),
+                        fontSize = 25.sp,
                         fontFamily = BanglaHelper.banglaFont(),
-                        fontWeight = FontWeight.Normal,
-                        textAlign = TextAlign.Start,
+                        fontWeight = FontWeight.SemiBold,
+                        color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                        textAlign = TextAlign.Center,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        color = fontColor,
                         modifier = Modifier
                             .fillMaxWidth()
-                        )
+                            .align(Alignment.Center)
+                            .padding(10.dp)
+                    )
+
+                    if (number > 0L) currentCount(number)
 
                 }//box
 
+                Spacer(modifier = Modifier.height(130.dp))
 
-            }//box
+                //buttons
+                Box(
 
-        }//animate
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                        .align(Alignment.CenterHorizontally)
+
+                ) {
+
+                    Box(
+
+                        modifier = Modifier
+                            .width(60.dp)
+                            .height(60.dp)
+                            .shadow(elevation = 5.dp, shape = CircleShape)
+                            .clip(shape = CircleShape)
+                            .clickable { number = 0L }
+                            .background(color = Color(0xFFF44336))
+                            .align(Alignment.CenterStart)
+
+                    ) {
+
+                        Icon( painter = painterResource(R.drawable.ic_refresh),
+                            contentDescription = "Reset",
+                            tint = Color(0xFFFFFFFF),
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .size(30.dp)
+                                .align(Alignment.Center)
+
+                        )
+
+                    }
+
+                    Box(
+
+                        modifier = Modifier
+                            .width(60.dp)
+                            .height(60.dp)
+                            .shadow(elevation = 5.dp, shape = CircleShape)
+                            .clip(shape = CircleShape)
+                            .clickable {
+
+                                if (counterLimit > 0L){
+
+                                    if (number < counterLimit) number++
+
+                                }else{
+
+                                    number++
+                                }
+
+
+                            }
+                            .background(color = Color(0xFF4CAF50))
+                            .align(Alignment.CenterEnd)
+
+                    ) {
+
+                        Icon( painter = painterResource(R.drawable.ic_add),
+                            contentDescription = "add",
+                            tint = Color(0xFFFFFFFF),
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .size(30.dp)
+                                .align(Alignment.Center)
+
+                        )
+
+                    }
+
+                }//box
+
+            }//column
+
+        }//box
 
     }//fun end
 
