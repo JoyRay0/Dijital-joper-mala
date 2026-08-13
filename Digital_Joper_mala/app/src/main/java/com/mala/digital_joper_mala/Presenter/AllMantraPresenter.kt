@@ -41,22 +41,18 @@ class AllMantraPresenter(
 
     fun setAllMantraCache(value : Boolean){
 
-        model.setAllMantraCache(value)
+        scopeIO.launch {
 
-        view.dialogStatus(model.getAllMantraCache())
+            model.setAllMantraCache(value)
 
-    }
-
-    fun getAllMantraCache(){
-
-        view.dialogStatus(model.getAllMantraCache())
+        }
 
     }
 
     fun getAllMantraFromServer(){
 
         retry.retry(
-            maxTime = 1_20_000,
+            maxTime = 60_000,
             delayTime = 5_000,
             request = { success , failed ->
 
@@ -95,6 +91,22 @@ class AllMantraPresenter(
         )
 
 
+
+    }
+
+    fun getAllMantraCache(){
+
+        scopeIO.launch {
+
+            val data = model.getAllMantraCache()
+
+            withContext(Dispatchers.Main){
+
+                view.dialogStatus(data)
+
+            }
+
+        }
 
     }
 
