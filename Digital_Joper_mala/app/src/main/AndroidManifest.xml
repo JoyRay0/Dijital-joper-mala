@@ -59,8 +59,7 @@
             android:exported="false"
             android:label="@string/title_activity_act_all_mantra"
             android:theme="@style/Base.Theme.Digital_Joper_mala"
-            android:windowSoftInputMode="adjustResize"
-            />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".View.Act_User_mala"
             android:exported="false" />
@@ -92,6 +91,18 @@
             android:name=".View.Act_home"
             android:exported="false"
             android:label="@string/title_activity_act_home"
+            android:theme="@style/Base.Theme.Digital_Joper_mala"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".View.Act_boishnob_mala"
+            android:exported="false"
+            android:label="@string/title_activity_act_boisnob_mala"
+            android:theme="@style/Base.Theme.Digital_Joper_mala"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".View.Act_shiv_mala"
+            android:exported="false"
+            android:label="@string/title_activity_act_shiv_mala"
             android:theme="@style/Base.Theme.Digital_Joper_mala"
             android:windowSoftInputMode="adjustResize" />
     </application>
