@@ -157,6 +157,16 @@ class Act_home : ComponentActivity(), Home {//class=============================
 
                         IntentHelper.normalIntent(this, Act_all_mantra::class.java)
 
+                    },
+                    boisnobMalaClick = {
+
+                        IntentHelper.normalIntent(this, Act_boishnob_mala::class.java)
+
+                    },
+                    shivMalaClick = {
+
+                        IntentHelper.normalIntent(this, Act_shiv_mala::class.java)
+
                     }
                 )
 
