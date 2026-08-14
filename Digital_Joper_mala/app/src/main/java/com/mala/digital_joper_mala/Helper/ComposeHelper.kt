@@ -1,5 +1,9 @@
 package com.mala.digital_joper_mala.Helper
 
+import android.content.Context
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -25,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -41,10 +46,13 @@ class ComposeHelper {
         modifier: Modifier = Modifier,
         counterLimit : Long = 0,
         currentCount : (Long) -> Unit = {},
-        isDark: Boolean = false
+        isDark: Boolean = false,
+        isVibrationEnabled : Boolean = true
     ) {
 
         var number by remember { mutableStateOf(0L) }
+
+        val context = LocalContext.current
 
         val maxWidth = 120.dp
 
@@ -77,7 +85,7 @@ class ComposeHelper {
                         .width(width)
                         .height(70.dp)
                         .clip(shape = RoundedCornerShape(12.dp))
-                        .background(color =  if (isDark) Color(0xFFB48E8E) else Color(0xFFEADADA))
+                        .background(color =  if (isDark) Color(0xFF9F8282) else Color(0xFFEADADA))
                         //.padding(40.dp)
                         .align(Alignment.CenterHorizontally)
 
@@ -112,6 +120,8 @@ class ComposeHelper {
 
                 ) {
 
+                    /* Reset button */
+
                     Box(
 
                         modifier = Modifier
@@ -119,7 +129,10 @@ class ComposeHelper {
                             .height(60.dp)
                             .shadow(elevation = 5.dp, shape = CircleShape)
                             .clip(shape = CircleShape)
-                            .clickable { number = 0L }
+                            .clickable {
+                                number = 0L
+                                if (isVibrationEnabled) vibration(context)
+                            }
                             .background(color = Color(0xFFF44336))
                             .align(Alignment.CenterStart)
 
@@ -137,6 +150,8 @@ class ComposeHelper {
 
                     }
 
+                    /* Add button */
+
                     Box(
 
                         modifier = Modifier
@@ -145,6 +160,8 @@ class ComposeHelper {
                             .shadow(elevation = 5.dp, shape = CircleShape)
                             .clip(shape = CircleShape)
                             .clickable {
+
+                                if (isVibrationEnabled) vibration(context)
 
                                 if (counterLimit > 0L){
 
@@ -181,5 +198,27 @@ class ComposeHelper {
         }//box
 
     }//fun end
+
+    private fun vibration(context : Context){
+
+        val vibrator =
+            context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            vibrator.vibrate(
+                VibrationEffect.createOneShot(
+                    50,
+                    VibrationEffect.DEFAULT_AMPLITUDE
+                )
+            )
+
+        } else {
+
+            @Suppress("DEPRECATION")
+            vibrator.vibrate(50)
+        }
+
+    }
 
 }
