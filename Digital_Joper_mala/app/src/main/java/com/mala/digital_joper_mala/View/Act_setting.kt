@@ -26,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import androidx.core.net.toUri
 import com.mala.digital_joper_mala.Helper.*
-import com.mala.digital_joper_mala.Model.Tracker
 import com.mala.digital_joper_mala.Presenter.Setting
 import com.mala.digital_joper_mala.Presenter.SettingPresenter
 import com.mala.digital_joper_mala.R
@@ -41,11 +40,11 @@ class Act_setting : ComponentActivity(), Setting {
     }
 
     //init===============================
-    private lateinit var cacheHelper : CacheHelper_
     private lateinit var presenter : SettingPresenter
     private lateinit var tracker : TrackScreen
 
     private var themeData = mutableStateOf("")
+    private var vibrationData = mutableStateOf("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +52,7 @@ class Act_setting : ComponentActivity(), Setting {
 
         init()
 
-        presenter.getCache("my_theme", "0")
+        presenter.getThemeCache("my_theme")
 
         setContent {
 
@@ -66,6 +65,12 @@ class Act_setting : ComponentActivity(), Setting {
                 navColor = if (isDark) Color.Black else Color.White,
                 darkIcons = false
             )
+
+            LaunchedEffect(vibrationData) {
+
+                presenter.getVibrationCache("my_vibration")
+
+            }
 
             Digital_Joper_malaTheme {
 
@@ -92,7 +97,7 @@ class Act_setting : ComponentActivity(), Setting {
                     },
                     appTheme = {
 
-                        presenter.setCache("my_theme", it.toString())
+                        presenter.setThemeCache("my_theme", it.toString())
                         recreate()
 
                                },
@@ -150,7 +155,13 @@ class Act_setting : ComponentActivity(), Setting {
                         )
 
                     },
-                    getAppTheme = themeData.value.toInt()
+                    getAppTheme = themeData.value.toInt(),
+                    vibration = {
+
+                        presenter.setVibrationCache("my_vibration", it)
+
+                    },
+                    getVibration = vibrationData.value
                 )
 
             }
@@ -167,8 +178,7 @@ class Act_setting : ComponentActivity(), Setting {
 
     private fun init(){
 
-        cacheHelper = CacheHelper_(this, "Theme")
-        presenter = SettingPresenter(this, cacheHelper)
+        presenter = SettingPresenter(this, this)
         tracker = TrackScreen(this)
 
     }
@@ -191,8 +201,14 @@ class Act_setting : ComponentActivity(), Setting {
 
     }
 
-    override fun cache(value: String) {
+    override fun themeCache(value: String) {
         themeData.value = value
+    }
+
+    override fun vibrationCache(value: String) {
+
+        vibrationData.value = value
+
     }
 
 }//class=======================================
@@ -212,11 +228,14 @@ private fun SettingFullScreen(
     appShare : () -> Unit = {},
     appRating : () -> Unit = {},
     appPrivacy : () -> Unit = {},
-    getAppTheme : Int  = 0
+    getAppTheme : Int  = 0,
+    vibration : (String) -> Unit = {},
+    getVibration : String = "true"
 ) {
 
     var isInfoVisible = remember { mutableStateOf(false) }
     var isThemeVisible = remember { mutableStateOf(false) }
+    var isVibrationVisible = remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = { Toolbar(
@@ -282,6 +301,16 @@ private fun SettingFullScreen(
                     isDark = isDark,
                     leftTopCornerRadios = 14.dp,
                     rightTopCornerRadios = 14.dp
+                )
+
+                Spacer(modifier = Modifier.height(3.dp))
+
+                TextButtonHelper(
+                    "বাটন ভাইব্রেশন",
+                    icon = R.drawable.ic_vibration,
+                    iconSize = 22.dp,
+                    btnClick = { isVibrationVisible.value = !isVibrationVisible.value },
+                    isDark = isDark
                 )
 
                 Spacer(modifier = Modifier.height(3.dp))
@@ -378,6 +407,32 @@ private fun SettingFullScreen(
 
                         },
                         userSelectedMode = getAppTheme,
+                        isDark = isDark
+                    )
+
+                }
+
+            }
+
+
+            if (isVibrationVisible.value){
+
+                ModalBottomSheet(
+                    onDismissRequest = { isVibrationVisible.value = false },
+                    containerColor = if (isDark) DarkSettingItemBackground else LightSettingItemBackground,
+                    dragHandle = null
+                ) {
+
+                    VibrationDialog(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        modeClick = {
+
+                            vibration(if (it) "true" else "false")
+                            isVibrationVisible.value = false
+
+                        },
+                        userSelectedMode = getVibration,
                         isDark = isDark
                     )
 
@@ -738,4 +793,124 @@ private fun AppTheme(
 
     }//box
     
+}//fun end
+
+@Preview(showBackground = true)
+@Composable
+private fun VibrationDialog(
+    modifier: Modifier = Modifier,
+    modeClick : (Boolean) -> Unit = {},
+    userSelectedMode : String = "true",
+    isDark: Boolean = false
+) {
+
+    var vibrationIndex by remember{ mutableStateOf(0) }
+
+    LaunchedEffect(userSelectedMode) {
+
+        if (userSelectedMode == "true"){
+
+            vibrationIndex = 0
+
+        }else{
+
+            vibrationIndex = 1
+
+        }
+
+    }
+
+    Box(
+
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(7.dp)
+
+    ) {
+
+        Column(
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(9.dp)
+
+        ) {
+
+            val vibrationText = arrayOf("চালু", "বন্ধ")
+
+            vibrationText.forEachIndexed { index, text ->
+
+                Row(
+
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(shape = RoundedCornerShape(10.dp))
+                        .clickable{
+                            vibrationIndex = index
+                            modeClick(
+
+                                if (vibrationIndex == 0) true else false
+
+                            )
+                        }
+                        .background(color = if (vibrationIndex == index){
+
+                            if (isDark){
+
+                                Color(0xFF947D7D)
+
+                            }else{
+
+                                Color(0xFFFFEBEB)
+
+                            }
+
+                        } else Color.Transparent)
+                        .padding(7.dp)
+                        .align(Alignment.Start)
+
+                ) {
+
+                    if (vibrationIndex == index){
+
+                        Icon( painter = painterResource(R.drawable.ic_ok),
+                            contentDescription = "",
+                            tint = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .size(21.dp)
+                                .align(Alignment.CenterVertically)
+
+                        )
+
+                    }else{
+
+                        Spacer(modifier = Modifier.width(22.dp))
+
+                    }
+
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    Text( text = text,
+                        fontSize = 14.sp,
+                        fontFamily = BanglaHelper.banglaFont(),
+                        fontWeight = FontWeight.Normal,
+                        color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .padding(3.dp)
+                            .align(Alignment.CenterVertically)
+
+                    )
+
+
+                }//row
+
+            }//loop
+
+        }//column
+
+    }//box
+
 }//fun end

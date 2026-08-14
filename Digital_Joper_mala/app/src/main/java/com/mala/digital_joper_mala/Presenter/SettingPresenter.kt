@@ -1,6 +1,6 @@
 package com.mala.digital_joper_mala.Presenter
 
-import com.mala.digital_joper_mala.Helper.CacheHelper_
+import android.content.Context
 import com.mala.digital_joper_mala.Model.SettingModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -9,37 +9,46 @@ import kotlinx.coroutines.cancel
 
 interface Setting{
 
-    fun cache(value : String)
+    fun themeCache(value : String)
+    fun vibrationCache(value: String)
 
 }
 
 class SettingPresenter(
     private val view : Setting,
-    private val cacheHelper: CacheHelper_
+    private val context: Context
 ) {
 
-    private val model = SettingModel(cacheHelper)
+    private val model = SettingModel(context)
 
     private val scopeIO = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val scopeMain = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-    fun setCache(key : String, value: String){
+    fun setThemeCache(key : String, value: String){
 
         model.setCache(key, value)
 
     }
 
-    fun getCache(key: String, defaultValue : String){
+    fun getThemeCache(key: String){
 
-        val data = model.getModeCache(key, defaultValue)
+        val data = model.getModeCache(key, "0")
 
-        view.cache(data)
+        view.themeCache(data)
 
     }
 
-    fun delete(key: String){
+    fun setVibrationCache(key: String, value: String){
 
-        model.deleteCache(key)
+        model.setCache(key, value)
+
+        view.vibrationCache(model.getModeCache(key, "true"))
+
+    }
+
+    fun getVibrationCache(key: String){
+
+        view.vibrationCache(model.getModeCache(key, "true"))
 
     }
 
