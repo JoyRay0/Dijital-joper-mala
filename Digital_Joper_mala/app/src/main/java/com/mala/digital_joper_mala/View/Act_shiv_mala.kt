@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.mala.digital_joper_mala.Helper.ACTIVITY
 import com.mala.digital_joper_mala.Helper.ThemeHelper
 import com.mala.digital_joper_mala.Helper.TrackScreen
+import com.mala.digital_joper_mala.Helper.VibrationHelper
 import com.mala.digital_joper_mala.Model.ShivItem
 import com.mala.digital_joper_mala.Presenter.HomePresenter
 import com.mala.digital_joper_mala.Presenter.ShivMala
@@ -46,6 +47,7 @@ class Act_shiv_mala : ComponentActivity(), ShivMala {
         setContent {
 
             var isDark by remember { mutableStateOf(false) }
+            var isVibration by remember { mutableStateOf(false) }
 
             if (ThemeHelper.isDarkTheme(this)) isDark = true else isDark = false
 
@@ -54,6 +56,8 @@ class Act_shiv_mala : ComponentActivity(), ShivMala {
                 navColor = if (isDark) Color.Black else Color.White,
                 darkIcons = false
             )
+
+            if (VibrationHelper.IsVibration(this)) isVibration = true else isVibration = false
 
             Digital_Joper_malaTheme {
 
