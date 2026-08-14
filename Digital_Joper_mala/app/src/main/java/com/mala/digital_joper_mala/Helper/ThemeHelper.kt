@@ -29,7 +29,7 @@ object ThemeHelper {
     @Composable
     fun isDarkTheme(context: Context) : Boolean{
 
-        val themePref = context.getSharedPreferences("Theme", Context.MODE_PRIVATE)
+        val themePref = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
         val savedTheme = themePref.getString("my_theme", "0")
 
         return when(savedTheme){
