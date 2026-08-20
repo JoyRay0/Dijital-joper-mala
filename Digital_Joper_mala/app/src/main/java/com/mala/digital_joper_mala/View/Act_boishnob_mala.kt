@@ -112,7 +112,6 @@ class Act_boishnob_mala : ComponentActivity(), BoishnobMala, Achievements {
                     currentCount = {
                         currentCount.value = it.toString()
 
-                        Log.d("cache", "current count = $it")
                     },
                     lastCountCache = lastCountCache.value
                 )
@@ -228,8 +227,6 @@ private fun BoisnobMalaFullScreen(
                 .background(color = if (isDark) DarkBackground else LightBackground)
                 .padding(innerPadding)
         ) {
-
-            Log.d("cache", "last count = $lastCountCache")
 
             /* counter */
             ComposeHelper().Counter(
