@@ -6,7 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.padding
@@ -17,6 +16,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -24,11 +24,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -41,19 +39,24 @@ import com.mala.digital_joper_mala.Helper.ComposeHelper
 import com.mala.digital_joper_mala.Helper.ThemeHelper
 import com.mala.digital_joper_mala.Helper.TrackScreen
 import com.mala.digital_joper_mala.Helper.VibrationHelper
+import com.mala.digital_joper_mala.Model.Achievement
 import com.mala.digital_joper_mala.Model.BoishnobItem
+import com.mala.digital_joper_mala.Presenter.AchievementPresenter
+import com.mala.digital_joper_mala.Presenter.Achievements
 import com.mala.digital_joper_mala.Presenter.BoishnobMala
 import com.mala.digital_joper_mala.Presenter.BoishnobMalaPresenter
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
 
-class Act_boishnob_mala : ComponentActivity(), BoishnobMala {
+class Act_boishnob_mala : ComponentActivity(), BoishnobMala, Achievements {
 
     private lateinit var tracker : TrackScreen
     private lateinit var presenter : BoishnobMalaPresenter
+    private lateinit var achievementPresenter : AchievementPresenter
 
     //init
 
     private val mantraList = mutableStateListOf<BoishnobItem>()
+    private val achievementList = mutableStateListOf<Achievement>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +68,7 @@ class Act_boishnob_mala : ComponentActivity(), BoishnobMala {
 
             var isDark by remember { mutableStateOf(false) }
             var isVibration by remember { mutableStateOf(false) }
+            var reloadAchievementListCount by remember { mutableStateOf(0) }
 
             if (ThemeHelper.isDarkTheme(this)) isDark = true else isDark = false
 
@@ -76,6 +80,14 @@ class Act_boishnob_mala : ComponentActivity(), BoishnobMala {
 
             if (VibrationHelper.IsVibration(this)) isVibration = true else isVibration = false
 
+            
+            LaunchedEffect(reloadAchievementListCount) {
+
+                achievementPresenter.getAchievement("boishnob_mala")
+
+            }
+
+
             Digital_Joper_malaTheme {
 
                 BoisnobMalaFullScreen(
@@ -83,7 +95,17 @@ class Act_boishnob_mala : ComponentActivity(), BoishnobMala {
                     backClick = { finish() },
                     mantraList = mantraList,
                     floatingButtonClick = { presenter.getBoishnobMala() },
-                    isVibration = isVibration
+                    isVibration = isVibration,
+                    saveCount = { count ->
+
+                        achievementPresenter.insertAchievement("boishnob_mala", count.toString(), isInserted = { success ->
+
+                            if (success) reloadAchievementListCount++
+
+                        })
+
+                    },
+                    achievementList = achievementList
                 )
 
             }
@@ -95,6 +117,8 @@ class Act_boishnob_mala : ComponentActivity(), BoishnobMala {
         tracker = TrackScreen(this)
 
         presenter = BoishnobMalaPresenter(this)
+
+        achievementPresenter = AchievementPresenter(this, this)
     }
 
     override fun onStart() {
@@ -111,10 +135,21 @@ class Act_boishnob_mala : ComponentActivity(), BoishnobMala {
         tracker.stop(ACTIVITY.Act_boisnob_mala)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDestroy()
+        achievementPresenter.onDestroy()
+    }
+
     override fun malaList(list: List<BoishnobItem>) {
         mantraList.clear()
         mantraList.addAll(list)
 
+    }
+
+    override fun achievementCountList(list: List<Achievement>) {
+        achievementList.clear()
+        achievementList.addAll(list)
     }
 
 }//class========================================
@@ -126,11 +161,28 @@ private fun BoisnobMalaFullScreen(
     backClick: () -> Unit = {},
     mantraList : List<BoishnobItem> = emptyList(),
     floatingButtonClick : () -> Unit = {},
-    isVibration : Boolean = false
+    isVibration : Boolean = false,
+    saveCount : (Long) -> Unit = {},
+    achievementList : List<Achievement> = emptyList()
 ) {
 
     var isMantraDialogVisible by remember { mutableStateOf(false) }
-    val countMilestones = listOf(1000L, 5000L, 10000L, 50000L)
+    var isAchievementDialogVisible by remember { mutableStateOf(false) }
+    var count by remember { mutableStateOf(0L) }
+
+    val countList = listOf(1000L, 5000L, 10000L, 50000L, 100000L, 500000L)
+
+    LaunchedEffect(count, achievementList) {
+
+        val isExists = achievementList.any {
+
+            it.achievementCount == count.toString()
+
+        }
+
+        if (!isExists && count in countList) isAchievementDialogVisible = true
+
+    }
 
     Scaffold(
 
@@ -159,7 +211,7 @@ private fun BoisnobMalaFullScreen(
                     .fillMaxWidth()
                     .align(Alignment.Center),
                 counterLimit = 50000L,
-                currentCount = {},
+                currentCount = { count = it },
                 isDark = isDark,
                 isVibrationEnabled = isVibration
             )
@@ -196,12 +248,22 @@ private fun BoisnobMalaFullScreen(
 
             }
 
-            MilestonesDialog(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(alpha = 0.5f))
-                    .align(Alignment.BottomCenter)
-            )
+            /* Achievements */
+            if (isAchievementDialogVisible){
+
+                ComposeHelper().MilestonesDialog(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(alpha = 0.5f)),
+                    closeClick = {
+                        isAchievementDialogVisible = false
+                        saveCount(count)
+                                 },
+                    currentCount = count,
+                    isDark = isDark
+                )
+
+            }
 
 
         }//box
@@ -487,167 +549,4 @@ private fun Item(
 
     }//box
 
-}//fun end
-
-
-@Preview(showBackground = true)
-@Composable
-private fun MilestonesDialog(
-    modifier: Modifier = Modifier,
-    closeClick: () -> Unit = {},
-    currentCount : Long = 50000L,
-    isDark: Boolean = true
-) {
-
-    val countMilestones = listOf(1000L, 5000L, 10000L, 50000L)
-    val milestonesTitle = listOf(
-        "\uD83C\uDF89 অভিনন্দন!",
-        "\uD83C\uDF38 অসাধারণ সাধনা!",
-        "\uD83C\uDF1F ১০,০০০ জপ সম্পন্ন!",
-        "\uD83C\uDFC6 অসাধারণ অর্জন!"
-    )
-    val milestonesDescription = listOf(
-        "আপনি সফলভাবে ১,০০০ বার জপ সম্পন্ন করেছেন। আপনার এই সাধনা অব্যাহত থাকুক। \uD83D\uDE4F",
-        "আপনার জপের সংখ্যা ৫,০০০ পূর্ণ হয়েছে। নিয়মিত জপের এই সুন্দর অভ্যাস ধরে রাখুন। \uD83D\uDE4F",
-        "আপনার অধ্যবসায় সত্যিই প্রশংসনীয়। ১০,০০০ জপের এই অর্জনের জন্য অভিনন্দন। \uD83D\uDE4F",
-        "আপনি ৫০,০০০ জপ সম্পন্ন করেছেন! আপনার নিষ্ঠা ও সাধনার এই পথ আরও সুন্দর হোক। \uD83D\uDE4F"
-    )
-
-    Box(
-
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(
-                indication = null,
-                interactionSource = null
-            ){}
-            .padding(12.dp)
-
-    ) {
-
-        Column(
-
-            modifier = Modifier
-                .fillMaxWidth()
-                //.shadow(elevation = 3.dp, shape = RoundedCornerShape(14.dp))
-                .clip(shape = RoundedCornerShape(14.dp))
-                .clickable(
-                    indication = null,
-                    interactionSource = null
-                ){}
-                .background(color =if (isDark) Color.Black.copy(alpha = 0.45f) else Color.White.copy(alpha = 0.70f))
-                .border(
-                    width = 1.dp,
-                    shape = RoundedCornerShape(14.dp),
-                    color = if (isDark) Color.White.copy(alpha = 0.6f) else Color.White.copy(alpha = 0.8f)
-                )
-                .padding(7.dp)
-                .align(Alignment.BottomCenter)
-
-        ) {
-
-            Spacer(modifier = Modifier.height(7.dp))
-
-            Box(
-
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally)
-
-            ) {
-
-                Text(
-                    text = "\uD83C\uDF89 নতুন অর্জন!",
-                    fontSize = 18.sp,
-                    fontFamily = BanglaHelper.banglaFont(),
-                    fontWeight = FontWeight.Bold,
-                    color = if (isDark) Color(0xFFEAEAEA) else Color(0xFF000000),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .align(Alignment.Center)
-
-                )
-
-                /* close button */
-                Box(
-
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .clip(shape = CircleShape)
-                        //.background(color = Color.Gray)
-                        .clickable { closeClick() }
-                        .size(30.dp)
-                        .align(Alignment.CenterEnd)
-
-                ) {
-
-                    Icon( painter = painterResource(com.mala.digital_joper_mala.R.drawable.ic_wrong),
-                        contentDescription = "",
-                        tint = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
-                        modifier = Modifier
-                            .wrapContentWidth()
-                            .size(18.dp)
-                            .align(Alignment.Center)
-
-                    )
-
-                }
-
-            }//box
-
-            Spacer(modifier = Modifier.height(15.dp))
-
-            Text(
-                text = when(currentCount){
-
-                    countMilestones[0] -> milestonesTitle[0]
-                    countMilestones[1] -> milestonesTitle[1]
-                    countMilestones[2] -> milestonesTitle[2]
-                    countMilestones[3] -> milestonesTitle[3]
-                    else -> ""
-
-                },
-                fontSize = 16.sp,
-                fontFamily = BanglaHelper.banglaFont(),
-                fontWeight = FontWeight.SemiBold,
-                color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp)
-                    .align(Alignment.CenterHorizontally)
-
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text(
-                text = when(currentCount){
-
-                    countMilestones[0] -> milestonesDescription[0]
-                    countMilestones[1] -> milestonesDescription[1]
-                    countMilestones[2] -> milestonesDescription[2]
-                    countMilestones[3] -> milestonesDescription[3]
-                    else -> ""
-
-                },
-                fontSize = 16.sp,
-                fontFamily = BanglaHelper.banglaFont(),
-                fontWeight = FontWeight.Normal,
-                color = if (isDark) Color(0xFFE3E2E2) else Color(0xFF000000),
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp)
-                    .align(Alignment.CenterHorizontally)
-
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-        }//column
-
-    }//box
-    
 }//fun end
