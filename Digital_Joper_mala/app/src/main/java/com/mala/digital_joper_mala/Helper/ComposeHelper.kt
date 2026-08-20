@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -21,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,10 +50,25 @@ class ComposeHelper {
         counterLimit : Long = 0,
         currentCount : (Long) -> Unit = {},
         isDark: Boolean = false,
-        isVibrationEnabled : Boolean = true
+        isVibrationEnabled : Boolean = true,
+        countNumber : String = ""
     ) {
 
         var number by remember { mutableStateOf(0L) }
+
+        LaunchedEffect(countNumber) {
+
+            if (countNumber.isEmpty()){
+
+                number = 0L
+
+            }else{
+
+                number = countNumber.toLong()
+
+            }
+
+        }
 
         val context = LocalContext.current
 
@@ -133,6 +150,7 @@ class ComposeHelper {
                             .clickable {
                                 number = 0L
                                 if (isVibrationEnabled) vibration(context)
+                                currentCount(0L)
                             }
                             .background(color = Color(0xFFF44336))
                             .align(Alignment.CenterStart)
