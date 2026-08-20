@@ -57,6 +57,8 @@ class Act_boishnob_mala : ComponentActivity(), BoishnobMala, Achievements {
 
     private val mantraList = mutableStateListOf<BoishnobItem>()
     private val achievementList = mutableStateListOf<Achievement>()
+    private val lastCountCache = mutableStateOf("")
+    private val currentCount = mutableStateOf("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +82,7 @@ class Act_boishnob_mala : ComponentActivity(), BoishnobMala, Achievements {
 
             if (VibrationHelper.IsVibration(this)) isVibration = true else isVibration = false
 
+            presenter.getLastCountCache()
             
             LaunchedEffect(reloadAchievementListCount) {
 
@@ -105,7 +108,13 @@ class Act_boishnob_mala : ComponentActivity(), BoishnobMala, Achievements {
                         })
 
                     },
-                    achievementList = achievementList
+                    achievementList = achievementList,
+                    currentCount = {
+                        currentCount.value = it.toString()
+
+                        Log.d("cache", "current count = $it")
+                    },
+                    lastCountCache = lastCountCache.value
                 )
 
             }
@@ -116,7 +125,7 @@ class Act_boishnob_mala : ComponentActivity(), BoishnobMala, Achievements {
 
         tracker = TrackScreen(this)
 
-        presenter = BoishnobMalaPresenter(this)
+        presenter = BoishnobMalaPresenter(this, this)
 
         achievementPresenter = AchievementPresenter(this, this)
     }
@@ -133,18 +142,26 @@ class Act_boishnob_mala : ComponentActivity(), BoishnobMala, Achievements {
         super.onStop()
 
         tracker.stop(ACTIVITY.Act_boisnob_mala)
+
+        presenter.setLastCountCache(currentCount.value)
     }
 
     override fun onDestroy() {
         super.onDestroy()
+
         presenter.onDestroy()
         achievementPresenter.onDestroy()
+
     }
 
     override fun malaList(list: List<BoishnobItem>) {
         mantraList.clear()
         mantraList.addAll(list)
 
+    }
+
+    override fun lastCountCache(value: String) {
+        lastCountCache.value = value
     }
 
     override fun achievementCountList(list: List<Achievement>) {
@@ -163,7 +180,9 @@ private fun BoisnobMalaFullScreen(
     floatingButtonClick : () -> Unit = {},
     isVibration : Boolean = false,
     saveCount : (Long) -> Unit = {},
-    achievementList : List<Achievement> = emptyList()
+    achievementList : List<Achievement> = emptyList(),
+    currentCount : (Long) -> Unit = {},
+    lastCountCache : String = ""
 ) {
 
     var isMantraDialogVisible by remember { mutableStateOf(false) }
@@ -174,6 +193,11 @@ private fun BoisnobMalaFullScreen(
 
     LaunchedEffect(count, achievementList) {
 
+        /* current count to save in cache */
+
+        currentCount(count)
+
+        /* check for achievement dialog */
         val isExists = achievementList.any {
 
             it.achievementCount == count.toString()
@@ -205,6 +229,8 @@ private fun BoisnobMalaFullScreen(
                 .padding(innerPadding)
         ) {
 
+            Log.d("cache", "last count = $lastCountCache")
+
             /* counter */
             ComposeHelper().Counter(
                 modifier = Modifier
@@ -213,7 +239,8 @@ private fun BoisnobMalaFullScreen(
                 counterLimit = 50000L,
                 currentCount = { count = it },
                 isDark = isDark,
-                isVibrationEnabled = isVibration
+                isVibrationEnabled = isVibration,
+                countNumber = lastCountCache
             )
 
             /* floating button */
