@@ -5,6 +5,8 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.mala.digital_joper_mala.Database.UserMantraDatabase.Companion.MANTRA
+import com.mala.digital_joper_mala.Database.UserMantraDatabase.Companion.TITLE
 import com.mala.digital_joper_mala.Model.Achievement
 
 class AchievementDatabase(
@@ -25,8 +27,8 @@ class AchievementDatabase(
         val create_sql = """
 CREATE TABLE IF NOT EXISTS $TABLE_NAME (
 $ID INTEGER PRIMARY KEY AUTOINCREMENT,
-$MALA_NAME TEXT NOT NULL UNIQUE,
-$ACHIEVEMENT_COUNT TEXT NOT NULL UNIQUE)
+$MALA_NAME TEXT NOT NULL,
+$ACHIEVEMENT_COUNT TEXT NOT NULL)
 """.trimIndent()
 
         db?.execSQL(create_sql)
@@ -41,9 +43,11 @@ $ACHIEVEMENT_COUNT TEXT NOT NULL UNIQUE)
         db?.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
     }
 
-    fun achievementInsert(malaName : String, achievementCount : String){
+    fun achievementInsert(malaName : String, achievementCount : String, isInserted : (Boolean) -> Unit){
 
         if (malaName.isEmpty() || achievementCount.isEmpty()) return
+
+        if (isDuplicate(malaName, achievementCount)) return
 
         val db = dbOpen(true)
 
@@ -54,7 +58,9 @@ $ACHIEVEMENT_COUNT TEXT NOT NULL UNIQUE)
             cv.put(MALA_NAME, malaName)
             cv.put(ACHIEVEMENT_COUNT, achievementCount)
 
-            db.insert(TABLE_NAME, null, cv)
+            val inserted =  db.insert(TABLE_NAME, null, cv)
+
+            isInserted(if (inserted != -1L) true else false)
 
         }catch (e : Exception){
 
@@ -80,11 +86,9 @@ $ACHIEVEMENT_COUNT TEXT NOT NULL UNIQUE)
 
             while (cursor.moveToNext()){
 
-                val malaName = cursor.getString(cursor.getColumnIndexOrThrow(MALA_NAME))
                 val count = cursor.getString(cursor.getColumnIndexOrThrow(ACHIEVEMENT_COUNT))
 
                 achievementList.add(Achievement(
-                    malaName = malaName,
                     achievementCount = count
                 ))
 
@@ -106,6 +110,32 @@ $ACHIEVEMENT_COUNT TEXT NOT NULL UNIQUE)
     private fun dbOpen(writable : Boolean = false) : SQLiteDatabase{
 
         return if (writable) writableDatabase else readableDatabase
+
+    }
+
+    private fun isDuplicate(malaName: String, count: String) : Boolean{
+
+        val db = dbOpen()
+
+        var cursor : Cursor? = null
+
+        var isExists = false
+
+        try {
+
+            cursor = db.rawQuery("SELECT * FROM $TABLE_NAME WHERE $MALA_NAME = ? AND $ACHIEVEMENT_COUNT = ?", arrayOf(malaName, count))
+
+            if (cursor.moveToFirst()) isExists = true
+
+        }catch (e : Exception){
+
+            e.printStackTrace()
+
+        }finally {
+            cursor?.close()
+        }
+
+        return isExists
 
     }
 
