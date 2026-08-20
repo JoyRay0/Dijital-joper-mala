@@ -1,5 +1,7 @@
 package com.mala.digital_joper_mala.Model
 
+import android.content.Context
+import com.mala.digital_joper_mala.Helper.CacheHelper_
 
 
 data class BoishnobItem(
@@ -8,7 +10,11 @@ data class BoishnobItem(
     val mantra : String = ""
 )
 
-class BoishnobMalaModel {
+class BoishnobMalaModel(
+    private val context: Context
+) {
+
+    private val cache = CacheHelper_(context, "boishnob_mala")
 
     fun getBoishnobMala() : List<BoishnobItem>{
 
@@ -41,5 +47,20 @@ class BoishnobMalaModel {
         return boishnobMalaList
 
     }
+
+    fun setLastCountCache(value : String){
+
+        if (value.isEmpty()) return
+
+        cache.setCache("boishnob_mala_count", value)
+
+    }
+
+    fun getLastCountCache() : String{
+
+        return cache.getCache("boishnob_mala_count", "")
+
+    }
+
 
 }
