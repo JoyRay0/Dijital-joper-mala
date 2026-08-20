@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 
 interface Achievements{
 
-    fun achievementList(list: List<Achievement>)
+    fun achievementCountList(list: List<Achievement>)
 
 }
 
@@ -26,17 +26,25 @@ class AchievementPresenter(
     private val scopeIO = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val scopeMain = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-    fun insertAchievement(malaName : String, count : String){
+    fun insertAchievement(malaName : String, count : String, isInserted : (Boolean) -> Unit){
 
         scopeIO.launch {
 
-            model.insertAchievement(malaName, count)
+            model.insertAchievement(malaName, count, isInserted = {
+
+                scopeMain.launch {
+
+                    isInserted(it)
+
+                }
+
+            })
 
             val updateList = model.getAchievement(malaName)
 
             withContext(Dispatchers.Main){
 
-                view.achievementList(updateList)
+                view.achievementCountList(updateList)
 
             }
 
@@ -52,7 +60,7 @@ class AchievementPresenter(
 
             withContext(Dispatchers.Main){
 
-                view.achievementList(list)
+                view.achievementCountList(list)
 
             }
 
