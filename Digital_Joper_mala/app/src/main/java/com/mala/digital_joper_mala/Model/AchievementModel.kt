@@ -15,11 +15,18 @@ class AchievementModel(
 
     private val db = AchievementDatabase(context)
 
-    fun insertAchievement(malaName : String, count : String){
+    fun insertAchievement(malaName : String, count : String, isInserted : (Boolean) -> Unit){
+
+        val countList = listOf("1000", "5000", "10000", "50000", "100000", "500000")
 
         if (malaName.isEmpty() || count.isEmpty()) return
 
-        db.achievementInsert(malaName, count)
+        if (count !in countList){
+            isInserted(false)
+            return
+        }
+
+        db.achievementInsert(malaName, count, isInserted = {isInserted(it)})
 
     }
 
