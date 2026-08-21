@@ -62,5 +62,19 @@ class BoishnobMalaModel(
 
     }
 
+    fun setCountLimit(value: String){
+
+        if (value.isEmpty()) return
+
+        cache.setCache("boishnob_mala_count_limit", value)
+
+    }
+
+    fun getCountLimit() : String{
+
+        return cache.getCache("boishnob_mala_count_limit", "0")
+
+    }
+
 
 }

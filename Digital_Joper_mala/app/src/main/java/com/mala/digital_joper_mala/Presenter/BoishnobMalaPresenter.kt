@@ -12,6 +12,7 @@ interface BoishnobMala{
 
     fun malaList (list: List<BoishnobItem>)
     fun lastCountCache (value : String)
+    fun countLimit(limit: String)
 
 }
 
@@ -40,6 +41,20 @@ class BoishnobMalaPresenter(
     fun getLastCountCache(){
 
         view.lastCountCache(model.getLastCountCache())
+
+    }
+
+    fun setCountLimit(value: String){
+
+        model.setCountLimit(value)
+
+        view.countLimit(model.getCountLimit())
+
+    }
+
+    fun getCountLimit(){
+
+        view.countLimit(model.getCountLimit())
 
     }
 
