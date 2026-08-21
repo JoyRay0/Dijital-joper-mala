@@ -182,6 +182,7 @@ class ComposeHelper {
 
                                 if (isVibrationEnabled) vibration(context)
 
+                                /*
                                 if (counterLimit > 0L){
 
                                     if (number < counterLimit) number++
@@ -189,6 +190,14 @@ class ComposeHelper {
                                 }else{
 
                                     number++
+                                }
+
+                                 */
+
+                                if (counterLimit > 0L){
+
+                                    if (counterLimit != number && counterLimit > number) number++
+
                                 }
 
 
