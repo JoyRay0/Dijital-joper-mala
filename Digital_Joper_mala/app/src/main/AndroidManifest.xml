@@ -64,19 +64,7 @@
             android:name=".View.Act_User_mala"
             android:exported="false" />
         <activity
-            android:name=".View.Act_search"
-            android:exported="false" />
-        <activity
-            android:name=".View.Act_jopa_history"
-            android:exported="false" />
-        <activity
-            android:name=".View.Act_ShivMala"
-            android:exported="false" />
-        <activity
             android:name=".View.Act_Custom_Mala"
-            android:exported="false" />
-        <activity
-            android:name=".View.Act_Boisnob_mala"
             android:exported="false" />
         <activity
             android:name=".View.Act_splash_screen"
