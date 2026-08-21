@@ -45,6 +45,7 @@ import com.mala.digital_joper_mala.Presenter.AchievementPresenter
 import com.mala.digital_joper_mala.Presenter.Achievements
 import com.mala.digital_joper_mala.Presenter.BoishnobMala
 import com.mala.digital_joper_mala.Presenter.BoishnobMalaPresenter
+import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
 
 class Act_boishnob_mala : ComponentActivity(), BoishnobMala, Achievements {
@@ -59,6 +60,7 @@ class Act_boishnob_mala : ComponentActivity(), BoishnobMala, Achievements {
     private val achievementList = mutableStateListOf<Achievement>()
     private val lastCountCache = mutableStateOf("")
     private val currentCount = mutableStateOf("")
+    private val getCountLimit = mutableStateOf("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +73,7 @@ class Act_boishnob_mala : ComponentActivity(), BoishnobMala, Achievements {
             var isDark by remember { mutableStateOf(false) }
             var isVibration by remember { mutableStateOf(false) }
             var reloadAchievementListCount by remember { mutableStateOf(0) }
+            var reloadCountLimit by remember { mutableStateOf(0) }
 
             if (ThemeHelper.isDarkTheme(this)) isDark = true else isDark = false
 
@@ -84,11 +87,17 @@ class Act_boishnob_mala : ComponentActivity(), BoishnobMala, Achievements {
 
             presenter.getLastCountCache()
             
-            LaunchedEffect(reloadAchievementListCount) {
+            LaunchedEffect(
+                reloadAchievementListCount,
+                reloadCountLimit
+            ) {
 
                 achievementPresenter.getAchievement("boishnob_mala")
 
+                presenter.getCountLimit()
+
             }
+            reloadCountLimit++
 
 
             Digital_Joper_malaTheme {
@@ -113,7 +122,12 @@ class Act_boishnob_mala : ComponentActivity(), BoishnobMala, Achievements {
                         currentCount.value = it.toString()
 
                     },
-                    lastCountCache = lastCountCache.value
+                    lastCountCache = lastCountCache.value,
+                    setCountLimit = {
+                        presenter.setCountLimit(it)
+                        reloadCountLimit++
+                                    },
+                    getCountLimit = getCountLimit.value
                 )
 
             }
@@ -163,6 +177,10 @@ class Act_boishnob_mala : ComponentActivity(), BoishnobMala, Achievements {
         lastCountCache.value = value
     }
 
+    override fun countLimit(limit: String) {
+        getCountLimit.value = limit
+    }
+
     override fun achievementCountList(list: List<Achievement>) {
         achievementList.clear()
         achievementList.addAll(list)
@@ -181,12 +199,16 @@ private fun BoisnobMalaFullScreen(
     saveCount : (Long) -> Unit = {},
     achievementList : List<Achievement> = emptyList(),
     currentCount : (Long) -> Unit = {},
-    lastCountCache : String = ""
+    lastCountCache : String = "",
+    setCountLimit: (String) -> Unit = {},
+    getCountLimit: String = "0"
 ) {
 
     var isMantraDialogVisible by remember { mutableStateOf(false) }
+    var isCounterEditVisible by remember { mutableStateOf(false) }
     var isAchievementDialogVisible by remember { mutableStateOf(false) }
     var count by remember { mutableStateOf(0L) }
+    var isAnyDialogVisible by remember { mutableStateOf(false) }
 
     val countList = listOf(1000L, 5000L, 10000L, 50000L, 100000L, 500000L)
 
@@ -207,11 +229,31 @@ private fun BoisnobMalaFullScreen(
 
     }
 
+    LaunchedEffect(
+        isMantraDialogVisible,
+        isCounterEditVisible,
+        isAchievementDialogVisible
+    ) {
+
+        if (isMantraDialogVisible || isCounterEditVisible || isAchievementDialogVisible){
+
+            isAnyDialogVisible = true
+
+        }else{
+
+            isAnyDialogVisible = false
+
+        }
+
+    }
+
     Scaffold(
 
         topBar = { Toolbar(
             isDark = isDark,
-            backClick = { backClick() }
+            backClick = { backClick() },
+            countEdit = { isCounterEditVisible = true },
+            isAnyDialogVisible = isAnyDialogVisible
         ) },
 
         modifier = Modifier
@@ -233,7 +275,7 @@ private fun BoisnobMalaFullScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.Center),
-                counterLimit = 50000L,
+                counterLimit = countList[getCountLimit.toIntOrNull() ?: 0],
                 currentCount = { count = it },
                 isDark = isDark,
                 isVibrationEnabled = isVibration,
@@ -278,7 +320,11 @@ private fun BoisnobMalaFullScreen(
                 ComposeHelper().MilestonesDialog(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(alpha = 0.5f)),
+                        .background(
+                            if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                                alpha = 0.5f
+                            )
+                        ),
                     closeClick = {
                         isAchievementDialogVisible = false
                         saveCount(count)
@@ -289,6 +335,23 @@ private fun BoisnobMalaFullScreen(
 
             }
 
+            if (isCounterEditVisible){
+
+                CounterLimit(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                                alpha = 0.5f
+                            )
+                        ),
+                    closeClick = { isCounterEditVisible = false },
+                    setCountLimit = { setCountLimit(it) },
+                    getCountLimit = getCountLimit,
+                    isDark = isDark
+                )
+
+            }
 
         }//box
 
@@ -302,6 +365,8 @@ private fun BoisnobMalaFullScreen(
 private fun Toolbar(
     isDark : Boolean = false,
     backClick : () -> Unit = {},
+    countEdit : () -> Unit = {},
+    isAnyDialogVisible : Boolean = false
 ) {
 
     Box(
@@ -324,11 +389,43 @@ private fun Toolbar(
         ) {
 
             Icon(
-                painter = painterResource(com.mala.digital_joper_mala.R.drawable.ic_back),
+                painter = painterResource(R.drawable.ic_back),
                 contentDescription = "Back",
                 tint = Color(0xFFFFFFFF),
                 modifier = Modifier
                     .wrapContentWidth()
+                    .align(Alignment.Center)
+
+            )
+
+        }
+
+        IconButton(
+            onClick = {
+
+                if (!isAnyDialogVisible){
+
+                    countEdit()
+
+                }
+
+            },
+            modifier = Modifier
+                .wrapContentWidth()
+                .clip(shape = CircleShape)
+                //.background(color = Color.Green)
+                .align(Alignment.CenterEnd)
+                .size(37.dp)
+        ) {
+
+            Icon(
+                painter = painterResource(R.drawable.ic_edit),
+                contentDescription = "edit",
+                tint = Color(0xFFFFFFFF),
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .size(22.dp)
+                    .align(Alignment.Center)
 
             )
 
@@ -573,4 +670,153 @@ private fun Item(
 
     }//box
 
+}//fun end
+
+@Preview(showBackground = true)
+@Composable
+private fun CounterLimit(
+    modifier: Modifier = Modifier,
+    closeClick: () -> Unit = {},
+    setCountLimit : (String) -> Unit = {},
+    getCountLimit : String = "",
+    isDark: Boolean = true
+) {
+
+    val counterList = listOf("১,০০০", "৫,০০০", "১০,০০০", "৫০,০০০", "১,০০,০০০", "৫,০০,০০০")
+    var selectedIndex by remember { mutableStateOf(0) }
+
+    LaunchedEffect( getCountLimit) {
+
+        if (getCountLimit.isEmpty()){
+
+            selectedIndex = 0
+
+        }else{
+
+            selectedIndex = getCountLimit.toInt()
+
+        }
+
+    }
+
+    Box(
+
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(
+                indication = null,
+                interactionSource = null
+            ){ closeClick() }
+            .padding(9.dp)
+
+    ) {
+
+        Column(
+
+            modifier = Modifier
+                .wrapContentWidth()
+                .shadow(elevation = 3.dp, shape = RoundedCornerShape(18.dp))
+                .clip(shape = RoundedCornerShape(18.dp))
+                .clickable(
+                    indication = null,
+                    interactionSource = null
+                ){}
+                .background(color = if (isDark) Color.DarkGray else Color.White)
+                .padding(5.dp)
+                .align(Alignment.TopEnd)
+
+        ) {
+
+            Text( text = "জপ লিমিট",
+                fontSize = 16.sp,
+                fontFamily = BanglaHelper.banglaFont(),
+                fontWeight = FontWeight.SemiBold,
+                color = if (isDark) Color.White else Color.Black,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .padding(5.dp)
+                    .align(Alignment.CenterHorizontally)
+
+            )
+
+            Spacer(modifier = Modifier.height(5.dp))
+
+            counterList.forEachIndexed { index, counter ->
+
+                Row(
+
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .width(150.dp)
+                        /*
+                        .border(
+                            width = 1.dp,
+                            color = if (selectedIndex == index) Color.White.copy(alpha = 0.2f) else Color.Black.copy(alpha = 0.2f),
+                            shape = RoundedCornerShape(16.dp))
+
+                         */
+                        .clip(shape = RoundedCornerShape(16.dp))
+                        .clickable{
+
+                            selectedIndex = index
+                            setCountLimit(selectedIndex.toString())
+                            closeClick()
+
+                        }
+                        .background(color = if (selectedIndex == index) Color(0xFF97A7FF) else Color.Transparent)
+                        .padding(7.dp)
+
+                ) {
+
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    Box(
+
+                        modifier = Modifier
+                            .fillMaxWidth()
+
+                    ) {
+
+                        if (selectedIndex == index){
+
+                            Icon( painter = painterResource(R.drawable.ic_ok),
+                                contentDescription = "",
+                                tint = if (selectedIndex == index) Color.White else Color(0xFF000000),
+                                modifier = Modifier
+                                    .wrapContentWidth()
+                                    .size(19.dp)
+                                    .align(Alignment.CenterStart)
+
+                            )
+
+                        }
+
+                        Text( text = counter,
+                            fontSize = 16.sp,
+                            fontFamily = BanglaHelper.banglaFont(),
+                            fontWeight = FontWeight.Normal,
+                            color = if (selectedIndex == index){
+                                Color.White
+                            } else {
+
+                                if (isDark) Color.LightGray else Color.Black
+                            },
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .align(Alignment.Center)
+
+                        )
+
+                    }//box
+
+                }//row
+
+            }//loop
+
+        }//column
+
+    }//box
+    
 }//fun end
