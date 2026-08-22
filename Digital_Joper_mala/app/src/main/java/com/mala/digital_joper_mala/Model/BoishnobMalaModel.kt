@@ -22,7 +22,7 @@ class BoishnobMalaModel(
 
         boishnobMalaList.add(BoishnobItem(
             id = 1,
-            title = "মালা জপের পূ্র্বের মন্ত্র:",
+            title = "জপ শুরুর মন্ত্র:",
             mantra = "‘‘ শ্রীকৃষ্ণ চৈতন্য প্রভু নিত্যানন্দ শ্রী অদ্বৈত গদাধর শ্রীবাসাদি গৌর ভক্তবৃন্দ। ’’"
         ))
 
