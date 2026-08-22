@@ -155,7 +155,7 @@ class Act_home : ComponentActivity(), Home {//class=============================
                     },
                     easyMalaClick = {
 
-                        IntentHelper.normalIntent(this, Act_all_mantra::class.java)
+                        IntentHelper.normalIntent(this, Act_easy_mala::class.java)
 
                     },
                     boisnobMalaClick = {
