@@ -10,6 +10,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -103,7 +104,7 @@ class ComposeHelper {
                         .width(width)
                         .height(70.dp)
                         .clip(shape = RoundedCornerShape(12.dp))
-                        .background(color =  if (isDark) Color(0xFF9F8282) else Color(0xFFEADADA))
+                        .background(color = if (isDark) Color(0xFF9F8282) else Color(0xFFEADADA))
                         //.padding(40.dp)
                         .align(Alignment.CenterHorizontally)
 
@@ -194,7 +195,7 @@ class ComposeHelper {
 
                                  */
 
-                                if (counterLimit > 0L){
+                                if (counterLimit > 0L) {
 
                                     if (counterLimit != number && counterLimit > number) number++
 
@@ -262,7 +263,7 @@ class ComposeHelper {
                 .clickable(
                     indication = null,
                     interactionSource = null
-                ){}
+                ) {}
                 .padding(12.dp)
 
         ) {
@@ -276,8 +277,8 @@ class ComposeHelper {
                     .clickable(
                         indication = null,
                         interactionSource = null
-                    ){}
-                    .background(color =if (isDark) Color.DarkGray else Color.White)
+                    ) {}
+                    .background(color = if (isDark) Color.DarkGray else Color.White)
                     .padding(7.dp)
                     .align(Alignment.BottomCenter)
 
@@ -386,6 +387,110 @@ class ComposeHelper {
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
+
+            }//column
+
+        }//box
+
+    }//fun end
+
+
+    @Composable
+    fun Dialog(
+        modifier: Modifier = Modifier,
+        headerText : String = "Header",
+        headerTestSize : Float = 18f,
+        headerTextWeight : FontWeight = FontWeight.Bold,
+        isHeaderEnabled : Boolean = true,
+        isDark: Boolean = false,
+        closeClick: () -> Unit = {},
+        content : @Composable (ColumnScope.() -> Unit)
+    ) {
+
+        Box(
+
+            modifier = modifier
+                .fillMaxWidth()
+                .clickable(
+                    indication = null,
+                    interactionSource = null
+                ) {}
+                .padding(12.dp)
+
+        ) {
+
+            Column(
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    //.shadow(elevation = 3.dp, shape = RoundedCornerShape(14.dp))
+                    .clip(shape = RoundedCornerShape(22.dp))
+                    .clickable(
+                        indication = null,
+                        interactionSource = null
+                    ) {}
+                    .background(color = if (isDark) Color.DarkGray else Color.White)
+                    .padding(7.dp)
+                    .align(Alignment.BottomCenter)
+
+            ) {
+
+                Spacer(modifier = Modifier.height(7.dp))
+
+                if (isHeaderEnabled){
+
+                    Box(
+
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.CenterHorizontally)
+
+                    ) {
+
+                        Text(
+                            text = headerText,
+                            fontSize = headerTestSize.sp,
+                            fontFamily = BanglaHelper.banglaFont(),
+                            fontWeight = headerTextWeight,
+                            color = if (isDark) Color(0xFFEAEAEA) else Color(0xFF000000),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .align(Alignment.Center)
+
+                        )
+
+                        /* close button */
+
+                        Box(
+
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .clip(shape = CircleShape)
+                                //.background(color = Color.Gray)
+                                .clickable { closeClick() }
+                                .size(30.dp)
+                                .align(Alignment.CenterEnd)
+
+                        ) {
+
+                            Icon( painter = painterResource(com.mala.digital_joper_mala.R.drawable.ic_wrong),
+                                contentDescription = "",
+                                tint = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                                modifier = Modifier
+                                    .wrapContentWidth()
+                                    .size(18.dp)
+                                    .align(Alignment.Center)
+
+                            )
+
+                        }// icon box
+
+                    }//box
+
+                }//condition
+
+                content()
 
             }//column
 
