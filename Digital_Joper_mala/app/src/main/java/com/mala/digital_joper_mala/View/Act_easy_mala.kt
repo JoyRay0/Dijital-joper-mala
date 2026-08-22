@@ -1,7 +1,6 @@
 package com.mala.digital_joper_mala.View
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -34,6 +33,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -41,13 +41,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -65,17 +63,28 @@ import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightStatusBar
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightToolBar
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.Helper.BanglaHelper
-import com.mala.digital_joper_mala.Helper.CacheHelper_
+import com.mala.digital_joper_mala.Helper.ComposeHelper
 import com.mala.digital_joper_mala.Helper.SanitizeHelper
 import com.mala.digital_joper_mala.Helper.ThemeHelper
 import com.mala.digital_joper_mala.Helper.TrackScreen
+import com.mala.digital_joper_mala.Helper.VibrationHelper
+import com.mala.digital_joper_mala.Model.Achievement
+import com.mala.digital_joper_mala.Presenter.AchievementPresenter
+import com.mala.digital_joper_mala.Presenter.Achievements
+import com.mala.digital_joper_mala.Presenter.EasyMala
+import com.mala.digital_joper_mala.Presenter.EasyMalaPresenter
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.Digital_Joper_malaTheme
 
-class Act_easy_mala : ComponentActivity() {
-
-    private lateinit var cacheHelper: CacheHelper_
-
+class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {
     private lateinit var tracker : TrackScreen
+    private lateinit var presenter : EasyMalaPresenter
+    private lateinit var achievementPresenter : AchievementPresenter
+
+    //init============
+    private val achievementList = mutableStateListOf<Achievement>()
+    private val lastCountCache = mutableStateOf("")
+    private val currentCount = mutableStateOf("")
+    private val getCountLimit = mutableStateOf("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +95,9 @@ class Act_easy_mala : ComponentActivity() {
         setContent {
 
             var isDark by remember { mutableStateOf(false) }
-            var counter by remember { mutableStateOf(0L) }
+            var isVibration by remember { mutableStateOf(false) }
+            var reloadAchievementListCount by remember { mutableStateOf(0) }
+            var reloadCountLimit by remember { mutableStateOf(0) }
 
             if (ThemeHelper.isDarkTheme(this)) isDark = true else isDark = false
 
@@ -96,19 +107,49 @@ class Act_easy_mala : ComponentActivity() {
                 darkIcons = false
             )
 
-            val cacheData = cacheHelper.getCache("counter_limit", "")
+            if (VibrationHelper.IsVibration(this)) isVibration = true else isVibration = false
+
+            presenter.getLastCountCache()
+
+            LaunchedEffect(
+                reloadAchievementListCount,
+                reloadCountLimit
+            ) {
+
+                achievementPresenter.getAchievement("easy_mala")
+
+                presenter.getCountLimit()
+
+            }
+            reloadCountLimit++
 
             Digital_Joper_malaTheme{
 
                 EasyMalaFullScreen(
                     isDark = isDark,
                     backClick = { finish() },
-                    saveClick = {
-                        cacheHelper.deleteCache("counter_limit")
-                        cacheHelper.setCache("counter_limit", counter.toString())
-                                },
-                    counter = { counter = it },
-                    readCounter = if (cacheData.isNotEmpty() && cacheData != null) cacheData else ""
+                    //floatingButtonClick = { presenter.getShivMala() },
+                    isVibration = isVibration,
+                    saveAchievementCount = { count ->
+
+                        achievementPresenter.insertAchievement("easy_mala", count.toString(), isInserted = { success ->
+
+                            if (success) reloadAchievementListCount++
+
+                        })
+
+                    },
+                    achievementList = achievementList,
+                    currentCount = {
+                        currentCount.value = it.toString()
+
+                    },
+                    lastCountCache = lastCountCache.value,
+                    setCountLimit = {
+                        presenter.setCountLimit(it.ifEmpty { "" })
+                        reloadCountLimit++
+                    },
+                    getCountLimit = getCountLimit.value,
                 )
 
 
@@ -120,7 +161,11 @@ class Act_easy_mala : ComponentActivity() {
 
     private fun init(){
 
-        cacheHelper = CacheHelper_(this, "easy_mala")
+        tracker = TrackScreen(this)
+
+        presenter = EasyMalaPresenter(this, this)
+
+        achievementPresenter = AchievementPresenter(this, this)
 
     }
 
@@ -134,6 +179,27 @@ class Act_easy_mala : ComponentActivity() {
         super.onStop()
 
         tracker.stop(ACTIVITY.Act_easy_mala)
+
+        presenter.setLastCountCache(currentCount.value)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDestroy()
+        achievementPresenter.onDestroy()
+    }
+
+    override fun lastCountCache(value: String) {
+        lastCountCache.value = value
+    }
+
+    override fun countLimit(limit: String) {
+        getCountLimit.value = limit
+    }
+
+    override fun achievementCountList(list: List<Achievement>) {
+        achievementList.clear()
+        achievementList.addAll(list)
     }
 
 }//class=======================================================
@@ -144,24 +210,71 @@ class Act_easy_mala : ComponentActivity() {
 private fun EasyMalaFullScreen(
     isDark : Boolean = false,
     backClick: () -> Unit = {},
-    saveClick: () -> Unit = {},
-    counter : (Long) -> Unit = {},
-    readCounter : String = ""
+    //floatingButtonClick : () -> Unit = {},
+    isVibration : Boolean = false,
+    saveAchievementCount : (Long) -> Unit = {},
+    achievementList : List<Achievement> = emptyList(),
+    currentCount : (Long) -> Unit = {},
+    lastCountCache : String = "",
+    setCountLimit: (String) -> Unit = {},
+    getCountLimit: String = "0",
 
-) {
+    ) {
 
-    var isInputFiledVisible by remember { mutableStateOf(false) }
-    var totalCount by remember { mutableStateOf(0L) }
+    var isMantraDialogVisible by remember { mutableStateOf(false) }
+    var isCounterEditVisible by remember { mutableStateOf(false) }
+    var isAchievementDialogVisible by remember { mutableStateOf(false) }
+    var count by remember { mutableStateOf(0L) }
+    var isAnyDialogVisible by remember { mutableStateOf(false) }
 
-    if (readCounter.isNotEmpty() && readCounter != "null") totalCount = readCounter.toLong() else totalCount = 0L
+    val countList = listOf(1000L, 5000L, 10000L, 50000L, 100000L, 500000L)
+
+    LaunchedEffect(count, achievementList) {
+
+        /* current count to save in cache */
+
+        currentCount(count)
+
+        /* check for achievement dialog */
+        val isExists = achievementList.any {
+
+            it.achievementCount == count.toString()
+
+        }
+
+        if (!isExists && count in countList) isAchievementDialogVisible = true
+
+    }
+
+    LaunchedEffect(
+        isMantraDialogVisible,
+        isCounterEditVisible,
+        isAchievementDialogVisible
+    ) {
+
+        if (isMantraDialogVisible || isCounterEditVisible || isAchievementDialogVisible){
+
+            isAnyDialogVisible = true
+
+        }else{
+
+            isAnyDialogVisible = false
+
+        }
+
+    }
 
     Scaffold(
         topBar = {Toolbar(
             isDark = isDark,
             backClick = backClick,
-            editClick = { isInputFiledVisible = true },
-            count = totalCount
+            countEdit = {
+                isCounterEditVisible = true
+            },
+            isAnyDialogVisible = isAnyDialogVisible,
+            count = getCountLimit.toLongOrNull() ?: 0L
         )},
+
         modifier = Modifier
             .fillMaxSize()
             .background(color = if (isDark) DarkStatusBar else LightStatusBar)
@@ -178,37 +291,61 @@ private fun EasyMalaFullScreen(
 
         ) {
 
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Counter(
+            /* counter */
+            ComposeHelper().Counter(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.Center),
-                counterLimit = totalCount,
-                isDark = isDark
+                counterLimit = getCountLimit.toLongOrNull() ?: 1000L,
+                currentCount = { count = it },
+                isDark = isDark,
+                isVibrationEnabled = isVibration,
+                countNumber = lastCountCache
             )
 
-            if (isInputFiledVisible){
+            /* Achievements */
+            if (isAchievementDialogVisible){
+
+                ComposeHelper().MilestonesDialog(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                                alpha = 0.5f
+                            )
+                        ),
+                    closeClick = {
+                        isAchievementDialogVisible = false
+                        saveAchievementCount(count)
+                    },
+                    currentCount = count,
+                    isDark = isDark
+                )
+
+            }
+
+            /* count edit */
+
+            if (isCounterEditVisible){
 
                 ModalBottomSheet(
-                    onDismissRequest = {isInputFiledVisible = false},
+                    onDismissRequest = {isCounterEditVisible = false},
                     containerColor = if (isDark) Color(0xFF644646) else Color(0xFFFFFFFF),
                     dragHandle = null,
 
                 ) {
 
-                    CounterLimit(
+                    CounterEdit(
                         saveClick = {
-                            saveClick()
-                            isInputFiledVisible = false },
-                        closeClick = { isInputFiledVisible = false },
-                        input = { totalCount = it },
+                            setCountLimit( if (it <= 0) "" else it.toString() )
+                            isCounterEditVisible = false },
+                        closeClick = { isCounterEditVisible = false },
                         isDark = isDark
                     )
 
                 }//dialog
 
-                counter(totalCount)
+                //counter(totalCount)
 
             }
 
@@ -226,9 +363,9 @@ private fun EasyMalaFullScreen(
 private fun Toolbar(
     isDark : Boolean = false,
     backClick : () -> Unit = {},
-    editClick : () -> Unit = {},
+    countEdit : () -> Unit = {},
+    isAnyDialogVisible : Boolean = false,
     count : Long = 0
-
 ) {
 
     var isCount by remember { mutableStateOf(false) }
@@ -289,22 +426,31 @@ private fun Toolbar(
             Spacer(modifier = Modifier.width(10.dp))
 
             IconButton(
-                onClick = editClick,
+                onClick = {
+
+                    if (!isAnyDialogVisible){
+
+                        countEdit()
+
+                    }
+
+                },
                 modifier = Modifier
                     .wrapContentWidth()
                     .clip(shape = CircleShape)
                     //.background(color = Color.Green)
                     .align(Alignment.CenterVertically)
-                    .size(40.dp)
+                    .size(37.dp)
             ) {
 
                 Icon(
-                    painter = painterResource(R.drawable.ic_edit2),
-                    contentDescription = "Edit",
+                    painter = painterResource(R.drawable.ic_edit),
+                    contentDescription = "edit",
                     tint = Color(0xFFFFFFFF),
                     modifier = Modifier
                         .wrapContentWidth()
-                        .size(20.dp)
+                        .size(22.dp)
+                        .align(Alignment.CenterVertically)
 
                 )
 
@@ -319,158 +465,9 @@ private fun Toolbar(
 
 @Preview(showBackground = true)
 @Composable
-private fun Counter(
-    modifier: Modifier = Modifier,
-    counterLimit : Long = 0,
-    isDark: Boolean = false
-    
-) {
-    
-    var number by remember { mutableStateOf(0L) }
-
-    val maxWidth = 120.dp
-
-    val width = if (number.toString().length > 5){
-
-        maxWidth + ((number.toString().length - 5) * 5).dp
-
-    }else maxWidth
-
-
-
-
-    Box(
-
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(10.dp)
-
-    ) {
-
-        Column(
-
-            modifier = Modifier
-                .wrapContentWidth()
-                .align(Alignment.Center)
-
-        ) {
-
-            Box(
-
-                modifier = Modifier
-                    .width(width)
-                    .height(70.dp)
-                    .clip(shape = RoundedCornerShape(12.dp))
-                    .background(color =  if (isDark) Color(0xFFB48E8E) else Color(0xFFEADADA))
-                    //.padding(40.dp)
-                    .align(Alignment.CenterHorizontally)
-
-            ) {
-
-                Text(BanglaHelper.readLong(number),
-                    fontSize = 25.sp,
-                    fontFamily = BanglaHelper.banglaFont(),
-                    fontWeight = FontWeight.SemiBold,
-                    color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.Center)
-                        .padding(10.dp)
-                )
-
-            }//box
-
-            Spacer(modifier = Modifier.height(130.dp))
-
-            //buttons
-            Box(
-
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
-                    .align(Alignment.CenterHorizontally)
-
-            ) {
-
-                Box(
-
-                    modifier = Modifier
-                        .width(60.dp)
-                        .height(60.dp)
-                        .shadow(elevation = 5.dp, shape = CircleShape)
-                        .clip(shape = CircleShape)
-                        .clickable { number = 0L }
-                        .background(color = Color(0xFFF44336))
-                        .align(Alignment.CenterStart)
-
-                ) {
-
-                    Icon( painter = painterResource(R.drawable.ic_refresh),
-                        contentDescription = "Reset",
-                        tint = Color(0xFFFFFFFF),
-                        modifier = Modifier
-                            .wrapContentWidth()
-                            .size(30.dp)
-                            .align(Alignment.Center)
-
-                    )
-
-                }
-
-                Box(
-
-                    modifier = Modifier
-                        .width(60.dp)
-                        .height(60.dp)
-                        .shadow(elevation = 5.dp, shape = CircleShape)
-                        .clip(shape = CircleShape)
-                        .clickable {
-
-                            if (counterLimit > 0L){
-
-                                if (number < counterLimit) number++
-
-                            }else{
-
-                                number++
-                            }
-
-
-                        }
-                        .background(color = Color(0xFF4CAF50))
-                        .align(Alignment.CenterEnd)
-
-                ) {
-
-                    Icon( painter = painterResource(R.drawable.ic_add),
-                        contentDescription = "add",
-                        tint = Color(0xFFFFFFFF),
-                        modifier = Modifier
-                            .wrapContentWidth()
-                            .size(30.dp)
-                            .align(Alignment.Center)
-
-                    )
-
-                }
-
-            }//box
-
-        }//column
-
-    }//box
-
-}//fun end
-
-
-@Preview(showBackground = true)
-@Composable
-private fun CounterLimit(
-    saveClick : () -> Unit = {},
+private fun CounterEdit(
+    saveClick : (Long) -> Unit = {},
     closeClick : () -> Unit = {},
-    input : (Long) -> Unit = {},
     isDark: Boolean = false
 ) {
 
@@ -524,7 +521,7 @@ private fun CounterLimit(
                 }
 
                 BasicTextField(
-                    value = counterInput,
+                    value = if (counterInput.isNotEmpty()) BanglaHelper.readLong(counterInput.toLong()) else counterInput,
                     onValueChange = {
 
                         if (it.length <= 12){
@@ -567,7 +564,7 @@ private fun CounterLimit(
 
                         Icon( painter = painterResource(R.drawable.ic_clear),
                             contentDescription = "",
-                            tint = Color(0xFF5E4F4F),
+                            tint = if (isDark) Color(0xFFE7E5E5) else Color(0xFF5E4F4F),
                             modifier = Modifier
                                 .wrapContentWidth()
                                 .size(19.dp)
@@ -587,7 +584,7 @@ private fun CounterLimit(
 
             }//box
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Row(
 
@@ -633,11 +630,7 @@ private fun CounterLimit(
                             enabled = if (counterInput.isEmpty()) false else true
                         ){
 
-                            input(SanitizeHelper.sanitizeNumber(counterInput))
-
-                            Log.d("input", SanitizeHelper.sanitizeNumber(counterInput).toString())
-
-                            saveClick()
+                            saveClick(SanitizeHelper.sanitizeNumber(counterInput))
 
                         }
                         .alpha(if (counterInput.isEmpty()) 0.5f else 1f)
@@ -650,7 +643,7 @@ private fun CounterLimit(
                     Text("সেভ",
                         fontSize = 15.sp,
                         fontFamily = BanglaHelper.banglaFont(),
-                        fontWeight = FontWeight.Normal,
+                        fontWeight = FontWeight.SemiBold,
                         color = Color.White,
                         modifier = Modifier
                             .wrapContentWidth()
