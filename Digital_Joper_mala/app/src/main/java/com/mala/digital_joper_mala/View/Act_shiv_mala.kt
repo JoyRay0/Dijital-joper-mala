@@ -5,27 +5,44 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.mala.digital_joper_mala.Helper.ACTIVITY
+import com.mala.digital_joper_mala.Helper.BanglaHelper
+import com.mala.digital_joper_mala.Helper.ComposeHelper
 import com.mala.digital_joper_mala.Helper.ThemeHelper
 import com.mala.digital_joper_mala.Helper.TrackScreen
 import com.mala.digital_joper_mala.Helper.VibrationHelper
+import com.mala.digital_joper_mala.Model.Achievement
+import com.mala.digital_joper_mala.Model.BoishnobItem
 import com.mala.digital_joper_mala.Model.ShivItem
+import com.mala.digital_joper_mala.Presenter.AchievementPresenter
+import com.mala.digital_joper_mala.Presenter.Achievements
 import com.mala.digital_joper_mala.Presenter.HomePresenter
 import com.mala.digital_joper_mala.Presenter.ShivMala
 import com.mala.digital_joper_mala.Presenter.ShivMalaPresenter
@@ -33,10 +50,19 @@ import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
 
 
-class Act_shiv_mala : ComponentActivity(), ShivMala {
+class Act_shiv_mala : ComponentActivity(), ShivMala, Achievements {
 
     private lateinit var tracker : TrackScreen
     private lateinit var presenter : ShivMalaPresenter
+    private lateinit var achievementPresenter : AchievementPresenter
+
+    //init
+
+    private val mantraList = mutableStateListOf<ShivItem>()
+    private val achievementList = mutableStateListOf<Achievement>()
+    private val lastCountCache = mutableStateOf("")
+    private val currentCount = mutableStateOf("")
+    private val getCountLimit = mutableStateOf("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +74,8 @@ class Act_shiv_mala : ComponentActivity(), ShivMala {
 
             var isDark by remember { mutableStateOf(false) }
             var isVibration by remember { mutableStateOf(false) }
+            var reloadAchievementListCount by remember { mutableStateOf(0) }
+            var reloadCountLimit by remember { mutableStateOf(0) }
 
             if (ThemeHelper.isDarkTheme(this)) isDark = true else isDark = false
 
@@ -59,11 +87,48 @@ class Act_shiv_mala : ComponentActivity(), ShivMala {
 
             if (VibrationHelper.IsVibration(this)) isVibration = true else isVibration = false
 
+            presenter.getLastCountCache()
+
+            LaunchedEffect(
+                reloadAchievementListCount,
+                reloadCountLimit
+            ) {
+
+                achievementPresenter.getAchievement("shiv_mala")
+
+                presenter.getCountLimit()
+
+            }
+            reloadCountLimit++
+
             Digital_Joper_malaTheme {
 
                 ShivMalaFullScreen(
                     isDark = isDark,
-                    backClick = { finish() }
+                    backClick = { finish() },
+                    mantraList = mantraList,
+                    floatingButtonClick = { presenter.getShivMala() },
+                    isVibration = isVibration,
+                    saveCount = { count ->
+
+                        achievementPresenter.insertAchievement("shiv_mala", count.toString(), isInserted = { success ->
+
+                            if (success) reloadAchievementListCount++
+
+                        })
+
+                    },
+                    achievementList = achievementList,
+                    currentCount = {
+                        currentCount.value = it.toString()
+
+                    },
+                    lastCountCache = lastCountCache.value,
+                    setCountLimit = {
+                        presenter.setCountLimit(it)
+                        reloadCountLimit++
+                    },
+                    getCountLimit = getCountLimit.value,
                 )
 
             }
@@ -74,7 +139,9 @@ class Act_shiv_mala : ComponentActivity(), ShivMala {
 
         tracker = TrackScreen(this)
 
-        presenter = ShivMalaPresenter(this)
+        presenter = ShivMalaPresenter(this, this)
+
+        achievementPresenter = AchievementPresenter(this, this)
     }
 
     override fun onStart() {
@@ -89,10 +156,34 @@ class Act_shiv_mala : ComponentActivity(), ShivMala {
         super.onStop()
 
         tracker.stop(ACTIVITY.Act_shiv_mala)
+
+        presenter.setLastCountCache(currentCount.value)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDestroy()
+        achievementPresenter.onDestroy()
     }
 
     override fun malaList(list: List<ShivItem>) {
 
+        mantraList.clear()
+        mantraList.addAll(list)
+
+    }
+
+    override fun lastCountCache(value: String) {
+        lastCountCache.value = value
+    }
+
+    override fun countLimit(limit: String) {
+        getCountLimit.value = limit
+    }
+
+    override fun achievementCountList(list: List<Achievement>) {
+        achievementList.clear()
+        achievementList.addAll(list)
     }
 
 }//class===================================
@@ -101,14 +192,70 @@ class Act_shiv_mala : ComponentActivity(), ShivMala {
 @Composable
 private fun ShivMalaFullScreen(
     isDark: Boolean = false,
-    backClick: () -> Unit = {}
+    backClick: () -> Unit = {},
+    mantraList : List<ShivItem> = emptyList(),
+    floatingButtonClick : () -> Unit = {},
+    isVibration : Boolean = false,
+    saveCount : (Long) -> Unit = {},
+    achievementList : List<Achievement> = emptyList(),
+    currentCount : (Long) -> Unit = {},
+    lastCountCache : String = "",
+    setCountLimit: (String) -> Unit = {},
+    getCountLimit: String = "0",
 ) {
+
+    var isMantraDialogVisible by remember { mutableStateOf(false) }
+    var isCounterEditVisible by remember { mutableStateOf(false) }
+    var isAchievementDialogVisible by remember { mutableStateOf(false) }
+    var count by remember { mutableStateOf(0L) }
+    var isAnyDialogVisible by remember { mutableStateOf(false) }
+
+    val countList = listOf(1000L, 5000L, 10000L, 50000L, 100000L, 500000L)
+
+    LaunchedEffect(count, achievementList) {
+
+        /* current count to save in cache */
+
+        currentCount(count)
+
+        /* check for achievement dialog */
+        val isExists = achievementList.any {
+
+            it.achievementCount == count.toString()
+
+        }
+
+        if (!isExists && count in countList) isAchievementDialogVisible = true
+
+    }
+
+    LaunchedEffect(
+        isMantraDialogVisible,
+        isCounterEditVisible,
+        isAchievementDialogVisible
+    ) {
+
+        if (isMantraDialogVisible || isCounterEditVisible || isAchievementDialogVisible){
+
+            isAnyDialogVisible = true
+
+        }else{
+
+            isAnyDialogVisible = false
+
+        }
+
+    }
 
     Scaffold(
 
         topBar = { Toolbar(
             isDark = isDark,
-            backClick = { backClick() }
+            backClick = { backClick() },
+            countEdit = {
+                isCounterEditVisible = true
+                        },
+            isAnyDialogVisible = isAnyDialogVisible
         ) },
 
         modifier = Modifier
@@ -126,6 +273,89 @@ private fun ShivMalaFullScreen(
         ) {
 
 
+            /* counter */
+            ComposeHelper().Counter(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Center),
+                counterLimit = countList[getCountLimit.toIntOrNull() ?: 0],
+                currentCount = { count = it },
+                isDark = isDark,
+                isVibrationEnabled = isVibration,
+                countNumber = lastCountCache
+            )
+
+            /* floating button */
+
+            FloatingButton(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .align(Alignment.BottomEnd),
+                isDark = isDark,
+                onClick = {
+                    floatingButtonClick()
+                    isMantraDialogVisible = true
+                }
+            )
+
+            /* mantra dialog */
+
+            if (isMantraDialogVisible){
+
+                MantraDialog(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            color = if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                                alpha = 0.5f
+                            )
+                        ),
+                    isDark = isDark,
+                    mantraList = mantraList,
+                    closeClick = { isMantraDialogVisible = false }
+                )
+
+            }
+
+            /* Achievements */
+            if (isAchievementDialogVisible){
+
+                ComposeHelper().MilestonesDialog(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                                alpha = 0.5f
+                            )
+                        ),
+                    closeClick = {
+                        isAchievementDialogVisible = false
+                        saveCount(count)
+                    },
+                    currentCount = count,
+                    isDark = isDark
+                )
+
+            }
+
+            if (isCounterEditVisible){
+
+                CounterLimit(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                                alpha = 0.5f
+                            )
+                        ),
+                    closeClick = { isCounterEditVisible = false },
+                    setCountLimit = { setCountLimit(it) },
+                    getCountLimit = getCountLimit,
+                    isDark = isDark
+                )
+
+            }
+
 
         }//box
 
@@ -138,6 +368,8 @@ private fun ShivMalaFullScreen(
 private fun Toolbar(
     isDark : Boolean = false,
     backClick : () -> Unit = {},
+    countEdit : () -> Unit = {},
+    isAnyDialogVisible : Boolean = false
 ) {
 
     Box(
@@ -169,6 +401,427 @@ private fun Toolbar(
             )
 
         }
+
+        IconButton(
+            onClick = {
+
+                if (!isAnyDialogVisible){
+
+                    countEdit()
+
+                }
+
+            },
+            modifier = Modifier
+                .wrapContentWidth()
+                .clip(shape = CircleShape)
+                //.background(color = Color.Green)
+                .align(Alignment.CenterEnd)
+                .size(37.dp)
+        ) {
+
+            Icon(
+                painter = painterResource(R.drawable.ic_edit),
+                contentDescription = "edit",
+                tint = Color(0xFFFFFFFF),
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .size(22.dp)
+                    .align(Alignment.Center)
+
+            )
+
+        }
+
+    }//box
+
+}//fun end
+
+@Preview(showBackground = true)
+@Composable
+private fun FloatingButton(
+    modifier: Modifier = Modifier,
+    isDark: Boolean = false,
+    onClick : () -> Unit = {}
+) {
+
+    Box(
+
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(25.dp)
+
+    ) {
+
+        Box(
+            modifier = Modifier
+                .wrapContentWidth()
+                .shadow(
+                    elevation = 4.dp,
+                    shape = RoundedCornerShape(16.dp),
+                    ambientColor = if (isDark) Color.White else Color.Black,
+                    spotColor = if (isDark) Color.White else Color.Black
+                )
+                .clip(shape = RoundedCornerShape(16.dp))
+                .clickable { onClick() }
+                .background(color = if (isDark) Color(0xFF4B4A4A) else Color(0xFF2196F3))
+                .padding(14.dp)
+                .align(Alignment.BottomEnd)
+
+        ) {
+
+            Text( text = "শিব মন্ত্র",
+                fontSize = 15.sp,
+                fontFamily = BanglaHelper.banglaFont(),
+                fontWeight = FontWeight.Normal,
+                color = Color(0xFFFFFFFF),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .align(Alignment.Center)
+
+            )
+
+        }//box
+
+    }//box
+
+}//fun end
+
+@Preview(showBackground = true)
+@Composable
+private fun MantraDialog(
+    modifier: Modifier = Modifier,
+    isDark: Boolean = false,
+    mantraList : List<ShivItem> = emptyList(),
+    closeClick: () -> Unit = {},
+) {
+
+    val lazState = rememberLazyListState()
+
+    Box(
+
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(
+                indication = null,
+                interactionSource = null
+            ) {}
+            .padding(9.dp)
+
+    ) {
+
+        Column(
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .clip(shape = RoundedCornerShape(18.dp))
+                .clickable(
+                    indication = null,
+                    interactionSource = null
+                ) {}
+                .background(color = if (isDark) Color(0xFF494949) else Color(0xFFFFFFFF))
+                .padding(7.dp)
+                .align(Alignment.BottomCenter)
+
+        ) {
+
+            Spacer(modifier = Modifier.height(7.dp))
+
+            Box(
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+
+            ) {
+
+                Text( text = "মন্ত্র সমূহ",
+                    fontSize = 18.sp,
+                    fontFamily = BanglaHelper.banglaFont(),
+                    fontWeight = FontWeight.Bold,
+                    color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .align(Alignment.Center)
+
+                )
+
+                /* close button */
+                Box(
+
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .clip(shape = CircleShape)
+                        //.background(color = Color.Gray)
+                        .clickable { closeClick() }
+                        .size(30.dp)
+                        .align(Alignment.CenterEnd)
+
+                ) {
+
+                    Icon( painter = painterResource(com.mala.digital_joper_mala.R.drawable.ic_wrong),
+                        contentDescription = "",
+                        tint = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .size(18.dp)
+                            .align(Alignment.Center)
+
+                    )
+
+                }
+
+            }//box
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            LazyColumn(
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp)
+                    .align(Alignment.CenterHorizontally),
+                state = lazState
+
+            ) {
+
+                items(
+                    items = mantraList,
+                    key = null
+                ){ it ->
+
+                    Item(
+                        isDark = isDark,
+                        title = it.title,
+                        mantra = it.mantra
+                    )
+
+                }
+
+                items(
+                    count = 1
+                ){
+
+                    Spacer(modifier = Modifier.height(5.dp))
+
+                }
+
+            }//lazyColumn
+
+        }//column
+
+    }//box
+
+}//fun end
+
+@Preview(showBackground = true)
+@Composable
+private fun Item(
+    isDark: Boolean = false,
+    title : String = "Test",
+    mantra : String = "Test"
+) {
+
+    Box(
+
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(5.dp)
+
+    ) {
+
+        Column(
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(7.dp)
+
+        ) {
+
+            Text( text = title,
+                fontSize = 16.sp,
+                fontFamily = BanglaHelper.banglaFont(),
+                fontWeight = FontWeight.Normal,
+                color = if (isDark) Color(0xFFEFEEEE) else Color(0xFF2D2D2D),
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text( text = mantra,
+                fontSize = 16.sp,
+                fontFamily = BanglaHelper.banglaFont(),
+                fontWeight = FontWeight.Bold,
+                color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+
+            )
+
+        }//column
+
+    }//box
+
+}//fun end
+
+@Preview(showBackground = true)
+@Composable
+private fun CounterLimit(
+    modifier: Modifier = Modifier,
+    closeClick: () -> Unit = {},
+    setCountLimit : (String) -> Unit = {},
+    getCountLimit : String = "",
+    isDark: Boolean = true
+) {
+
+    val counterList = listOf("১,০০০", "৫,০০০", "১০,০০০", "৫০,০০০", "১,০০,০০০", "৫,০০,০০০")
+    var selectedIndex by remember { mutableStateOf(0) }
+
+    selectedIndex = if (getCountLimit.isEmpty()) 0 else getCountLimit.toInt()
+
+    /*
+    LaunchedEffect( getCountLimit) {
+
+        if (getCountLimit.isEmpty()){
+
+            selectedIndex = 0
+
+        }else{
+
+            selectedIndex = getCountLimit.toInt()
+
+        }
+
+    }
+
+     */
+
+    Box(
+
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(
+                indication = null,
+                interactionSource = null
+            ){ closeClick() }
+            .padding(9.dp)
+
+    ) {
+
+        Column(
+
+            modifier = Modifier
+                .wrapContentWidth()
+                .shadow(elevation = 3.dp, shape = RoundedCornerShape(18.dp))
+                .clip(shape = RoundedCornerShape(18.dp))
+                .clickable(
+                    indication = null,
+                    interactionSource = null
+                ){}
+                .background(color = if (isDark) Color.DarkGray else Color.White)
+                .padding(5.dp)
+                .align(Alignment.TopEnd)
+
+        ) {
+
+            Text( text = "জপ লিমিট",
+                fontSize = 16.sp,
+                fontFamily = BanglaHelper.banglaFont(),
+                fontWeight = FontWeight.SemiBold,
+                color = if (isDark) Color.White else Color.Black,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .padding(5.dp)
+                    .align(Alignment.CenterHorizontally)
+
+            )
+
+            Spacer(modifier = Modifier.height(5.dp))
+
+            counterList.forEachIndexed { index, counter ->
+
+                Row(
+
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .width(150.dp)
+                        /*
+                        .border(
+                            width = 1.dp,
+                            color = if (selectedIndex == index) Color.White.copy(alpha = 0.2f) else Color.Black.copy(alpha = 0.2f),
+                            shape = RoundedCornerShape(16.dp))
+
+                         */
+                        .clip(shape = RoundedCornerShape(16.dp))
+                        .clickable{
+
+                            selectedIndex = index
+                            setCountLimit(selectedIndex.toString())
+                            closeClick()
+
+                        }
+                        .background(color = if (selectedIndex == index) Color(0xFF97A7FF) else Color.Transparent)
+                        .padding(7.dp)
+
+                ) {
+
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    Box(
+
+                        modifier = Modifier
+                            .fillMaxWidth()
+
+                    ) {
+
+                        if (selectedIndex == index){
+
+                            Icon( painter = painterResource(R.drawable.ic_ok),
+                                contentDescription = "",
+                                tint = if (selectedIndex == index) Color.White else Color(0xFF000000),
+                                modifier = Modifier
+                                    .wrapContentWidth()
+                                    .size(19.dp)
+                                    .align(Alignment.CenterStart)
+
+                            )
+
+                        }
+
+                        Text( text = counter,
+                            fontSize = 16.sp,
+                            fontFamily = BanglaHelper.banglaFont(),
+                            fontWeight = FontWeight.Normal,
+                            color = if (selectedIndex == index){
+                                Color.White
+                            } else {
+
+                                if (isDark) Color.LightGray else Color.Black
+                            },
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .align(Alignment.Center)
+
+                        )
+
+                    }//box
+
+                }//row
+
+            }//loop
+
+        }//column
 
     }//box
 
