@@ -514,7 +514,7 @@ private fun MantraDialog(
 
             modifier = Modifier
                 .fillMaxWidth()
-                .height(550.dp)
+                .wrapContentHeight()
                 .clip(shape = RoundedCornerShape(18.dp))
                 .clickable(
                     indication = null,
@@ -685,19 +685,7 @@ private fun CounterLimit(
     val counterList = listOf("১,০০০", "৫,০০০", "১০,০০০", "৫০,০০০", "১,০০,০০০", "৫,০০,০০০")
     var selectedIndex by remember { mutableStateOf(0) }
 
-    LaunchedEffect( getCountLimit) {
-
-        if (getCountLimit.isEmpty()){
-
-            selectedIndex = 0
-
-        }else{
-
-            selectedIndex = getCountLimit.toInt()
-
-        }
-
-    }
+    selectedIndex = if (getCountLimit.isEmpty()) 0 else getCountLimit.toInt()
 
     Box(
 
