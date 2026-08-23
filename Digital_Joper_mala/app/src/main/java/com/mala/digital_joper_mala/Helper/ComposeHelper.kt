@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -397,24 +398,26 @@ class ComposeHelper {
 
     @Composable
     fun Dialog(
-        modifier: Modifier = Modifier,
+        //modifier: Modifier = Modifier,
         headerText : String = "Header",
         headerTestSize : Float = 18f,
         headerTextWeight : FontWeight = FontWeight.Bold,
         isHeaderEnabled : Boolean = true,
         isDark: Boolean = false,
         closeClick: () -> Unit = {},
+        onDismissClick : () -> Unit = {},
         content : @Composable (ColumnScope.() -> Unit)
     ) {
 
         Box(
 
-            modifier = modifier
-                .fillMaxWidth()
+            modifier = Modifier
+                .fillMaxSize()
                 .clickable(
                     indication = null,
                     interactionSource = null
-                ) {}
+                ) { onDismissClick() }
+                .background(color = if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(alpha = 0.5f))
                 .padding(12.dp)
 
         ) {
