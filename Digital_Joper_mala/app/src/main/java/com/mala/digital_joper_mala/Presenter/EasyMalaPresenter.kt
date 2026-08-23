@@ -1,14 +1,19 @@
 package com.mala.digital_joper_mala.Presenter
 
 import android.content.Context
+import com.mala.digital_joper_mala.Model.EasyMalaItem
 import com.mala.digital_joper_mala.Model.EasyMalaModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 interface EasyMala{
 
+    fun favoriteMantraList (list: List<EasyMalaItem>)
+    fun userMantraList(list: List<EasyMalaItem>)
     fun lastCountCache (value : String)
     fun countLimit(limit: String)
 
@@ -47,6 +52,38 @@ class EasyMalaPresenter(
     fun getCountLimit(){
 
         view.countLimit(model.getCountLimit())
+
+    }
+
+    fun getAllFavoriteMantra(){
+
+        scopeIO.launch {
+
+            val data = model.getFavoriteMantra()
+
+            withContext(Dispatchers.Main){
+
+                view.favoriteMantraList(data)
+
+            }
+
+        }
+
+    }
+
+    fun getAllUserMantra(){
+
+        scopeIO.launch {
+
+            val data = model.getUserMantra()
+
+            withContext(Dispatchers.Main){
+
+                view.userMantraList(data)
+
+            }
+
+        }
 
     }
 
