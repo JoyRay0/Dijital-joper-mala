@@ -4,16 +4,12 @@ import android.content.Context
 import android.os.Build
 import android.os.SystemClock
 import android.telephony.TelephonyManager
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat.getSystemService
 import com.mala.digital_joper_mala.Database.DeviceInfoDatabase
 import com.mala.digital_joper_mala.Database.ScreenTrackerDatabase
 import com.mala.digital_joper_mala.Presenter.TrackerPresenter
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.Date
 import java.util.Locale
-import java.util.UUID
 
 enum class ACTIVITY(val value : String){
 
@@ -41,7 +37,7 @@ class TrackScreen(
     private val activityDB = ScreenTrackerDatabase(context)
     private val deviceInfoDB = DeviceInfoDatabase(context)
     private val presenter = TrackerPresenter(activityDB, deviceInfoDB)
-    private val cache = CacheHelper_(context, "analytics")
+    private val cache = CacheHelper(context, "analytics")
     private var startTime = 0L
 
 

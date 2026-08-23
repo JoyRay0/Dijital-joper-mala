@@ -1,7 +1,7 @@
 package com.mala.digital_joper_mala.Model
 
 import android.content.Context
-import com.mala.digital_joper_mala.Helper.CacheHelper_
+import com.mala.digital_joper_mala.Helper.CacheHelper
 
 data class SettingData(
 
@@ -14,7 +14,7 @@ class SettingModel(
     private val context : Context
 ) {
 
-    private val cache = CacheHelper_(context, "settings")
+    private val cache = CacheHelper(context, "settings")
 
     fun setCache(key: String, value: String){
 

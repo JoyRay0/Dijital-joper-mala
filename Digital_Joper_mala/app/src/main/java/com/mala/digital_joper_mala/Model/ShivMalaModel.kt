@@ -1,7 +1,7 @@
 package com.mala.digital_joper_mala.Model
 
 import android.content.Context
-import com.mala.digital_joper_mala.Helper.CacheHelper_
+import com.mala.digital_joper_mala.Helper.CacheHelper
 
 
 data class ShivItem(
@@ -14,7 +14,7 @@ class ShivMalaModel(
     private val context : Context
 ) {
 
-    private val cache = CacheHelper_(context, "shiv_mala")
+    private val cache = CacheHelper(context, "shiv_mala")
 
     fun getShivMala() : List<ShivItem>{
 

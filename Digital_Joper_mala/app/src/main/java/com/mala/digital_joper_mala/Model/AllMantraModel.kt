@@ -1,10 +1,9 @@
 package com.mala.digital_joper_mala.Model
 
 import android.content.Context
-import android.util.Log
 import com.mala.digital_joper_mala.Database.AllMantraDatabase
 import com.mala.digital_joper_mala.Helper.ApiLinkHelper
-import com.mala.digital_joper_mala.Helper.CacheHelper_
+import com.mala.digital_joper_mala.Helper.CacheHelper
 import com.mala.digital_joper_mala.Helper.OkHttpWrapper
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -25,7 +24,7 @@ data class MantraItem(
 class AllMantraModel(
    private val context: Context
 ){
-    private val cache = CacheHelper_(context, "All_Mantra")
+    private val cache = CacheHelper(context, "All_Mantra")
 
     private val db = AllMantraDatabase(context)
 

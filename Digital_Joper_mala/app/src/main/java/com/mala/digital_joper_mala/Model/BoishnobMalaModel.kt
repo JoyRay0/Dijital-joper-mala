@@ -1,7 +1,7 @@
 package com.mala.digital_joper_mala.Model
 
 import android.content.Context
-import com.mala.digital_joper_mala.Helper.CacheHelper_
+import com.mala.digital_joper_mala.Helper.CacheHelper
 
 
 data class BoishnobItem(
@@ -14,7 +14,7 @@ class BoishnobMalaModel(
     private val context: Context
 ) {
 
-    private val cache = CacheHelper_(context, "boishnob_mala")
+    private val cache = CacheHelper(context, "boishnob_mala")
 
     fun getBoishnobMala() : List<BoishnobItem>{
 
