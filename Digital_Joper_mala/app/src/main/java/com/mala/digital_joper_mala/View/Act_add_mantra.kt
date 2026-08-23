@@ -237,6 +237,7 @@ private fun AddMantraFullScreen(
                             title = it.title,
                             mantra = it.mantra,
                             deleteClick = {deleteClick(it.mantra)},
+                            isDark = isDark,
                             mantraLongClick = {mantraLongClick(it.mantra)}
                         )
 
@@ -658,13 +659,11 @@ private fun Item(
 
     var isDeleteVisible = remember { mutableStateOf(false) }
 
-    val isDark = true
-
     Box(
 
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp)
+            .padding(9.dp)
 
     ) { 
         
