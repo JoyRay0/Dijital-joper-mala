@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 
-class CacheHelper_(
+class CacheHelper(
     private val context: Context,
     private val preference : String
 ) {
