@@ -1,6 +1,7 @@
 package com.mala.digital_joper_mala.View
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -20,6 +21,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -41,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -69,6 +73,7 @@ import com.mala.digital_joper_mala.Helper.ThemeHelper
 import com.mala.digital_joper_mala.Helper.TrackScreen
 import com.mala.digital_joper_mala.Helper.VibrationHelper
 import com.mala.digital_joper_mala.Model.Achievement
+import com.mala.digital_joper_mala.Model.EasyMalaItem
 import com.mala.digital_joper_mala.Presenter.AchievementPresenter
 import com.mala.digital_joper_mala.Presenter.Achievements
 import com.mala.digital_joper_mala.Presenter.EasyMala
@@ -82,6 +87,8 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {
 
     //init============
     private val achievementList = mutableStateListOf<Achievement>()
+    private val favoriteMantraList = mutableStateListOf<EasyMalaItem>()
+    private val userMantraList = mutableStateListOf<EasyMalaItem>()
     private val lastCountCache = mutableStateOf("")
     private val currentCount = mutableStateOf("")
     private val getCountLimit = mutableStateOf("")
@@ -110,6 +117,8 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {
             if (VibrationHelper.IsVibration(this)) isVibration = true else isVibration = false
 
             presenter.getLastCountCache()
+            presenter.getAllFavoriteMantra()
+            presenter.getAllUserMantra()
 
             LaunchedEffect(
                 reloadAchievementListCount,
@@ -128,7 +137,6 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {
                 EasyMalaFullScreen(
                     isDark = isDark,
                     backClick = { finish() },
-                    //floatingButtonClick = { presenter.getShivMala() },
                     isVibration = isVibration,
                     saveAchievementCount = { count ->
 
@@ -150,6 +158,8 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {
                         reloadCountLimit++
                     },
                     getCountLimit = getCountLimit.value,
+                    favoriteMantraList = favoriteMantraList,
+                    userMantraList = userMantraList
                 )
 
 
@@ -189,6 +199,20 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {
         achievementPresenter.onDestroy()
     }
 
+    override fun favoriteMantraList(list: List<EasyMalaItem>) {
+        favoriteMantraList.clear()
+        favoriteMantraList.addAll(list)
+
+        Log.d("mantra", "favorite = $list")
+    }
+
+    override fun userMantraList(list: List<EasyMalaItem>) {
+        userMantraList.clear()
+        userMantraList.addAll(list)
+
+        Log.d("mantra", "user = $list")
+    }
+
     override fun lastCountCache(value: String) {
         lastCountCache.value = value
     }
@@ -210,7 +234,6 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {
 private fun EasyMalaFullScreen(
     isDark : Boolean = false,
     backClick: () -> Unit = {},
-    //floatingButtonClick : () -> Unit = {},
     isVibration : Boolean = false,
     saveAchievementCount : (Long) -> Unit = {},
     achievementList : List<Achievement> = emptyList(),
@@ -218,7 +241,8 @@ private fun EasyMalaFullScreen(
     lastCountCache : String = "",
     setCountLimit: (String) -> Unit = {},
     getCountLimit: String = "0",
-
+    favoriteMantraList : List<EasyMalaItem> = emptyList(),
+    userMantraList : List<EasyMalaItem> = emptyList()
     ) {
 
     var isMantraDialogVisible by remember { mutableStateOf(false) }
@@ -349,6 +373,26 @@ private fun EasyMalaFullScreen(
 
             }
 
+            /*  floating mantra button */
+            FloatingButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomEnd),
+                isDark = isDark,
+                onClick = { isMantraDialogVisible = true }
+            )
+
+            if (isMantraDialogVisible){
+
+                AllMantra(
+                    isDark = isDark,
+                    favoriteMantraList = favoriteMantraList,
+                    userMantaList = userMantraList,
+                    closeClick = { isMantraDialogVisible = false }
+                )
+
+            }
+
 
         }//box
 
@@ -402,7 +446,9 @@ private fun Toolbar(
 
         Row(
 
-            modifier = Modifier.wrapContentWidth().align(Alignment.CenterEnd)
+            modifier = Modifier
+                .wrapContentWidth()
+                .align(Alignment.CenterEnd)
 
         ) {
 
@@ -498,7 +544,8 @@ private fun CounterEdit(
                     .border(
                         width = 1.dp,
                         color = if (isDark) Color(0xFFE3E0E0) else Color(0xFF9A7A7A),
-                        shape = RoundedCornerShape(10.dp))
+                        shape = RoundedCornerShape(10.dp)
+                    )
                     .padding(6.dp)
                     .align(Alignment.CenterHorizontally)
 
@@ -597,7 +644,7 @@ private fun CounterEdit(
                         .weight(0.5f)
                         .fillMaxWidth()
                         .clip(shape = RoundedCornerShape(15.dp))
-                        .clickable{ closeClick() }
+                        .clickable { closeClick() }
                         .background(color = Color(0xFFDEE0DE))
                         .padding(5.dp)
                         .align(Alignment.CenterVertically)
@@ -628,7 +675,7 @@ private fun CounterEdit(
                         .clip(shape = RoundedCornerShape(15.dp))
                         .clickable(
                             enabled = if (counterInput.isEmpty()) false else true
-                        ){
+                        ) {
 
                             saveClick(SanitizeHelper.sanitizeNumber(counterInput))
 
@@ -658,6 +705,271 @@ private fun CounterEdit(
 
         }//column
 
+
+    }//box
+
+}//fun end
+
+@Preview(showBackground = true)
+@Composable
+private fun FloatingButton(
+    modifier: Modifier = Modifier,
+    isDark: Boolean = false,
+    onClick : () -> Unit = {}
+) {
+
+    Box(
+
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(25.dp)
+
+    ) {
+
+        Box(
+            modifier = Modifier
+                .wrapContentWidth()
+                .shadow(
+                    elevation = 4.dp,
+                    shape = RoundedCornerShape(16.dp),
+                    ambientColor = if (isDark) Color.White else Color.Black,
+                    spotColor = if (isDark) Color.White else Color.Black
+                )
+                .clip(shape = RoundedCornerShape(16.dp))
+                .clickable { onClick() }
+                .background(color = if (isDark) Color(0xFF4B4A4A) else Color(0xFF2196F3))
+                .padding(14.dp)
+                .align(Alignment.BottomEnd)
+
+        ) {
+
+            Text( text = "মন্ত্র",
+                fontSize = 15.sp,
+                fontFamily = BanglaHelper.banglaFont(),
+                fontWeight = FontWeight.Normal,
+                color = Color(0xFFFFFFFF),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .align(Alignment.Center)
+
+            )
+
+        }//box
+
+    }//box
+
+}//fun end
+
+
+@Preview(showBackground = true)
+@Composable
+fun AllMantra(
+    isDark: Boolean = false,
+    favoriteMantraList : List<EasyMalaItem> = emptyList(),
+    userMantaList : List<EasyMalaItem> = emptyList(),
+    closeClick: () -> Unit = {}
+) {
+
+    var selectedIndex by remember { mutableStateOf(0) }
+
+    Box(
+
+        modifier = Modifier
+            .fillMaxSize()
+
+    ) {
+
+        ComposeHelper().Dialog(
+            headerText = "মন্ত্র সমূহ",
+            headerTestSize = 18f,
+            isDark = isDark,
+            closeClick = { closeClick() }
+        ) {
+
+            Column(
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(500.dp)
+
+            ) {
+
+                Spacer(modifier = Modifier.height(7.dp))
+
+                /* list selector */
+
+                Row(
+
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxWidth()
+                        .clip(shape = RoundedCornerShape(12.dp))
+                        .background(color = Color(0xFFF1F1F1))
+                        .padding(5.dp)
+
+                ) {
+
+                    val selectorText = listOf("পছন্দের মন্ত্র", "আমার মন্ত্র")
+
+                    selectorText.forEachIndexed { index, text ->
+
+                        Box(
+
+                            modifier = Modifier
+                                .weight(1f)
+                                .then(
+                                    if (selectedIndex == index) Modifier.shadow(elevation = 2.dp, shape = RoundedCornerShape(12.dp)) else Modifier.shadow(elevation = 0.dp)
+                                )
+                                .clip(shape = RoundedCornerShape(12.dp))
+                                .clickable(
+                                    indication = null,
+                                    interactionSource = null
+                                ){selectedIndex = index}
+                                .background(color = if (selectedIndex == index) Color.White else Color.Transparent)
+                                .padding(5.dp)
+
+                        ) {
+
+                            Text( text = text,
+                                fontSize = 15.sp,
+                                fontFamily = BanglaHelper.banglaFont(),
+                                fontWeight = FontWeight.Normal,
+                                color = if (selectedIndex == index) Color.Black else Color.Black.copy(alpha = 0.6f),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier
+                                    .wrapContentWidth()
+                                    .align(Alignment.Center)
+
+                            )
+
+                        }//box
+
+                    }//loop
+
+                }//row list selector
+
+                /* list */
+
+                Box(
+
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .align(Alignment.CenterHorizontally)
+
+                ) {
+
+                    val currentList = if (selectedIndex == 0) favoriteMantraList else userMantaList
+
+                    if (currentList.isEmpty()){
+
+                        Text( text =
+                            if (selectedIndex == 0){
+                                "কোনো পছন্দের মন্ত্র নেই। মন্ত্র ভান্ডার থেকে আপনার পছন্দের মন্ত্রটি নির্বাচন করে আবার চেষ্টা করুন।"
+                            } else {
+                                "এখনও কোনো মন্ত্র সেভ করা হয়নি। প্রথমে একটি মন্ত্র সেভ করুন, তারপর আবার চেষ্টা করুন।"
+                            },
+                            fontSize = 16.sp,
+                            fontFamily = BanglaHelper.banglaFont(),
+                            fontWeight = FontWeight.Normal,
+                            color = Color.Black,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .align(Alignment.Center)
+
+                        )
+
+                    }else{
+
+                        LazyColumn(
+
+                            modifier = Modifier
+                                .fillMaxWidth()
+
+                        ) {
+
+                            items(
+
+                                items = if (selectedIndex == 0) favoriteMantraList else userMantaList,
+                                key = null
+
+                            ){it ->
+
+                                Item(
+                                    isDark = isDark,
+                                    title = it.title,
+                                    mantra = it.mantra
+                                )
+
+                            }
+
+                        }//lazy column
+
+
+                    }//condition
+
+                }//box
+
+            }//column
+
+        }//helper
+
+    }//box
+
+}//fun end
+
+@Preview(showBackground = true)
+@Composable
+private fun Item(
+    isDark: Boolean = false,
+    title : String = "Test",
+    mantra : String = "Test"
+) {
+
+    Box(
+
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(5.dp)
+
+    ) {
+
+        Column(
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(7.dp)
+
+        ) {
+
+            Text( text = title,
+                fontSize = 16.sp,
+                fontFamily = BanglaHelper.banglaFont(),
+                fontWeight = FontWeight.Normal,
+                color = if (isDark) Color(0xFFEFEEEE) else Color(0xFF2D2D2D),
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text( text = mantra,
+                fontSize = 16.sp,
+                fontFamily = BanglaHelper.banglaFont(),
+                fontWeight = FontWeight.Bold,
+                color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+
+            )
+
+        }//column
 
     }//box
 
