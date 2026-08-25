@@ -60,12 +60,7 @@
             android:label="@string/title_activity_act_all_mantra"
             android:theme="@style/Base.Theme.Digital_Joper_mala"
             android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".View.Act_User_mala"
-            android:exported="false" />
-        <activity
-            android:name=".View.Act_Custom_Mala"
-            android:exported="false" />
+
         <activity
             android:name=".View.Act_splash_screen"
             android:exported="true">
