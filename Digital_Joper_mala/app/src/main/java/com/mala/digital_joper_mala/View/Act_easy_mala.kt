@@ -305,97 +305,107 @@ private fun EasyMalaFullScreen(
             .systemBarsPadding()
     ) { innerPadding ->
 
-        Box(
+        Column(
 
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = if (isDark) DarkBackground else LightBackground)
                 .padding(innerPadding)
-                .imePadding()
 
         ) {
 
-            /* counter */
-            ComposeHelper().Counter(
+            Box(
+
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.Center),
-                counterLimit = getCountLimit.toLongOrNull() ?: 1000L,
-                currentCount = { count = it },
-                isDark = isDark,
-                isVibrationEnabled = isVibration,
-                countNumber = lastCountCache
-            )
+                    .fillMaxSize()
+                    .weight(1f)
 
-            /* Achievements */
-            if (isAchievementDialogVisible){
+            ) {
 
-                ComposeHelper().MilestonesDialog(
+                /* counter */
+                ComposeHelper().Counter(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
-                                alpha = 0.5f
-                            )
-                        ),
-                    closeClick = {
-                        isAchievementDialogVisible = false
-                        saveAchievementCount(count)
-                    },
-                    currentCount = count,
-                    isDark = isDark
+                        .fillMaxWidth()
+                        .align(Alignment.Center),
+                    counterLimit = getCountLimit.toLongOrNull() ?: 1000L,
+                    currentCount = { count = it },
+                    isDark = isDark,
+                    isVibrationEnabled = isVibration,
+                    countNumber = lastCountCache
                 )
 
-            }
+                /* Achievements */
+                if (isAchievementDialogVisible){
 
-            /* count edit */
-
-            if (isCounterEditVisible){
-
-                ModalBottomSheet(
-                    onDismissRequest = {isCounterEditVisible = false},
-                    containerColor = if (isDark) Color(0xFF644646) else Color(0xFFFFFFFF),
-                    dragHandle = null,
-
-                ) {
-
-                    CounterEdit(
-                        saveClick = {
-                            setCountLimit( if (it <= 0) "" else it.toString() )
-                            isCounterEditVisible = false },
-                        closeClick = { isCounterEditVisible = false },
+                    ComposeHelper().MilestonesDialog(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                                    alpha = 0.5f
+                                )
+                            ),
+                        closeClick = {
+                            isAchievementDialogVisible = false
+                            saveAchievementCount(count)
+                        },
+                        currentCount = count,
                         isDark = isDark
                     )
 
-                }//dialog
+                }
 
-                //counter(totalCount)
+                /* count edit */
 
-            }
+                if (isCounterEditVisible){
 
-            /*  floating mantra button */
-            FloatingButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomEnd),
-                isDark = isDark,
-                onClick = { isMantraDialogVisible = true }
-            )
+                    ModalBottomSheet(
+                        onDismissRequest = {isCounterEditVisible = false},
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .imePadding(),
+                        containerColor = if (isDark) Color(0xFF644646) else Color(0xFFFFFFFF),
+                        dragHandle = null,
 
-            if (isMantraDialogVisible){
+                        ) {
 
-                AllMantra(
+                        CounterEdit(
+                            saveClick = {
+                                setCountLimit( if (it <= 0) "" else it.toString() )
+                                isCounterEditVisible = false },
+                            closeClick = { isCounterEditVisible = false },
+                            isDark = isDark
+                        )
+
+                    }//dialog
+
+                    //counter(totalCount)
+
+                }
+
+                /*  floating mantra button */
+                FloatingButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomEnd),
                     isDark = isDark,
-                    favoriteMantraList = favoriteMantraList,
-                    userMantaList = userMantraList,
-                    closeClick = { isMantraDialogVisible = false }
+                    onClick = { isMantraDialogVisible = true }
                 )
 
-            }
+                if (isMantraDialogVisible){
 
+                    AllMantra(
+                        isDark = isDark,
+                        favoriteMantraList = favoriteMantraList,
+                        userMantaList = userMantraList,
+                        closeClick = { isMantraDialogVisible = false }
+                    )
 
-        }//box
+                }
 
+            }//box
+
+        }//column
 
     }//scaffold
 
@@ -805,7 +815,7 @@ fun AllMantra(
                         .padding(10.dp)
                         .fillMaxWidth()
                         .clip(shape = RoundedCornerShape(12.dp))
-                        .background(color = Color(0xFFF1F1F1))
+                        .background(color = if (isDark) Color(0xFF605F5F) else Color(0xFFF1F1F1))
                         .padding(5.dp)
 
                 ) {
@@ -819,14 +829,32 @@ fun AllMantra(
                             modifier = Modifier
                                 .weight(1f)
                                 .then(
-                                    if (selectedIndex == index) Modifier.shadow(elevation = 2.dp, shape = RoundedCornerShape(12.dp)) else Modifier.shadow(elevation = 0.dp)
+                                    if (selectedIndex == index){
+
+                                        Modifier
+                                            .shadow(
+                                                elevation = 2.dp,
+                                                shape = RoundedCornerShape(12.dp),
+                                                ambientColor = if (isDark) Color.White else Color.Black,
+                                                spotColor = if (isDark) Color.White else Color.Black,
+                                                )
+
+                                    } else Modifier.shadow(elevation = 0.dp)
                                 )
                                 .clip(shape = RoundedCornerShape(12.dp))
                                 .clickable(
                                     indication = null,
                                     interactionSource = null
                                 ){selectedIndex = index}
-                                .background(color = if (selectedIndex == index) Color.White else Color.Transparent)
+                                .background(color = if (selectedIndex == index){
+
+                                    if (isDark) Color(0xFF2D2D2D) else Color.White
+
+                                } else{
+
+                                    Color.Transparent
+
+                                })
                                 .padding(5.dp)
 
                         ) {
@@ -835,7 +863,14 @@ fun AllMantra(
                                 fontSize = 15.sp,
                                 fontFamily = BanglaHelper.banglaFont(),
                                 fontWeight = FontWeight.Normal,
-                                color = if (selectedIndex == index) Color.Black else Color.Black.copy(alpha = 0.6f),
+                                color = if (selectedIndex == index){
+
+                                    if (isDark) Color.White else Color.Black
+
+                                } else{
+
+                                     if (isDark) Color.White.copy(alpha = 0.7f) else Color.Black.copy(alpha = 0.6f)
+                                },
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier
                                     .wrapContentWidth()
@@ -872,7 +907,7 @@ fun AllMantra(
                             fontSize = 16.sp,
                             fontFamily = BanglaHelper.banglaFont(),
                             fontWeight = FontWeight.Normal,
-                            color = Color.Black,
+                            color = if (isDark) Color.White.copy(alpha = 0.85f) else Color.Black.copy(alpha = 0.85f),
                             textAlign = TextAlign.Center,
                             modifier = Modifier
                                 .wrapContentWidth()

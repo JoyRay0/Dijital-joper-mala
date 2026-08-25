@@ -175,105 +175,117 @@ private fun AddMantraFullScreen(
 
     ) {innerPadding ->
 
-        Box(
+        Column(
 
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = if (isDark) DarkBackground else LightBackground)
                 .padding(innerPadding)
-                .imePadding()
 
         ) {
 
-            if (mantraList.isEmpty()){
+            Box(
 
-                Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
 
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.Center)
+            ) {
 
-                ) {
+                if (mantraList.isEmpty()){
 
-                    Image( painter = painterResource(R.drawable.img_empty_folder),
-                        contentDescription = "Empty",
+                    Column(
+
                         modifier = Modifier
                             .fillMaxWidth()
-                            .size(90.dp)
-                            .align(Alignment.CenterHorizontally)
+                            .align(Alignment.Center)
 
-                    )
+                    ) {
 
-                    Spacer(modifier = Modifier.height(7.dp))
+                        Image( painter = painterResource(R.drawable.img_empty_folder),
+                            contentDescription = "Empty",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .size(90.dp)
+                                .align(Alignment.CenterHorizontally)
 
-                    Text(text = "কোন মন্ত্র খুজে পাওয়া যায়নি।",
-                        fontSize = 15.sp,
-                        fontFamily = BanglaHelper.banglaFont(),
-                        fontWeight = FontWeight.Normal,
-                        color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.CenterHorizontally)
                         )
 
-                }//column
+                        Spacer(modifier = Modifier.height(7.dp))
 
-            }else{
+                        Text(text = "কোন মন্ত্র খুজে পাওয়া যায়নি।",
+                            fontSize = 15.sp,
+                            fontFamily = BanglaHelper.banglaFont(),
+                            fontWeight = FontWeight.Normal,
+                            color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.CenterHorizontally)
+                        )
 
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    state = lazyState
+                    }//column
 
-                ) {
+                }else{
 
-                    items(
-                        items = mantraList,
-                        //key = {}
-                    ){ it ->
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        state = lazyState
 
-                        Item(
-                            title = it.title,
-                            mantra = it.mantra,
-                            deleteClick = {deleteClick(it.mantra)},
+                    ) {
+
+                        items(
+                            items = mantraList,
+                            //key = {}
+                        ){ it ->
+
+                            Item(
+                                title = it.title,
+                                mantra = it.mantra,
+                                deleteClick = {deleteClick(it.mantra)},
+                                isDark = isDark,
+                                mantraLongClick = {mantraLongClick(it.mantra)}
+                            )
+
+                        }
+
+                    }//lazy column
+
+                }
+
+                if (isAddMantraDialogVisible.value){
+
+                    ModalBottomSheet (
+                        onDismissRequest = { isAddMantraDialogVisible.value = false },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .imePadding(),
+                        containerColor = if (isDark) Color(0xFF644646) else Color(0xFFFFFFFF),
+                        dragHandle = null
+                    ) {
+
+                        AddDialog(
+                            modifier = Modifier
+                                .fillMaxWidth(),
                             isDark = isDark,
-                            mantraLongClick = {mantraLongClick(it.mantra)}
+                            closeClick = { isAddMantraDialogVisible.value = false },
+                            addMantraClick = {
+
+                                isAddMantraDialogVisible.value = false
+
+                            },
+                            inputFiled = { addUserMantra(it) }
+
                         )
 
                     }
 
-                }//lazy column
-
-            }
-
-            if (isAddMantraDialogVisible.value){
-
-                ModalBottomSheet (
-                    onDismissRequest = { isAddMantraDialogVisible.value = false },
-                    containerColor = if (isDark) Color(0xFF644646) else Color(0xFFFFFFFF),
-                    dragHandle = null
-                ) {
-
-                    AddDialog(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        isDark = isDark,
-                        closeClick = { isAddMantraDialogVisible.value = false },
-                        addMantraClick = {
-
-                            isAddMantraDialogVisible.value = false
-
-                        },
-                        inputFiled = { addUserMantra(it) }
-
-                    )
-
                 }
 
-            }
+            }//box
 
-        }//box
+        }//column
 
     }//scaffold
 

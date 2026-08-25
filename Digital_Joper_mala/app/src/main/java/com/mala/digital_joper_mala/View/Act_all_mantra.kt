@@ -666,7 +666,7 @@ private fun Item(
 @Composable
 private fun SearchDialog(
     modifier: Modifier = Modifier,
-    isDark: Boolean = true,
+    isDark: Boolean = false,
     searchFiled : (String) -> Unit = {},
     searchList : MutableList<MantraItem> = mutableListOf(),
     mantraClick: (String) -> Unit = {},
@@ -702,7 +702,6 @@ private fun SearchDialog(
                 ){}
                 .background(color = if (isDark) Color(0xFF494949) else Color(0xFFFFFFFF))
                 .padding(7.dp)
-                .imePadding()
                 .align(Alignment.BottomCenter)
 
 
@@ -859,6 +858,7 @@ private fun SearchDialog(
 
                     modifier = Modifier
                         .fillMaxSize()
+                        .weight(1f)
 
 
                 ) {
