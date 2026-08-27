@@ -25,6 +25,15 @@ interface AllMantra{
     fun searchMantraList(list: List<MantraItem>)
     fun deleteFavoriteMantraStatus(status : String)
     fun insertStatus(status : String)
+    fun mantraStatus(status: String)
+}
+
+enum class Mantra(val value : String){
+
+    MantraPending("mantra_pending"),
+    MantraSuccess("mantra_success"),
+    MantraFailed("mantra_failed")
+
 }
 
 class AllMantraPresenter(
@@ -54,6 +63,8 @@ class AllMantraPresenter(
     }
 
     fun getAllMantraFromServer(){
+
+        view.mantraStatus(Mantra.MantraPending.value)
 
         retry.retry(
             maxTime = 1_20_000,
@@ -86,12 +97,21 @@ class AllMantraPresenter(
 
                 scopeMain.launch {
 
+                    view.mantraStatus(Mantra.MantraSuccess.value)
                     view.allMantraList(data)
 
                 }
 
             },
-            onFailed = {}
+            onFailed = {
+
+                scopeMain.launch {
+
+                    view.mantraStatus(Mantra.MantraFailed.value)
+
+                }
+
+            }
         )
 
 
@@ -116,13 +136,24 @@ class AllMantraPresenter(
 
     fun getAllMantra(){
 
+        view.mantraStatus(Mantra.MantraPending.value)
+
         scopeIO.launch {
 
             val data = model.getAllMantra()
 
             withContext(Dispatchers.Main){
 
-                view.allMantraList(data)
+                if (data.isEmpty()){
+
+                    view.mantraStatus(Mantra.MantraFailed.value)
+
+                }else{
+
+                    view.mantraStatus(Mantra.MantraSuccess.value)
+                    view.allMantraList(data)
+
+                }
 
             }
 
