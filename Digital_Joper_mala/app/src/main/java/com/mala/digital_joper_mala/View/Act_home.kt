@@ -12,12 +12,21 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -26,6 +35,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -61,6 +71,8 @@ class Act_home : ComponentActivity(), Home {//class=============================
 
     private var currentVersion = mutableStateOf("")
     private var version = mutableStateOf("")
+    private var mantraStatus = mutableStateOf("")
+    private val mantraList = mutableStateListOf<HomeData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +93,7 @@ class Act_home : ComponentActivity(), Home {//class=============================
             )
 
             presenter.appUpdate()
+            presenter.getAllMantra()
 
             try {
 
@@ -104,7 +117,7 @@ class Act_home : ComponentActivity(), Home {//class=============================
             Digital_Joper_malaTheme {
                 HomeFullScreen(
                     isDark = isDark,
-                    notificationClick = {},
+                    notificationClick = {  },
                     addMantraClick = { IntentHelper.normalIntent(this, Act_add_mantra::class.java) },
                     settingClick = { IntentHelper.normalIntent(this, Act_setting::class.java) },
                     homeClick = {
@@ -167,7 +180,10 @@ class Act_home : ComponentActivity(), Home {//class=============================
 
                         IntentHelper.normalIntent(this, Act_shiv_mala::class.java)
 
-                    }
+                    },
+                    mantraStatus = mantraStatus.value,
+                    mantraList = mantraList,
+                    moreClick = { IntentHelper.normalIntent(this, Act_all_mantra::class.java) }
                 )
 
             }
@@ -176,7 +192,7 @@ class Act_home : ComponentActivity(), Home {//class=============================
 
     private fun init(){
 
-        presenter = HomePresenter(this)
+        presenter = HomePresenter(this, this)
 
         tracker = TrackScreen(this)
     }
@@ -206,6 +222,15 @@ class Act_home : ComponentActivity(), Home {//class=============================
 
     override fun updateStatus(status: String) {
         version.value = status
+    }
+
+    override fun mantraList(list: List<HomeData>) {
+        mantraList.clear()
+        mantraList.addAll(list)
+    }
+
+    override fun mantraStatus(status: String) {
+        mantraStatus.value = status
     }
 
     override fun onStart() {
@@ -249,7 +274,10 @@ private fun HomeFullScreen(
     updateClick: () -> Unit = {},
     easyMalaClick: () -> Unit = {},
     boisnobMalaClick: () -> Unit = {},
-    shivMalaClick: () -> Unit = {}
+    shivMalaClick: () -> Unit = {},
+    mantraStatus: String = "",
+    mantraList: List<HomeData> = emptyList(),
+    moreClick: () -> Unit = {}
 ) {
 
     var index = remember { mutableStateOf(0) }
@@ -305,7 +333,10 @@ private fun HomeFullScreen(
                         updateClick = { updateClick() },
                         easyMalaClick = easyMalaClick,
                         boisnobMalaClick = boisnobMalaClick,
-                        shivMalaClick = shivMalaClick
+                        shivMalaClick = shivMalaClick,
+                        mantraStatus = mantraStatus,
+                        mantraList = mantraList,
+                        moreClick = { moreClick() }
                     )
 
                 }
@@ -536,7 +567,10 @@ private fun Home(
     updateClick: () -> Unit = {},
     easyMalaClick : () -> Unit = {},
     boisnobMalaClick : () -> Unit = {},
-    shivMalaClick : () -> Unit = {}
+    shivMalaClick : () -> Unit = {},
+    mantraStatus: String = "",
+    mantraList: List<HomeData> = emptyList(),
+    moreClick: () -> Unit = {}
 ) {
 
     var isUpdate by remember { mutableStateOf(false) }
@@ -558,6 +592,7 @@ private fun Home(
 
             modifier = Modifier
                 .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
 
         ) {
 
@@ -582,7 +617,7 @@ private fun Home(
 
                 }//box
 
-                Spacer(modifier = Modifier.height(5.dp))
+                Spacer(modifier = Modifier.height(7.dp))
 
             }
 
@@ -605,9 +640,9 @@ private fun Home(
                             .clickable(
                                 indication = null,
                                 interactionSource = null
-                            ){
+                            ) {
 
-                                when(index){
+                                when (index) {
 
                                     0 -> easyMalaClick()
                                     1 -> boisnobMalaClick()
@@ -626,7 +661,11 @@ private fun Home(
                                 .wrapContentWidth()
                                 .shadow(elevation = 2.dp, shape = RoundedCornerShape(12.dp))
                                 .clip(shape = RoundedCornerShape(12.dp))
-                                .background(color = if (isDark) Color(0xFFAFADAD) else Color(0xFFFFFFFF))
+                                .background(
+                                    color = if (isDark) Color(0xFFAFADAD) else Color(
+                                        0xFFFFFFFF
+                                    )
+                                )
                                 .size(60.dp)
                                 .padding(5.dp)
                                 .align(Alignment.CenterHorizontally)
@@ -661,6 +700,15 @@ private fun Home(
 
             }//row
 
+            Spacer(modifier = Modifier.height(7.dp))
+
+            MantraBander(
+                isDark = isDark,
+                moreClick = { moreClick() },
+                mantraStatus = mantraStatus,
+                mantraList = mantraList
+            )
+
         }//column
 
         if (isUpdate){
@@ -669,7 +717,8 @@ private fun Home(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.Center),
-                updateClick = { updateClick() }
+                updateClick = { updateClick() },
+                closeClick = { isUpdate = false }
             )
 
         }
@@ -848,9 +897,10 @@ private fun Item(
                     .border(
                         width = 1.dp,
                         color = if (isDark) Color(0xFF7E7D7D) else Color(0xFFDEDBDB),
-                        shape = RoundedCornerShape(12.dp))
+                        shape = RoundedCornerShape(12.dp)
+                    )
                     .clip(shape = RoundedCornerShape(12.dp))
-                    .clickable{ isAnswerVisible = !isAnswerVisible }
+                    .clickable { isAnswerVisible = !isAnswerVisible }
                     .padding(9.dp)
 
             ) {
@@ -895,7 +945,8 @@ private fun Item(
                             .border(
                                 width = 1.dp,
                                 color = if (isDark) Color(0xFF5E5E5E) else Color(0xFFECE9E9),
-                                shape = RoundedCornerShape(12.dp))
+                                shape = RoundedCornerShape(12.dp)
+                            )
                             .clip(shape = RoundedCornerShape(12.dp))
                             .padding(12.dp)
 
@@ -926,7 +977,8 @@ private fun Item(
 @Composable
 private fun UpdateApp(
     modifier: Modifier = Modifier,
-    updateClick : () -> Unit = {}
+    updateClick : () -> Unit = {},
+    closeClick : () -> Unit = {}
 ) {
 
     Box(
@@ -946,7 +998,7 @@ private fun UpdateApp(
                 .clickable(
                     indication = null,
                     interactionSource = null
-                ){ updateClick() }
+                ) { }
                 .background(color = Color(0xFFFFFFFF))
                 .padding(15.dp)
 
@@ -961,7 +1013,7 @@ private fun UpdateApp(
 
             )
 
-            Spacer(modifier = Modifier.height(7.dp))
+            Spacer(modifier = Modifier.height(9.dp))
 
             Text( text = "নতুন আপডেট উপলব্ধ! আরও ভালো অভিজ্ঞতার জন্য এখনই আপডেট করুন।",
                 fontSize = 17.sp,
@@ -975,8 +1027,260 @@ private fun UpdateApp(
 
             )
 
+            Spacer(modifier = Modifier.height(24.dp))
+
+            /* update button */
+
+            Row(
+
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .width(180.dp)
+                    .clip(shape = RoundedCornerShape(14.dp))
+                    .clickable { updateClick() }
+                    .background(color = Color(0xFF7FB044))
+                    .padding(7.dp)
+                    .align(Alignment.CenterHorizontally),
+                horizontalArrangement = Arrangement.Center
+
+            ) {
+
+                Text( text = "আপডেট",
+                    fontSize = 17.sp,
+                    fontFamily = BanglaHelper.banglaFont(),
+                    fontWeight = FontWeight.Normal,
+                    color = Color(0xFFFFFFFF),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .align(Alignment.CenterVertically)
+
+                )
+
+            }//row
+
         }//column
+
+        /* close button */
+
+        Box(
+
+            modifier = Modifier
+                .padding(7.dp)
+                .wrapContentWidth()
+                .align(Alignment.TopEnd)
+
+        ) {
+
+            Box(
+
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .clip(shape = CircleShape)
+                    //.background(color = Color.Gray)
+                    .clickable { closeClick() }
+                    .size(30.dp)
+                    .align(Alignment.CenterEnd)
+
+            ) {
+
+                Icon( painter = painterResource(R.drawable.ic_wrong),
+                    contentDescription = "",
+                    tint = Color(0xFF000000),
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .size(18.dp)
+                        .align(Alignment.Center)
+
+                )
+
+            }//box
+
+        }//box
 
     }//box
 
+}//fun end
+
+@Preview(showBackground = true)
+@Composable
+private fun MantraBander(
+    isDark: Boolean = false,
+    moreClick : () -> Unit = {},
+    mantraStatus : String = "mantra_pending",
+    mantraList: List<HomeData> = emptyList()
+) {
+
+    val lazyState = rememberLazyListState()
+
+    Box(
+
+        modifier = Modifier
+            .fillMaxWidth()
+
+    ) {
+
+        Column(
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp)
+
+        ) {
+
+            /* header */
+
+            Box(
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+
+            ) {
+
+                Text( text = "মন্ত্র ভান্ডার",
+                    fontSize = 16.sp,
+                    fontFamily = BanglaHelper.banglaFont(),
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF000000),
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .align(Alignment.CenterStart)
+
+                )
+
+                /* more button */
+                
+                Row(
+
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .clip(shape = RoundedCornerShape(10.dp))
+                        .clickable{ moreClick() }
+                        .padding(6.dp)
+                        .align(Alignment.CenterEnd),
+                    horizontalArrangement = Arrangement.Center
+
+                ) {
+
+                    Text( text = "আরো",
+                        fontSize = 14.sp,
+                        fontFamily = BanglaHelper.banglaFont(),
+                        fontWeight = FontWeight.Normal,
+                        color = Color.DarkGray,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .align(Alignment.CenterVertically)
+
+                    )
+
+                    Spacer(modifier = Modifier.width(3.dp))
+
+                    Icon( painter = painterResource(R.drawable.ic_right),
+                        contentDescription = "",
+                        tint = Color.DarkGray,
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .size(22.dp)
+                            .align(Alignment.CenterVertically)
+
+                    )
+
+
+                }//row more button
+
+            }//box
+
+            /* mantra box */
+
+            Column(
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .align(Alignment.CenterHorizontally)
+
+            ) {
+
+                when(mantraStatus){
+
+                    "mantra_pending" -> {
+
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .padding(9.dp)
+                                .wrapContentWidth()
+                                .size(30.dp)
+                                .align(Alignment.CenterHorizontally),
+                            color = Color(0xFF009688)
+
+                        )
+
+                    }
+                    "mantra_success" -> {
+
+                        LazyRow(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            state = lazyState
+                        ) {
+
+                            items(
+                                items = mantraList,
+                                key = null
+                            ){
+
+                                Row(
+
+                                    modifier = Modifier
+                                        .fillParentMaxWidth(0.8f)
+
+                                ) {
+
+                                    ComposeHelper().MantraItem(
+                                        columnModifier = Modifier
+                                            .fillMaxWidth()
+                                            .shadow(elevation = 3.dp, shape = RoundedCornerShape(14.dp))
+                                            .clip(shape = RoundedCornerShape(14.dp))
+                                            .background(color = Color(0xFFF5F4F4))
+                                            .padding(5.dp)
+                                        ,
+                                        title = it.title,
+                                        mantra = it.mantra
+                                    )
+
+                                }//row
+                                
+
+                            }
+
+                        }
+
+                    }
+                    else -> {
+
+                        Text( text = "কোন মন্ত্র নেই।",
+                            fontSize = 16.sp,
+                            fontFamily = BanglaHelper.banglaFont(),
+                            fontWeight = FontWeight.Normal,
+                            color = Color.Black,
+                            textAlign = TextAlign.Start,
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .align(Alignment.CenterHorizontally)
+
+                        )
+
+                    }
+
+                }
+
+            }//box
+
+        }//column
+
+    }//box
+    
 }//fun end

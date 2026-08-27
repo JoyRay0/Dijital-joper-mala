@@ -1,5 +1,6 @@
 package com.mala.digital_joper_mala.Presenter
 
+import android.content.Context
 import android.util.Log
 import com.mala.digital_joper_mala.Helper.RetryHelper
 import com.mala.digital_joper_mala.Model.HomeData
@@ -9,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 interface Home{
 
@@ -17,6 +19,8 @@ interface Home{
     fun pagerList(list: List<HomeData>)
     fun serverStatus(status : String)
     fun updateStatus(status : String)
+    fun mantraList(list: List<HomeData>)
+    fun mantraStatus(status: String)
 
 }
 
@@ -24,15 +28,20 @@ enum class HomeStatus(val value : String){
 
     Pending("pending"),
     Success("success"),
-    Failed("failed")
+    Failed("failed"),
+
+    MantraPending("mantra_pending"),
+    MantraSuccess("mantra_success"),
+    MantraFailed("mantra_failed"),
 
 }
 
 class HomePresenter(
-    private val view : Home
+    private val view : Home,
+    private val context: Context
 ) {
 
-    private val model = HomeModel()
+    private val model = HomeModel(context)
     private val scopeIO = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val scopeMain = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
@@ -232,6 +241,33 @@ class HomePresenter(
             scopeMain.launch {
 
                 view.rulesList(data)
+
+            }
+
+        }
+
+    }
+
+    fun getAllMantra(){
+
+        view.mantraStatus(HomeStatus.MantraPending.value)
+
+        scopeIO.launch {
+
+            val data = model.getAllMantra()
+
+            withContext(Dispatchers.Main){
+
+                if (data.isEmpty()){
+
+                    view.mantraStatus(HomeStatus.MantraFailed.value)
+
+                }else{
+
+                    view.mantraStatus(HomeStatus.MantraSuccess.value)
+                    view.mantraList(data)
+
+                }
 
             }
 

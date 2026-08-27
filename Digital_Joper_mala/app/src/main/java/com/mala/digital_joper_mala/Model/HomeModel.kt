@@ -1,6 +1,8 @@
 package com.mala.digital_joper_mala.Model
 
+import android.content.Context
 import com.google.gson.annotations.SerializedName
+import com.mala.digital_joper_mala.Database.AllMantraDatabase
 import com.mala.digital_joper_mala.Helper.ApiLinkHelper
 import com.mala.digital_joper_mala.Helper.OkHttpWrapper
 import com.mala.digital_joper_mala.Helper.header
@@ -22,10 +24,16 @@ data class HomeData(
     val question : String = "",
     val image : String = "",
     val answer : String = "",
+    val title : String = "",
+    val mantra : String = ""
 
 )
 
-class HomeModel() {
+class HomeModel(
+    private val context : Context
+) {
+
+    private val allMantraDB = AllMantraDatabase(context)
 
     fun getRules() : List<HomeData>{
 
@@ -165,6 +173,24 @@ class HomeModel() {
 
             })
 
+    }
+
+    fun getAllMantra() : List<HomeData>{
+
+        val list : MutableList<HomeData> = mutableListOf()
+
+        val data = allMantraDB.getAllMantra()
+
+        data.forEach { result ->
+
+            list.add(HomeData(
+                title = result.title,
+                mantra = result.mantra
+            ))
+
+        }
+
+        return list
     }
 
 }
