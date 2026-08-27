@@ -3,6 +3,7 @@ package com.mala.digital_joper_mala.View
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.DrawableRes
@@ -12,6 +13,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -47,7 +49,7 @@ import com.mala.digital_joper_mala.View.main_theme_ui.theme.Digital_Joper_malaTh
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.milliseconds
 
-class Act_all_mantra : ComponentActivity(), AllMantra {
+class Act_all_mantra : ComponentActivity(), AllMantra {//class=========================================
 
     private lateinit var presenter : AllMantraPresenter
 
@@ -58,6 +60,7 @@ class Act_all_mantra : ComponentActivity(), AllMantra {
     private val allMantraList = mutableStateListOf<MantraItem>()
     private val favoriteMantraList = mutableStateListOf<MantraItem>()
     private val searchMantraList = mutableStateListOf<MantraItem>()
+    private var mantraStatus = mutableStateOf("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +71,7 @@ class Act_all_mantra : ComponentActivity(), AllMantra {
         setContent {
 
             var isDark by remember { mutableStateOf(false) }
+            var reloadFavoriteListCount by remember { mutableStateOf(0) }
 
             if (ThemeHelper.isDarkTheme(this)) isDark = true else isDark = false
 
@@ -78,6 +82,12 @@ class Act_all_mantra : ComponentActivity(), AllMantra {
             )
 
             presenter.getAllMantraCache()
+
+            LaunchedEffect(reloadFavoriteListCount) {
+
+                presenter.getAllFavoriteMantra()
+
+            }
 
             LaunchedEffect(dialogStatus.value) {
 
@@ -108,16 +118,24 @@ class Act_all_mantra : ComponentActivity(), AllMantra {
                     },
                     searchList = searchMantraList,
                     searchFiled = { presenter.searchMantraInAllMantra(it) },
-                    favoriteClick = { presenter.getAllFavoriteMantra() },
                     favoriteMantraList = favoriteMantraList,
                     saveInFavorite = { title, mantra ->
                         presenter.favoriteMantraInsert(title, mantra)
+                        reloadFavoriteListCount++
                     },
                     removeFavoriteClick = {
                         presenter.deleteFavoriteMantra(it)
-                    }
+                        reloadFavoriteListCount++
+                    },
+                    mantraStatus = mantraStatus.value
 
                 )
+
+                BackHandler() {
+
+                    IntentHelper.normalIntent(this, Act_home::class.java)
+
+                }
 
             }
         }
@@ -154,8 +172,6 @@ class Act_all_mantra : ComponentActivity(), AllMantra {
     override fun dialogStatus(value: Boolean) {
         dialogStatus.value = value
 
-        Log.d("status", value.toString())
-
     }
 
     override fun allMantraList(list: List<MantraItem>) {
@@ -182,7 +198,11 @@ class Act_all_mantra : ComponentActivity(), AllMantra {
         ShortMessageHelper.toast(this, status)
     }
 
-}//class=========================================
+    override fun mantraStatus(status: String) {
+        mantraStatus.value = status
+    }
+
+}
 
 @Preview(showBackground = true)
 @Composable
@@ -195,10 +215,10 @@ private fun AllMantraFullScreen(
     copyMantraClick : (String) -> Unit = {},
     searchList: MutableList<MantraItem> = mutableListOf(),
     searchFiled: (String) -> Unit = {},
-    favoriteClick: () -> Unit = {},
     favoriteMantraList : List<MantraItem> = emptyList(),
     saveInFavorite : (title : String, mantra : String) -> Unit = {_, _ ->},
-    removeFavoriteClick: (String) -> Unit = {}
+    removeFavoriteClick: (String) -> Unit = {},
+    mantraStatus : String = "mantra_pending"
 
 ) {
 
@@ -251,7 +271,6 @@ private fun AllMantraFullScreen(
             backClick = { backClick() },
             searchClick = { isSearchDialogVisible.value = true },
             favoriteClick = {
-                favoriteClick()
                 isFavoriteVisible.value = true
                             },
             isAnyDialogShowing = isDialogShowing.value
@@ -273,72 +292,88 @@ private fun AllMantraFullScreen(
 
         ) {
 
-            if (mantraList.isEmpty()){
+            when(mantraStatus){
 
-                Column(
+                "mantra_pending" -> {
 
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.Center)
-
-                ) {
-
-                    Image( painter = painterResource(R.drawable.img_empty),
-                        contentDescription = "",
+                    CircularProgressIndicator(
                         modifier = Modifier
+                            .padding(9.dp)
                             .wrapContentWidth()
-                            .size(120.dp)
-                            .align(Alignment.CenterHorizontally)
+                            //.size(30.dp)
+                            .align(Alignment.Center),
+                        color = if (isDark) Color.LightGray else Color(0xFF009688)
 
                     )
 
-                    Spacer(modifier = Modifier.height(7.dp))
+                }
+                "mantra_success" -> {
 
-                    Text( text = "কোন মন্ত্র নেই ।",
-                        fontSize = 16.sp,
-                        fontFamily = BanglaHelper.banglaFont(),
-                        fontWeight = FontWeight.Normal,
-                        color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
-                        textAlign = TextAlign.Center,
+                    LazyColumn(
+
                         modifier = Modifier
-                            .wrapContentWidth()
-                            .align(Alignment.CenterHorizontally)
+                            .fillMaxWidth(),
+                        state = lazyState
 
-                    )
+                    ) {
 
-                }//column
+                        items(
+                            items = mantraList,
+                            key = null
+                        ){ it ->
 
+                            Item(
+                                isDark = isDark,
+                                title = it.title,
+                                mantra = it.mantra,
+                                mantraClick = { copyMantraClick(it.mantra) },
+                                favoriteClick = { saveInFavorite(it.title, it.mantra) }
 
-            }else{
+                            )
 
-                LazyColumn(
+                        }
 
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    state = lazyState
+                    }//lazyColumn
 
-                ) {
+                }
+                else -> {
 
-                    items(
-                        items = mantraList,
-                        key = null
-                    ){ it ->
+                    Column(
 
-                        Item(
-                            isDark = isDark,
-                            title = it.title,
-                            mantra = it.mantra,
-                            mantraClick = { copyMantraClick(it.mantra) },
-                            favoriteClick = { saveInFavorite(it.title, it.mantra) }
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.Center)
+
+                    ) {
+
+                        Image( painter = painterResource(R.drawable.img_empty),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .size(120.dp)
+                                .align(Alignment.CenterHorizontally)
 
                         )
 
-                    }
+                        Spacer(modifier = Modifier.height(7.dp))
 
-                }//lazyColumn
+                        Text( text = "কোন মন্ত্র নেই ।",
+                            fontSize = 16.sp,
+                            fontFamily = BanglaHelper.banglaFont(),
+                            fontWeight = FontWeight.Normal,
+                            color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .align(Alignment.CenterHorizontally)
 
-            }
+                        )
 
+                    }//column
+
+                }
+
+            }//when
 
             if (isSearchDialogVisible.value){
 
@@ -555,7 +590,7 @@ private fun Item(
                     indication = null,
                     interactionSource = null
                 )
-                .background(color = if (isDark) Color(0xFF626161) else Color(0xFFFFFFFF))
+                .background(color = if (isDark) Color(0xFF484747) else Color(0xFFFFFFFF))
                 .padding(5.dp)
 
         ) {
@@ -948,7 +983,9 @@ private fun FavoriteDialog(
 
             modifier = Modifier
                 .fillMaxWidth()
-                .height(550.dp)
+                .then(
+                    if (favoriteList.size > 4) Modifier.height(550.dp) else if (favoriteList.isEmpty()) Modifier.height(200.dp) else Modifier.wrapContentHeight()
+                )
                 .clip(shape = RoundedCornerShape(18.dp))
                 .clickable(
                     indication = null,
@@ -1013,10 +1050,11 @@ private fun FavoriteDialog(
 
             if (favoriteList.isEmpty()){
 
-                Box(
+                Row(
 
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxSize(),
+                    horizontalArrangement = Arrangement.Center
 
 
                 ) {
@@ -1025,12 +1063,12 @@ private fun FavoriteDialog(
                         contentDescription = "",
                         modifier = Modifier
                             .wrapContentWidth()
-                            .size(100.dp)
-                            .align(Alignment.Center)
+                            .size(75.dp)
+                            .align(Alignment.CenterVertically)
 
                     )
 
-                }//box
+                }//row
 
             }else{
 
