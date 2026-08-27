@@ -532,7 +532,7 @@ class ComposeHelper {
                     fontSize = 16.sp,
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Normal,
-                    color = if (isDark) Color(0xFFEFEEEE) else Color(0xFF2D2D2D),
+                    color = if (isDark) Color(0xFFE0DFDF) else Color(0xFF313030),
                     textAlign = TextAlign.Start,
                     modifier = Modifier
                         .fillMaxWidth()
