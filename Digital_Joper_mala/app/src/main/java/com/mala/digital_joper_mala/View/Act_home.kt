@@ -93,7 +93,6 @@ class Act_home : ComponentActivity(), Home {//class=============================
             )
 
             presenter.appUpdate()
-            presenter.getAllMantra()
 
             try {
 
@@ -125,12 +124,14 @@ class Act_home : ComponentActivity(), Home {//class=============================
                         rulesList.clear()
                         infoList.clear()
                         presenter.pagerDataFromServer()
+                        presenter.getAllMantra()
 
                     },
                     rulesClick = {
 
                         pagerList.clear()
                         infoList.clear()
+                        mantraList.clear()
                         presenter.getRules()
 
                                  },
@@ -138,6 +139,7 @@ class Act_home : ComponentActivity(), Home {//class=============================
 
                         pagerList.clear()
                         rulesList.clear()
+                        mantraList.clear()
                         presenter.dataFromServer()
 
                     },
@@ -183,7 +185,10 @@ class Act_home : ComponentActivity(), Home {//class=============================
                     },
                     mantraStatus = mantraStatus.value,
                     mantraList = mantraList,
-                    moreClick = { IntentHelper.normalIntent(this, Act_all_mantra::class.java) }
+                    moreClick = {
+                        IntentHelper.normalIntent(this, Act_all_mantra::class.java)
+                        finishAffinity()
+                    }
                 )
 
             }
@@ -1142,7 +1147,7 @@ private fun MantraBander(
                     fontSize = 16.sp,
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF000000),
+                    color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
                     textAlign = TextAlign.Start,
                     modifier = Modifier
                         .wrapContentWidth()
@@ -1168,7 +1173,7 @@ private fun MantraBander(
                         fontSize = 14.sp,
                         fontFamily = BanglaHelper.banglaFont(),
                         fontWeight = FontWeight.Normal,
-                        color = Color.DarkGray,
+                        color = if (isDark) Color.LightGray else Color.DarkGray,
                         textAlign = TextAlign.Start,
                         modifier = Modifier
                             .wrapContentWidth()
@@ -1180,7 +1185,7 @@ private fun MantraBander(
 
                     Icon( painter = painterResource(R.drawable.ic_right),
                         contentDescription = "",
-                        tint = Color.DarkGray,
+                        tint = if (isDark) Color.LightGray else Color.DarkGray,
                         modifier = Modifier
                             .wrapContentWidth()
                             .size(22.dp)
@@ -1214,7 +1219,7 @@ private fun MantraBander(
                                 .wrapContentWidth()
                                 .size(30.dp)
                                 .align(Alignment.CenterHorizontally),
-                            color = Color(0xFF009688)
+                            color = if (isDark) Color.LightGray else Color(0xFF009688)
 
                         )
 
@@ -1242,11 +1247,17 @@ private fun MantraBander(
                                     ComposeHelper().MantraItem(
                                         columnModifier = Modifier
                                             .fillMaxWidth()
-                                            .shadow(elevation = 3.dp, shape = RoundedCornerShape(14.dp))
+                                            .shadow(
+                                                elevation = 3.dp,
+                                                shape = RoundedCornerShape(14.dp),
+                                                ambientColor = if (isDark) Color.White.copy(alpha = 0.4f) else Color.Black,
+                                                spotColor = if (isDark) Color.White.copy(alpha = 0.4f) else Color.Black
+                                                )
                                             .clip(shape = RoundedCornerShape(14.dp))
-                                            .background(color = Color(0xFFF5F4F4))
+                                            .background(color = if (isDark) Color.DarkGray else Color(0xFFF5F4F4))
                                             .padding(5.dp)
                                         ,
+                                        isDark = isDark,
                                         title = it.title,
                                         mantra = it.mantra
                                     )
@@ -1265,7 +1276,7 @@ private fun MantraBander(
                             fontSize = 16.sp,
                             fontFamily = BanglaHelper.banglaFont(),
                             fontWeight = FontWeight.Normal,
-                            color = Color.Black,
+                            color = if (isDark) Color.White else Color.Black,
                             textAlign = TextAlign.Start,
                             modifier = Modifier
                                 .wrapContentWidth()
