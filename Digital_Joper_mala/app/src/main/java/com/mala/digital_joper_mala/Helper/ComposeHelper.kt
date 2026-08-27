@@ -501,6 +501,65 @@ class ComposeHelper {
 
     }//fun end
 
+
+    @Preview(showBackground = true)
+    @Composable
+    fun MantraItem(
+        boxModifier : Modifier = Modifier,
+        columnModifier : Modifier = Modifier,
+        isDark: Boolean = false,
+        title : String = "Test",
+        mantra : String = "Test"
+    ) {
+
+        Box(
+
+            modifier = boxModifier
+                .fillMaxWidth()
+                .padding(5.dp)
+
+        ) {
+
+            Column(
+
+                modifier = columnModifier
+                    .fillMaxWidth()
+                    .padding(7.dp)
+
+            ) {
+
+                Text( text = title,
+                    fontSize = 16.sp,
+                    fontFamily = BanglaHelper.banglaFont(),
+                    fontWeight = FontWeight.Normal,
+                    color = if (isDark) Color(0xFFEFEEEE) else Color(0xFF2D2D2D),
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally)
+
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Text( text = mantra,
+                    fontSize = 16.sp,
+                    fontFamily = BanglaHelper.banglaFont(),
+                    fontWeight = FontWeight.Bold,
+                    color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally)
+
+                )
+
+            }//column
+
+        }//box
+
+    }//fun end
+
     private fun vibration(context : Context){
 
         val vibrator =
