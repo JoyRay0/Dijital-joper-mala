@@ -12,15 +12,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -35,7 +30,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -709,9 +703,15 @@ private fun Home(
 
             MantraBander(
                 isDark = isDark,
-                moreClick = { moreClick() },
+                mantraMoreClick = { moreClick() },
                 mantraStatus = mantraStatus,
                 mantraList = mantraList
+            )
+
+            Spacer(modifier = Modifier.height(7.dp))
+
+            JopaHistory(
+                isDark = isDark
             )
 
         }//column
@@ -1111,7 +1111,7 @@ private fun UpdateApp(
 @Composable
 private fun MantraBander(
     isDark: Boolean = false,
-    moreClick : () -> Unit = {},
+    mantraMoreClick : () -> Unit = {},
     mantraStatus : String = "mantra_pending",
     mantraList: List<HomeData> = emptyList()
 ) {
@@ -1162,7 +1162,7 @@ private fun MantraBander(
                     modifier = Modifier
                         .wrapContentWidth()
                         .clip(shape = RoundedCornerShape(10.dp))
-                        .clickable{ moreClick() }
+                        .clickable { mantraMoreClick() }
                         .padding(6.dp)
                         .align(Alignment.CenterEnd),
                     horizontalArrangement = Arrangement.Center
@@ -1252,9 +1252,13 @@ private fun MantraBander(
                                                 shape = RoundedCornerShape(14.dp),
                                                 ambientColor = if (isDark) Color.White.copy(alpha = 0.4f) else Color.Black,
                                                 spotColor = if (isDark) Color.White.copy(alpha = 0.4f) else Color.Black
-                                                )
+                                            )
                                             .clip(shape = RoundedCornerShape(14.dp))
-                                            .background(color = if (isDark) Color.DarkGray else Color(0xFFF5F4F4))
+                                            .background(
+                                                color = if (isDark) Color.DarkGray else Color(
+                                                    0xFFF5F4F4
+                                                )
+                                            )
                                             .padding(5.dp)
                                         ,
                                         isDark = isDark,
@@ -1294,4 +1298,148 @@ private fun MantraBander(
 
     }//box
     
+}//fun end
+
+
+@Preview(showBackground = true)
+@Composable
+private fun JopaHistory(
+    isDark: Boolean = false,
+    jopaHistoryMoreClick: () -> Unit = {},
+) {
+
+    var currentDay by remember { mutableStateOf("") }
+    var currentDate by remember { mutableStateOf("") }
+
+    ComposeHelper().getDate { bDay, bDate ->
+
+        currentDay = bDay
+        currentDate = bDate
+
+    }
+
+    Box(
+
+        modifier = Modifier
+            .fillMaxWidth()
+
+    ) {
+
+        Column(
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp)
+
+        ) {
+
+            /* Header */
+
+            Box(
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+
+            ) {
+
+                Text( text = "জপ হিসাব",
+                    fontSize = 16.sp,
+                    fontFamily = BanglaHelper.banglaFont(),
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .align(Alignment.CenterStart)
+
+                )
+
+                /* more button */
+
+                Row(
+
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .clip(shape = RoundedCornerShape(10.dp))
+                        .clickable { jopaHistoryMoreClick() }
+                        .padding(6.dp)
+                        .align(Alignment.CenterEnd),
+                    horizontalArrangement = Arrangement.Center
+
+                ) {
+
+                    Text( text = "আরো",
+                        fontSize = 14.sp,
+                        fontFamily = BanglaHelper.banglaFont(),
+                        fontWeight = FontWeight.Normal,
+                        color = if (isDark) Color.LightGray else Color.DarkGray,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .align(Alignment.CenterVertically)
+
+                    )
+
+                    Spacer(modifier = Modifier.width(3.dp))
+
+                    Icon( painter = painterResource(R.drawable.ic_right),
+                        contentDescription = "",
+                        tint = if (isDark) Color.LightGray else Color.DarkGray,
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .size(22.dp)
+                            .align(Alignment.CenterVertically)
+
+                    )
+
+
+                }//row more button
+
+            }//box header
+
+            Spacer(modifier = Modifier.height(7.dp))
+
+            Box(
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    //.shadow(elevation = 2.dp, shape = RoundedCornerShape(12.dp))
+                    .clip(shape = RoundedCornerShape(12.dp))
+                    .background(color = Color(0xFFF6F5F5))
+                    .padding(9.dp)
+                    .align(Alignment.CenterHorizontally)
+
+            ) {
+
+                Text( text = "$currentDay :   $currentDate",
+                    fontSize = 16.sp,
+                    fontFamily = BanglaHelper.banglaFont(),
+                    fontWeight = FontWeight.Normal,
+                    color = Color.Black,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .align(Alignment.CenterStart)
+
+                )
+
+                Text( text = "০",
+                    fontSize = 16.sp,
+                    fontFamily = BanglaHelper.banglaFont(),
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.Black,
+                    textAlign = TextAlign.End,
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .align(Alignment.CenterEnd)
+
+                )
+
+            }//box
+
+        }//column
+
+    }//box
+
 }//fun end
