@@ -4,9 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,6 +40,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mala.digital_joper_mala.R
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class ComposeHelper {
 
@@ -417,7 +418,11 @@ class ComposeHelper {
                     indication = null,
                     interactionSource = null
                 ) { onDismissClick() }
-                .background(color = if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(alpha = 0.5f))
+                .background(
+                    color = if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                        alpha = 0.5f
+                    )
+                )
                 .padding(12.dp)
 
         ) {
@@ -559,6 +564,35 @@ class ComposeHelper {
         }//box
 
     }//fun end
+
+    fun getDate(banglaDayDate : (bDay : String, bDate : String) -> Unit){
+
+        val currentDay = SimpleDateFormat("EEEE", Locale.getDefault()).format(Date())
+        val currentDate = SimpleDateFormat("dd", Locale.getDefault()).format(Date())
+        val currentMonth = SimpleDateFormat("MM", Locale.getDefault()).format(Date())
+        val currentYear = SimpleDateFormat("yyyy", Locale.getDefault()).format(Date())
+
+        val banglaDay = mutableMapOf<String, String>()
+
+        banglaDay["Monday"] = "সোমবার"
+        banglaDay["Tuesday"] = "মঙ্গলবার"
+        banglaDay["Wednesday"] = "বুধবার"
+        banglaDay["Thursday"] = "বৃহস্পতিবার"
+        banglaDay["Friday"] = "শুক্রবার"
+        banglaDay["Saturday"] = "শনিবার"
+        banglaDay["Sunday"] = "রবিবার"
+
+        val banglaDate = BanglaHelper.readInt(currentDate.toIntOrNull() ?: 0)
+        val banglaMonth = BanglaHelper.readInt(currentMonth.toIntOrNull() ?: 0)
+        val banglaYear = BanglaHelper.readInt(currentYear.toIntOrNull() ?: 0)
+
+        if (!banglaDay[currentDay].isNullOrEmpty() && banglaDate.isNotEmpty() && banglaMonth.isNotEmpty() && banglaYear.isNotEmpty()){
+
+            banglaDayDate("${banglaDay[currentDay]}", "$banglaDate - $banglaMonth - $banglaYear")
+
+        }
+
+    }
 
     private fun vibration(context : Context){
 
