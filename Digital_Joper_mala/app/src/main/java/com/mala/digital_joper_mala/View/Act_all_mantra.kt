@@ -105,7 +105,10 @@ class Act_all_mantra : ComponentActivity(), AllMantra {//class==================
 
                 AllMantraFullScreen(
                     isDark = isDark,
-                    backClick = { finish() },
+                    backClick = {
+                        IntentHelper.normalIntent(this, Act_home::class.java)
+                        finish()
+                                },
                     alertDialogStatus = dialogStatus.value,
                     alertDialogUserData = { presenter.setAllMantraCache(it) },
                     mantraList = allMantraList,
@@ -134,6 +137,7 @@ class Act_all_mantra : ComponentActivity(), AllMantra {//class==================
                 BackHandler() {
 
                     IntentHelper.normalIntent(this, Act_home::class.java)
+                    finish()
 
                 }
 

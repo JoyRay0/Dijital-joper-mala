@@ -2,6 +2,7 @@ package com.mala.digital_joper_mala.View
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.*
@@ -80,7 +81,12 @@ class Act_add_mantra : ComponentActivity(), UserMantras {
 
                 AddMantraFullScreen(
                     isDark = isDark,
-                    backClick = { finish() },
+                    backClick = {
+
+                        IntentHelper.normalIntent(this, Act_home::class.java)
+                        finish()
+
+                    },
                     mantraList = userMantraList,
                     addUserMantra = {
                         presenter.insert(
@@ -102,6 +108,13 @@ class Act_add_mantra : ComponentActivity(), UserMantras {
 
                     },
                 )
+
+            }
+
+            BackHandler() {
+
+                IntentHelper.normalIntent(this, Act_home::class.java)
+                finish()
 
             }
         }

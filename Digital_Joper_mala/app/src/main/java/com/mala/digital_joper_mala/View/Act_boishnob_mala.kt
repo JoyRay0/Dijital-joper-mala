@@ -3,6 +3,7 @@ package com.mala.digital_joper_mala.View
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
@@ -36,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import com.mala.digital_joper_mala.Helper.ACTIVITY
 import com.mala.digital_joper_mala.Helper.BanglaHelper
 import com.mala.digital_joper_mala.Helper.ComposeHelper
+import com.mala.digital_joper_mala.Helper.IntentHelper
 import com.mala.digital_joper_mala.Helper.ThemeHelper
 import com.mala.digital_joper_mala.Helper.TrackScreen
 import com.mala.digital_joper_mala.Helper.VibrationHelper
@@ -104,7 +106,10 @@ class Act_boishnob_mala : ComponentActivity(), BoishnobMala, Achievements {
 
                 BoisnobMalaFullScreen(
                     isDark = isDark,
-                    backClick = { finish() },
+                    backClick = {
+                        IntentHelper.normalIntent(this, Act_home::class.java)
+                        finish()
+                                },
                     mantraList = mantraList,
                     floatingButtonClick = { presenter.getBoishnobMala() },
                     isVibration = isVibration,
@@ -131,6 +136,14 @@ class Act_boishnob_mala : ComponentActivity(), BoishnobMala, Achievements {
                 )
 
             }
+
+            BackHandler() {
+
+                IntentHelper.normalIntent(this, Act_home::class.java)
+                finish()
+
+            }
+
         }
     }//on create===============================
 

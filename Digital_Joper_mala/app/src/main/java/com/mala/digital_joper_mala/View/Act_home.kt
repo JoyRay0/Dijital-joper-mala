@@ -111,8 +111,14 @@ class Act_home : ComponentActivity(), Home {//class=============================
                 HomeFullScreen(
                     isDark = isDark,
                     notificationClick = {  },
-                    addMantraClick = { IntentHelper.normalIntent(this, Act_add_mantra::class.java) },
-                    settingClick = { IntentHelper.normalIntent(this, Act_setting::class.java) },
+                    addMantraClick = {
+                        IntentHelper.normalIntent(this, Act_add_mantra::class.java)
+                        finish()
+                                     },
+                    settingClick = {
+                        IntentHelper.normalIntent(this, Act_setting::class.java)
+                        finish()
+                                   },
                     homeClick = {
 
                         rulesList.clear()
@@ -165,23 +171,36 @@ class Act_home : ComponentActivity(), Home {//class=============================
                     easyMalaClick = {
 
                         IntentHelper.normalIntent(this, Act_easy_mala::class.java)
+                        finish()
 
                     },
                     boisnobMalaClick = {
 
                         IntentHelper.normalIntent(this, Act_boishnob_mala::class.java)
+                        finish()
 
                     },
                     shivMalaClick = {
 
                         IntentHelper.normalIntent(this, Act_shiv_mala::class.java)
+                        finish()
 
                     },
                     mantraStatus = mantraStatus.value,
                     mantraList = mantraList,
-                    moreClick = {
+                    mantraMoreClick = {
                         IntentHelper.normalIntent(this, Act_all_mantra::class.java)
-                        finishAffinity()
+                        finish()
+                    },
+                    jopHistoryMoreClick = {
+                        IntentHelper.normalIntent(this, Act_chart::class.java)
+                        finish()
+                                          },
+                    getJopCount = 0L,
+                    currentDayDate = { day, date ->
+
+
+
                     }
                 )
 
@@ -276,7 +295,10 @@ private fun HomeFullScreen(
     shivMalaClick: () -> Unit = {},
     mantraStatus: String = "",
     mantraList: List<HomeData> = emptyList(),
-    moreClick: () -> Unit = {}
+    mantraMoreClick: () -> Unit = {},
+    jopHistoryMoreClick: () -> Unit = {},
+    getJopCount : Long = 0L,
+    currentDayDate : (day : String, date : String) -> Unit = {_, _->}
 ) {
 
     var index = remember { mutableStateOf(0) }
@@ -335,7 +357,10 @@ private fun HomeFullScreen(
                         shivMalaClick = shivMalaClick,
                         mantraStatus = mantraStatus,
                         mantraList = mantraList,
-                        moreClick = { moreClick() }
+                        mantraMoreClick = { mantraMoreClick() },
+                        jopHistoryMoreClick = { jopHistoryMoreClick() },
+                        getJopCount = getJopCount,
+                        currentDayDate = { day, date -> currentDayDate(day, date) }
                     )
 
                 }
@@ -569,7 +594,10 @@ private fun Home(
     shivMalaClick : () -> Unit = {},
     mantraStatus: String = "",
     mantraList: List<HomeData> = emptyList(),
-    moreClick: () -> Unit = {}
+    mantraMoreClick: () -> Unit = {},
+    jopHistoryMoreClick: () -> Unit = {},
+    getJopCount : Long = 0L,
+    currentDayDate : (day : String, date : String) -> Unit = {_, _->}
 ) {
 
     var isUpdate by remember { mutableStateOf(false) }
@@ -703,7 +731,7 @@ private fun Home(
 
             MantraBander(
                 isDark = isDark,
-                mantraMoreClick = { moreClick() },
+                mantraMoreClick = { mantraMoreClick() },
                 mantraStatus = mantraStatus,
                 mantraList = mantraList
             )
@@ -711,7 +739,12 @@ private fun Home(
             Spacer(modifier = Modifier.height(7.dp))
 
             JopaHistory(
-                isDark = isDark
+                isDark = isDark,
+                jopHistoryMoreClick = { jopHistoryMoreClick() },
+                getJopCount = getJopCount,
+                currentDayDate = { day, date ->
+
+                    currentDayDate(day, date) }
             )
 
         }//column
@@ -1305,11 +1338,14 @@ private fun MantraBander(
 @Composable
 private fun JopaHistory(
     isDark: Boolean = false,
-    jopaHistoryMoreClick: () -> Unit = {},
+    jopHistoryMoreClick: () -> Unit = {},
+    getJopCount : Long = 0L,
+    currentDayDate : (day : String, date : String) -> Unit = {_, _->}
 ) {
 
     var currentDay by remember { mutableStateOf("") }
     var currentDate by remember { mutableStateOf("") }
+    var jopCount by remember(getJopCount) { mutableStateOf(getJopCount) }
 
     ComposeHelper().getDate { bDay, bDate ->
 
@@ -1317,6 +1353,8 @@ private fun JopaHistory(
         currentDate = bDate
 
     }
+
+    if (currentDay.isNotEmpty() && currentDate.isNotEmpty()) currentDayDate(currentDay, currentDate)
 
     Box(
 
@@ -1362,7 +1400,7 @@ private fun JopaHistory(
                     modifier = Modifier
                         .wrapContentWidth()
                         .clip(shape = RoundedCornerShape(10.dp))
-                        .clickable { jopaHistoryMoreClick() }
+                        .clickable { jopHistoryMoreClick() }
                         .padding(6.dp)
                         .align(Alignment.CenterEnd),
                     horizontalArrangement = Arrangement.Center
@@ -1416,7 +1454,7 @@ private fun JopaHistory(
                     fontSize = 16.sp,
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Normal,
-                    color = Color.Black,
+                    color = Color(0xFF3F3E3E),
                     textAlign = TextAlign.Start,
                     modifier = Modifier
                         .wrapContentWidth()
@@ -1424,7 +1462,7 @@ private fun JopaHistory(
 
                 )
 
-                Text( text = "০",
+                Text( text = BanglaHelper.readLong(jopCount),
                     fontSize = 16.sp,
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.SemiBold,

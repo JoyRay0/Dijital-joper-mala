@@ -3,6 +3,7 @@ package com.mala.digital_joper_mala.View
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
@@ -70,6 +71,7 @@ import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightToolBar
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.Helper.BanglaHelper
 import com.mala.digital_joper_mala.Helper.ComposeHelper
+import com.mala.digital_joper_mala.Helper.IntentHelper
 import com.mala.digital_joper_mala.Helper.SanitizeHelper
 import com.mala.digital_joper_mala.Helper.ThemeHelper
 import com.mala.digital_joper_mala.Helper.TrackScreen
@@ -138,7 +140,10 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {
 
                 EasyMalaFullScreen(
                     isDark = isDark,
-                    backClick = { finish() },
+                    backClick = {
+                        IntentHelper.normalIntent(this, Act_home::class.java)
+                        finish()
+                                },
                     isVibration = isVibration,
                     saveAchievementCount = { count ->
 
@@ -164,6 +169,13 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {
                     userMantraList = userMantraList
                 )
 
+
+            }
+
+            BackHandler() {
+
+                IntentHelper.normalIntent(this, Act_home::class.java)
+                finish()
 
             }
 
