@@ -30,16 +30,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Check file
-        run: |
-          pwd
-          ls -la
-          find . -name gradlew -type f
-
       - name: Make gradlew executable
         working-directory: Digital_Joper_mala
         run: chmod +x ./gradlew
 
       - name: Build Debug APK and Run Tests
         working-directory: Digital_Joper_mala
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug --stacktrace --info
