@@ -37,7 +37,7 @@ jobs:
           find . -name gradlew -type f
 
       - name: Make gradlew executable
-        run: chmod +x Digital_Joper_mala/gradlew
+        run: chmod +x ./Digital_Joper_mala/gradlew
 
       - name: Build Debug APK and Run Tests
         run: ./Digital_Joper_mala/gradlew test assembleDebug
