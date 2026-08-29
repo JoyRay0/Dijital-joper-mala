@@ -34,5 +34,4 @@ jobs:
         run: chmod +x Digital_Joper_mala/gradlew
 
       - name: Build Debug APK and Run Tests
-        working-directory: ./Digital_Joper_mala
-        run: ./gradlew test assembleDebug
+        run: ./Digital_Joper_mala/gradlew test assembleDebug
