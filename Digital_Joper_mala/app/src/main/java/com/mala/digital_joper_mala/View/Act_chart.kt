@@ -1,88 +1,52 @@
 package com.mala.digital_joper_mala.View
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.PlatformTextStyle
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.mala.digital_joper_mala.View.main_theme_ui.theme.DarkBackground
-import com.mala.digital_joper_mala.View.main_theme_ui.theme.DarkChartBackground
-import com.mala.digital_joper_mala.View.main_theme_ui.theme.DarkCounterText
-import com.mala.digital_joper_mala.View.main_theme_ui.theme.DarkMonthText
-import com.mala.digital_joper_mala.View.main_theme_ui.theme.DarkStatusBar
-import com.mala.digital_joper_mala.View.main_theme_ui.theme.DarkToolBar
-import com.mala.digital_joper_mala.View.main_theme_ui.theme.Digital_Joper_malaTheme
-import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightBackground
-import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightChartBackground
-import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightCounterText
-import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightMonthText
-import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightStatusBar
-import com.mala.digital_joper_mala.View.main_theme_ui.theme.LightToolBar
-import com.mala.digital_joper_mala.Database.JopaChartDB
+import androidx.compose.ui.unit.*
+import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
 import com.mala.digital_joper_mala.Helper.ACTIVITY
-import com.mala.digital_joper_mala.Model.JopaChartModel
-import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.Helper.BanglaHelper
+import com.mala.digital_joper_mala.Helper.IntentHelper
+import com.mala.digital_joper_mala.Helper.ShortMessageHelper
+import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.Helper.ThemeHelper
 import com.mala.digital_joper_mala.Helper.TrackScreen
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.mala.digital_joper_mala.Model.JopHistory
+import com.mala.digital_joper_mala.Presenter.JopCountHistory
+import com.mala.digital_joper_mala.Presenter.JopHistoryPresenter
+import java.nio.file.WatchEvent
 
-class Act_chart : ComponentActivity() {
-
-    private lateinit var jopaChartDB : JopaChartDB
+class Act_chart : ComponentActivity(), JopCountHistory {//class======================================================
 
     private lateinit var tracker : TrackScreen
+    private lateinit var presenter : JopHistoryPresenter
+
+    //init
+
+    private val historyStatus = mutableStateOf("")
+    private val jopHistoryList = mutableStateListOf<JopHistory>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,8 +56,6 @@ class Act_chart : ComponentActivity() {
 
         setContent {
 
-            val chartList = remember { mutableStateListOf<JopaChartModel>() }
-            var isDelete by remember { mutableStateOf(false) }
             var isDark by remember { mutableStateOf(false) }
 
 
@@ -105,63 +67,38 @@ class Act_chart : ComponentActivity() {
                 darkIcons = false
             )
 
-            LaunchedEffect(Unit) {
-
-                val item = withContext(Dispatchers.IO){
-
-                    jopaChartDB.getAll()
-                    
-                }
-                Log.d("list", item.toString())
-
-                chartList.clear()
-                chartList.addAll(item)
-
-            }
-
-            if (isDelete){
-
-                LaunchedEffect(Unit) {
-
-                    withContext(Dispatchers.IO){
-
-                        jopaChartDB.deleteAll()
-
-                    }
-
-                    chartList.clear()
-
-                }
-
-            }
-
+            presenter.getAllJopCountHistory()
 
             Digital_Joper_malaTheme {
 
-                ChatFullScreen(
-                    backClick = {finish()},
-                    deleteClick = { isDelete = true },
-                    list = chartList,
+                JopHistoryFullScreen(
+                    backClick = {
+                        IntentHelper.normalIntent(this, Act_home::class.java)
+                        finish()
+                                },
+                    deleteClick = { },
+                    jopHistoryList = jopHistoryList,
                     isDark = isDark
                 )
 
             }
 
-            BackHandler {
+            BackHandler() {
 
+                IntentHelper.normalIntent(this, Act_home::class.java)
                 finish()
-                isDark = false
 
             }
+
         }
 
     }// on create=============================================
 
     private fun init(){
 
-        jopaChartDB = JopaChartDB(this)
-
         tracker = TrackScreen(this)
+
+        presenter = JopHistoryPresenter(this, this)
 
     }
 
@@ -179,48 +116,42 @@ class Act_chart : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        jopaChartDB.closeDB()
+        presenter.onDestroy()
+    }
+
+    override fun historyList(list: List<JopHistory>) {
+        jopHistoryList.clear()
+        jopHistoryList.addAll(list)
+    }
+
+    override fun historyStatus(status: String) {
+        historyStatus.value = status
+    }
+
+    override fun singleCountHistory(count: Long) {
+        TODO("Not yet implemented")
     }
 
 
-}//class======================================================
+}
 
 
 @Preview(showBackground = true)
 @Composable
-private fun ChatFullScreen(
+private fun JopHistoryFullScreen(
     backClick: () -> Unit = {},
     deleteClick: () -> Unit = {},
-    list: List<JopaChartModel> = emptyList(),
+    jopHistoryList: List<JopHistory> = emptyList(),
+    historyStatus : String = "",
     isDark : Boolean = false
     ) {
 
-    val context = LocalContext.current
-    //val bgColor = colorResource(R.color.background_color)
-    var isDialogVisible by remember { mutableStateOf(false) }
-
-    val monthList = arrayOf("জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর")
-
-
-    val jan = list.firstOrNull()?.january ?: "০"
-    val feb = list.firstOrNull()?.february ?: "০"
-    val mar = list.firstOrNull()?.march ?: "০"
-    val apr = list.firstOrNull()?.april ?: "০"
-    val may = list.firstOrNull()?.may ?: "০"
-    val jun = list.firstOrNull()?.june ?: "০"
-    val jul = list.firstOrNull()?.july ?: "০"
-    val aug = list.firstOrNull()?.august ?: "০"
-    val sep = list.firstOrNull()?.september ?: "০"
-    val oct = list.firstOrNull()?.october ?: "০"
-    val nov = list.firstOrNull()?.november ?: "০"
-    val dec = list.firstOrNull()?.december ?: "০"
-
+    val lazyState = rememberLazyListState()
 
     Scaffold(
         topBar = {
             Toolbar( backClick = {backClick()},
-                deleteClick = {deleteClick()},
-                infoClick = {isDialogVisible = true},
+                //deleteClick = {deleteClick()},
                 isDark = isDark
             )},
         modifier = Modifier
@@ -240,100 +171,65 @@ private fun ChatFullScreen(
 
         ) {
 
-            Column(
+            when(historyStatus){
 
-                modifier = Modifier
-                    .fillMaxWidth()
-                    //.background(color = bgColor)
-                    .verticalScroll(rememberScrollState())
-                    .align(Alignment.TopCenter)
+                "history_pending" -> {
 
-            ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .padding(9.dp)
+                            .wrapContentWidth()
+                            //.size(30.dp)
+                            .align(Alignment.Center),
+                        color = if (isDark) Color.LightGray else Color(0xFF009688)
 
-                CounterChart(
-                    nMonth = monthList[0],
-                    count = jan.toString(),
-                    isDark = isDark
-                )
+                    )
 
-                CounterChart(
-                    nMonth = monthList[1],
-                    count = feb.toString(),
-                    isDark = isDark
-                )
+                }
+                "history_success" -> {
 
-                CounterChart(
-                    nMonth = monthList[2],
-                    count = mar.toString(),
-                    isDark = isDark
-                )
+                    LazyColumn(
 
-                CounterChart(
-                    nMonth = monthList[3],
-                    count = apr.toString(),
-                    isDark = isDark
-                )
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        state = lazyState
 
-                CounterChart(
-                    nMonth = monthList[4],
-                    count = may.toString(),
-                    isDark = isDark
-                )
+                    ) {
 
-                CounterChart(
-                    nMonth = monthList[5],
-                    count = jun.toString(),
-                    isDark = isDark
-                )
+                        items(
+                            items = jopHistoryList,
+                            key = null
+                        ){ it ->
 
-                CounterChart(
-                    nMonth = monthList[6],
-                    count = jul.toString(),
-                    isDark = isDark
-                )
+                            HistoryItem(
+                                date = it.dayDate,
+                                count = it.count
+                            )
 
-                CounterChart(
-                    nMonth = monthList[7],
-                    count = aug.toString(),
-                    isDark = isDark
-                )
+                        }
 
-                CounterChart(
-                    nMonth = monthList[8],
-                    count = sep.toString(),
-                    isDark = isDark
-                )
+                    }//lazyColumn
 
-                CounterChart(
-                    nMonth = monthList[9],
-                    count = oct.toString(),
-                    isDark = isDark
-                )
+                }
+                else -> {
 
-                CounterChart(
-                    nMonth = monthList[10],
-                    count = nov.toString(),
-                    isDark = isDark
-                )
+                    Text( text = "আপনার জপের যাত্রা এখনও শুরু হয়নি। জপ শুরু করুন - আপনার প্রতিটি জপের অগ্রগতি এখানে সুন্দরভাবে সংরক্ষিত থাকবে।",
+                        fontSize = 17.sp,
+                        fontFamily = BanglaHelper.banglaFont(),
+                        fontWeight = FontWeight.Normal,
+                        color = Color.Black,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .padding(12.dp)
+                            .align(Alignment.Center)
 
-                CounterChart(
-                    nMonth = monthList[11],
-                    count = dec.toString(),
-                    isDark = isDark
-                )
+                    )
 
-            }//column
-
-            if (isDialogVisible){
-
-                UserDialog(
-                    closeClick = {isDialogVisible = false},
-                    modifier = Modifier
-                        .align(Alignment.Center),
-                    isDark = isDark
-                )
+                }
 
             }
+
 
         }//box
 
@@ -346,13 +242,10 @@ private fun ChatFullScreen(
 @Composable
 private fun Toolbar(
     backClick : () -> Unit = {},
-    deleteClick : () -> Unit = {},
-    infoClick : () -> Unit = {},
+    //deleteClick : () -> Unit = {},
     isDark : Boolean = false
 ) {
 
-    //val bgColor = colorResource(R.color.toolbar_color)
-    //val isDark = isSystemInDarkTheme()
 
     Box(
 
@@ -383,34 +276,12 @@ private fun Toolbar(
 
         }
 
+        /*
         Row(
             modifier = Modifier
                 .wrapContentWidth()
                 .align(Alignment.CenterEnd)
         ) {
-
-            IconButton(
-                onClick = infoClick,
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .clip(shape = CircleShape)
-                    //.background(color = Color.Green)
-                    .align(Alignment.CenterVertically)
-                    .size(37.dp)
-            ) {
-
-                Icon( painter = painterResource(R.drawable.ic_alert_info),
-                    contentDescription = "Back",
-                    tint = Color(0xFFFFFFFF),
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .size(23.dp)
-
-                )
-
-            }
-
-            Spacer(modifier = Modifier.width(10.dp))
 
             IconButton(
                 onClick = deleteClick,
@@ -434,200 +305,65 @@ private fun Toolbar(
 
         }//row
 
+         */
+
     }//box
 
 }//fun end
 
-
 @Preview(showBackground = true)
 @Composable
-private fun CounterChart(nMonth : String = "মাস", count : String = "১৯২০", isDark : Boolean = false) {
-
-    
+fun HistoryItem(
+    date : String = "Test",
+    count : Long = 0L,
+    isDark: Boolean = false
+) {
 
     Box(
 
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(5.dp)
 
     ) {
 
-        Column(
+        Box(
 
             modifier = Modifier
                 .fillMaxWidth()
-                .shadow(elevation = 3.dp, shape = RoundedCornerShape(10.dp))
-                .clip(shape = RoundedCornerShape(10.dp))
-                .background(color = if(isDark) DarkChartBackground else LightChartBackground)
+                .clip(shape = RoundedCornerShape(12.dp))
+                .background(color = Color(0xFFEEECEC))
                 .padding(7.dp)
+                .align(Alignment.Center)
 
         ) {
 
-            Box(
-
+            Text( text = date,
+                fontSize = 16.sp,
+                fontFamily = BanglaHelper.banglaFont(),
+                fontWeight = FontWeight.Normal,
+                color = Color.DarkGray,
+                textAlign = TextAlign.Start,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp)
+                    .wrapContentWidth()
+                    .align(Alignment.CenterStart)
 
-            ) {
-                
-                Text(nMonth,
-                    fontSize = 15.sp,
-                    fontFamily = BanglaHelper.banglaFont(),
-                    fontWeight = FontWeight.Normal,
-                    color = if (isDark) DarkMonthText else LightMonthText,
-                    style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = false)),
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .align(Alignment.CenterStart)
-                    )
-
-                Text(buildAnnotatedString{
-
-                    withStyle(style = SpanStyle(
-
-                        color = if (isDark) DarkCounterText else LightCounterText,
-                        fontSize = 15.sp,
-                        fontFamily = BanglaHelper.banglaFont(),
-                        fontWeight = if (count.toInt() >= 1920) FontWeight.Bold else FontWeight.Normal
-
-                    )){append(BanglaHelper.readInt(count.toInt()))}
-
-                    withStyle(style = SpanStyle(
-
-                        color = if (isDark) DarkCounterText else LightCounterText,
-                        fontSize = 15.sp,
-                        fontFamily = BanglaHelper.banglaFont()
-
-                    )){append(" /")}
-
-                    withStyle(style = SpanStyle(
-
-                        color = if (isDark) DarkCounterText else LightCounterText,
-                        fontSize = 15.sp,
-                        fontFamily = BanglaHelper.banglaFont()
-
-                    )){append("১৯২০")}
-
-                },
-                    style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = false)),
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .align(Alignment.CenterEnd)
-                    )
-
-            }//box
-
-            VerticalProgressBar(
-                progressValue = count.toInt().toFloat(),
-                maxValue = 1920f,
-                barHeight = 10
             )
 
-        }//column
-        
+            Text( text = BanglaHelper.readLong(count),
+                fontSize = 16.sp,
+                fontFamily = BanglaHelper.banglaFont(),
+                fontWeight = FontWeight.SemiBold,
+                color = Color.Black,
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .align(Alignment.CenterEnd)
+
+            )
+
+        }//box
 
     }//box
 
 }//fun end
-
-
-@Preview(showBackground = true)
-@Composable
-private fun VerticalProgressBar(
-    progressValue : Float = 0.5f,
-    maxValue : Float = 0f,
-    barHeight : Int = 5,
-    isDark : Boolean = false
-
-) {
-
-    val progress = (progressValue / maxValue).coerceIn(0f, 1f)
-
-    Box(  //track
-
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(barHeight.dp)
-            .clip(shape = RoundedCornerShape(15.dp))
-            .background(color = Color(0xFFEAE6E6))
-
-
-    ) {
-
-        Box(  //progress
-            modifier = Modifier
-                .fillMaxWidth(fraction = progress)
-                .height(barHeight.dp)
-                .clip(shape = RoundedCornerShape(15.dp))
-                .background(color = Color(0xFF673AB7))
-        )
-
-    }
-    
-}//fun end
-
-
-@Preview(showBackground = true)
-@Composable
-private fun UserDialog (
-    closeClick : () -> Unit = {},
-    modifier: Modifier = Modifier,
-    isDark : Boolean = false
-
-) {
-
-    val font = FontFamily(Font(R.font.noto_serif_bengali))
-
-    Box(
-
-        modifier = modifier.fillMaxWidth().padding(7.dp)
-
-    ) {
-        
-        Column(
-
-            modifier = Modifier
-                .fillMaxWidth()
-                .shadow(elevation = 10.dp, shape = RoundedCornerShape(12.dp))
-                .clip(shape = RoundedCornerShape(12.dp))
-                .background(color = Color(0xFFFFFFFF))
-                .padding(12.dp)
-
-        ) {
-
-            Text("প্রতিদিন মাত্র ৬৪ বার জপ করুন, আর এই মাসে ১৯২০ জপের লক্ষ্য সহজেই পূর্ণ করুন।\n" +
-                    "প্রতিটি জপ আপনার মন, শক্তি ও আত্মাকে আরও সমৃদ্ধ করবে।\n" +
-                    "আজ থেকেই শুরু করুন, নিজের অদম্য শক্তি এবং শান্তি অনুভব করুন!",
-                fontSize = 15.sp,
-                fontFamily = font,
-                fontWeight = FontWeight.Normal,
-                color = Color(0xFF000000),
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .padding(5.dp)
-                    .align(Alignment.Start)
-                )
-
-            Text("বন্ধ",
-                fontSize = 13.sp,
-                fontFamily = font,
-                fontWeight = FontWeight.Normal,
-                color = Color(0xFF655252),
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .clip(shape = RoundedCornerShape(12.dp))
-                    .clickable{ closeClick() }
-                    //.background(color = Color.Gray)
-                    .padding(start = 14.dp, end = 14.dp, top = 5.dp, bottom = 5.dp)
-                    .align(Alignment.End)
-                )
-
-        }//column
-
-    }//box
-
-}//fun end
-
