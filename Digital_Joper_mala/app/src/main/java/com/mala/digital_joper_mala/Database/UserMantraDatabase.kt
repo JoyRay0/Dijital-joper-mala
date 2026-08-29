@@ -115,7 +115,7 @@ class UserMantraDatabase(
 
     }
 
-    fun dbOpen(writeable : Boolean = false) : SQLiteDatabase{
+    private fun dbOpen(writeable : Boolean = false) : SQLiteDatabase{
 
         return if (writeable) writableDatabase else readableDatabase
 
