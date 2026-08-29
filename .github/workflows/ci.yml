@@ -24,7 +24,7 @@ jobs:
         #android part
 
       - name: Set up Java 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
 
         with: 
           java-version: '17'
@@ -34,4 +34,5 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build Debug APK and Run Tests
+        working-directory: ./Digital_Joper_mala
         run: ./gradlew test assembleDebug
