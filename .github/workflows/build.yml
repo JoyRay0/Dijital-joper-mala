@@ -30,6 +30,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Check file
+        run: |
+          pwd
+          ls -la
+          find . -name gradlew -type f
+
       - name: Make gradlew executable
         run: chmod +x Digital_Joper_mala/gradlew
 
