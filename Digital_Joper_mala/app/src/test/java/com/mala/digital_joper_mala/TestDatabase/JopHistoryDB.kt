@@ -18,21 +18,25 @@ class JopHistoryDB {
     fun test_empty_insert(){
 
         val testDate = ""
+        val testDay = ""
         val testCount = 0L
+        val testYear = 0
 
         //mockDB.insertJopCount(testDate, testCount)
 
-        verify(exactly = 0){ mockDB.insertJopCount(testDate, testCount) }
+        verify(exactly = 0){ mockDB.insertJopCount(testDay, testDate, testYear,testCount) }
 
     }
 
     @Test
     fun test_data_insert(){
 
+        val testDay = ""
         val testDate = "20-2-2026"
         val testCount = 10L
+        val testYear = 2026
 
-        mockDB.insertJopCount(testDate, testCount)
+        mockDB.insertJopCount(testDay, testDate, testYear, testCount)
 
         every { mockDB.getOneJopCount(testDate) } returns testCount
 
@@ -44,16 +48,19 @@ class JopHistoryDB {
     @Test
     fun test_get_all_count(){
 
+        val testDay = ""
         val testDate = "20-2-2026"
         val testCount = 10L
+        val testYear = 2026
 
-        mockDB.insertJopCount(testDate, testCount)
+        mockDB.insertJopCount(testDay, testDate, testYear,testCount)
 
         val list : MutableList<JopHistory> = mutableListOf()
 
         list.add(
             JopHistory(
-                dayDate = "20-2-2026",
+                day = "",
+                date = "20-2-2026",
                 count = 10L
             )
         )
@@ -72,12 +79,24 @@ class JopHistoryDB {
     @Test
     fun test_delete_all(){
 
+        val testDay = "Mon"
         val testDate = "20-2-2026"
         val testCount = 10L
+        val testYear = 2026
+        val newYear = 2027
 
-        mockDB.insertJopCount(testDate, testCount)
+        mockDB.insertJopCount(testDay, testDate, testYear, testCount)
 
-        verify(exactly = 0) { mockDB.deleteAllJopCount() }
+        verify(exactly = 0){ mockDB.deleteAllJopCount(newYear) }
+
+    }
+
+    @Test
+    fun test_delete_2025_history(){
+
+        val year = 2025
+
+        verify(exactly = 0) { mockDB.deleteAllJopCount(year) }
 
     }
 
