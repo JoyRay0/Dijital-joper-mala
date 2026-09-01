@@ -45,7 +45,7 @@ $COUNT INTEGER)
 
     }
 
-    fun insertJopCount(dayDate: String, jopCount : Long){
+    fun insertJopCount(dayDate: String, jopCount : Long = 0L){
 
         if (dayDate.isEmpty() || jopCount < 0L) return
 
@@ -121,7 +121,7 @@ $COUNT INTEGER)
 
         try {
 
-            cursor = db.rawQuery("SELECT * FROM $TABLE_NAME", null)
+            cursor = db.rawQuery("SELECT * FROM $TABLE_NAME ORDER BY id DESC", null)
 
             while (cursor.moveToNext()){
 
