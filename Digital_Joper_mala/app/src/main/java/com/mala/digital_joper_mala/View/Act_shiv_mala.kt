@@ -18,6 +18,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,6 +47,7 @@ import com.mala.digital_joper_mala.Model.ShivItem
 import com.mala.digital_joper_mala.Presenter.AchievementPresenter
 import com.mala.digital_joper_mala.Presenter.Achievements
 import com.mala.digital_joper_mala.Presenter.HomePresenter
+import com.mala.digital_joper_mala.Presenter.JopHistoryPresenter
 import com.mala.digital_joper_mala.Presenter.ShivMala
 import com.mala.digital_joper_mala.Presenter.ShivMalaPresenter
 import com.mala.digital_joper_mala.R
@@ -57,6 +59,7 @@ class Act_shiv_mala : ComponentActivity(), ShivMala, Achievements {
     private lateinit var tracker : TrackScreen
     private lateinit var presenter : ShivMalaPresenter
     private lateinit var achievementPresenter : AchievementPresenter
+    private lateinit var historyPresenter : JopHistoryPresenter
 
     //init
 
@@ -65,6 +68,7 @@ class Act_shiv_mala : ComponentActivity(), ShivMala, Achievements {
     private val lastCountCache = mutableStateOf("")
     private val currentCount = mutableStateOf("")
     private val getCountLimit = mutableStateOf("")
+    private val pCount = mutableLongStateOf(0L)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -134,6 +138,7 @@ class Act_shiv_mala : ComponentActivity(), ShivMala, Achievements {
                         reloadCountLimit++
                     },
                     getCountLimit = getCountLimit.value,
+                    pCount = { pCount.longValue = it }
                 )
 
             }
@@ -154,6 +159,8 @@ class Act_shiv_mala : ComponentActivity(), ShivMala, Achievements {
         presenter = ShivMalaPresenter(this, this)
 
         achievementPresenter = AchievementPresenter(this, this)
+
+        historyPresenter = JopHistoryPresenter(this)
     }
 
     override fun onStart() {
@@ -170,12 +177,15 @@ class Act_shiv_mala : ComponentActivity(), ShivMala, Achievements {
         tracker.stop(ACTIVITY.Act_shiv_mala)
 
         presenter.setLastCountCache(currentCount.value)
+
+        historyPresenter.insertJopCount(pCount.longValue)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         presenter.onDestroy()
         achievementPresenter.onDestroy()
+        historyPresenter.onDestroy()
     }
 
     override fun malaList(list: List<ShivItem>) {
@@ -214,6 +224,7 @@ private fun ShivMalaFullScreen(
     lastCountCache : String = "",
     setCountLimit: (String) -> Unit = {},
     getCountLimit: String = "0",
+    pCount : (Long) -> Unit = {}
 ) {
 
     var isMantraDialogVisible by remember { mutableStateOf(false) }
@@ -294,7 +305,8 @@ private fun ShivMalaFullScreen(
                 currentCount = { count = it },
                 isDark = isDark,
                 isVibrationEnabled = isVibration,
-                countNumber = lastCountCache
+                countNumber = lastCountCache,
+                pCount = { pCount(it) }
             )
 
             /* floating button */

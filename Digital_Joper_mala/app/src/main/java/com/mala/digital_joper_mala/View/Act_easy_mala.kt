@@ -39,6 +39,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -82,12 +83,14 @@ import com.mala.digital_joper_mala.Presenter.AchievementPresenter
 import com.mala.digital_joper_mala.Presenter.Achievements
 import com.mala.digital_joper_mala.Presenter.EasyMala
 import com.mala.digital_joper_mala.Presenter.EasyMalaPresenter
+import com.mala.digital_joper_mala.Presenter.JopHistoryPresenter
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.Digital_Joper_malaTheme
 
 class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {
     private lateinit var tracker : TrackScreen
     private lateinit var presenter : EasyMalaPresenter
     private lateinit var achievementPresenter : AchievementPresenter
+    private lateinit var historyPresenter : JopHistoryPresenter
 
     //init============
     private val achievementList = mutableStateListOf<Achievement>()
@@ -96,6 +99,7 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {
     private val lastCountCache = mutableStateOf("")
     private val currentCount = mutableStateOf("")
     private val getCountLimit = mutableStateOf("")
+    private val pCount = mutableLongStateOf(0L)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -166,7 +170,8 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {
                     },
                     getCountLimit = getCountLimit.value,
                     favoriteMantraList = favoriteMantraList,
-                    userMantraList = userMantraList
+                    userMantraList = userMantraList,
+                    pCount = { pCount.longValue = it }
                 )
 
 
@@ -191,6 +196,8 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {
 
         achievementPresenter = AchievementPresenter(this, this)
 
+        historyPresenter = JopHistoryPresenter(this)
+
     }
 
     override fun onStart() {
@@ -205,6 +212,9 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {
         tracker.stop(ACTIVITY.Act_easy_mala)
 
         presenter.setLastCountCache(currentCount.value)
+
+        historyPresenter.insertJopCount(pCount.longValue)
+
     }
 
     override fun onDestroy() {
@@ -216,15 +226,11 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {
     override fun favoriteMantraList(list: List<EasyMalaItem>) {
         favoriteMantraList.clear()
         favoriteMantraList.addAll(list)
-
-        Log.d("mantra", "favorite = $list")
     }
 
     override fun userMantraList(list: List<EasyMalaItem>) {
         userMantraList.clear()
         userMantraList.addAll(list)
-
-        Log.d("mantra", "user = $list")
     }
 
     override fun lastCountCache(value: String) {
@@ -256,7 +262,8 @@ private fun EasyMalaFullScreen(
     setCountLimit: (String) -> Unit = {},
     getCountLimit: String = "0",
     favoriteMantraList : List<EasyMalaItem> = emptyList(),
-    userMantraList : List<EasyMalaItem> = emptyList()
+    userMantraList : List<EasyMalaItem> = emptyList(),
+    pCount : (Long) -> Unit = {}
     ) {
 
     var isMantraDialogVisible by remember { mutableStateOf(false) }
@@ -345,7 +352,8 @@ private fun EasyMalaFullScreen(
                     currentCount = { count = it },
                     isDark = isDark,
                     isVibrationEnabled = isVibration,
-                    countNumber = lastCountCache
+                    countNumber = lastCountCache,
+                    pCount = { pCount(it) }
                 )
 
                 /* Achievements */
