@@ -4,7 +4,8 @@ import android.content.Context
 import com.mala.digital_joper_mala.Database.JopHistoryDatabase
 
 data class JopHistory(
-    val dayDate : String = "",
+    val day : String = "",
+    val date : String = "",
     val count : Long = 0L
 )
 
@@ -15,19 +16,19 @@ class JopHistoryModel(
     private val jopHistoryDB = JopHistoryDatabase(context)
 
 
-    fun jopInsert(dayDate: String, count : Long){
+    fun jopInsert(day: String, date : String, year : Int, count : Long){
 
-        if (dayDate.isEmpty() || count < 0L) return
+        if (day.isEmpty() || date.isEmpty() || count < 0L || year < 2026) return
 
-        jopHistoryDB.insertJopCount(dayDate, count)
+        jopHistoryDB.insertJopCount(day, date, year,count)
 
     }
 
-    fun getOneJopCount(dayDate: String) : Long{
+    fun getOneJopCount(date: String) : Long{
 
-        if (dayDate.isEmpty()) return 0L
+        if (date.isEmpty()) return 0L
 
-        return jopHistoryDB.getOneJopCount(dayDate)
+        return jopHistoryDB.getOneJopCount(date)
 
     }
 
@@ -37,9 +38,11 @@ class JopHistoryModel(
 
     }
 
-    fun deleteAllJopCount(){
+    fun deleteAllJopCount(year: Int){
 
-        jopHistoryDB.deleteAllJopCount()
+        if (year < 2026) return
+
+        jopHistoryDB.deleteAllJopCount(year)
 
     }
 
