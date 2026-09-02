@@ -24,6 +24,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -39,6 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mala.digital_joper_mala.Presenter.JopHistoryPresenter
 import com.mala.digital_joper_mala.R
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -46,7 +49,7 @@ import java.util.Locale
 
 class ComposeHelper {
 
-    @Preview(showBackground = true)
+   //@Preview(showBackground = true)
     @Composable
     fun Counter(
         modifier: Modifier = Modifier,
@@ -54,10 +57,13 @@ class ComposeHelper {
         currentCount : (Long) -> Unit = {},
         isDark: Boolean = false,
         isVibrationEnabled : Boolean = true,
-        countNumber : String = ""
+        countNumber : String = "",
+        pCount : (Long) -> Unit = {}
     ) {
 
         var number by remember { mutableStateOf(0L) }
+        var count by remember { mutableLongStateOf(0L) }
+        val context = LocalContext.current
 
         LaunchedEffect(countNumber) {
 
@@ -72,8 +78,6 @@ class ComposeHelper {
             }
 
         }
-
-        val context = LocalContext.current
 
         val maxWidth = 120.dp
 
@@ -185,21 +189,17 @@ class ComposeHelper {
 
                                 if (isVibrationEnabled) vibration(context)
 
-                                /*
-                                if (counterLimit > 0L){
-
-                                    if (number < counterLimit) number++
-
-                                }else{
-
-                                    number++
-                                }
-
-                                 */
 
                                 if (counterLimit > 0L) {
 
-                                    if (counterLimit != number && counterLimit > number) number++
+                                    if (counterLimit != number && counterLimit > number) {
+
+                                        number++
+                                        count++
+
+                                        pCount(count)
+
+                                    }
 
                                 }
 
@@ -231,7 +231,7 @@ class ComposeHelper {
     }//fun end
 
 
-    @Preview(showBackground = true)
+    //@Preview(showBackground = true)
     @Composable
     fun MilestonesDialog(
         modifier: Modifier = Modifier,
@@ -322,7 +322,7 @@ class ComposeHelper {
 
                     ) {
 
-                        Icon( painter = painterResource(com.mala.digital_joper_mala.R.drawable.ic_wrong),
+                        Icon( painter = painterResource(R.drawable.ic_wrong),
                             contentDescription = "",
                             tint = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
                             modifier = Modifier
@@ -482,7 +482,7 @@ class ComposeHelper {
 
                         ) {
 
-                            Icon( painter = painterResource(com.mala.digital_joper_mala.R.drawable.ic_wrong),
+                            Icon( painter = painterResource(R.drawable.ic_wrong),
                                 contentDescription = "",
                                 tint = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
                                 modifier = Modifier
@@ -507,7 +507,7 @@ class ComposeHelper {
     }//fun end
 
 
-    @Preview(showBackground = true)
+    //@Preview(showBackground = true)
     @Composable
     fun MantraItem(
         boxModifier : Modifier = Modifier,
