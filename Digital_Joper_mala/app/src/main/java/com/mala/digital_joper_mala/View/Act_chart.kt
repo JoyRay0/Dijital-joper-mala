@@ -7,6 +7,7 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -29,14 +30,12 @@ import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
 import com.mala.digital_joper_mala.Helper.ACTIVITY
 import com.mala.digital_joper_mala.Helper.BanglaHelper
 import com.mala.digital_joper_mala.Helper.IntentHelper
-import com.mala.digital_joper_mala.Helper.ShortMessageHelper
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.Helper.ThemeHelper
 import com.mala.digital_joper_mala.Helper.TrackScreen
 import com.mala.digital_joper_mala.Model.JopHistory
 import com.mala.digital_joper_mala.Presenter.JopCountHistory
 import com.mala.digital_joper_mala.Presenter.JopHistoryPresenter
-import java.nio.file.WatchEvent
 
 class Act_chart : ComponentActivity(), JopCountHistory {//class======================================================
 
@@ -78,6 +77,7 @@ class Act_chart : ComponentActivity(), JopCountHistory {//class=================
                                 },
                     deleteClick = { },
                     jopHistoryList = jopHistoryList,
+                    historyStatus = historyStatus.value,
                     isDark = isDark
                 )
 
@@ -202,7 +202,8 @@ private fun JopHistoryFullScreen(
                         ){ it ->
 
                             HistoryItem(
-                                date = it.dayDate,
+                                day = it.day,
+                                date = it.date,
                                 count = it.count
                             )
 
@@ -217,7 +218,7 @@ private fun JopHistoryFullScreen(
                         fontSize = 17.sp,
                         fontFamily = BanglaHelper.banglaFont(),
                         fontWeight = FontWeight.Normal,
-                        color = Color.Black,
+                        color = if (isDark) Color.White else Color.Black,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
                             .wrapContentWidth()
@@ -314,16 +315,17 @@ private fun Toolbar(
 @Preview(showBackground = true)
 @Composable
 fun HistoryItem(
+    day : String = "",
     date : String = "Test",
     count : Long = 0L,
-    isDark: Boolean = false
+    isDark: Boolean = true
 ) {
 
     Box(
 
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp)
+            .padding(7.dp)
 
     ) {
 
@@ -331,18 +333,23 @@ fun HistoryItem(
 
             modifier = Modifier
                 .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = if (isDark) Color.White.copy(alpha = 0.3f) else Color.Transparent,
+                    shape = RoundedCornerShape(12.dp)
+                    )
                 .clip(shape = RoundedCornerShape(12.dp))
-                .background(color = Color(0xFFEEECEC))
-                .padding(7.dp)
+                .background(color = if (isDark) Color.DarkGray.copy(alpha = 0.8f) else Color(0xFFEEECEC))
+                .padding(10.dp)
                 .align(Alignment.Center)
 
         ) {
 
-            Text( text = date,
+            Text( text = "$day : $date",
                 fontSize = 16.sp,
                 fontFamily = BanglaHelper.banglaFont(),
                 fontWeight = FontWeight.Normal,
-                color = Color.DarkGray,
+                color = if (isDark) Color.White.copy(alpha = 0.8f) else Color.DarkGray,
                 textAlign = TextAlign.Start,
                 modifier = Modifier
                     .wrapContentWidth()
@@ -354,7 +361,7 @@ fun HistoryItem(
                 fontSize = 16.sp,
                 fontFamily = BanglaHelper.banglaFont(),
                 fontWeight = FontWeight.SemiBold,
-                color = Color.Black,
+                color = if (isDark) Color.White else Color.Black,
                 textAlign = TextAlign.Start,
                 modifier = Modifier
                     .wrapContentWidth()
