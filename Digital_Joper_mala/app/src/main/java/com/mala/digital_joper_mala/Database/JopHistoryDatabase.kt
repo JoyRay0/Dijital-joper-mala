@@ -9,13 +9,15 @@ import com.mala.digital_joper_mala.Model.JopHistory
 
 class JopHistoryDatabase(
     val context: Context
-) : SQLiteOpenHelper(context, "jop_history.db", null, 1) {
+) : SQLiteOpenHelper(context, "jop_history.db", null, 3) {
 
     private companion object{
 
         const val ID = "id"
-        const val DATE_STAMP = "date_stamp"
+        const val DAY = "day"
+        const val DATE = "date"
         const val COUNT = "count"
+        const val YEAR = "year"
         const val TABLE_NAME = "jop_count_history"
 
     }
@@ -24,9 +26,12 @@ class JopHistoryDatabase(
 
         val createSql = """
 CREATE TABLE IF NOT EXISTS $TABLE_NAME 
-(id INTEGER PRIMARY KEY AUTOINCREMENT, 
-$DATE_STAMP TEXT, 
-$COUNT INTEGER)
+($ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+$DAY TEXT, 
+$DATE TEXT,
+$COUNT INTEGER,
+$YEAR INTEGER
+)
             
         """.trimIndent()
 
@@ -45,9 +50,9 @@ $COUNT INTEGER)
 
     }
 
-    fun insertJopCount(dayDate: String, jopCount : Long = 0L){
+    fun insertJopCount(day : String, date: String, year : Int, jopCount : Long = 0L){
 
-        if (dayDate.isEmpty() || jopCount < 0L) return
+        if (day.isEmpty() || date.isEmpty() || jopCount < 0L || year < 2026) return
 
         val db = dbOpen(true)
 
@@ -55,18 +60,20 @@ $COUNT INTEGER)
 
         try {
 
-            if (isDuplicate(dayDate)){
+            if (isDuplicate(date)){
 
-                val oldCount = getOneJopCount(dayDate)
+                val oldCount = getOneJopCount(date)
 
                 cv.put(COUNT, jopCount + oldCount)
 
-                db.update(TABLE_NAME, cv, "$DATE_STAMP = ?", arrayOf(dayDate))
+                db.update(TABLE_NAME, cv, "$DATE = ?", arrayOf(date))
 
             }else{
 
-                cv.put(DATE_STAMP, dayDate)
+                cv.put(DAY, day)
+                cv.put(DATE, date)
                 cv.put(COUNT, jopCount)
+                cv.put(YEAR, year)
 
                 db.insert(TABLE_NAME, null, cv)
 
@@ -80,9 +87,9 @@ $COUNT INTEGER)
 
     }
 
-    fun getOneJopCount(dayDate: String) : Long{
+    fun getOneJopCount(date: String) : Long{
 
-        if (dayDate.isEmpty()) return 0L
+        if (date.isEmpty()) return 0L
 
         val db = dbOpen()
 
@@ -92,7 +99,7 @@ $COUNT INTEGER)
 
         try {
 
-            cursor = db.rawQuery("SELECT $COUNT FROM $TABLE_NAME WHERE $DATE_STAMP = ?", arrayOf(dayDate))
+            cursor = db.rawQuery("SELECT $COUNT FROM $TABLE_NAME WHERE $DATE = ?", arrayOf(date))
 
             if (cursor.moveToFirst()){
 
@@ -125,11 +132,13 @@ $COUNT INTEGER)
 
             while (cursor.moveToNext()){
 
-                val dateDay = cursor.getString(cursor.getColumnIndexOrThrow(DATE_STAMP))
+                val day = cursor.getString(cursor.getColumnIndexOrThrow(DAY))
+                val date = cursor.getString(cursor.getColumnIndexOrThrow(DATE))
                 val count = cursor.getLong(cursor.getColumnIndexOrThrow(COUNT))
 
                 list.add(JopHistory(
-                    dayDate = dateDay,
+                    day = day,
+                    date = date,
                     count = count
                 ))
 
@@ -147,15 +156,17 @@ $COUNT INTEGER)
 
     }
 
-    fun deleteAllJopCount(){
+    fun deleteAllJopCount(year : Int){
+
+        if (year < 2026) return
 
         val db = dbOpen(true)
 
-        db.delete(TABLE_NAME, null, null)
+        db.delete(TABLE_NAME, "$YEAR != ?", arrayOf(year.toString()))
 
     }
 
-    private fun isDuplicate(dayDate : String) : Boolean{
+    private fun isDuplicate(date : String) : Boolean{
 
         val db = dbOpen()
 
@@ -165,7 +176,7 @@ $COUNT INTEGER)
 
         try {
 
-            cursor = db.rawQuery("SELECT 1 FROM $TABLE_NAME WHERE $DATE_STAMP = ?", arrayOf(dayDate))
+            cursor = db.rawQuery("SELECT 1 FROM $TABLE_NAME WHERE $DATE = ?", arrayOf(date))
 
             if (cursor.moveToFirst()) isExists = true
 
