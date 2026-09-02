@@ -38,17 +38,21 @@ import androidx.compose.ui.unit.*
 import androidx.core.net.toUri
 import com.mala.digital_joper_mala.Helper.*
 import com.mala.digital_joper_mala.Model.HomeData
+import com.mala.digital_joper_mala.Model.JopHistory
 import com.mala.digital_joper_mala.Presenter.Home
 import com.mala.digital_joper_mala.Presenter.HomePresenter
+import com.mala.digital_joper_mala.Presenter.JopCountHistory
+import com.mala.digital_joper_mala.Presenter.JopHistoryPresenter
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
 
 
-class Act_home : ComponentActivity(), Home {//class===================================================
+class Act_home : ComponentActivity(), Home, JopCountHistory {//class===================================================
 
     private lateinit var presenter : HomePresenter
 
     private lateinit var tracker : TrackScreen
+    private lateinit var historyPresenter : JopHistoryPresenter
 
     //init
     private val rulesList = mutableStateListOf<HomeData>()
@@ -67,6 +71,8 @@ class Act_home : ComponentActivity(), Home {//class=============================
     private var version = mutableStateOf("")
     private var mantraStatus = mutableStateOf("")
     private val mantraList = mutableStateListOf<HomeData>()
+    private val jopHistoryCount = mutableLongStateOf(0L)
+    private val jopHistoryStatus = mutableStateOf("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,6 +93,13 @@ class Act_home : ComponentActivity(), Home {//class=============================
             )
 
             presenter.appUpdate()
+            historyPresenter.getOneJopCount()
+
+            if (jopHistoryCount.longValue == 0L){
+
+                historyPresenter.insertJopCount(0L)
+
+            }
 
             try {
 
@@ -196,12 +209,8 @@ class Act_home : ComponentActivity(), Home {//class=============================
                         IntentHelper.normalIntent(this, Act_chart::class.java)
                         finish()
                                           },
-                    getJopCount = 0L,
-                    currentDayDate = { day, date ->
+                    getJopCount = jopHistoryCount.longValue,
 
-
-
-                    }
                 )
 
             }
@@ -213,6 +222,8 @@ class Act_home : ComponentActivity(), Home {//class=============================
         presenter = HomePresenter(this, this)
 
         tracker = TrackScreen(this)
+
+        historyPresenter = JopHistoryPresenter(this, this)
     }
 
     override fun rulesList(list: List<HomeData>) {
@@ -265,11 +276,30 @@ class Act_home : ComponentActivity(), Home {//class=============================
         tracker.stop(ACTIVITY.Act_home)
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        historyPresenter.getOneJopCount()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 
         tracker.destroy()
         presenter.onDestroy()
+        historyPresenter.onDestroy()
+    }
+
+    override fun historyList(list: List<JopHistory>) {
+
+    }
+
+    override fun historyStatus(status: String) {
+
+    }
+
+    override fun singleCountHistory(count: Long) {
+        jopHistoryCount.longValue = count
     }
 
 }
@@ -298,7 +328,7 @@ private fun HomeFullScreen(
     mantraMoreClick: () -> Unit = {},
     jopHistoryMoreClick: () -> Unit = {},
     getJopCount : Long = 0L,
-    currentDayDate : (day : String, date : String) -> Unit = {_, _->}
+    historyStatus : String = ""
 ) {
 
     var index = remember { mutableStateOf(0) }
@@ -360,7 +390,7 @@ private fun HomeFullScreen(
                         mantraMoreClick = { mantraMoreClick() },
                         jopHistoryMoreClick = { jopHistoryMoreClick() },
                         getJopCount = getJopCount,
-                        currentDayDate = { day, date -> currentDayDate(day, date) }
+                        historyStatus = historyStatus
                     )
 
                 }
@@ -597,7 +627,7 @@ private fun Home(
     mantraMoreClick: () -> Unit = {},
     jopHistoryMoreClick: () -> Unit = {},
     getJopCount : Long = 0L,
-    currentDayDate : (day : String, date : String) -> Unit = {_, _->}
+    historyStatus: String = ""
 ) {
 
     var isUpdate by remember { mutableStateOf(false) }
@@ -742,9 +772,8 @@ private fun Home(
                 isDark = isDark,
                 jopHistoryMoreClick = { jopHistoryMoreClick() },
                 getJopCount = getJopCount,
-                currentDayDate = { day, date ->
+                historyStatus = historyStatus
 
-                    currentDayDate(day, date) }
             )
 
         }//column
@@ -934,7 +963,7 @@ private fun Item(
                     .fillMaxWidth()
                     .border(
                         width = 1.dp,
-                        color = if (isDark) Color(0xFF7E7D7D) else Color(0xFFDEDBDB),
+                        color = if (isDark) Color.White.copy(alpha = 0.2f) else Color.Black.copy(alpha = 0.15f),
                         shape = RoundedCornerShape(12.dp)
                     )
                     .clip(shape = RoundedCornerShape(12.dp))
@@ -947,7 +976,7 @@ private fun Item(
                     fontSize = 16.sp,
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Normal,
-                    color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                    color = if (isDark) Color.White.copy(alpha = 0.8f) else Color.Black.copy(alpha = 0.7f),
                     modifier = Modifier
                         .fillMaxWidth(0.93f)
                         .align(Alignment.CenterStart)
@@ -994,7 +1023,7 @@ private fun Item(
                             fontSize = 16.sp,
                             fontFamily = BanglaHelper.banglaFont(),
                             fontWeight = FontWeight.Normal,
-                            color = if (isDark) Color(0xFFC9C9C9) else Color(0xFF5B5A5A),
+                            color = if (isDark) Color(0xFFE5E3E3) else Color(0xFF444444),
                             modifier = Modifier
                                 .fillMaxWidth()
                         )
@@ -1280,15 +1309,15 @@ private fun MantraBander(
                                     ComposeHelper().MantraItem(
                                         columnModifier = Modifier
                                             .fillMaxWidth()
-                                            .shadow(
-                                                elevation = 3.dp,
-                                                shape = RoundedCornerShape(14.dp),
-                                                ambientColor = if (isDark) Color.White.copy(alpha = 0.4f) else Color.Black,
-                                                spotColor = if (isDark) Color.White.copy(alpha = 0.4f) else Color.Black
+                                            //.shadow(elevation = 3.dp, shape = RoundedCornerShape(14.dp))
+                                            .border(
+                                                width = 1.dp,
+                                                color = if (isDark) Color.White.copy(alpha = 0.15f) else Color.LightGray.copy(alpha = 0.4f),
+                                                shape = RoundedCornerShape(12.dp)
                                             )
-                                            .clip(shape = RoundedCornerShape(14.dp))
+                                            .clip(shape = RoundedCornerShape(12.dp))
                                             .background(
-                                                color = if (isDark) Color.DarkGray else Color(
+                                                color = if (isDark) Color.DarkGray.copy(alpha = 0.6f) else Color(
                                                     0xFFF5F4F4
                                                 )
                                             )
@@ -1337,10 +1366,10 @@ private fun MantraBander(
 @Preview(showBackground = true)
 @Composable
 private fun JopaHistory(
-    isDark: Boolean = false,
+    isDark: Boolean = true,
     jopHistoryMoreClick: () -> Unit = {},
     getJopCount : Long = 0L,
-    currentDayDate : (day : String, date : String) -> Unit = {_, _->}
+    historyStatus: String = ""
 ) {
 
     var currentDay by remember { mutableStateOf("") }
@@ -1353,8 +1382,6 @@ private fun JopaHistory(
         currentDate = bDate
 
     }
-
-    if (currentDay.isNotEmpty() && currentDate.isNotEmpty()) currentDayDate(currentDay, currentDate)
 
     Box(
 
@@ -1385,7 +1412,7 @@ private fun JopaHistory(
                     fontSize = 16.sp,
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black,
+                    color = if (isDark) Color.White else Color.Black,
                     textAlign = TextAlign.Start,
                     modifier = Modifier
                         .wrapContentWidth()
@@ -1436,25 +1463,30 @@ private fun JopaHistory(
 
             }//box header
 
-            Spacer(modifier = Modifier.height(7.dp))
+            Spacer(modifier = Modifier.height(5.dp))
 
             Box(
 
                 modifier = Modifier
+                    .padding(5.dp)
                     .fillMaxWidth()
-                    //.shadow(elevation = 2.dp, shape = RoundedCornerShape(12.dp))
+                    .border(
+                        width = 1.dp,
+                        color = if (isDark) Color.White.copy(alpha = 0.15f) else Color.Transparent,
+                        shape = RoundedCornerShape(12.dp)
+                    )
                     .clip(shape = RoundedCornerShape(12.dp))
-                    .background(color = Color(0xFFF6F5F5))
-                    .padding(9.dp)
+                    .background(color = if (isDark) Color.DarkGray.copy(alpha = 0.8f) else Color(0xFFF6F5F5))
+                    .padding(10.dp)
                     .align(Alignment.CenterHorizontally)
 
             ) {
 
-                Text( text = "$currentDay :   $currentDate",
+                Text( text = "$currentDay : $currentDate",
                     fontSize = 16.sp,
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Normal,
-                    color = Color(0xFF3F3E3E),
+                    color = if (isDark) Color.White.copy(alpha = 0.8f) else Color(0xFF3F3E3E),
                     textAlign = TextAlign.Start,
                     modifier = Modifier
                         .wrapContentWidth()
@@ -1466,7 +1498,7 @@ private fun JopaHistory(
                     fontSize = 16.sp,
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.SemiBold,
-                    color = Color.Black,
+                    color = if (isDark) Color.White else Color.Black,
                     textAlign = TextAlign.End,
                     modifier = Modifier
                         .wrapContentWidth()
