@@ -179,7 +179,7 @@ class HomeModel(
 
         val list : MutableList<HomeData> = mutableListOf()
 
-        val data = allMantraDB.getAllMantra()
+        val data = allMantraDB.getAllMantra(1)
 
         data.forEach { result ->
 
