@@ -95,9 +95,9 @@ class AllMantraModel(
 
     }
 
-    fun getAllMantra() : List<MantraItem>{
+    fun getAllMantra(page : Int) : List<MantraItem>{
 
-        return db.getAllMantra()
+        return db.getAllMantra(page)
 
     }
 
