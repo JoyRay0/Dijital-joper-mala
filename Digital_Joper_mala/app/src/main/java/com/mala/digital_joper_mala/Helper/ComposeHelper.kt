@@ -1,5 +1,6 @@
 package com.mala.digital_joper_mala.Helper
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
@@ -17,12 +18,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ComposableInferredTarget
+import androidx.compose.runtime.InternalComposeApi
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
@@ -589,6 +596,46 @@ class ComposeHelper {
         if (!banglaDay[currentDay].isNullOrEmpty() && banglaDate.isNotEmpty() && banglaMonth.isNotEmpty() && banglaYear.isNotEmpty()){
 
             banglaDayDate("${banglaDay[currentDay]}", "$banglaDate - $banglaMonth - $banglaYear")
+
+        }
+
+    }
+
+    //@Preview(showBackground = true)
+    @Composable
+    fun BottomLoader(
+        isLoading : Boolean = false,
+        onLoadMore : () -> Unit = {},
+        isDark: Boolean = false
+    ) {
+
+        LaunchedEffect(Unit) {
+
+            onLoadMore()
+
+        }
+
+        if (isLoading){
+
+            Box(
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+
+            ){
+
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(9.dp)
+                        .wrapContentWidth()
+                        //.size(30.dp)
+                        .align(Alignment.Center),
+                    color = if (isDark) Color.LightGray else Color(0xFF009688)
+
+                )
+
+            }
 
         }
 
