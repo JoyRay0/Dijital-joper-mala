@@ -356,27 +356,6 @@ private fun EasyMalaFullScreen(
                     pCount = { pCount(it) }
                 )
 
-                /* Achievements */
-                if (isAchievementDialogVisible){
-
-                    ComposeHelper().MilestonesDialog(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
-                                    alpha = 0.5f
-                                )
-                            ),
-                        closeClick = {
-                            isAchievementDialogVisible = false
-                            saveAchievementCount(count)
-                        },
-                        currentCount = count,
-                        isDark = isDark
-                    )
-
-                }
-
                 /* count edit */
 
                 if (isCounterEditVisible){
@@ -421,6 +400,27 @@ private fun EasyMalaFullScreen(
                         favoriteMantraList = favoriteMantraList,
                         userMantaList = userMantraList,
                         closeClick = { isMantraDialogVisible = false }
+                    )
+
+                }
+
+                /* Achievements */
+                if (isAchievementDialogVisible){
+
+                    ComposeHelper().MilestonesDialog(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                                    alpha = 0.5f
+                                )
+                            ),
+                        closeClick = {
+                            isAchievementDialogVisible = false
+                            saveAchievementCount(count)
+                        },
+                        currentCount = count,
+                        isDark = isDark
                     )
 
                 }
