@@ -44,6 +44,7 @@ import com.mala.digital_joper_mala.Helper.*
 import com.mala.digital_joper_mala.Model.MantraItem
 import com.mala.digital_joper_mala.Presenter.AllMantra
 import com.mala.digital_joper_mala.Presenter.AllMantraPresenter
+import com.mala.digital_joper_mala.Presenter.Mantra
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.Digital_Joper_malaTheme
 import kotlinx.coroutines.delay
@@ -61,6 +62,8 @@ class Act_all_mantra : ComponentActivity(), AllMantra {//class==================
     private val favoriteMantraList = mutableStateListOf<MantraItem>()
     private val searchMantraList = mutableStateListOf<MantraItem>()
     private var mantraStatus = mutableStateOf("")
+    private var serverStatus = mutableStateOf(false)
+    private var isPaginationLoading = mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +75,7 @@ class Act_all_mantra : ComponentActivity(), AllMantra {//class==================
 
             var isDark by remember { mutableStateOf(false) }
             var reloadFavoriteListCount by remember { mutableStateOf(0) }
+            var reloadAllMantra by remember { mutableIntStateOf(0) }
 
             if (ThemeHelper.isDarkTheme(this)) isDark = true else isDark = false
 
@@ -89,7 +93,11 @@ class Act_all_mantra : ComponentActivity(), AllMantra {//class==================
 
             }
 
-            LaunchedEffect(dialogStatus.value) {
+            LaunchedEffect(
+                dialogStatus.value,
+                serverStatus.value,
+                reloadAllMantra
+            ) {
 
                 if (dialogStatus.value){
 
@@ -97,9 +105,11 @@ class Act_all_mantra : ComponentActivity(), AllMantra {//class==================
 
                 }
 
+                presenter.getAllMantra()
+
             }
 
-            presenter.getAllMantra()
+            //presenter.getAllMantra()
 
             Digital_Joper_malaTheme {
 
@@ -130,7 +140,9 @@ class Act_all_mantra : ComponentActivity(), AllMantra {//class==================
                         presenter.deleteFavoriteMantra(it)
                         reloadFavoriteListCount++
                     },
-                    mantraStatus = mantraStatus.value
+                    mantraStatus = mantraStatus.value,
+                    loadMoreMantra = { reloadAllMantra++ },
+                    isLoading = isPaginationLoading.value
 
                 )
 
@@ -206,6 +218,16 @@ class Act_all_mantra : ComponentActivity(), AllMantra {//class==================
         mantraStatus.value = status
     }
 
+    override fun serverStatus(isSuccess: Boolean) {
+        serverStatus.value = isSuccess
+    }
+
+    override fun loading(isLoading: Boolean) {
+
+        isPaginationLoading.value = isLoading
+
+    }
+
 }
 
 @Preview(showBackground = true)
@@ -222,8 +244,9 @@ private fun AllMantraFullScreen(
     favoriteMantraList : List<MantraItem> = emptyList(),
     saveInFavorite : (title : String, mantra : String) -> Unit = {_, _ ->},
     removeFavoriteClick: (String) -> Unit = {},
-    mantraStatus : String = "mantra_pending"
-
+    mantraStatus : String = "",
+    loadMoreMantra : () -> Unit = {},
+    isLoading: Boolean = false
 ) {
 
     val lazyState = rememberLazyListState()
@@ -296,6 +319,96 @@ private fun AllMantraFullScreen(
 
         ) {
 
+            if (mantraList.isEmpty() && mantraStatus == Mantra.MantraPending.value){
+
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(9.dp)
+                        .wrapContentWidth()
+                        //.size(30.dp)
+                        .align(Alignment.Center),
+                    color = if (isDark) Color.LightGray else Color(0xFF009688)
+
+                )
+
+            }else if (mantraList.isNotEmpty()){
+
+                LazyColumn(
+
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    state = lazyState
+
+                ) {
+
+                    items(
+                        items = mantraList,
+                        key = { it.id }
+                    ){ it ->
+
+                        Item(
+                            modifier = Modifier.animateItem(),
+                            isDark = isDark,
+                            title = it.title,
+                            mantra = it.mantra,
+                            mantraClick = { copyMantraClick(it.mantra) },
+                            favoriteClick = { saveInFavorite(it.title, it.mantra) }
+
+                        )
+
+                    }
+
+                    items(1, key = {"botton_loader"}){
+
+                        ComposeHelper().BottomLoader(
+                            isLoading = isLoading,
+                            onLoadMore = { loadMoreMantra() },
+                            isDark = isDark
+                        )
+
+                    }
+
+
+                }//lazyColumn
+
+            }else{
+
+                Column(
+
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.Center)
+
+                ) {
+
+                    Image( painter = painterResource(R.drawable.img_empty),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .size(120.dp)
+                            .align(Alignment.CenterHorizontally)
+
+                    )
+
+                    Spacer(modifier = Modifier.height(7.dp))
+
+                    Text( text = "কোন মন্ত্র নেই ।",
+                        fontSize = 16.sp,
+                        fontFamily = BanglaHelper.banglaFont(),
+                        fontWeight = FontWeight.Normal,
+                        color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .align(Alignment.CenterHorizontally)
+
+                    )
+
+                }//column
+
+            }//condition
+
+            /*
             when(mantraStatus){
 
                 "mantra_pending" -> {
@@ -323,10 +436,11 @@ private fun AllMantraFullScreen(
 
                         items(
                             items = mantraList,
-                            key = null
+                            key = { it.id }
                         ){ it ->
 
                             Item(
+                                //modifier = Modifier.animateItem(),
                                 isDark = isDark,
                                 title = it.title,
                                 mantra = it.mantra,
@@ -336,6 +450,17 @@ private fun AllMantraFullScreen(
                             )
 
                         }
+
+                        items(1, key = {"botton_loader"}){
+
+                            ComposeHelper().BottomLoader(
+                                isLoading = isLoading,
+                                onLoadMore = { loadMoreMantra() },
+                                isDark = isDark
+                            )
+
+                        }
+
 
                     }//lazyColumn
 
@@ -378,6 +503,8 @@ private fun AllMantraFullScreen(
                 }
 
             }//when
+
+             */
 
             if (isSearchDialogVisible.value){
 
@@ -546,6 +673,7 @@ private fun Toolbar(
 @Preview(showBackground = true)
 @Composable
 private fun Item(
+    modifier: Modifier = Modifier,
     isDark: Boolean = false,
     title : String = "Test",
     mantra : String = "Test",
@@ -556,27 +684,9 @@ private fun Item(
 
     var isLongClicked by remember { mutableStateOf(false) }
 
-    var isVisible = remember { mutableStateOf(false) }
-
-    LaunchedEffect(isVisible) {
-
-        while (true){
-
-            delay(5000.milliseconds)
-
-            isVisible.value = true
-
-            delay(5000.milliseconds)
-
-            isVisible.value = false
-
-        }
-
-    }
-
     Box(
 
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(7.dp)
 
@@ -661,7 +771,7 @@ private fun Item(
                     .fillMaxWidth()
                     .clip(shape = RoundedCornerShape(12.dp))
                     .clickable { mantraClick() }
-                    .background(color = if (isDark) Color(0xFF8A8989) else Color(0xFFFFF1F1))
+                    .background(color = if (isDark) Color(0xFF737272) else Color(0xFFFFF1F1))
                     .padding(8.dp)
                     .align(Alignment.CenterHorizontally)
 
@@ -678,20 +788,6 @@ private fun Item(
                         .align(Alignment.Center)
 
                 )
-
-                if (isVisible.value){
-
-                    Icon( painter = painterResource(R.drawable.ic_copy),
-                        contentDescription = "",
-                        tint = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
-                        modifier = Modifier
-                            .wrapContentWidth()
-                            .size(24.dp)
-                            .align(Alignment.CenterEnd)
-
-                    )
-
-                }
 
             }//box
 

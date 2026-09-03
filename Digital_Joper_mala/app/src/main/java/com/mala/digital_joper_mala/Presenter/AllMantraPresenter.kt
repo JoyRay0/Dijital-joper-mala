@@ -1,22 +1,15 @@
 package com.mala.digital_joper_mala.Presenter
 
 import android.content.Context
-import android.util.Log
 import com.mala.digital_joper_mala.Helper.RetryHelper
-import com.mala.digital_joper_mala.Helper.ShortMessageHelper
 import com.mala.digital_joper_mala.Model.AllMantraModel
 import com.mala.digital_joper_mala.Model.MantraItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import kotlin.time.Duration.Companion.milliseconds
 
 interface AllMantra{
     fun dialogStatus(value : Boolean)
@@ -26,6 +19,8 @@ interface AllMantra{
     fun deleteFavoriteMantraStatus(status : String)
     fun insertStatus(status : String)
     fun mantraStatus(status: String)
+    fun serverStatus(isSuccess : Boolean)
+    fun loading(isLoading : Boolean)
 }
 
 enum class Mantra(val value : String){
@@ -44,8 +39,11 @@ class AllMantraPresenter(
     private val model = AllMantraModel(context)
     private val scopeIO = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val scopeMain = CoroutineScope(Dispatchers.Main + SupervisorJob())
-
     private val retry = RetryHelper(scopeIO)
+    private var currentPage = 1
+    private var isLastPage = false
+    private var isLoading = false
+    private val mantraList = mutableListOf<MantraItem>()
 
 
     fun setAllMantraCache(value : Boolean){
@@ -93,21 +91,20 @@ class AllMantraPresenter(
             },
             onSuccess = {
 
-                val data = model.getAllMantra()
-
                 scopeMain.launch {
 
                     view.mantraStatus(Mantra.MantraSuccess.value)
-                    view.allMantraList(data)
+                    view.serverStatus(isSuccess = true)
 
                 }
+
 
             },
             onFailed = {
 
                 scopeMain.launch {
 
-                    view.mantraStatus(Mantra.MantraFailed.value)
+                    view.serverStatus(isSuccess = false)
 
                 }
 
@@ -136,24 +133,46 @@ class AllMantraPresenter(
 
     fun getAllMantra(){
 
-        view.mantraStatus(Mantra.MantraPending.value)
-
         scopeIO.launch {
 
-            val data = model.getAllMantra()
+            if (isLoading || isLastPage) return@launch
 
             withContext(Dispatchers.Main){
 
-                if (data.isEmpty()){
+                isLoading = true
+                view.loading(true)
 
-                    view.mantraStatus(Mantra.MantraFailed.value)
+                if (currentPage == 1) view.mantraStatus(Mantra.MantraPending.value)
 
-                }else{
+            }
 
-                    view.mantraStatus(Mantra.MantraSuccess.value)
-                    view.allMantraList(data)
+            val newData = model.getAllMantra(currentPage)
+
+            withContext(Dispatchers.Main){
+
+                if (newData.isEmpty()){
+
+                    isLastPage = true
+                    isLoading = false
+                    view.loading(false)
+
+                } else{
+
+                    mantraList.addAll(newData)
+
+                    if (currentPage == 1) view.mantraStatus(Mantra.MantraSuccess.value)
+
+                    view.allMantraList(mantraList.toList())
+
+                    isLastPage = false
+                    currentPage++
 
                 }
+
+                isLoading = false
+                view.loading(false)
+
+                if (mantraList.isEmpty()) view.mantraStatus(Mantra.MantraFailed.value)
 
             }
 
