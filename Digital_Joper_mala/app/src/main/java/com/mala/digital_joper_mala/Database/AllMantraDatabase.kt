@@ -104,9 +104,13 @@ $MANTRA TEXT
 
     }
 
-    fun getAllMantra() : List<MantraItem>{
+    fun getAllMantra(page : Int) : List<MantraItem>{
 
         val mantraList : MutableList<MantraItem> = mutableListOf()
+
+        val limit = 20
+
+        val offset = (page - 1) * limit
 
         val db = dbOpen()
 
@@ -114,15 +118,17 @@ $MANTRA TEXT
 
         try {
 
-            cursor = db.rawQuery("SELECT * FROM $ALL_MANTRA_TABLE", null)
+            cursor = db.rawQuery("SELECT * FROM $ALL_MANTRA_TABLE LIMIT $limit OFFSET $offset", null)
 
             while (cursor.moveToNext()){
 
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow(ID))
                 val title = cursor.getString(cursor.getColumnIndexOrThrow(TITLE))
                 val mantra = cursor.getString(cursor.getColumnIndexOrThrow(MANTRA))
 
                 mantraList.add(
                     MantraItem(
+                        id = id,
                         title = title,
                         mantra = mantra
                     )
