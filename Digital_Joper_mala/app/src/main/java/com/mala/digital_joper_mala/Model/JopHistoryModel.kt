@@ -4,6 +4,7 @@ import android.content.Context
 import com.mala.digital_joper_mala.Database.JopHistoryDatabase
 
 data class JopHistory(
+    val id : Int = 0,
     val day : String = "",
     val date : String = "",
     val count : Long = 0L
@@ -32,9 +33,9 @@ class JopHistoryModel(
 
     }
 
-    fun getAllJopCount() : List<JopHistory>{
+    fun getAllJopCount(page : Int) : List<JopHistory>{
 
-        return jopHistoryDB.getAllJopCount()
+        return jopHistoryDB.getAllJopCount(page)
 
     }
 

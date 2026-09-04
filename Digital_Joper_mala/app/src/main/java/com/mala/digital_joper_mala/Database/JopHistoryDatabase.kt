@@ -118,7 +118,11 @@ $YEAR INTEGER
         return count
     }
 
-    fun getAllJopCount() : List<JopHistory>{
+    fun getAllJopCount(page : Int) : List<JopHistory>{
+
+        val limit = 20
+
+        val offset = (page - 1) * limit
 
         val list : MutableList<JopHistory> = mutableListOf()
 
@@ -128,15 +132,17 @@ $YEAR INTEGER
 
         try {
 
-            cursor = db.rawQuery("SELECT * FROM $TABLE_NAME ORDER BY id DESC", null)
+            cursor = db.rawQuery("SELECT * FROM $TABLE_NAME ORDER BY id DESC LIMIT $limit OFFSET $offset", null)
 
             while (cursor.moveToNext()){
 
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow(ID))
                 val day = cursor.getString(cursor.getColumnIndexOrThrow(DAY))
                 val date = cursor.getString(cursor.getColumnIndexOrThrow(DATE))
                 val count = cursor.getLong(cursor.getColumnIndexOrThrow(COUNT))
 
                 list.add(JopHistory(
+                    id = id,
                     day = day,
                     date = date,
                     count = count

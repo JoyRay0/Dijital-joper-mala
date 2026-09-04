@@ -29,11 +29,13 @@ import androidx.compose.ui.unit.*
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
 import com.mala.digital_joper_mala.Helper.ACTIVITY
 import com.mala.digital_joper_mala.Helper.BanglaHelper
+import com.mala.digital_joper_mala.Helper.ComposeHelper
 import com.mala.digital_joper_mala.Helper.IntentHelper
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.Helper.ThemeHelper
 import com.mala.digital_joper_mala.Helper.TrackScreen
 import com.mala.digital_joper_mala.Model.JopHistory
+import com.mala.digital_joper_mala.Presenter.History
 import com.mala.digital_joper_mala.Presenter.JopCountHistory
 import com.mala.digital_joper_mala.Presenter.JopHistoryPresenter
 
@@ -46,6 +48,7 @@ class Act_chart : ComponentActivity(), JopCountHistory {//class=================
 
     private val historyStatus = mutableStateOf("")
     private val jopHistoryList = mutableStateListOf<JopHistory>()
+    private val isPaginationLoading = mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +59,7 @@ class Act_chart : ComponentActivity(), JopCountHistory {//class=================
         setContent {
 
             var isDark by remember { mutableStateOf(false) }
-
+            var reloadHistory by remember { mutableIntStateOf(0) }
 
             if (ThemeHelper.isDarkTheme(this)) isDark = true else isDark = false
 
@@ -66,7 +69,12 @@ class Act_chart : ComponentActivity(), JopCountHistory {//class=================
                 darkIcons = false
             )
 
-            presenter.getAllJopCountHistory()
+            LaunchedEffect(reloadHistory) {
+
+                presenter.getAllJopCountHistory()
+
+            }
+
 
             Digital_Joper_malaTheme {
 
@@ -78,7 +86,9 @@ class Act_chart : ComponentActivity(), JopCountHistory {//class=================
                     deleteClick = { },
                     jopHistoryList = jopHistoryList,
                     historyStatus = historyStatus.value,
-                    isDark = isDark
+                    isDark = isDark,
+                    isLoading = isPaginationLoading.value,
+                    onLoadMore = { reloadHistory++ }
                 )
 
             }
@@ -129,7 +139,11 @@ class Act_chart : ComponentActivity(), JopCountHistory {//class=================
     }
 
     override fun singleCountHistory(count: Long) {
-        TODO("Not yet implemented")
+
+    }
+
+    override fun loading(isLoading: Boolean) {
+        isPaginationLoading.value = isLoading
     }
 
 
@@ -143,7 +157,9 @@ private fun JopHistoryFullScreen(
     deleteClick: () -> Unit = {},
     jopHistoryList: List<JopHistory> = emptyList(),
     historyStatus : String = "",
-    isDark : Boolean = false
+    isDark : Boolean = false,
+    isLoading : Boolean = false,
+    onLoadMore : () -> Unit = {}
     ) {
 
     val lazyState = rememberLazyListState()
@@ -171,66 +187,75 @@ private fun JopHistoryFullScreen(
 
         ) {
 
-            when(historyStatus){
+            if (jopHistoryList.isEmpty() && historyStatus == History.HistoryPending.value){
 
-                "history_pending" -> {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(9.dp)
+                        .wrapContentWidth()
+                        //.size(30.dp)
+                        .align(Alignment.Center),
+                    color = if (isDark) Color.LightGray else Color(0xFF009688)
 
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .padding(9.dp)
-                            .wrapContentWidth()
-                            //.size(30.dp)
-                            .align(Alignment.Center),
-                        color = if (isDark) Color.LightGray else Color(0xFF009688)
+                )
 
-                    )
+            }else if(jopHistoryList.isNotEmpty()){
 
-                }
-                "history_success" -> {
+                LazyColumn(
 
-                    LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    state = lazyState
 
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        state = lazyState
+                ) {
 
-                    ) {
+                    items(
+                        items = jopHistoryList,
+                        key = { it.id }
+                    ){ it ->
 
-                        items(
-                            items = jopHistoryList,
-                            key = null
-                        ){ it ->
+                        HistoryItem(
+                            modifier = Modifier.animateItem(),
+                            day = it.day,
+                            date = it.date,
+                            count = it.count
+                        )
 
-                            HistoryItem(
-                                day = it.day,
-                                date = it.date,
-                                count = it.count
-                            )
+                    }
 
-                        }
+                    items(
+                        count = 1,
+                        key = {"bottom_loader"}
+                    ){
 
-                    }//lazyColumn
+                        ComposeHelper().BottomLoader(
 
-                }
-                else -> {
+                            isLoading = isLoading,
+                            onLoadMore = { onLoadMore() },
+                            isDark = isDark
 
-                    Text( text = "আপনার জপের যাত্রা এখনও শুরু হয়নি। জপ শুরু করুন - আপনার প্রতিটি জপের অগ্রগতি এখানে সুন্দরভাবে সংরক্ষিত থাকবে।",
-                        fontSize = 17.sp,
-                        fontFamily = BanglaHelper.banglaFont(),
-                        fontWeight = FontWeight.Normal,
-                        color = if (isDark) Color.White else Color.Black,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .wrapContentWidth()
-                            .padding(12.dp)
-                            .align(Alignment.Center)
+                        )
 
-                    )
+                    }
 
-                }
+                }//lazyColumn
 
-            }
+            }else{
 
+                Text( text = "আপনার জপের যাত্রা এখনও শুরু হয়নি। জপ শুরু করুন - আপনার প্রতিটি জপের অগ্রগতি এখানে সুন্দরভাবে সংরক্ষিত থাকবে।",
+                    fontSize = 17.sp,
+                    fontFamily = BanglaHelper.banglaFont(),
+                    fontWeight = FontWeight.Normal,
+                    color = if (isDark) Color.White else Color.Black,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .padding(12.dp)
+                        .align(Alignment.Center)
+
+                )
+
+            }//condition
 
         }//box
 
@@ -315,6 +340,7 @@ private fun Toolbar(
 @Preview(showBackground = true)
 @Composable
 fun HistoryItem(
+    modifier: Modifier = Modifier,
     day : String = "",
     date : String = "Test",
     count : Long = 0L,
@@ -323,7 +349,7 @@ fun HistoryItem(
 
     Box(
 
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(7.dp)
 

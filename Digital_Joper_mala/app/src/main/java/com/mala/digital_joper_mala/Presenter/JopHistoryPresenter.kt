@@ -1,6 +1,7 @@
 package com.mala.digital_joper_mala.Presenter
 
 import android.content.Context
+import androidx.compose.runtime.mutableStateListOf
 import com.mala.digital_joper_mala.Helper.ComposeHelper
 import com.mala.digital_joper_mala.Model.JopHistory
 import com.mala.digital_joper_mala.Model.JopHistoryModel
@@ -19,6 +20,7 @@ interface JopCountHistory{
     fun historyList(list: List<JopHistory>)
     fun historyStatus(status : String)
     fun singleCountHistory(count : Long)
+    fun loading(isLoading : Boolean)
 
 }
 
@@ -38,6 +40,10 @@ class JopHistoryPresenter(
     private val model = JopHistoryModel(context)
     private val scopeIO = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val scopeMain = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    private var currentPage = 1
+    private var isLoading = false
+    private var isLastPage = false
+    private val historyList = mutableListOf<JopHistory>()
 
     fun insertJopCount(count : Long){
 
@@ -68,24 +74,47 @@ class JopHistoryPresenter(
 
     fun getAllJopCountHistory(){
 
-        view?.historyStatus(History.HistoryPending.value)
-
         scopeIO.launch {
 
-            val data = model.getAllJopCount()
+            if (isLoading || isLastPage) return@launch
 
             withContext(Dispatchers.Main){
 
-                if (data.isEmpty()){
+                isLoading = true
 
-                    view?.historyStatus(History.HistoryFailed.value)
+                view?.loading(true)
+
+                if (currentPage == 1) view?.historyStatus(History.HistoryPending.value)
+
+            }
+
+            val newData = model.getAllJopCount(currentPage)
+
+            withContext(Dispatchers.Main){
+
+                if (newData.isEmpty()){
+
+                    isLastPage = true
+                    isLoading = false
+                    view?.loading(false)
 
                 }else{
 
-                    view?.historyStatus(History.HistorySuccess.value)
-                    view?.historyList(data)
+                    historyList.addAll(newData)
+
+                    if (currentPage == 1) view?.historyStatus(History.HistorySuccess.value)
+
+                    view?.historyList(historyList.toList())
+
+                    isLastPage = false
+                    currentPage++
 
                 }
+
+                isLoading = false
+                view?.loading(false)
+
+                if (historyList.isEmpty()) view?.historyStatus(History.HistoryFailed.value)
 
             }
 
