@@ -1,6 +1,7 @@
 package com.mala.digital_joper_mala.TestDatabase
 
 import android.content.Context
+import androidx.compose.runtime.snapshots.toInt
 import com.mala.digital_joper_mala.Database.JopHistoryDatabase
 import com.mala.digital_joper_mala.Model.JopHistory
 import io.mockk.*
@@ -65,7 +66,7 @@ class JopHistoryDB {
             )
         )
 
-        every { mockDB.getAllJopCount() } returns list
+        every { mockDB.getAllJopCount(1) } returns list
     }
 
     @Test
@@ -73,7 +74,7 @@ class JopHistoryDB {
 
         val list : MutableList<JopHistory> = mutableListOf()
 
-        every { mockDB.getAllJopCount() } returns list
+        every { mockDB.getAllJopCount(1) } returns list
     }
 
     @Test
@@ -100,5 +101,26 @@ class JopHistoryDB {
 
     }
 
+    @Test
+    fun test_pagination(){
+
+        val testDay = "Mon"
+        val testDate = "20-2-2026"
+        val testCount = 10L
+        val testYear = 2027
+
+        repeat(100){index ->
+
+            mockDB.insertJopCount(
+                day = "$testDay $index",
+                date = "$testDate $index",
+                year = testYear,
+                jopCount = testCount + index
+            )
+
+        }
+
+
+    }
 
 }
