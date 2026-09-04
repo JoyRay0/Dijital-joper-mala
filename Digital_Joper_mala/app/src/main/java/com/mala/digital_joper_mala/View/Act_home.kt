@@ -302,6 +302,10 @@ class Act_home : ComponentActivity(), Home, JopCountHistory {//class============
         jopHistoryCount.longValue = count
     }
 
+    override fun loading(isLoading: Boolean) {
+
+    }
+
 }
 
 @Preview(showBackground = true)
