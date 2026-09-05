@@ -1,7 +1,6 @@
 package com.mala.digital_joper_mala.Presenter
 
-import android.util.Log
-import com.mala.digital_joper_mala.Database.UserMantraDatabase
+import android.content.Context
 import com.mala.digital_joper_mala.Model.UserMantra
 import com.mala.digital_joper_mala.Model.UserMantraModel
 import kotlinx.coroutines.CoroutineScope
@@ -16,18 +15,32 @@ interface UserMantras{
 
     fun getMantra(list: List<UserMantra>)
     fun status(message : String)
+    fun mantraStatus(status : String)
+    fun loading(isLoading : Boolean)
+
+}
+
+enum class UserAddMantra(val value : String){
+
+    UserMantraPending("user_mantra_pending"),
+    UserMantraSuccess("user_mantra_success"),
+    UserMantraFailed("user_mantra_failed")
 
 }
 
 class UserMantraPresenter(
-    private val db : UserMantraDatabase,
+    private val context : Context,
     private val view : UserMantras
 ) {
 
-    private val model = UserMantraModel(db)
+    private val model = UserMantraModel(context)
 
     private val scopeIO = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val scopeMain = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    private var currentPage = 1
+    private var isLoading = false
+    private var isLastPage = false
+    private val userMantraList = mutableListOf<UserMantra>()
 
 
     fun insert(title : String, mantra : String){
@@ -36,13 +49,11 @@ class UserMantraPresenter(
 
             model.insert(title = title, mantra = mantra)
 
-            val data = model.getMantra()
+            currentPage = 1
+            isLastPage = false
+            userMantraList.clear()
 
-            withContext(Dispatchers.Main){
-
-                view.getMantra(data)
-
-            }
+            getAllMantras()
 
         }
 
@@ -52,11 +63,44 @@ class UserMantraPresenter(
 
         scopeIO.launch {
 
-            val data = model.getMantra()
+            if (isLoading || isLastPage) return@launch
 
             withContext(Dispatchers.Main){
 
-                view.getMantra(data)
+                isLoading = true
+                view.loading(true)
+
+                if (currentPage == 1) view.mantraStatus(UserAddMantra.UserMantraPending.value)
+
+            }
+
+            val newData = model.getMantra(currentPage)
+
+            withContext(Dispatchers.Main){
+
+                if (newData.isEmpty()){
+
+                    isLastPage = true
+                    isLoading = false
+                    view.loading(false)
+
+                }else{
+
+                    userMantraList.addAll(newData)
+
+                    if (currentPage == 1) view.mantraStatus(UserAddMantra.UserMantraSuccess.value)
+
+                    view.getMantra(userMantraList.toList())
+
+                    isLastPage = false
+                    currentPage++
+
+                }
+
+                isLoading = false
+                view.loading(false)
+
+                if (userMantraList.isEmpty()) view.mantraStatus(UserAddMantra.UserMantraFailed.value)
 
             }
 
@@ -70,14 +114,16 @@ class UserMantraPresenter(
 
             val isDeleted =  model.delete(mantra)
 
-            val data = model.getMantra()
-
             withContext(Dispatchers.Main){
 
                 if (isDeleted){
 
+                    val index = userMantraList.indexOfFirst { it.mantra == mantra }
+
+                    if (index != -1) userMantraList.removeAt(index)
+
                     view.status("ডিলিট হয়েছে")
-                    view.getMantra(data)
+                    view.getMantra(userMantraList.toList())
 
                 }else{
 

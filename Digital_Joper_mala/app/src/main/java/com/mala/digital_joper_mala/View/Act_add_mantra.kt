@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -37,6 +38,7 @@ import androidx.compose.ui.unit.*
 import com.mala.digital_joper_mala.Database.UserMantraDatabase
 import com.mala.digital_joper_mala.Helper.*
 import com.mala.digital_joper_mala.Model.UserMantra
+import com.mala.digital_joper_mala.Presenter.UserAddMantra
 import com.mala.digital_joper_mala.Presenter.UserMantraPresenter
 import com.mala.digital_joper_mala.Presenter.UserMantras
 import com.mala.digital_joper_mala.R
@@ -44,18 +46,17 @@ import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 
-class Act_add_mantra : ComponentActivity(), UserMantras {
+class Act_add_mantra : ComponentActivity(), UserMantras {//class===========================================
 
     private lateinit var presenter : UserMantraPresenter
 
     private lateinit var tracker : TrackScreen
 
-    private lateinit var userMantraDatabase : UserMantraDatabase
-
     //init==============
     private var userMantraList = mutableStateListOf<UserMantra>()
     private var deleteStatus = mutableStateOf("")
-    private var isFirstLoaded = mutableStateOf(false)
+    private var isPaginationLoading = mutableStateOf(false)
+    private var mantraStatus = mutableStateOf("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,9 +66,8 @@ class Act_add_mantra : ComponentActivity(), UserMantras {
 
         setContent {
 
-            presenter.getAllMantras()
-
             var isDark by remember { mutableStateOf(false) }
+            var reloadData by remember { mutableIntStateOf(0) }
 
             if (ThemeHelper.isDarkTheme(this)) isDark = true else isDark = false
 
@@ -76,6 +76,12 @@ class Act_add_mantra : ComponentActivity(), UserMantras {
                 navColor = if (isDark) Color.Black else Color.White,
                 darkIcons = false
             )
+
+            LaunchedEffect(reloadData) {
+
+                presenter.getAllMantras()
+
+            }
 
             Digital_Joper_malaTheme{
 
@@ -107,6 +113,9 @@ class Act_add_mantra : ComponentActivity(), UserMantras {
                         ShortMessageHelper.toast(this, "কপি হয়েছে")
 
                     },
+                    mantraStatus = mantraStatus.value,
+                    isLoading = isPaginationLoading.value,
+                    onLoadMore = { reloadData++ }
                 )
 
             }
@@ -122,9 +131,7 @@ class Act_add_mantra : ComponentActivity(), UserMantras {
 
     private fun init(){
 
-        userMantraDatabase = UserMantraDatabase(this)
-
-        presenter = UserMantraPresenter(userMantraDatabase, this)
+        presenter = UserMantraPresenter(this, this)
 
         tracker = TrackScreen(this)
 
@@ -158,7 +165,15 @@ class Act_add_mantra : ComponentActivity(), UserMantras {
         deleteStatus.value = message
     }
 
-}//class===========================================
+    override fun mantraStatus(status: String) {
+        mantraStatus.value = status
+    }
+
+    override fun loading(isLoading: Boolean) {
+        isPaginationLoading.value = isLoading
+    }
+
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
@@ -170,6 +185,9 @@ private fun AddMantraFullScreen(
     addUserMantra : (UserMantra) -> Unit = {},
     deleteClick: (String) -> Unit = {},
     mantraLongClick: (String) -> Unit = {},
+    mantraStatus : String = "",
+    isLoading: Boolean = false,
+    onLoadMore : () -> Unit = {}
 ) {
 
     var isAddMantraDialogVisible = remember { mutableStateOf(false) }
@@ -205,7 +223,7 @@ private fun AddMantraFullScreen(
 
             ) {
 
-                if (mantraList.isEmpty()){
+                if (mantraList.isEmpty() && mantraStatus == UserAddMantra.UserMantraFailed.value){
 
                     Column(
 
@@ -239,7 +257,7 @@ private fun AddMantraFullScreen(
 
                     }//column
 
-                }else{
+                }else if (mantraList.isNotEmpty()){
 
                     LazyColumn(
                         modifier = Modifier
@@ -250,7 +268,7 @@ private fun AddMantraFullScreen(
 
                         items(
                             items = mantraList,
-                            //key = {}
+                            key = { it.id }
                         ){ it ->
 
                             Item(
@@ -263,9 +281,37 @@ private fun AddMantraFullScreen(
 
                         }
 
+                        items(
+                            count = 1,
+                            key = { "bottom_loader" }
+                        ){
+                            ComposeHelper().BottomLoader(
+                                isLoading = isLoading,
+                                onLoadMore = { onLoadMore() },
+                                isDark = isDark
+                            )
+                        }
+
                     }//lazy column
 
-                }
+                }else{
+
+                    Box(
+
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.Center)
+
+                    ) {
+
+                        ComposeHelper().Progressbar(
+                            isDark = isDark
+                        )
+
+                    }//box
+
+                }//condition
+
 
                 if (isAddMantraDialogVisible.value){
 
@@ -457,6 +503,11 @@ private fun AddDialog(
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text,
                         imeAction = ImeAction.Next
+                    ),
+                    keyboardActions = KeyboardActions (
+
+                        onNext = { focus.requestFocus() }
+
                     ),
                     cursorBrush = if (isDark) SolidColor(Color(0xFF00BCD4)) else SolidColor(Color(0xFF3F51B5)),
                     modifier = Modifier

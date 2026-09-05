@@ -9,20 +9,21 @@ import com.mala.digital_joper_mala.Model.UserMantra
 
 class UserMantraDatabase(
     context: Context
-) : SQLiteOpenHelper(context, "user_mantra.db", null, 9) {
+) : SQLiteOpenHelper(context, "user_mantra.db", null, 10) {
 
-    companion object{
+    private companion object{
 
         const val TABLE_NAME = "user_mantra_table"
         const val TITLE = "title"
         const val MANTRA = "mantra"
+        const val ID = "id"
 
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
 
         val sql = """CREATE TABLE IF NOT EXISTS $TABLE_NAME 
-            (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+            ($ID INTEGER PRIMARY KEY AUTOINCREMENT, 
             $TITLE TEXT, 
             $MANTRA TEXT)""".trimIndent()
 
@@ -66,6 +67,9 @@ class UserMantraDatabase(
 
     fun getAllMantra(page : Int = 0) : List<UserMantra>{
 
+        val limit = 20
+        val offset = (page - 1) * limit
+
         val list : MutableList<UserMantra> = mutableListOf()
 
         val db = dbOpen()
@@ -74,14 +78,16 @@ class UserMantraDatabase(
 
         try {
 
-            cursor = db.rawQuery("SELECT * FROM $TABLE_NAME ORDER BY id DESC", null)
+            cursor = db.rawQuery("SELECT * FROM $TABLE_NAME ORDER BY id DESC LIMIT $limit OFFSET $offset", null)
 
             while (cursor.moveToNext()){
 
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow(ID))
                 val title = cursor.getString(cursor.getColumnIndexOrThrow(TITLE))
                 val mantra = cursor.getString(cursor.getColumnIndexOrThrow(MANTRA))
 
                 list.add(UserMantra(
+                    id = id,
                     title = title,
                     mantra = mantra
                 ))
