@@ -601,6 +601,32 @@ class ComposeHelper {
 
     }
 
+    @Composable
+    fun Progressbar(
+        isDark: Boolean = false
+    ) {
+
+        Box(
+
+            modifier = Modifier
+                .fillMaxWidth()
+
+        ) {
+
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .padding(9.dp)
+                    .wrapContentWidth()
+                    //.size(30.dp)
+                    .align(Alignment.Center),
+                color = if (isDark) Color.LightGray else Color(0xFF009688)
+
+            )
+
+        }//box
+
+    }
+
     //@Preview(showBackground = true)
     @Composable
     fun BottomLoader(
