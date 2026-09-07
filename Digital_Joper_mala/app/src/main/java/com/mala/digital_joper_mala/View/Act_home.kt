@@ -45,6 +45,7 @@ import com.mala.digital_joper_mala.Presenter.JopCountHistory
 import com.mala.digital_joper_mala.Presenter.JopHistoryPresenter
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
+import com.rk_softwares.lawguidebook.Helper.ScreenSize
 
 
 class Act_home : ComponentActivity(), Home, JopCountHistory {//class===================================================
@@ -332,11 +333,11 @@ private fun HomeFullScreen(
     mantraMoreClick: () -> Unit = {},
     jopHistoryMoreClick: () -> Unit = {},
     getJopCount : Long = 0L,
-    historyStatus : String = ""
+    historyStatus : String = "",
 ) {
 
     var index = remember { mutableStateOf(0) }
-
+    var isAnyDialogVisible by remember { mutableStateOf(false) }
 
     Scaffold(
 
@@ -344,7 +345,8 @@ private fun HomeFullScreen(
             isDark = isDark,
             notificationClick = { notificationClick() },
             addMantraClick = { addMantraClick() },
-            settingClick = { settingClick() }
+            settingClick = { settingClick() },
+            isAnyDialogShowing = isAnyDialogVisible
         ) },
 
         modifier = Modifier
@@ -394,7 +396,7 @@ private fun HomeFullScreen(
                         mantraMoreClick = { mantraMoreClick() },
                         jopHistoryMoreClick = { jopHistoryMoreClick() },
                         getJopCount = getJopCount,
-                        historyStatus = historyStatus
+                        historyStatus = historyStatus,
                     )
 
                 }
@@ -431,7 +433,7 @@ private fun HomeFullScreen(
         }//box
 
     }//scaffold
-    
+
 }//fun end
 
 @Preview(showBackground = true)
@@ -441,6 +443,7 @@ private fun Toolbar(
     notificationClick : () -> Unit = {},
     addMantraClick : () -> Unit = {},
     settingClick : () -> Unit = {},
+    isAnyDialogShowing : Boolean = false
 ) {
 
     Box(
@@ -489,11 +492,15 @@ private fun Toolbar(
 
                         onClick = {
 
-                            when(index){
+                            if (!isAnyDialogShowing){
 
-                                0 -> notificationClick()
-                                1 -> addMantraClick()
-                                2 -> settingClick()
+                                when(index){
+
+                                    0 -> notificationClick()
+                                    1 -> addMantraClick()
+                                    2 -> settingClick()
+
+                                }
 
                             }
 
@@ -631,7 +638,7 @@ private fun Home(
     mantraMoreClick: () -> Unit = {},
     jopHistoryMoreClick: () -> Unit = {},
     getJopCount : Long = 0L,
-    historyStatus: String = ""
+    historyStatus: String = "",
 ) {
 
     var isUpdate by remember { mutableStateOf(false) }
@@ -967,7 +974,9 @@ private fun Item(
                     .fillMaxWidth()
                     .border(
                         width = 1.dp,
-                        color = if (isDark) Color.White.copy(alpha = 0.2f) else Color.Black.copy(alpha = 0.15f),
+                        color = if (isDark) Color.White.copy(alpha = 0.2f) else Color.Black.copy(
+                            alpha = 0.15f
+                        ),
                         shape = RoundedCornerShape(12.dp)
                     )
                     .clip(shape = RoundedCornerShape(12.dp))
@@ -1316,7 +1325,9 @@ private fun MantraBander(
                                             //.shadow(elevation = 3.dp, shape = RoundedCornerShape(14.dp))
                                             .border(
                                                 width = 1.dp,
-                                                color = if (isDark) Color.White.copy(alpha = 0.15f) else Color.LightGray.copy(alpha = 0.4f),
+                                                color = if (isDark) Color.White.copy(alpha = 0.15f) else Color.LightGray.copy(
+                                                    alpha = 0.4f
+                                                ),
                                                 shape = RoundedCornerShape(12.dp)
                                             )
                                             .clip(shape = RoundedCornerShape(12.dp))
@@ -1480,7 +1491,11 @@ private fun JopaHistory(
                         shape = RoundedCornerShape(12.dp)
                     )
                     .clip(shape = RoundedCornerShape(12.dp))
-                    .background(color = if (isDark) Color.DarkGray.copy(alpha = 0.8f) else Color(0xFFF6F5F5))
+                    .background(
+                        color = if (isDark) Color.DarkGray.copy(alpha = 0.8f) else Color(
+                            0xFFF6F5F5
+                        )
+                    )
                     .padding(10.dp)
                     .align(Alignment.CenterHorizontally)
 
