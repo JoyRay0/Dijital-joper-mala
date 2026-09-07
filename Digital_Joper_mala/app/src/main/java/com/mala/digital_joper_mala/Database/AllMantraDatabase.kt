@@ -157,15 +157,17 @@ $MANTRA TEXT
 
         try {
 
-            cursor = db.rawQuery("SELECT * FROM $ALL_MANTRA_TABLE WHERE $TITLE LIKE ?", arrayOf("%$title%"))
+            cursor = db.rawQuery("SELECT * FROM $ALL_MANTRA_TABLE WHERE $TITLE LIKE ? LIMIT 20", arrayOf("%$title%"))
 
             while (cursor.moveToNext()){
 
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow(ID))
                 val title = cursor.getString(cursor.getColumnIndexOrThrow(TITLE))
                 val mantra = cursor.getString(cursor.getColumnIndexOrThrow(MANTRA))
 
                 searchList.add(
                     MantraItem(
+                        id = id,
                         title = title,
                         mantra = mantra
                     )
@@ -215,7 +217,10 @@ $MANTRA TEXT
 
     }
 
-    fun getFavoriteMantra() : List<MantraItem>{
+    fun getFavoriteMantra(page : Int) : List<MantraItem>{
+
+        val limit = 20
+        val offset = (page - 1) * limit
 
         val favoriteMantraList : MutableList<MantraItem> = mutableListOf()
 
@@ -225,15 +230,17 @@ $MANTRA TEXT
 
         try {
 
-            cursor = db.rawQuery("SELECT * FROM $USER_FAVORITE_MANTRA_TABLE ORDER BY id DESC", null)
+            cursor = db.rawQuery("SELECT * FROM $USER_FAVORITE_MANTRA_TABLE ORDER BY id DESC LIMIT $limit OFFSET $offset", null)
 
             while (cursor.moveToNext()){
 
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow(ID))
                 val title = cursor.getString(cursor.getColumnIndexOrThrow(TITLE))
                 val mantra = cursor.getString(cursor.getColumnIndexOrThrow(MANTRA))
 
                 favoriteMantraList.add(
                     MantraItem(
+                        id = id,
                         title = title,
                         mantra = mantra
                     )
