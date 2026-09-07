@@ -47,11 +47,11 @@ class EasyMalaModel(
 
     }
 
-    fun getFavoriteMantra() : List<EasyMalaItem>{
+    fun getFavoriteMantra(page : Int) : List<EasyMalaItem>{
 
         val list : MutableList<EasyMalaItem> = mutableListOf()
 
-        val data = allMantraDB.getFavoriteMantra()
+        val data = allMantraDB.getFavoriteMantra(page)
 
         data.forEach { result ->
 
@@ -66,11 +66,11 @@ class EasyMalaModel(
 
     }
 
-    fun getUserMantra() : List<EasyMalaItem>{
+    fun getUserMantra(page: Int) : List<EasyMalaItem>{
 
         val list : MutableList<EasyMalaItem> = mutableListOf()
 
-        val data = userMantraDB.getAllMantra()
+        val data = userMantraDB.getAllMantra(page)
 
         data.forEach { result ->
 

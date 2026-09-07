@@ -16,6 +16,7 @@ interface EasyMala{
     fun userMantraList(list: List<EasyMalaItem>)
     fun lastCountCache (value : String)
     fun countLimit(limit: String)
+    fun loading(isLoading : Boolean)
 
 }
 
@@ -27,6 +28,14 @@ class EasyMalaPresenter(
     private val model = EasyMalaModel(context)
     private val scopeIO = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val scopeMain = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    private var favoriteMantraCurrentPage = 1
+    private var userMantraCurrentPage = 1
+    private var favoriteMantraLoading = false
+    private var userMantraLoading = false
+    private var favoriteMantraLastPage = false
+    private var userMantraLastPage = false
+    private val favoriteMantraList = mutableListOf<EasyMalaItem>()
+    private val userMantraList = mutableListOf<EasyMalaItem>()
 
 
     fun setLastCountCache(value : String){
@@ -59,11 +68,36 @@ class EasyMalaPresenter(
 
         scopeIO.launch {
 
-            val data = model.getFavoriteMantra()
+            if (favoriteMantraLoading || favoriteMantraLastPage) return@launch
 
             withContext(Dispatchers.Main){
 
-                view.favoriteMantraList(data)
+                favoriteMantraLoading = true
+                view.loading(true)
+
+            }
+
+            val newData = model.getFavoriteMantra(favoriteMantraCurrentPage)
+
+            withContext(Dispatchers.Main){
+
+                if (newData.isEmpty()){
+
+                    favoriteMantraLastPage = true
+
+                }else{
+
+                    favoriteMantraList.addAll(newData)
+
+                    view.favoriteMantraList(favoriteMantraList.toList())
+
+                    favoriteMantraLastPage = false
+                    favoriteMantraCurrentPage++
+
+                }
+
+                favoriteMantraLoading = false
+                view.loading(false)
 
             }
 
@@ -75,11 +109,36 @@ class EasyMalaPresenter(
 
         scopeIO.launch {
 
-            val data = model.getUserMantra()
+            if (userMantraLoading || userMantraLastPage) return@launch
 
             withContext(Dispatchers.Main){
 
-                view.userMantraList(data)
+                userMantraLoading = true
+                view.loading(true)
+
+            }
+
+            val newData = model.getUserMantra(userMantraCurrentPage)
+
+            withContext(Dispatchers.Main){
+
+                if (newData.isEmpty()){
+
+                    userMantraLastPage = true
+
+                }else{
+
+                    userMantraList.addAll(newData)
+
+                    view.userMantraList(userMantraList.toList())
+
+                    userMantraLastPage = false
+                    userMantraCurrentPage++
+
+                }
+
+                userMantraLoading = false
+                view.loading(false)
 
             }
 
