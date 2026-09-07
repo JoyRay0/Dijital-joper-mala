@@ -67,7 +67,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.5.0")
     implementation 'com.google.code.gson:gson:2.14.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation "androidx.work:work-runtime:2.11.2"
+    //implementation "androidx.work:work-runtime:2.11.2"
     implementation 'androidx.core:core:1.19.0'
 
     implementation("androidx.activity:activity-ktx:1.13.0")
@@ -93,5 +93,7 @@ dependencies {
     testImplementation "io.mockk:mockk-android:1.14.11"
     androidTestImplementation "io.mockk:mockk-android:1.14.11"
     testImplementation("com.google.truth:truth:1.4.5")
+
+    implementation("androidx.work:work-runtime-ktx:2.11.2")
 
 }
