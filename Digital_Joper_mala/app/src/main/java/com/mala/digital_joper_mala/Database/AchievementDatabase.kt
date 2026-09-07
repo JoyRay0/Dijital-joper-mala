@@ -5,8 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.mala.digital_joper_mala.Database.UserMantraDatabase.Companion.MANTRA
-import com.mala.digital_joper_mala.Database.UserMantraDatabase.Companion.TITLE
+
 import com.mala.digital_joper_mala.Model.Achievement
 
 class AchievementDatabase(
