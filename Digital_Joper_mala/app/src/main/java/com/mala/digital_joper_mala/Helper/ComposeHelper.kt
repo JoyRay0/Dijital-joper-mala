@@ -412,6 +412,7 @@ class ComposeHelper {
         headerTextWeight : FontWeight = FontWeight.Bold,
         isHeaderEnabled : Boolean = true,
         isDark: Boolean = false,
+        columnColor: Color = if (isDark) Color.DarkGray else Color.White,
         closeClick: () -> Unit = {},
         onDismissClick : () -> Unit = {},
         content : @Composable (ColumnScope.() -> Unit)
@@ -444,7 +445,7 @@ class ComposeHelper {
                         indication = null,
                         interactionSource = null
                     ) {}
-                    .background(color = if (isDark) Color.DarkGray else Color.White)
+                    .background(color = columnColor)
                     .padding(7.dp)
                     .align(Alignment.BottomCenter)
 
