@@ -40,10 +40,18 @@ class AllMantraPresenter(
     private val scopeIO = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val scopeMain = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private val retry = RetryHelper(scopeIO)
-    private var currentPage = 1
-    private var isLastPage = false
-    private var isLoading = false
-    private val mantraList = mutableListOf<MantraItem>()
+
+    /* All Mantra Pagination */
+    private var allMantraCurrentPage = 1
+    private var allMantraLastPage = false
+    private var allMantraLoading = false
+    private val allMantraList = mutableListOf<MantraItem>()
+
+    /* Favorite Mantra Pagination */
+    private var favoriteCurrentPage = 1
+    private var favoriteMantraLastPage = false
+    private var favoriteMantraLoading = false
+    private val favoriteMantraList = mutableListOf<MantraItem>()
 
 
     fun setAllMantraCache(value : Boolean){
@@ -135,44 +143,44 @@ class AllMantraPresenter(
 
         scopeIO.launch {
 
-            if (isLoading || isLastPage) return@launch
+            if (allMantraLoading || allMantraLastPage) return@launch
 
             withContext(Dispatchers.Main){
 
-                isLoading = true
+                allMantraLoading = true
                 view.loading(true)
 
-                if (currentPage == 1) view.mantraStatus(Mantra.MantraPending.value)
+                if (allMantraCurrentPage == 1) view.mantraStatus(Mantra.MantraPending.value)
 
             }
 
-            val newData = model.getAllMantra(currentPage)
+            val newData = model.getAllMantra(allMantraCurrentPage)
 
             withContext(Dispatchers.Main){
 
                 if (newData.isEmpty()){
 
-                    isLastPage = true
-                    isLoading = false
+                    allMantraLastPage = true
+                    allMantraLoading = false
                     view.loading(false)
 
                 } else{
 
-                    mantraList.addAll(newData)
+                    allMantraList.addAll(newData)
 
-                    if (currentPage == 1) view.mantraStatus(Mantra.MantraSuccess.value)
+                    if (allMantraCurrentPage == 1) view.mantraStatus(Mantra.MantraSuccess.value)
 
-                    view.allMantraList(mantraList.toList())
+                    view.allMantraList(allMantraList.toList())
 
-                    isLastPage = false
-                    currentPage++
+                    allMantraLastPage = false
+                    allMantraCurrentPage++
 
                 }
 
-                isLoading = false
+                allMantraLoading = false
                 view.loading(false)
 
-                if (mantraList.isEmpty()) view.mantraStatus(Mantra.MantraFailed.value)
+                if (allMantraList.isEmpty()) view.mantraStatus(Mantra.MantraFailed.value)
 
             }
 
@@ -191,6 +199,10 @@ class AllMantraPresenter(
                     if (it){
 
                         view.insertStatus("সেভ হয়েছে")
+                        favoriteCurrentPage = 1
+                        favoriteMantraList.clear()
+
+                        getAllFavoriteMantra()
 
                     }else{
 
@@ -202,14 +214,6 @@ class AllMantraPresenter(
 
             })
 
-            val data = model.getFavoriteMantra()
-
-            withContext(Dispatchers.Main){
-
-                view.favoriteMantraList(data)
-
-            }
-
         }
 
     }
@@ -218,11 +222,37 @@ class AllMantraPresenter(
 
         scopeIO.launch {
 
-            val data = model.getFavoriteMantra()
+            if (favoriteMantraLoading || favoriteMantraLastPage) return@launch
 
             withContext(Dispatchers.Main){
 
-                view.favoriteMantraList(data)
+                favoriteMantraLoading = true
+                favoriteMantraLastPage = false
+                view.loading(true)
+
+            }
+
+            val newData = model.getFavoriteMantra(favoriteCurrentPage)
+
+            withContext(Dispatchers.Main){
+
+                if (newData.isEmpty()){
+
+                    favoriteMantraLastPage = true
+
+                }else{
+
+                    favoriteMantraList.addAll(newData)
+
+                    view.favoriteMantraList(favoriteMantraList.toList())
+
+                    favoriteMantraLastPage = false
+                    favoriteCurrentPage++
+
+                }
+
+                favoriteMantraLoading = false
+                view.loading(false)
 
             }
 
@@ -236,15 +266,17 @@ class AllMantraPresenter(
 
             val isDeleted = model.deleteFavoriteMantra(mantra)
 
-            val data = model.getFavoriteMantra()
-
             withContext(Dispatchers.Main){
 
                 if (isDeleted){
 
-                    view.favoriteMantraList(data)
+                    val index = favoriteMantraList.indexOfFirst { it.mantra == mantra }
+
+                    if (index != -1) favoriteMantraList.removeAt(index)
 
                     view.deleteFavoriteMantraStatus("ডিলিট হয়েছে")
+
+                    view.favoriteMantraList(favoriteMantraList)
 
                 }else{
 

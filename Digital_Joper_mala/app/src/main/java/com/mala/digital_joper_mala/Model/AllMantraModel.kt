@@ -109,9 +109,9 @@ class AllMantraModel(
 
     }
 
-    fun getFavoriteMantra() : List<MantraItem>{
+    fun getFavoriteMantra(page: Int) : List<MantraItem>{
 
-        return db.getFavoriteMantra()
+        return db.getFavoriteMantra(page)
 
     }
 
