@@ -1,7 +1,6 @@
 package com.mala.digital_joper_mala.View
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -47,8 +46,6 @@ import com.mala.digital_joper_mala.Presenter.AllMantraPresenter
 import com.mala.digital_joper_mala.Presenter.Mantra
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.Digital_Joper_malaTheme
-import kotlinx.coroutines.delay
-import kotlin.time.Duration.Companion.milliseconds
 
 class Act_all_mantra : ComponentActivity(), AllMantra {//class=========================================
 
@@ -109,8 +106,6 @@ class Act_all_mantra : ComponentActivity(), AllMantra {//class==================
 
             }
 
-            //presenter.getAllMantra()
-
             Digital_Joper_malaTheme {
 
                 AllMantraFullScreen(
@@ -141,8 +136,9 @@ class Act_all_mantra : ComponentActivity(), AllMantra {//class==================
                         reloadFavoriteListCount++
                     },
                     mantraStatus = mantraStatus.value,
-                    loadMoreMantra = { reloadAllMantra++ },
-                    isLoading = isPaginationLoading.value
+                    loadMoreAllMantra = { reloadAllMantra++ },
+                    isLoading = isPaginationLoading.value,
+                    loadMoreFavoriteMantra = { reloadFavoriteListCount++ }
 
                 )
 
@@ -245,8 +241,9 @@ private fun AllMantraFullScreen(
     saveInFavorite : (title : String, mantra : String) -> Unit = {_, _ ->},
     removeFavoriteClick: (String) -> Unit = {},
     mantraStatus : String = "",
-    loadMoreMantra : () -> Unit = {},
-    isLoading: Boolean = false
+    loadMoreAllMantra : () -> Unit = {},
+    isLoading: Boolean = false,
+    loadMoreFavoriteMantra : () -> Unit = {}
 ) {
 
     val lazyState = rememberLazyListState()
@@ -362,7 +359,7 @@ private fun AllMantraFullScreen(
 
                         ComposeHelper().BottomLoader(
                             isLoading = isLoading,
-                            onLoadMore = { loadMoreMantra() },
+                            onLoadMore = { loadMoreAllMantra() },
                             isDark = isDark
                         )
 
@@ -408,104 +405,6 @@ private fun AllMantraFullScreen(
 
             }//condition
 
-            /*
-            when(mantraStatus){
-
-                "mantra_pending" -> {
-
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .padding(9.dp)
-                            .wrapContentWidth()
-                            //.size(30.dp)
-                            .align(Alignment.Center),
-                        color = if (isDark) Color.LightGray else Color(0xFF009688)
-
-                    )
-
-                }
-                "mantra_success" -> {
-
-                    LazyColumn(
-
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        state = lazyState
-
-                    ) {
-
-                        items(
-                            items = mantraList,
-                            key = { it.id }
-                        ){ it ->
-
-                            Item(
-                                //modifier = Modifier.animateItem(),
-                                isDark = isDark,
-                                title = it.title,
-                                mantra = it.mantra,
-                                mantraClick = { copyMantraClick(it.mantra) },
-                                favoriteClick = { saveInFavorite(it.title, it.mantra) }
-
-                            )
-
-                        }
-
-                        items(1, key = {"botton_loader"}){
-
-                            ComposeHelper().BottomLoader(
-                                isLoading = isLoading,
-                                onLoadMore = { loadMoreMantra() },
-                                isDark = isDark
-                            )
-
-                        }
-
-
-                    }//lazyColumn
-
-                }
-                else -> {
-
-                    Column(
-
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.Center)
-
-                    ) {
-
-                        Image( painter = painterResource(R.drawable.img_empty),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .wrapContentWidth()
-                                .size(120.dp)
-                                .align(Alignment.CenterHorizontally)
-
-                        )
-
-                        Spacer(modifier = Modifier.height(7.dp))
-
-                        Text( text = "কোন মন্ত্র নেই ।",
-                            fontSize = 16.sp,
-                            fontFamily = BanglaHelper.banglaFont(),
-                            fontWeight = FontWeight.Normal,
-                            color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .wrapContentWidth()
-                                .align(Alignment.CenterHorizontally)
-
-                        )
-
-                    }//column
-
-                }
-
-            }//when
-
-             */
-
             if (isSearchDialogVisible.value){
 
                 SearchDialog(
@@ -534,7 +433,9 @@ private fun AllMantraFullScreen(
                     favoriteList = favoriteMantraList,
                     mantraClick = { copyMantraClick(it) },
                     closeClick = { isFavoriteVisible.value = false },
-                    removeFavoriteClick = {removeFavoriteClick(it)}
+                    removeFavoriteClick = {removeFavoriteClick(it)},
+                    isLoading = isLoading,
+                    onLoadMore = { loadMoreFavoriteMantra() }
                 )
 
             }
@@ -1062,7 +963,9 @@ private fun FavoriteDialog(
     favoriteList : List<MantraItem> = emptyList(),
     mantraClick: (String) -> Unit = {},
     closeClick: () -> Unit = {},
-    removeFavoriteClick: (String) -> Unit = {}
+    removeFavoriteClick: (String) -> Unit = {},
+    isLoading: Boolean = false,
+    onLoadMore : () -> Unit = {}
 ) {
 
     val lazState = rememberLazyListState()
@@ -1184,7 +1087,7 @@ private fun FavoriteDialog(
 
                     items(
                         items = favoriteList,
-                        key = null
+                        key = { it.id }
                     ){ it ->
 
                         Item(
@@ -1194,6 +1097,19 @@ private fun FavoriteDialog(
                             mantraClick = { mantraClick(it.mantra) },
                             favoriteClick = { removeFavoriteClick(it.mantra) },
                             favoriteIcon = R.drawable.ic_fill_bookmark
+                        )
+
+                    }
+
+                    items(
+                        count = 1,
+                        key = {"bottom_loader"}
+                    ){
+
+                        ComposeHelper().BottomLoader(
+                            isLoading = isLoading,
+                            onLoadMore = { onLoadMore() },
+                            isDark = isDark
                         )
 
                     }
