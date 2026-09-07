@@ -86,7 +86,7 @@ import com.mala.digital_joper_mala.Presenter.EasyMalaPresenter
 import com.mala.digital_joper_mala.Presenter.JopHistoryPresenter
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.Digital_Joper_malaTheme
 
-class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {
+class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {//class=======================================================
     private lateinit var tracker : TrackScreen
     private lateinit var presenter : EasyMalaPresenter
     private lateinit var achievementPresenter : AchievementPresenter
@@ -100,6 +100,7 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {
     private val currentCount = mutableStateOf("")
     private val getCountLimit = mutableStateOf("")
     private val pCount = mutableLongStateOf(0L)
+    private val isPaginationLoading = mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -171,7 +172,8 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {
                     getCountLimit = getCountLimit.value,
                     favoriteMantraList = favoriteMantraList,
                     userMantraList = userMantraList,
-                    pCount = { pCount.longValue = it }
+                    pCount = { pCount.longValue = it },
+                    isMantraPaginationLoading = isPaginationLoading.value
                 )
 
 
@@ -241,12 +243,16 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {
         getCountLimit.value = limit
     }
 
+    override fun loading(isLoading: Boolean) {
+        isPaginationLoading.value = isLoading
+    }
+
     override fun achievementCountList(list: List<Achievement>) {
         achievementList.clear()
         achievementList.addAll(list)
     }
 
-}//class=======================================================
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
@@ -263,7 +269,8 @@ private fun EasyMalaFullScreen(
     getCountLimit: String = "0",
     favoriteMantraList : List<EasyMalaItem> = emptyList(),
     userMantraList : List<EasyMalaItem> = emptyList(),
-    pCount : (Long) -> Unit = {}
+    pCount : (Long) -> Unit = {},
+    isMantraPaginationLoading : Boolean = false
     ) {
 
     var isMantraDialogVisible by remember { mutableStateOf(false) }
@@ -380,8 +387,6 @@ private fun EasyMalaFullScreen(
 
                     }//dialog
 
-                    //counter(totalCount)
-
                 }
 
                 /*  floating mantra button */
@@ -399,7 +404,8 @@ private fun EasyMalaFullScreen(
                         isDark = isDark,
                         favoriteMantraList = favoriteMantraList,
                         userMantaList = userMantraList,
-                        closeClick = { isMantraDialogVisible = false }
+                        closeClick = { isMantraDialogVisible = false },
+                        isMantraPaginationLoading = isMantraPaginationLoading
                     )
 
                 }
@@ -800,7 +806,8 @@ fun AllMantra(
     isDark: Boolean = false,
     favoriteMantraList : List<EasyMalaItem> = emptyList(),
     userMantaList : List<EasyMalaItem> = emptyList(),
-    closeClick: () -> Unit = {}
+    closeClick: () -> Unit = {},
+    isMantraPaginationLoading: Boolean = false
 ) {
 
     var selectedIndex by remember { mutableStateOf(0) }
@@ -951,7 +958,7 @@ fun AllMantra(
                         items(
 
                             items = if (selectedIndex == 0) favoriteMantraList else userMantaList,
-                            key = null
+                            key = {it.id}
 
                         ){it ->
 
