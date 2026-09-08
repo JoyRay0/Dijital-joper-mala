@@ -56,6 +56,7 @@ class EasyMalaModel(
         data.forEach { result ->
 
             list.add(EasyMalaItem(
+                id = result.id,
                 title = result.title,
                 mantra = result.mantra
             ))
@@ -75,6 +76,7 @@ class EasyMalaModel(
         data.forEach { result ->
 
             list.add(EasyMalaItem(
+                id = result.id,
                 title = result.title,
                 mantra = result.mantra
             ))
