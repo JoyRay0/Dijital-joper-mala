@@ -39,6 +39,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -114,6 +115,8 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {//class======
             var isVibration by remember { mutableStateOf(false) }
             var reloadAchievementListCount by remember { mutableStateOf(0) }
             var reloadCountLimit by remember { mutableStateOf(0) }
+            var reloadFavoriteMantraList by remember { mutableIntStateOf(0) }
+            var reloadUserMantraList by remember { mutableIntStateOf(0) }
 
             if (ThemeHelper.isDarkTheme(this)) isDark = true else isDark = false
 
@@ -126,8 +129,18 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {//class======
             if (VibrationHelper.IsVibration(this)) isVibration = true else isVibration = false
 
             presenter.getLastCountCache()
-            presenter.getAllFavoriteMantra()
-            presenter.getAllUserMantra()
+
+            LaunchedEffect(reloadFavoriteMantraList) {
+
+                presenter.getAllFavoriteMantra()
+
+            }
+
+            LaunchedEffect(reloadUserMantraList) {
+
+                presenter.getAllUserMantra()
+
+            }
 
             LaunchedEffect(
                 reloadAchievementListCount,
@@ -173,9 +186,10 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {//class======
                     favoriteMantraList = favoriteMantraList,
                     userMantraList = userMantraList,
                     pCount = { pCount.longValue = it },
-                    isMantraPaginationLoading = isPaginationLoading.value
+                    isMantraPaginationLoading = isPaginationLoading.value,
+                    onFavoriteMantraLoadMore = { reloadFavoriteMantraList++ },
+                    onUserMantraLoadMore = { reloadUserMantraList++ }
                 )
-
 
             }
 
@@ -270,7 +284,9 @@ private fun EasyMalaFullScreen(
     favoriteMantraList : List<EasyMalaItem> = emptyList(),
     userMantraList : List<EasyMalaItem> = emptyList(),
     pCount : (Long) -> Unit = {},
-    isMantraPaginationLoading : Boolean = false
+    isMantraPaginationLoading : Boolean = false,
+    onFavoriteMantraLoadMore: () -> Unit = {},
+    onUserMantraLoadMore: () -> Unit = {}
     ) {
 
     var isMantraDialogVisible by remember { mutableStateOf(false) }
@@ -405,7 +421,9 @@ private fun EasyMalaFullScreen(
                         favoriteMantraList = favoriteMantraList,
                         userMantaList = userMantraList,
                         closeClick = { isMantraDialogVisible = false },
-                        isMantraPaginationLoading = isMantraPaginationLoading
+                        isMantraPaginationLoading = isMantraPaginationLoading,
+                        onFavoriteMantraLoadMore = { onFavoriteMantraLoadMore() },
+                        onUserMantraLoadMore = { onUserMantraLoadMore() }
                     )
 
                 }
@@ -807,7 +825,9 @@ fun AllMantra(
     favoriteMantraList : List<EasyMalaItem> = emptyList(),
     userMantaList : List<EasyMalaItem> = emptyList(),
     closeClick: () -> Unit = {},
-    isMantraPaginationLoading: Boolean = false
+    isMantraPaginationLoading: Boolean = false,
+    onFavoriteMantraLoadMore : () -> Unit = {},
+    onUserMantraLoadMore : () -> Unit = {}
 ) {
 
     var selectedIndex by remember { mutableStateOf(0) }
@@ -955,17 +975,52 @@ fun AllMantra(
 
                     ) {
 
+                        if (selectedIndex == 0){
+
+                            items(
+
+                                items = favoriteMantraList,
+                                key = { "favorite_id_${it.id}" }
+
+                            ){it ->
+
+                                Item(
+                                    isDark = isDark,
+                                    title = it.title,
+                                    mantra = it.mantra
+                                )
+
+                            }
+
+                        }else{
+
+                            items(
+
+                                items = userMantaList,
+                                key = {"userMantra_id_${it.id}"}
+
+                            ){it ->
+
+                                Item(
+                                    isDark = isDark,
+                                    title = it.title,
+                                    mantra = it.mantra
+                                )
+
+                            }
+
+
+                        }
+
                         items(
+                            count = 1,
+                            key = { "bottom_loader" }
+                        ){
 
-                            items = if (selectedIndex == 0) favoriteMantraList else userMantaList,
-                            key = {it.id}
-
-                        ){it ->
-
-                            Item(
-                                isDark = isDark,
-                                title = it.title,
-                                mantra = it.mantra
+                            ComposeHelper().BottomLoader(
+                                isLoading = isMantraPaginationLoading,
+                                onLoadMore = { if (selectedIndex == 0) onFavoriteMantraLoadMore() else onUserMantraLoadMore() },
+                                isDark = isDark
                             )
 
                         }
