@@ -56,7 +56,6 @@
             android:label="@string/title_activity_act_all_mantra"
             android:theme="@style/Base.Theme.Digital_Joper_mala"
             android:windowSoftInputMode="adjustResize" />
-
         <activity
             android:name=".View.Act_splash_screen"
             android:exported="true">
@@ -82,6 +81,12 @@
             android:name=".View.Act_shiv_mala"
             android:exported="false"
             android:label="@string/title_activity_act_shiv_mala"
+            android:theme="@style/Base.Theme.Digital_Joper_mala"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".View.Act_notification"
+            android:exported="false"
+            android:label="@string/title_activity_act_notification"
             android:theme="@style/Base.Theme.Digital_Joper_mala"
             android:windowSoftInputMode="adjustResize" />
     </application>

@@ -88,6 +88,7 @@
     <string name="title_activity_act_all_mantra">Act_all_mantra</string>
     <string name="title_activity_act_boisnob_mala">Act_boishnob_mala</string>
     <string name="title_activity_act_shiv_mala">Act_shiv_mala</string>
+    <string name="title_activity_act_notification">Act_notification</string>
 
 
 </resources>
