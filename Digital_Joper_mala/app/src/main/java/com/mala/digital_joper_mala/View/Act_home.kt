@@ -124,7 +124,12 @@ class Act_home : ComponentActivity(), Home, JopCountHistory {//class============
             Digital_Joper_malaTheme {
                 HomeFullScreen(
                     isDark = isDark,
-                    notificationClick = {  },
+                    notificationClick = {
+
+                        IntentHelper.normalIntent(this, Act_notification::class.java)
+                        finish()
+
+                    },
                     addMantraClick = {
                         IntentHelper.normalIntent(this, Act_add_mantra::class.java)
                         finish()
