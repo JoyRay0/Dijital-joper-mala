@@ -124,6 +124,22 @@ class NotificationPresenter(
 
     }
 
+    fun notificationCount(count : (Int) -> Unit){
+
+        scopeIO.launch {
+
+            val count = model.unseenNotification()
+
+            withContext(Dispatchers.Main){
+
+                count(count)
+
+            }
+
+        }
+
+    }
+
     fun onDestroy(){
 
         scopeIO.cancel()

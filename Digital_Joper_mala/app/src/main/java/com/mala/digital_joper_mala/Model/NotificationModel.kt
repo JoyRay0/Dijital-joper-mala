@@ -46,4 +46,10 @@ class NotificationModel(
 
     }
 
+    fun unseenNotification() : Int{
+
+        return db.unseenNotificationCount()
+
+    }
+
 }
