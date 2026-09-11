@@ -140,6 +140,29 @@ class NotificationPresenter(
 
     }
 
+    fun hasSeenNotification(title: String){
+
+        scopeIO.launch {
+
+            val isUpdated = model.hasSeenNotification(title)
+
+            withContext(Dispatchers.Main){
+
+                if (isUpdated){
+
+                    currentPage = 1
+                    notificationList.clear()
+
+                    getAllNotification()
+
+                }
+
+            }
+
+        }
+
+    }
+
     fun onDestroy(){
 
         scopeIO.cancel()
