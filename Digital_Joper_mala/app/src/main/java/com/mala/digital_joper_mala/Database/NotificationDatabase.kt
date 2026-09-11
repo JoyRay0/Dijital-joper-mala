@@ -163,6 +163,36 @@ $IS_SHOWED INTEGER DEFAULT 0
         return isUpdated
     }
 
+    fun unseenNotificationCount() : Int{
+
+        val db = dbOpen()
+
+        var countNotification = 0
+
+        var cursor : Cursor? = null
+
+        try {
+
+            cursor = db.rawQuery("SELECT $IS_SHOWED FROM $TABLE_NAME WHERE $IS_SHOWED = ?", arrayOf("0"))
+
+            while (cursor.moveToNext()){
+
+                countNotification++
+
+            }
+
+        }catch ( e : Exception){
+
+            e.printStackTrace()
+
+        }finally {
+            cursor?.close()
+        }
+
+        return countNotification
+
+    }
+
 
     private fun dbOpen(writable : Boolean = false) : SQLiteDatabase{
 
