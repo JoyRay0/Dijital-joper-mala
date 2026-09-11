@@ -122,4 +122,23 @@ class NotificationDB {
 
     }
 
+    @Test
+    fun test_notification_count_zero(){
+
+        every { mockDB.unseenNotificationCount() } returns 0
+
+    }
+
+    @Test
+    fun test_notification_count(){
+
+        val title = "TTT"
+        val description = "DDD"
+
+        mockDB.insertNotification(title, description)
+
+        every { mockDB.unseenNotificationCount() } returns 1
+
+    }
+
 }
