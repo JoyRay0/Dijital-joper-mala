@@ -52,12 +52,14 @@ $IS_SHOWED INTEGER DEFAULT 0
 
     }
 
-    fun insertNotification(title : String, description : String){
+    fun insertNotification(title : String, description : String) : Long {
 
-        if (title.isEmpty() || description.isEmpty()) return
+        if (title.isEmpty() || description.isEmpty()) return -1L
 
         val db = dbOpen(true)
         val cv = ContentValues()
+
+        var inserted = 0L
 
         try {
 
@@ -65,13 +67,15 @@ $IS_SHOWED INTEGER DEFAULT 0
             cv.put(DESCRIPTION, description)
             cv.put(IS_SHOWED, false)
 
-            db.insert(TABLE_NAME, null, cv)
+            inserted =  db.insert(TABLE_NAME, null, cv)
 
         }catch ( e : Exception){
 
             e.printStackTrace()
 
         }
+
+        return inserted
 
     }
 
