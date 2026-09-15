@@ -1,12 +1,17 @@
 package com.mala.digital_joper_mala.Model
 
 import android.content.Context
+import android.icu.text.SimpleDateFormat
 import com.google.gson.annotations.SerializedName
 import com.mala.digital_joper_mala.Database.AllMantraDatabase
+import com.mala.digital_joper_mala.Database.NotificationDatabase
 import com.mala.digital_joper_mala.Helper.ApiLinkHelper
+import com.mala.digital_joper_mala.Helper.CacheHelper
 import com.mala.digital_joper_mala.Helper.OkHttpWrapper
 import com.mala.digital_joper_mala.Helper.header
+import java.sql.Date
 import java.util.Collections.emptyList
+import java.util.Locale
 
 data class Home(
 
@@ -25,7 +30,8 @@ data class HomeData(
     val image : String = "",
     val answer : String = "",
     val title : String = "",
-    val mantra : String = ""
+    val mantra : String = "",
+    val description : String = ""
 
 )
 
@@ -34,6 +40,8 @@ class HomeModel(
 ) {
 
     private val allMantraDB = AllMantraDatabase(context)
+    private val notificationDB = NotificationDatabase(context)
+    private val cache = CacheHelper(context, "server_request_time")
 
     fun getRules() : List<HomeData>{
 
@@ -151,6 +159,15 @@ class HomeModel(
         onSuccess : (String) -> Unit = {},
         onFailed : (Boolean) -> Unit = {}
     ){
+        val cacheKey = "app_update_sync"
+        val currentTime = System.currentTimeMillis()
+        val lastSyncTime = cache.getCache(cacheKey, "0").toLongOrNull() ?: 0
+
+        if ((currentTime - lastSyncTime) < 3 * 60 * 60 * 1000){
+
+            return
+
+        }
 
         OkHttpWrapper()
             .url(ApiLinkHelper.appUpdate())
@@ -159,6 +176,8 @@ class HomeModel(
                 if (it.status == "Success"){
 
                     onSuccess(it.version)
+
+                    cache.setCache(cacheKey, currentTime.toString())
 
                 }else{
 
@@ -172,6 +191,65 @@ class HomeModel(
                 onFailed(it)
 
             })
+
+    }
+
+    fun notificationFromServer(
+        isNewNotification : (Boolean) -> Unit
+    ){
+
+        val cacheKey = "notification_sync"
+        val currentTime = System.currentTimeMillis()
+        val lastSyncTime = cache.getCache(cacheKey, "0").toLongOrNull() ?: 0
+
+        if ((currentTime - lastSyncTime) < 3 * 60 * 60 * 1000){
+
+            return
+
+        }
+
+        OkHttpWrapper()
+            .url(ApiLinkHelper.appUpdate())
+            .execute(Home::class.java, onSuccess = {
+
+                if (it.status == "Success"){
+
+                    var hasInserted = false
+
+                    for (item in it.data){
+
+                        val inserted = notificationDB.insertNotification(
+                            item.title,
+                            item.description
+                        )
+
+                        if (inserted > 0L) hasInserted = true
+
+                    }
+
+                    cache.setCache(cacheKey, currentTime.toString())
+
+                    isNewNotification(hasInserted)
+
+
+                }else{
+
+                    isNewNotification(false)
+
+                }
+
+
+            }, onFailed = {
+
+                isNewNotification(false)
+
+            })
+
+    }
+
+    fun totalUnseenNotificationCount() : Int{
+
+        return notificationDB.unseenNotificationCount()
 
     }
 

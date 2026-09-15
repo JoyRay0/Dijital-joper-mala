@@ -21,6 +21,8 @@ interface Home{
     fun updateStatus(status : String)
     fun mantraList(list: List<HomeData>)
     fun mantraStatus(status: String)
+    fun notificationStatus(isNewNotification : Boolean)
+    fun notificationCount(count : String)
 
 }
 
@@ -44,7 +46,6 @@ class HomePresenter(
     private val model = HomeModel(context)
     private val scopeIO = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val scopeMain = CoroutineScope(Dispatchers.Main + SupervisorJob())
-
     private val retryHelper = RetryHelper(scopeIO)
 
     fun dataFromServer(){
@@ -231,6 +232,69 @@ class HomePresenter(
 
     }
 
+    fun getNotificationFromServer(){
+
+        retryHelper.retry(
+            maxTime = 3_00_00,
+            delayTime = 3_000,
+            request = { success, failed ->
+
+                scopeIO.launch {
+
+                    model.notificationFromServer { isNewNotification ->
+
+                        if (isNewNotification) success() else failed()
+
+                    }
+
+                }
+
+            },
+            onSuccess = {
+
+                scopeMain.launch {
+
+                    view.notificationStatus(true)
+
+                }
+
+            },
+            onFailed = {
+
+                scopeMain.launch {
+
+                    view.notificationStatus(false)
+
+                }
+
+            }
+        )
+
+    }
+
+    fun getNotificationCount(){
+
+        scopeIO.launch {
+
+            val notificationCount = model.totalUnseenNotificationCount()
+
+            withContext(Dispatchers.Main){
+
+                if (notificationCount > 9){
+
+                    view.notificationCount("9+")
+
+                }else{
+
+                    view.notificationCount(notificationCount.toString())
+
+                }
+
+            }
+
+        }
+
+    }
     fun getRules(){
 
         val data = model.getRules()
