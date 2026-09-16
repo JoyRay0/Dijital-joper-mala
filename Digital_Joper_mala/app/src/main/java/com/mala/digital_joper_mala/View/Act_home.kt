@@ -381,7 +381,7 @@ private fun HomeFullScreen(
     var isNotification by remember { mutableStateOf(false) }
 
     val screenHeight = ScreenSize().height()
-    val startOffsetY = - (screenHeight.toFloat() * 2)
+    val startOffsetY = - (screenHeight.toFloat() * 0.4f )
 
     val offsetY = remember { Animatable(startOffsetY) }
 
