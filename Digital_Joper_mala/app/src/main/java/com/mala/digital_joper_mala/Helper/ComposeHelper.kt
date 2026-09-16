@@ -1,10 +1,12 @@
 package com.mala.digital_joper_mala.Helper
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,24 +16,19 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ComposableInferredTarget
-import androidx.compose.runtime.InternalComposeApi
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,14 +42,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mala.digital_joper_mala.Presenter.JopHistoryPresenter
 import com.mala.digital_joper_mala.R
+import com.rk_softwares.lawguidebook.Helper.ScreenSize
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.math.roundToInt
 
 class ComposeHelper {
 
@@ -415,8 +413,34 @@ class ComposeHelper {
         columnColor: Color = if (isDark) Color.DarkGray else Color.White,
         closeClick: () -> Unit = {},
         onDismissClick : () -> Unit = {},
+        dialogShowingStatus : Boolean = false,
+        onCloseAnimationFinished : () -> Unit,
         content : @Composable (ColumnScope.() -> Unit)
     ) {
+
+        val screenHeight = ScreenSize().height()
+
+        val offsetY = remember { Animatable(screenHeight.toFloat() * 2) }
+
+        LaunchedEffect(dialogShowingStatus) {
+
+            offsetY.animateTo(
+                targetValue = if (dialogShowingStatus) 0f else screenHeight.toFloat() * 2,
+                animationSpec = tween(
+                    durationMillis = 600,
+                    easing = FastOutSlowInEasing
+                )
+            )
+
+            if (!dialogShowingStatus){
+
+                onCloseAnimationFinished()
+
+            }
+
+        }
+
+
 
         Box(
 
@@ -431,6 +455,12 @@ class ComposeHelper {
                         alpha = 0.5f
                     )
                 )
+                .offset{
+                    IntOffset(
+                        x = 0,
+                        y = offsetY.value.roundToInt()
+                    )
+                }
                 .padding(12.dp)
 
         ) {

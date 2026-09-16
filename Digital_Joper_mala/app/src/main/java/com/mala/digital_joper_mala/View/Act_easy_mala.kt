@@ -1,7 +1,6 @@
 package com.mala.digital_joper_mala.View
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -9,7 +8,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,7 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -290,6 +287,7 @@ private fun EasyMalaFullScreen(
     ) {
 
     var isMantraDialogVisible by remember { mutableStateOf(false) }
+    var isMantraDialogAnimation by remember { mutableStateOf(false) }
     var isCounterEditVisible by remember { mutableStateOf(false) }
     var isAchievementDialogVisible by remember { mutableStateOf(false) }
     var count by remember { mutableStateOf(0L) }
@@ -411,8 +409,12 @@ private fun EasyMalaFullScreen(
                         .fillMaxWidth()
                         .align(Alignment.BottomEnd),
                     isDark = isDark,
-                    onClick = { isMantraDialogVisible = true }
+                    onClick = {
+                        isMantraDialogAnimation = true
+                        isMantraDialogVisible = true
+                    }
                 )
+
 
                 if (isMantraDialogVisible){
 
@@ -420,10 +422,14 @@ private fun EasyMalaFullScreen(
                         isDark = isDark,
                         favoriteMantraList = favoriteMantraList,
                         userMantaList = userMantraList,
-                        closeClick = { isMantraDialogVisible = false },
+                        closeClick = {
+                            isMantraDialogAnimation = false
+                                     },
                         isMantraPaginationLoading = isMantraPaginationLoading,
                         onFavoriteMantraLoadMore = { onFavoriteMantraLoadMore() },
-                        onUserMantraLoadMore = { onUserMantraLoadMore() }
+                        onUserMantraLoadMore = { onUserMantraLoadMore() },
+                        dialogShowingStatus = isMantraDialogAnimation,
+                        onCloseFinished = { isMantraDialogVisible = false }
                     )
 
                 }
@@ -827,7 +833,9 @@ fun AllMantra(
     closeClick: () -> Unit = {},
     isMantraPaginationLoading: Boolean = false,
     onFavoriteMantraLoadMore : () -> Unit = {},
-    onUserMantraLoadMore : () -> Unit = {}
+    onUserMantraLoadMore : () -> Unit = {},
+    dialogShowingStatus : Boolean = false,
+    onCloseFinished : () -> Unit = {}
 ) {
 
     var selectedIndex by remember { mutableStateOf(0) }
@@ -845,7 +853,9 @@ fun AllMantra(
             headerText = "মন্ত্র সমূহ",
             headerTestSize = 18f,
             isDark = isDark,
-            closeClick = { closeClick() }
+            closeClick = { closeClick() },
+            dialogShowingStatus = dialogShowingStatus,
+            onCloseAnimationFinished = { onCloseFinished() }
         ) {
 
             Column(
