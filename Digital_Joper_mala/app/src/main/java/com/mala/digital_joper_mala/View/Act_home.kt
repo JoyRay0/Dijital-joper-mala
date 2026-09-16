@@ -376,43 +376,42 @@ private fun HomeFullScreen(
     notificationCount : String = ""
 ) {
 
-    //10
-
     var index = remember { mutableStateOf(0) }
     var isAnyDialogVisible by remember { mutableStateOf(false) }
     var isNotification by remember { mutableStateOf(false) }
 
-    val offsetY = remember { Animatable(-300f) }
+    val screenHeight = ScreenSize().height()
+    val startOffsetY = - (screenHeight.toFloat() * 2)
+
+    val offsetY = remember { Animatable(startOffsetY) }
 
     LaunchedEffect(newNotification) {
 
-        if (newNotification){
+        if (!newNotification) return@LaunchedEffect
 
-            delay(4000.milliseconds)
+        delay(4000.milliseconds)
 
-            offsetY.animateTo(
-                targetValue = 10f,
-                animationSpec = tween(
-                    durationMillis = 600,
-                    easing = FastOutSlowInEasing
-                )
+        offsetY.animateTo(
+            targetValue = 7f,
+            animationSpec = tween(
+                durationMillis = 1000,
+                easing = LinearOutSlowInEasing
             )
+        )
 
-            isNotification = true
+        isNotification = true
 
-            delay(5000.milliseconds)
+        delay(5000.milliseconds)
 
-            offsetY.animateTo(
-                targetValue = -300f,
-                animationSpec = tween(
-                    durationMillis = 600,
-                    easing = FastOutSlowInEasing
-                )
+        offsetY.animateTo(
+            targetValue = startOffsetY,
+            animationSpec = tween(
+                durationMillis = 1000,
+                easing = LinearOutSlowInEasing
             )
+        )
 
-            isNotification = false
-
-        }
+        isNotification = false
 
     }
 
