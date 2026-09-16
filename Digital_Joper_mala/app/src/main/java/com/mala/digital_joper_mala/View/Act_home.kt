@@ -7,7 +7,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,11 +32,13 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.handwriting.handwritingDetector
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
@@ -46,6 +59,10 @@ import com.mala.digital_joper_mala.Presenter.JopHistoryPresenter
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
 import com.rk_softwares.lawguidebook.Helper.ScreenSize
+import kotlinx.coroutines.delay
+import kotlin.math.roundToInt
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 
 class Act_home : ComponentActivity(), Home, JopCountHistory {//class===================================================
@@ -74,6 +91,8 @@ class Act_home : ComponentActivity(), Home, JopCountHistory {//class============
     private val mantraList = mutableStateListOf<HomeData>()
     private val jopHistoryCount = mutableLongStateOf(0L)
     private val jopHistoryStatus = mutableStateOf("")
+    private val isNotification = mutableStateOf(false)
+    private val notificationCount = mutableStateOf("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -216,6 +235,8 @@ class Act_home : ComponentActivity(), Home, JopCountHistory {//class============
                         finish()
                                           },
                     getJopCount = jopHistoryCount.longValue,
+                    //newNotification = isNotification.value,
+                    notificationCount = notificationCount.value
 
                 )
 
@@ -266,6 +287,18 @@ class Act_home : ComponentActivity(), Home, JopCountHistory {//class============
 
     override fun mantraStatus(status: String) {
         mantraStatus.value = status
+    }
+
+    override fun notificationStatus(isNewNotification: Boolean) {
+
+        isNotification.value = isNewNotification
+
+    }
+
+    override fun notificationCount(count: String) {
+
+        notificationCount.value = count
+
     }
 
     override fun onStart() {
@@ -339,10 +372,49 @@ private fun HomeFullScreen(
     jopHistoryMoreClick: () -> Unit = {},
     getJopCount : Long = 0L,
     historyStatus : String = "",
+    newNotification : Boolean = true,
+    notificationCount : String = ""
 ) {
+
+    //10
 
     var index = remember { mutableStateOf(0) }
     var isAnyDialogVisible by remember { mutableStateOf(false) }
+    var isNotification by remember { mutableStateOf(false) }
+
+    val offsetY = remember { Animatable(-300f) }
+
+    LaunchedEffect(newNotification) {
+
+        if (newNotification){
+
+            delay(4000.milliseconds)
+
+            offsetY.animateTo(
+                targetValue = 10f,
+                animationSpec = tween(
+                    durationMillis = 600,
+                    easing = FastOutSlowInEasing
+                )
+            )
+
+            isNotification = true
+
+            delay(5000.milliseconds)
+
+            offsetY.animateTo(
+                targetValue = -300f,
+                animationSpec = tween(
+                    durationMillis = 600,
+                    easing = FastOutSlowInEasing
+                )
+            )
+
+            isNotification = false
+
+        }
+
+    }
 
     Scaffold(
 
@@ -434,6 +506,22 @@ private fun HomeFullScreen(
                 isDark = isDark,
                 bottomIndex = { index.value = it }
             )
+
+            if (isNotification){
+
+                NotificationAlert(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .offset{
+                            IntOffset(
+                                x = 0,
+                                y = offsetY.value.roundToInt()
+                            )
+                        }
+                        .align(Alignment.TopCenter)
+                )
+
+            }
 
         }//box
 
@@ -1536,4 +1624,63 @@ private fun JopaHistory(
 
     }//box
 
+}//fun end
+
+@Preview(showBackground = true)
+@Composable
+private fun NotificationAlert(
+    modifier: Modifier = Modifier,
+) {
+
+    Box(
+
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(start = 12.dp, end = 12.dp, top = 5.dp, bottom = 12.dp)
+
+    ) {
+
+        Row(
+
+            modifier = Modifier
+                .wrapContentWidth()
+                .shadow(
+                    elevation = 1.dp,
+                    shape = RoundedCornerShape(18.dp),
+
+                    )
+                .clip(shape = RoundedCornerShape(18.dp))
+                .background(color = Color(0xFFF2EAFF))
+                .padding(10.dp)
+                .align(Alignment.Center)
+
+        ) {
+
+            Image( painter = painterResource(R.drawable.img_notification_alert),
+                contentDescription = "",
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .size(ScreenSize().responsiveImageSize(30, 37, 44))
+                    .align(Alignment.CenterVertically)
+
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Text( text = "নতুন নোটিফিকেশন এসেছে।",
+                fontSize = ScreenSize().responsiveTextSize(15, 17, 19),
+                fontFamily = BanglaHelper.banglaFont(),
+                fontWeight = FontWeight.SemiBold,
+                color = Color(0xFF4F4E4E),
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .align(Alignment.CenterVertically)
+
+            )
+
+        }//row
+
+    }//box
+    
 }//fun end
