@@ -344,7 +344,7 @@ fun HistoryItem(
     day : String = "",
     date : String = "Test",
     count : Long = 0L,
-    isDark: Boolean = true
+    isDark: Boolean = false
 ) {
 
     Box(
