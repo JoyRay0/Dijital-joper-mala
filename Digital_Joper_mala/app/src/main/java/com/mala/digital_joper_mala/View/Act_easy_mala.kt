@@ -1,6 +1,7 @@
 package com.mala.digital_joper_mala.View
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -288,12 +289,17 @@ private fun EasyMalaFullScreen(
 
     var isMantraDialogVisible by remember { mutableStateOf(false) }
     var isMantraDialogAnimation by remember { mutableStateOf(false) }
+
     var isCounterEditVisible by remember { mutableStateOf(false) }
+
     var isAchievementDialogVisible by remember { mutableStateOf(false) }
+    var isAchievementAnimation by remember { mutableStateOf(false) }
+
     var count by remember { mutableStateOf(0L) }
     var isAnyDialogVisible by remember { mutableStateOf(false) }
 
     val countList = listOf(1000L, 5000L, 10000L, 50000L, 100000L, 500000L)
+
 
     LaunchedEffect(count, achievementList) {
 
@@ -302,13 +308,24 @@ private fun EasyMalaFullScreen(
         currentCount(count)
 
         /* check for achievement dialog */
-        val isExists = achievementList.any {
 
-            it.achievementCount == count.toString()
+        var isExists = false
+
+        for (it in achievementList){
+
+            if (it.achievementCount == count.toString()){
+
+                isExists = true
+
+            }
 
         }
 
-        if (!isExists && count in countList) isAchievementDialogVisible = true
+        if (!isExists && count in countList){
+
+            isAchievementDialogVisible = true
+            isAchievementAnimation = true
+        }
 
     }
 
@@ -438,19 +455,14 @@ private fun EasyMalaFullScreen(
                 if (isAchievementDialogVisible){
 
                     ComposeHelper().MilestonesDialog(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
-                                    alpha = 0.5f
-                                )
-                            ),
                         closeClick = {
-                            isAchievementDialogVisible = false
+                            isAchievementAnimation = false
                             saveAchievementCount(count)
                         },
                         currentCount = count,
-                        isDark = isDark
+                        isDark = isDark,
+                        animationStatus = isAchievementAnimation,
+                        onAnimationFinished = { isAchievementDialogVisible = false }
                     )
 
                 }
@@ -854,7 +866,7 @@ fun AllMantra(
             headerTestSize = 18f,
             isDark = isDark,
             closeClick = { closeClick() },
-            dialogShowingStatus = dialogShowingStatus,
+            animationStatus = dialogShowingStatus,
             onCloseAnimationFinished = { onCloseFinished() }
         ) {
 

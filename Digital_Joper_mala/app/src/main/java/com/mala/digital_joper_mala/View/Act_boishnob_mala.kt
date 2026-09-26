@@ -228,9 +228,14 @@ private fun BoisnobMalaFullScreen(
     pCount : (Long) -> Unit = {}
 ) {
 
+    var isMantraDialogAnimation by remember { mutableStateOf(false) }
     var isMantraDialogVisible by remember { mutableStateOf(false) }
+
     var isCounterEditVisible by remember { mutableStateOf(false) }
+
+    var isAchievementAnimation by remember { mutableStateOf(false) }
     var isAchievementDialogVisible by remember { mutableStateOf(false) }
+
     var count by remember { mutableStateOf(0L) }
     var isAnyDialogVisible by remember { mutableStateOf(false) }
 
@@ -249,7 +254,10 @@ private fun BoisnobMalaFullScreen(
 
         }
 
-        if (!isExists && count in countList) isAchievementDialogVisible = true
+        if (!isExists && count in countList){
+            isAchievementDialogVisible = true
+            isAchievementAnimation = true
+        }
 
     }
 
@@ -316,6 +324,7 @@ private fun BoisnobMalaFullScreen(
                 isDark = isDark,
                 onClick = {
                     floatingButtonClick()
+                    isMantraDialogAnimation = true
                     isMantraDialogVisible = true
                 }
             )
@@ -325,16 +334,12 @@ private fun BoisnobMalaFullScreen(
             if (isMantraDialogVisible){
 
                 MantraDialog(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            color = if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
-                                alpha = 0.5f
-                            )
-                        ),
                     isDark = isDark,
                     mantraList = mantraList,
-                    closeClick = { isMantraDialogVisible = false }
+                    closeClick = { isMantraDialogAnimation = false},
+                    animationStatus = isMantraDialogAnimation,
+                    onAnimationFinished = { isMantraDialogVisible = false }
+
                 )
 
             }
@@ -343,19 +348,14 @@ private fun BoisnobMalaFullScreen(
             if (isAchievementDialogVisible){
 
                 ComposeHelper().MilestonesDialog(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
-                                alpha = 0.5f
-                            )
-                        ),
                     closeClick = {
-                        isAchievementDialogVisible = false
+                        isAchievementAnimation = false
                         saveCount(count)
                                  },
                     currentCount = count,
-                    isDark = isDark
+                    isDark = isDark,
+                    animationStatus = isAchievementAnimation,
+                    onAnimationFinished = { isAchievementDialogVisible = false }
                 )
 
             }
@@ -515,127 +515,74 @@ private fun FloatingButton(
 @Preview(showBackground = true)
 @Composable
 private fun MantraDialog(
-    modifier: Modifier = Modifier,
     isDark: Boolean = false,
     mantraList : List<BoishnobItem> = emptyList(),
     closeClick: () -> Unit = {},
+    animationStatus : Boolean = false,
+    onAnimationFinished : () -> Unit = {}
 ) {
 
     val lazState = rememberLazyListState()
 
     Box(
 
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(
-                indication = null,
-                interactionSource = null
-            ) {}
-            .padding(9.dp)
+        modifier = Modifier
+            .fillMaxSize()
 
     ) {
 
-        Column(
-
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .clip(shape = RoundedCornerShape(18.dp))
-                .clickable(
-                    indication = null,
-                    interactionSource = null
-                ) {}
-                .background(color = if (isDark) Color(0xFF494949) else Color(0xFFFFFFFF))
-                .padding(7.dp)
-                .align(Alignment.BottomCenter)
-
+        ComposeHelper().Dialog(
+            headerText = "মন্ত্র সমূহ",
+            headerTestSize = 18f,
+            isDark = isDark,
+            closeClick = { closeClick() },
+            animationStatus = animationStatus,
+            onCloseAnimationFinished = { onAnimationFinished() }
         ) {
 
-            Spacer(modifier = Modifier.height(7.dp))
-
-            Box(
+            Column(
 
                 modifier = Modifier
                     .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally)
 
             ) {
 
-                Text( text = "মন্ত্র সমূহ",
-                    fontSize = 18.sp,
-                    fontFamily = BanglaHelper.banglaFont(),
-                    fontWeight = FontWeight.Bold,
-                    color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .align(Alignment.Center)
-
-                )
-
-                /* close button */
-                Box(
+                LazyColumn(
 
                     modifier = Modifier
-                        .wrapContentWidth()
-                        .clip(shape = CircleShape)
-                        //.background(color = Color.Gray)
-                        .clickable { closeClick() }
-                        .size(30.dp)
-                        .align(Alignment.CenterEnd)
+                        .fillMaxWidth()
+                        .padding(5.dp)
+                        .align(Alignment.CenterHorizontally),
+                    state = lazState
 
                 ) {
 
-                    Icon( painter = painterResource(com.mala.digital_joper_mala.R.drawable.ic_wrong),
-                        contentDescription = "",
-                        tint = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
-                        modifier = Modifier
-                            .wrapContentWidth()
-                            .size(18.dp)
-                            .align(Alignment.Center)
+                    items(
+                        items = mantraList,
+                        key = null
+                    ){ it ->
 
-                    )
+                        Item(
+                            isDark = isDark,
+                            title = it.title,
+                            mantra = it.mantra
+                        )
 
-                }
+                    }
 
-            }//box
+                    items(
+                        count = 1
+                    ){
 
-            Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(5.dp))
 
-            LazyColumn(
+                    }
 
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp)
-                    .align(Alignment.CenterHorizontally),
-                state = lazState
+                }//lazyColumn
 
-            ) {
+            }//column
 
-                items(
-                    items = mantraList,
-                    key = null
-                ){ it ->
-
-                    Item(
-                        isDark = isDark,
-                        title = it.title,
-                        mantra = it.mantra
-                    )
-
-                }
-
-                items(
-                    count = 1
-                ){
-
-                    Spacer(modifier = Modifier.height(5.dp))
-
-                }
-
-            }//lazyColumn
-
-        }//column
+        }//dialog
 
     }//box
 
