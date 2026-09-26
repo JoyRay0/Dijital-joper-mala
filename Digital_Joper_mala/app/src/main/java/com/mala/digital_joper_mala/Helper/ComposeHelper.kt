@@ -6,6 +6,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -47,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mala.digital_joper_mala.R
 import com.rk_softwares.lawguidebook.Helper.ScreenSize
+import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -239,11 +241,38 @@ class ComposeHelper {
     //@Preview(showBackground = true)
     @Composable
     fun MilestonesDialog(
-        modifier: Modifier = Modifier,
         closeClick: () -> Unit = {},
         currentCount : Long = 1000L,
-        isDark: Boolean = false
+        isDark: Boolean = false,
+        animationStatus : Boolean,
+        onAnimationFinished : () -> Unit
     ) {
+
+        val screenHeight = ScreenSize().height()
+
+        val offsetY = remember { Animatable(screenHeight.toFloat() * 2) }
+
+        LaunchedEffect(animationStatus) {
+
+            println("Animation status = $animationStatus")
+
+            offsetY.animateTo(
+                targetValue = if (animationStatus) 0f else screenHeight.toFloat() * 2,
+                animationSpec = tween(
+                    durationMillis = 600,
+                    easing = FastOutSlowInEasing
+                )
+            )
+
+            if (!animationStatus){
+
+                println("Animation status = $animationStatus")
+
+                onAnimationFinished()
+
+            }
+
+        }
 
         val countMilestones = listOf(1000L, 5000L, 10000L, 50000L, 100000L, 500000L)
         val milestonesTitle = listOf(
@@ -265,12 +294,23 @@ class ComposeHelper {
 
         Box(
 
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .clickable(
                     indication = null,
                     interactionSource = null
                 ) {}
+                .background(
+                    if (isDark) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                        alpha = 0.5f
+                    )
+                )
+                .offset{
+                    IntOffset(
+                        x = 0,
+                        y = offsetY.value.roundToInt()
+                    )
+                }
                 .padding(12.dp)
 
         ) {
@@ -413,7 +453,7 @@ class ComposeHelper {
         columnColor: Color = if (isDark) Color.DarkGray else Color.White,
         closeClick: () -> Unit = {},
         onDismissClick : () -> Unit = {},
-        dialogShowingStatus : Boolean = false,
+        animationStatus : Boolean = false,
         onCloseAnimationFinished : () -> Unit,
         content : @Composable (ColumnScope.() -> Unit)
     ) {
@@ -422,17 +462,17 @@ class ComposeHelper {
 
         val offsetY = remember { Animatable(screenHeight.toFloat() * 2) }
 
-        LaunchedEffect(dialogShowingStatus) {
+        LaunchedEffect(animationStatus) {
 
             offsetY.animateTo(
-                targetValue = if (dialogShowingStatus) 0f else screenHeight.toFloat() * 2,
+                targetValue = if (animationStatus) 0f else screenHeight.toFloat() * 2,
                 animationSpec = tween(
                     durationMillis = 600,
                     easing = FastOutSlowInEasing
                 )
             )
 
-            if (!dialogShowingStatus){
+            if (!animationStatus){
 
                 onCloseAnimationFinished()
 
