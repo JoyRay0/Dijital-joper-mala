@@ -12,6 +12,7 @@ enum HttpCodesHelper : int{
     case Unauthorized = 401;
     case Forbidden = 403;
     case NotFound = 404;
+    case TooManyRequests = 429;
 
     
     case ServerError = 500;
