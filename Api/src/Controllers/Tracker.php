@@ -18,7 +18,13 @@ class Tracker{
     
         $trackerData = (!empty($request->getParsedBody())) ? $request->getParsedBody() : [];
 
-        if(empty($trackerData)){
+        if(empty($trackerData) && (
+            empty($trackerData['device_id']) ||
+            empty($trackerData['android_version']) ||
+            empty($trackerData['sdk_version']) ||
+            empty($trackerData['country_code']) ||
+            empty($trackerData['last_open']))
+        ){
 
             Log::writeNormalLog(
                 "Tracker body",
@@ -35,6 +41,22 @@ class Tracker{
         try{
 
             $db = new Database();
+
+            $db->insertOneDeviceData(
+                $trackerData['device_id'],
+                $trackerData['android_version'],
+                $trackerData['sdk_version'],
+                $trackerData['country_code'],
+                $trackerData['last_open']
+            );
+
+            return ResHelper::jsonResponse(
+                $response,
+                Https::Success->value,
+                [
+                    "status" => Status::Success->value
+                ]
+            );
 
         }catch(PDOException $e){
 
