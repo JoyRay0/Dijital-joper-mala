@@ -15,6 +15,7 @@ class Mysql{
     private string $mantraTable = "mantras";
     private string $activityTable = "activity";
     private string $trackerTable = "tracker";
+    private string $admin = "admin";
 
     public function __construct()
     {
@@ -153,7 +154,7 @@ class Mysql{
 
     }
 
-    public function insertOneDeviceItem(
+    public function insertOneDeviceData(
         string $device_id,
         string $android_version,
         string $sdk_version,
@@ -167,8 +168,91 @@ class Mysql{
         $trackCountryCode = "country_code";
         $trackLastOpen = "last_open";
 
-        
+        /*
+        * Check device id in database if already added in database then update it. 
+        *
+        */
 
+        $oldDeviceData = $this->connection->prepare(
+            "SELECT $trackDeviceId FROM $this->trackerTable WHERE $trackDeviceId = ?"
+        );
+
+        $oldDeviceData->execute([$device_id]);
+
+        $result = $oldDeviceData->fetchColumn();
+
+        if($result !== false){
+
+            $updateStmt = $this->connection->prepare(
+                "UPDATE $this->trackerTable SET $trackAndroidVersion = ?, $trackSqkVersion = ?, $trackCountryCode = ?, $trackLastOpen  = ? WHERE $trackDeviceId = ?"
+            );
+
+            $updateStmt->execute([
+                $android_version,
+                $sdk_version,
+                $country_code,
+                $last_open,
+                $device_id
+            ]);
+
+            return;
+
+        }
+
+        /*
+        * If device id not found in database then insert it.
+        *
+        */
+
+        $stmt = $this->connection->prepare(
+            "INSERT INTO $this->trackerTable (
+            $trackDeviceId, $trackAndroidVersion, $trackSqkVersion, $trackCountryCode, $trackLastOpen
+            ) VALUES (?, ?, ?, ?, ?)"
+        );
+
+        $stmt->execute([$device_id, $android_version, $sdk_version, $country_code, $last_open]);
+
+    }
+
+    public function getTotalDviceDataCount() : int{
+
+        $stmt = $this->connection->query(
+            "SELECT COUNT(*) FROM $this->trackerTable"
+        );
+
+        $rowCount = $stmt->fetchColumn();
+
+        return (int) $rowCount;
+
+    }
+
+    public function isAdmin(
+        string $email,
+        string $password
+    ) : bool {
+
+        $isAdmin = false;
+
+        $stmt = $this->connection->prepare(
+            "SELECT * FROM $this->admin WHERE email = ? LIMIT 1"
+        );
+
+        $stmt->execute([$email]);
+
+        $result = $stmt->fetch();
+
+        if($result !== false && password_verify($password, $result['password'])){
+
+            $isAdmin = true;
+
+        }else{
+
+            $isAdmin = false;
+
+        }
+
+        return $isAdmin;
+        
     }
 
 }
