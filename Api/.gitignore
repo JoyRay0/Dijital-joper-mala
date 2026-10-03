@@ -2,4 +2,6 @@
 
 slim
 todo.db
+src/Controllers/admin.php
+src/Middlewares/AdminCheckerMiddleware.php
     
