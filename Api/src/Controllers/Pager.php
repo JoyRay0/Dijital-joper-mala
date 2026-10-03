@@ -14,7 +14,7 @@ class Pager{
 
     public function pager(Request $request, Response $response){
     
-        $pagerList = json_decode(file_get_contents('src/Json/pager.json'), true);
+        $pagerList = json_decode(file_get_contents( __DIR__ . '../Json/pager.json'), true);
 
         if(empty($pagerList)){
 

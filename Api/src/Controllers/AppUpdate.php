@@ -5,25 +5,38 @@ namespace App\Controllers;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use Src\Helper\StatusHelper;
-use Src\Helper\ResponseHelper;
-use Src\Helper\HttpCodesHelper;
-use Src\Helper\LogHelper;
+use Src\Helper\StatusHelper as Status;
+use Src\Helper\ResponseHelper as ResHelper;
+use Src\Helper\HttpCodesHelper as Https ;
+use Src\Helper\LogHelper as Log;
 
 class AppUpdate{
 
     public function App_update(Request $request, Response $response){
     
-        $old_version = 2.4;
-        $new_version = 2.5;
+        $notification = json_decode(file_get_contents(__DIR__ . '../Json/notification.json'), true);
+
+        if(empty($notification)){
+
+            Log::writeNormalLog("Notification Json", "Empty notification json");
+
+            return ResHelper::errorResponse(
+                $response,
+                Https::NotFound->value
+            );
+
+        }
+
+        $old_version = (float) $notification['old_version'];
+        $new_version = (float) $notification['new_version'];
 
         if($new_version > $old_version){
 
-            return ResponseHelper::jsonResponse(
+            return ResHelper::jsonResponse(
                 $response,
-                HttpCodesHelper::Success->value,
+                Https::Success->value,
                 [
-                    "status" => StatusHelper::Success->value,
+                    "status" => Status::Success->value,
                     "version" => (string) $new_version
                 ]
             );
@@ -31,16 +44,16 @@ class AppUpdate{
         
         }else{
 
-            LogHelper::writeNormalLog(
+            Log::writeNormalLog(
                 "Version",
                 "no new version = $old_version"
             );
 
-            return ResponseHelper::jsonResponse(
+            return ResHelper::jsonResponse(
                 $response,
-                0,
+                Https::NotFound->value,
                 [
-                    "status" => StatusHelper::Failed->value
+                    "status" => Status::Failed->value
                 ]
             );
 
