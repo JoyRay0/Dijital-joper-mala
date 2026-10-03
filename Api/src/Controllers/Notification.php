@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use DateTime;
-use Dom\Sqlite;
 use PDOException;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -24,12 +23,13 @@ class Notification{
         $date = (!empty($request->getParsedBody())) ? $request->getParsedBody() : [];
 
         if(!is_array($date) || empty($date['date'])){
-
-            http_response_code(https::BadRequest->value);
             
             log::writeNormalLog("Date", "Notification date empty");
 
-            return;
+            return ResHelper::errorResponse(
+                $response,
+                https::BadRequest->value
+            );
 
         }
 
@@ -37,11 +37,12 @@ class Notification{
 
         if(DateTime::createFromFormat('d-m-Y', $date['date']) != $currentDate){
 
-            http_response_code(https::NotFound->value);
-
             log::writeNormalLog("Date", "Server date and request date not matching");
 
-            return;
+            return ResHelper::errorResponse(
+                $response,
+                https::BadRequest->value
+            );
 
         }
 
@@ -183,8 +184,10 @@ class Notification{
 
             log::writeErrorLog($e->getMessage());
 
-            http_response_code(https::ServerError->value);
-            return;
+            return ResHelper::errorResponse(
+                $response,
+                https::ServerError->value
+            );
 
         }finally{
 
