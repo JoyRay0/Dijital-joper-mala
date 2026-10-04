@@ -226,6 +226,18 @@ class Mysql{
 
     }
 
+    public function getDeviceData() : array{
+
+        $stmt = $this->connection->query(
+            "SELECT * FROM $this->trackerTable"
+        );
+
+        $result = $stmt->fetchAll();
+
+        return $result;
+
+    }
+
     public function isAdmin(
         string $email,
         string $password
