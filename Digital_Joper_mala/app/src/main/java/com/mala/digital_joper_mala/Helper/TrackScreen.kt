@@ -26,7 +26,8 @@ enum class ACTIVITY(val value : String){
     Act_jopa_history("act_jopa_history"),
     Act_notification("act_notification"),
     Act_all_mantra_search("act_all_mantra_search"),
-    Act_webview("act_webview")
+    Act_webview("act_webview"),
+    Act_achievement("act_achievement")
 
 }//enum
 
