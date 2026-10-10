@@ -58,7 +58,7 @@ $app->group('/api', function($group){
 
 })
 ->add(new DeviceIdMiddleware())
-->add(new RateLimitMiddleware());
+->add(new RateLimitMiddleware(40));
 
 /* Admin  */
 
@@ -76,8 +76,10 @@ $app->group('/admin', function ($group){
     $group->post('/get_mantra', Admin::class . ':getMantra');
     $group->post('/get_notification', Admin::class . ':getNotification');
     $group->post('/get_pager', Admin::class . ':getPager');
-    $group->post('/get_tracker', Admin::class . ':getTracker');
+    $group->post('/get_activity_usage', Admin::class . ':getActivityUsages');
+    $group->post('/get_device_data', Admin::class . ':getDeviceData');
 
-})->add( new AdminCheckerMiddleware());
+})->add( new AdminCheckerMiddleware())
+->add(new RateLimitMiddleware(5));
 
 $app->run();

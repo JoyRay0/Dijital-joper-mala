@@ -14,13 +14,18 @@ class RateLimitMiddleware {
 
     private Response $response;
 
+    public function __construct(private int $limit)
+    {
+        
+    }
+
     public function __invoke(Request $request, Handler $handler): Response{
 
         $deviceID = $request->getHeaderLine('DeviceId');
 
         $count = (int) Cache::getStringCache($deviceID);
 
-        if($count >= 60){
+        if($count >= $this->limit){
 
             return ResHelper::errorResponse(
                 $this->response,
