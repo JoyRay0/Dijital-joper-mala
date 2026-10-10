@@ -295,7 +295,7 @@ class ComposeHelper {
         Box(
 
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .clickable(
                     indication = null,
                     interactionSource = null
