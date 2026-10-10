@@ -89,6 +89,12 @@
             android:label="@string/title_activity_act_notification"
             android:theme="@style/Base.Theme.Digital_Joper_mala"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".View.Act_achievement"
+            android:exported="false"
+            android:label="@string/title_activity_act_achievement"
+            android:theme="@style/Base.Theme.Digital_Joper_mala"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
