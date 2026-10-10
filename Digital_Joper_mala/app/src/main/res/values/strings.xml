@@ -89,6 +89,7 @@
     <string name="title_activity_act_boisnob_mala">Act_boishnob_mala</string>
     <string name="title_activity_act_shiv_mala">Act_shiv_mala</string>
     <string name="title_activity_act_notification">Act_notification</string>
+    <string name="title_activity_act_achievement">Act_achievement</string>
 
 
 </resources>
