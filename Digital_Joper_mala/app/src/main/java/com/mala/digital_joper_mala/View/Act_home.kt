@@ -511,7 +511,7 @@ private fun HomeFullScreen(
                 NotificationAlert(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .offset{
+                        .offset {
                             IntOffset(
                                 x = 0,
                                 y = offsetY.value.roundToInt()
@@ -879,6 +879,10 @@ private fun Home(
 
             )
 
+            Spacer(modifier = Modifier.height(7.dp))
+
+            Achievement()
+
         }//column
 
         if (isUpdate){
@@ -1033,8 +1037,8 @@ private fun Info(
 @Preview(showBackground = true)
 @Composable
 private fun Item(
-    question : String = "Test",
-    answer : String = "Testttttttt",
+    question : String = "",
+    answer : String = "",
     isDark: Boolean = false
 ) {
 
@@ -1516,7 +1520,7 @@ private fun JopaHistory(
             ) {
 
                 Text( text = "জপ হিসাব",
-                    fontSize = 16.sp,
+                    fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Bold,
                     color = if (isDark) Color.White else Color.Black,
@@ -1542,7 +1546,7 @@ private fun JopaHistory(
                 ) {
 
                     Text( text = "আরো",
-                        fontSize = 14.sp,
+                        fontSize = ScreenSize().responsiveTextSize(14, 16,18),
                         fontFamily = BanglaHelper.banglaFont(),
                         fontWeight = FontWeight.Normal,
                         color = if (isDark) Color.LightGray else Color.DarkGray,
@@ -1564,7 +1568,6 @@ private fun JopaHistory(
                             .align(Alignment.CenterVertically)
 
                     )
-
 
                 }//row more button
 
@@ -1594,7 +1597,7 @@ private fun JopaHistory(
             ) {
 
                 Text( text = "$currentDay : $currentDate",
-                    fontSize = 16.sp,
+                    fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Normal,
                     color = if (isDark) Color.White.copy(alpha = 0.8f) else Color(0xFF3F3E3E),
@@ -1606,7 +1609,7 @@ private fun JopaHistory(
                 )
 
                 Text( text = BanglaHelper.readLong(jopCount),
-                    fontSize = 16.sp,
+                    fontSize = ScreenSize().responsiveTextSize(16,18, 20),
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.SemiBold,
                     color = if (isDark) Color.White else Color.Black,
@@ -1682,4 +1685,176 @@ private fun NotificationAlert(
 
     }//box
     
+}//fun end
+
+@Preview(showBackground = true)
+@Composable
+private fun Achievement(
+    modifier: Modifier = Modifier,
+    isDark: Boolean = false,
+    achievementMoreClick : () -> Unit = {},
+    lastItemName : String = "shiv_mala",
+    lastItemCount : String = "1000"
+) {
+
+    val achievementCountMap = mapOf(
+        "" to "০",
+        "0" to "০",
+        "1000" to "১০০০ জপ",
+        "5000" to "৫০০০ জপ",
+        "10000" to "১০০০০ জপ",
+        "50000" to "৫০০০০ জপ",
+        "100000" to "১০০০০০ জপ",
+        "500000" to "৫০০০০০ জপ"
+    )
+
+    val achievementNameMap = mapOf(
+        "" to "",
+        "easy_mala" to "সহজ মালা",
+        "boishnob_mala" to "বৈষ্ণব মালা",
+        "shiv_mala" to "শিব মালা",
+
+    )
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+    ) {
+
+        Column(
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp)
+
+        ) {
+
+            /* Header */
+
+            Box(
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+
+            ) {
+
+                Text( text = "অর্জনসমূহ",
+                    fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
+                    fontFamily = BanglaHelper.banglaFont(),
+                    fontWeight = FontWeight.Bold,
+                    color = if (isDark) Color.White else Color.Black,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .align(Alignment.CenterStart)
+
+                )
+
+                /* more button */
+
+                Row(
+
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .clip(shape = RoundedCornerShape(10.dp))
+                        .clickable { achievementMoreClick() }
+                        .padding(6.dp)
+                        .align(Alignment.CenterEnd),
+                    horizontalArrangement = Arrangement.Center
+
+                ) {
+
+                    Text( text = "আরো",
+                        fontSize = ScreenSize().responsiveTextSize(14, 16, 18),
+                        fontFamily = BanglaHelper.banglaFont(),
+                        fontWeight = FontWeight.Normal,
+                        color = if (isDark) Color.LightGray else Color.DarkGray,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .align(Alignment.CenterVertically)
+
+                    )
+
+                    Spacer(modifier = Modifier.width(3.dp))
+
+                    Icon( painter = painterResource(R.drawable.ic_right),
+                        contentDescription = "",
+                        tint = if (isDark) Color.LightGray else Color.DarkGray,
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .size(22.dp)
+                            .align(Alignment.CenterVertically)
+
+                    )
+
+
+                }//row more button
+
+            }//box header
+
+            Spacer(modifier = Modifier.height(5.dp))
+
+            if(lastItemName.isEmpty() || lastItemCount.isEmpty()){
+
+                Text( text = "আপনার সর্বশেষ অর্জন এখানে দেখা যাবে।",
+                    fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
+                    fontFamily = BanglaHelper.banglaFont(),
+                    fontWeight = FontWeight.Normal,
+                    color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .align(Alignment.CenterHorizontally)
+                )
+
+            }else{
+
+                Box(
+
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .fillMaxWidth()
+                        .border(
+                            width = 1.dp,
+                            color = if (isDark) Color(0xFFF3F2F2) else Color.Transparent,
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                        .clip(shape = RoundedCornerShape(12.dp))
+                        .background(color = Color(0xFFFDF4F4))
+                        .padding(10.dp)
+
+                ) {
+
+                    Text( text = achievementNameMap[lastItemName] ?: "",
+                        fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
+                        fontFamily = BanglaHelper.banglaFont(),
+                        fontWeight = FontWeight.Normal,
+                        color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .align(Alignment.CenterStart)
+                    )
+
+                    Text( text = achievementCountMap[lastItemCount] ?: "০",
+                        fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
+                        fontFamily = BanglaHelper.banglaFont(),
+                        fontWeight = FontWeight.Bold,
+                        color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .align(Alignment.CenterEnd)
+                    )
+
+                }//box
+
+            }//condition
+
+        }//column
+
+    }//box
+
 }//fun end
