@@ -11,9 +11,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 interface Achievements{
+    fun achievementCountList(list: List<Achievement>){}
+    fun achievementList(list: List<Achievement>){}
+    fun achievementStatus(status : String){}
+    fun achievementListUpdated(isUpdated : Boolean){}
+}
 
-    fun achievementCountList(list: List<Achievement>)
-
+enum class AchievementStatus(val value : String){
+    Pending("achievement_pending"),
+    Success("achievement_success"),
+    Failed("achievement_failed")
 }
 
 class AchievementPresenter(
@@ -26,25 +33,18 @@ class AchievementPresenter(
     private val scopeIO = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val scopeMain = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-    fun insertAchievement(malaName : String, count : String, isInserted : (Boolean) -> Unit){
+    fun updateAchievement(malaName : String, count : String){
 
         scopeIO.launch {
 
-            model.insertAchievement(malaName, count, isInserted = {
-
-                scopeMain.launch {
-
-                    isInserted(it)
-
-                }
-
-            })
+            val isUpdated = model.updateAchievement(malaName, count)
 
             val updateList = model.getAchievement(malaName)
 
             withContext(Dispatchers.Main){
 
                 view.achievementCountList(updateList)
+                view.achievementListUpdated(isUpdated)
 
             }
 
@@ -61,6 +61,33 @@ class AchievementPresenter(
             withContext(Dispatchers.Main){
 
                 view.achievementCountList(list)
+
+            }
+
+        }
+
+    }
+
+    fun getAllAchievements(){
+
+        view.achievementStatus(AchievementStatus.Pending.value)
+
+        scopeIO.launch {
+
+            val data = model.getAllAchievements()
+
+            withContext(Dispatchers.Main){
+
+                if (data.isNotEmpty()){
+
+                    view.achievementStatus(AchievementStatus.Success.value)
+                    view.achievementList(data)
+
+                }else{
+
+                    view.achievementStatus(AchievementStatus.Failed.value)
+
+                }
 
             }
 

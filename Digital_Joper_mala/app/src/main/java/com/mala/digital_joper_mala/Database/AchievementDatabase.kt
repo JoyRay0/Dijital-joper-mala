@@ -10,7 +10,7 @@ import com.mala.digital_joper_mala.Model.Achievement
 
 class AchievementDatabase(
     val context : Context
-) : SQLiteOpenHelper(context, "achievement.db", null, 1) {
+) : SQLiteOpenHelper(context, "achievement.db", null, 2) {
 
     private companion object{
 
@@ -18,8 +18,16 @@ class AchievementDatabase(
         const val TABLE_NAME = "achievement_table"
         const val MALA_NAME = "mala_name"
         const val ACHIEVEMENT_COUNT = "achievement_count"
+        const val IS_COMPLETE = "is_complete"
 
     }
+
+    private val malaNameList = listOf(
+        "easy_mala", "boishnob_mala", "shiv_mala"
+    )
+    private val countList = listOf(
+        "1000", "5000", "10000", "50000", "100000", "500000"
+    )
 
     override fun onCreate(db: SQLiteDatabase?) {
 
@@ -27,10 +35,14 @@ class AchievementDatabase(
 CREATE TABLE IF NOT EXISTS $TABLE_NAME (
 $ID INTEGER PRIMARY KEY AUTOINCREMENT,
 $MALA_NAME TEXT NOT NULL,
-$ACHIEVEMENT_COUNT TEXT NOT NULL)
+$ACHIEVEMENT_COUNT TEXT NOT NULL,
+$IS_COMPLETE INTEGER DEFAULT 0
+)
 """.trimIndent()
 
         db?.execSQL(create_sql)
+
+        achievementInsert(db)
 
     }
 
@@ -42,11 +54,41 @@ $ACHIEVEMENT_COUNT TEXT NOT NULL)
         db?.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
     }
 
-    fun achievementInsert(malaName : String, achievementCount : String, isInserted : (Boolean) -> Unit){
+    private fun achievementInsert(db : SQLiteDatabase?){
 
-        if (malaName.isEmpty() || achievementCount.isEmpty()) return
+        val cv = ContentValues()
 
-        if (isDuplicate(malaName, achievementCount)) return
+        try {
+
+            for (name in malaNameList){
+
+                for (count in countList){
+
+                    cv.put(MALA_NAME, name)
+                    cv.put(ACHIEVEMENT_COUNT, count)
+                    cv.put(IS_COMPLETE, 0)
+
+                    db?.insert(TABLE_NAME, null, cv)
+
+                }
+
+            }
+
+        }catch (e : Exception){
+
+            e.printStackTrace()
+
+        }
+
+    }
+
+    fun updateAchievement(malaName: String, achievementCount: String) : Boolean{
+
+        if (malaName.isEmpty() || achievementCount.isEmpty()) return false
+
+        if (malaName !in malaNameList || achievementCount !in countList) return false
+
+        if (!isDuplicate(malaName, achievementCount)) return false
 
         val db = dbOpen(true)
 
@@ -54,16 +96,15 @@ $ACHIEVEMENT_COUNT TEXT NOT NULL)
 
         try {
 
-            cv.put(MALA_NAME, malaName)
-            cv.put(ACHIEVEMENT_COUNT, achievementCount)
+            cv.put(IS_COMPLETE, 1)
 
-            val inserted =  db.insert(TABLE_NAME, null, cv)
-
-            isInserted(if (inserted != -1L) true else false)
+            return db.update(TABLE_NAME, cv, "$MALA_NAME = ? AND $ACHIEVEMENT_COUNT = ?", arrayOf(malaName, achievementCount)) > 0
 
         }catch (e : Exception){
 
             e.printStackTrace()
+
+            return false
 
         }
 
@@ -89,6 +130,47 @@ $ACHIEVEMENT_COUNT TEXT NOT NULL)
 
                 achievementList.add(Achievement(
                     achievementCount = count
+                ))
+
+            }
+
+        }catch (e : Exception){
+
+            e.printStackTrace()
+
+        }finally {
+
+            cursor?.close()
+
+        }
+
+        return achievementList
+    }
+
+    fun getAllAchievement() : List<Achievement> {
+
+        val achievementList = mutableListOf<Achievement>()
+
+        val db = dbOpen()
+
+        var cursor : Cursor? = null
+
+        try {
+
+            cursor = db.rawQuery("SELECT * FROM $TABLE_NAME", null)
+
+            while (cursor.moveToNext()){
+
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow(ID))
+                val malaName = cursor.getString(cursor.getColumnIndexOrThrow(MALA_NAME))
+                val count = cursor.getString(cursor.getColumnIndexOrThrow(ACHIEVEMENT_COUNT))
+                val is_complete = cursor.getInt(cursor.getColumnIndexOrThrow(IS_COMPLETE))
+
+                achievementList.add(Achievement(
+                    id = id,
+                    malaName = malaName,
+                    achievementCount = count,
+                    isCompleted = if (is_complete == 0) false else true
                 ))
 
             }
