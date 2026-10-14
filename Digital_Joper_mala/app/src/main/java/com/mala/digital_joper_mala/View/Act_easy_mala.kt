@@ -1,7 +1,6 @@
 package com.mala.digital_joper_mala.View
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -163,11 +162,7 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {//class======
                     isVibration = isVibration,
                     saveAchievementCount = { count ->
 
-                        achievementPresenter.insertAchievement("easy_mala", count.toString(), isInserted = { success ->
-
-                            if (success) reloadAchievementListCount++
-
-                        })
+                        achievementPresenter.updateAchievement("easy_mala", count.toString())
 
                     },
                     achievementList = achievementList,

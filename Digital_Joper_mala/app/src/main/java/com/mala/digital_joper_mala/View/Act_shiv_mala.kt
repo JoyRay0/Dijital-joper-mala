@@ -42,11 +42,9 @@ import com.mala.digital_joper_mala.Helper.ThemeHelper
 import com.mala.digital_joper_mala.Helper.TrackScreen
 import com.mala.digital_joper_mala.Helper.VibrationHelper
 import com.mala.digital_joper_mala.Model.Achievement
-import com.mala.digital_joper_mala.Model.BoishnobItem
 import com.mala.digital_joper_mala.Model.ShivItem
 import com.mala.digital_joper_mala.Presenter.AchievementPresenter
 import com.mala.digital_joper_mala.Presenter.Achievements
-import com.mala.digital_joper_mala.Presenter.HomePresenter
 import com.mala.digital_joper_mala.Presenter.JopHistoryPresenter
 import com.mala.digital_joper_mala.Presenter.ShivMala
 import com.mala.digital_joper_mala.Presenter.ShivMalaPresenter
@@ -120,11 +118,7 @@ class Act_shiv_mala : ComponentActivity(), ShivMala, Achievements {
                     isVibration = isVibration,
                     saveCount = { count ->
 
-                        achievementPresenter.insertAchievement("shiv_mala", count.toString(), isInserted = { success ->
-
-                            if (success) reloadAchievementListCount++
-
-                        })
+                        achievementPresenter.updateAchievement("shiv_mala", count.toString())
 
                     },
                     achievementList = achievementList,
