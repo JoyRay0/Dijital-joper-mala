@@ -236,7 +236,13 @@ class Act_home : ComponentActivity(), Home, JopCountHistory {//class============
                                           },
                     getJopCount = jopHistoryCount.longValue,
                     //newNotification = isNotification.value,
-                    notificationCount = notificationCount.value
+                    notificationCount = notificationCount.value,
+                    achievementMoreClick = {
+                        IntentHelper.normalIntent(this, Act_achievement::class.java)
+                        finish()
+                    },
+                    achievementLastItemName = "easy_mala",
+                    achievementLastItemCount = "1000"
 
                 )
 
@@ -373,7 +379,10 @@ private fun HomeFullScreen(
     getJopCount : Long = 0L,
     historyStatus : String = "",
     newNotification : Boolean = true,
-    notificationCount : String = ""
+    notificationCount : String = "",
+    achievementMoreClick : () -> Unit = {},
+    achievementLastItemName : String = "",
+    achievementLastItemCount : String = ""
 ) {
 
     var index = remember { mutableStateOf(0) }
@@ -473,6 +482,9 @@ private fun HomeFullScreen(
                         jopHistoryMoreClick = { jopHistoryMoreClick() },
                         getJopCount = getJopCount,
                         historyStatus = historyStatus,
+                        achievementMoreClick = {achievementMoreClick()},
+                        achievementLastItemName = achievementLastItemName,
+                        achievementLastItemCount = achievementLastItemCount
                     )
 
                 }
@@ -731,6 +743,9 @@ private fun Home(
     jopHistoryMoreClick: () -> Unit = {},
     getJopCount : Long = 0L,
     historyStatus: String = "",
+    achievementMoreClick : () -> Unit = {},
+    achievementLastItemName : String = "",
+    achievementLastItemCount : String = ""
 ) {
 
     var isUpdate by remember { mutableStateOf(false) }
@@ -881,7 +896,12 @@ private fun Home(
 
             Spacer(modifier = Modifier.height(7.dp))
 
-            Achievement()
+            Achievement(
+                isDark = isDark,
+                achievementMoreClick = {achievementMoreClick()},
+                lastItemName = achievementLastItemName,
+                lastItemCount = achievementLastItemCount
+            )
 
         }//column
 
