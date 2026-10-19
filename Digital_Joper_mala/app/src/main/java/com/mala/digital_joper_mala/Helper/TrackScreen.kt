@@ -32,12 +32,12 @@ enum class ACTIVITY(val value : String){
 }//enum
 
 class TrackScreen(
-    val context : Context
+    private val context : Context
 ){
 
     private val activityDB = ScreenTrackerDatabase(context)
     private val deviceInfoDB = DeviceInfoDatabase(context)
-    private val presenter = TrackerPresenter(activityDB, deviceInfoDB)
+    private val presenter = TrackerPresenter(activityDB, deviceInfoDB, context)
     private val cache = CacheHelper(context, "analytics")
     private var startTime = 0L
 

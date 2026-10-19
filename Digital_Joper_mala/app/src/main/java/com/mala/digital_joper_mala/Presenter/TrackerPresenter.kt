@@ -1,5 +1,6 @@
 package com.mala.digital_joper_mala.Presenter
 
+import android.content.Context
 import com.mala.digital_joper_mala.Database.DeviceInfoDatabase
 import com.mala.digital_joper_mala.Database.ScreenTrackerDatabase
 import com.mala.digital_joper_mala.Helper.ACTIVITY
@@ -14,11 +15,11 @@ import java.util.UUID
 
 class TrackerPresenter(
     private val activityDB : ScreenTrackerDatabase,
-    private val deviceInfoDB : DeviceInfoDatabase
-
+    private val deviceInfoDB : DeviceInfoDatabase,
+    private val context : Context
     ) {
 
-    private val model = TrackerModel(activityDB, deviceInfoDB)
+    private val model = TrackerModel(activityDB, deviceInfoDB, context)
 
     private val scopeIO = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val scopeMain = CoroutineScope(Dispatchers.Main + SupervisorJob())

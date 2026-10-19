@@ -1,5 +1,6 @@
 package com.mala.digital_joper_mala.Model
 
+import android.content.Context
 import com.google.gson.annotations.SerializedName
 import com.mala.digital_joper_mala.Database.DeviceInfoDatabase
 import com.mala.digital_joper_mala.Database.ScreenTrackerDatabase
@@ -7,6 +8,7 @@ import com.mala.digital_joper_mala.Helper.ACTIVITY
 import com.mala.digital_joper_mala.Helper.ApiLinkHelper
 //import com.mala.digital_joper_mala.Helper.ApiLinkHelper
 import com.mala.digital_joper_mala.Helper.OkHttpWrapper
+import com.mala.digital_joper_mala.Helper.header
 
 data class Tracker(
 
@@ -41,7 +43,8 @@ data class TrackerData(
 
 class TrackerModel(
     private val activityDB : ScreenTrackerDatabase,
-    private val deviceInfoDB : DeviceInfoDatabase
+    private val deviceInfoDB : DeviceInfoDatabase,
+    private val context : Context
 ) {
 
     fun sendTrackerDataToServer(
@@ -54,6 +57,7 @@ class TrackerModel(
 
         OkHttpWrapper()
             .url(ApiLinkHelper.tracker())
+            .header(context)
             .post(tracker)
             .execute(Home::class.java, onSuccess = {
 
