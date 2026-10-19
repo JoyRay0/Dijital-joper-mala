@@ -1,5 +1,6 @@
 package com.mala.digital_joper_mala.Helper
 
+import android.content.Context
 import android.util.Log
 import com.google.gson.Gson
 import okhttp3.Call
@@ -111,13 +112,10 @@ class OkHttpWrapper {
 
 }//class end
 
-fun OkHttpWrapper.header() : OkHttpWrapper{
+fun OkHttpWrapper.header(context: Context) : OkHttpWrapper{
 
-    /*
-    headers["API-KEY"] = SecurityKey.getSHA256()
-    headers["Device-ID"] = SecurityKey.getDeviceID()
-
-     */
+    //headers["API-KEY"] = SecurityKey.androidID(context)
+    headers["DeviceId"] = SecurityKey.androidID(context)
 
     return this
 }
