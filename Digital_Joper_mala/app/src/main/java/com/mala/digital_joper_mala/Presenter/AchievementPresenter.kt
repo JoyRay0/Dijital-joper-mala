@@ -33,18 +33,17 @@ class AchievementPresenter(
     private val scopeIO = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val scopeMain = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-    fun updateAchievement(malaName : String, count : String){
+    fun insertUserCount(malaName: String, count: String){
 
         scopeIO.launch {
 
-            val isUpdated = model.updateAchievement(malaName, count)
+            model.insertUserCount(malaName, count)
 
             val updateList = model.getAchievement(malaName)
 
             withContext(Dispatchers.Main){
 
                 view.achievementCountList(updateList)
-                view.achievementListUpdated(isUpdated)
 
             }
 

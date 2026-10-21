@@ -6,8 +6,9 @@ import com.mala.digital_joper_mala.Database.AchievementDatabase
 data class Achievement(
     val id : Int = 0,
     val malaName : String = "",
-    val achievementCount : String = "",
-    val isCompleted : Boolean = false
+    val targetAchievementCount : String = "",
+    val isCompleted : Boolean = false,
+    val userCount : Int = 0
 )
 
 class AchievementModel(
@@ -16,17 +17,9 @@ class AchievementModel(
 
     private val db = AchievementDatabase(context)
 
-    fun updateAchievement(malaName : String, count : String) : Boolean{
+    fun insertUserCount(malaName : String, count : String){
 
-        val countList = listOf("1000", "5000", "10000", "50000", "100000", "500000")
-
-        if (malaName.isEmpty() || count.isEmpty()) return false
-
-        if (count !in countList){
-            return false
-        }
-
-        return db.updateAchievement(malaName, count)
+        db.insertAchievementCount(malaName, count)
 
     }
 
