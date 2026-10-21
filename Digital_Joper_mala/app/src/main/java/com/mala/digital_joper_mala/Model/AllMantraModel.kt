@@ -5,6 +5,7 @@ import com.mala.digital_joper_mala.Database.AllMantraDatabase
 import com.mala.digital_joper_mala.Helper.ApiLinkHelper
 import com.mala.digital_joper_mala.Helper.CacheHelper
 import com.mala.digital_joper_mala.Helper.OkHttpWrapper
+import com.mala.digital_joper_mala.Helper.header
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -61,6 +62,7 @@ class AllMantraModel(
 
         OkHttpWrapper()
             .url(ApiLinkHelper.mantra())
+            .header(context)
             .execute(Mantra::class.java, onSuccess = {
 
                 if (it.status == "Success"){

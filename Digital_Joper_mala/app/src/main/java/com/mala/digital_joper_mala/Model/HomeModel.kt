@@ -96,6 +96,7 @@ class HomeModel(
 
         OkHttpWrapper()
             .url(ApiLinkHelper.info())
+            .header(context)
             .execute(Home::class.java, onSuccess = {
 
                 if (it.status == "Success"){
@@ -129,6 +130,7 @@ class HomeModel(
 
         OkHttpWrapper()
             .url(ApiLinkHelper.pager())
+            .header(context)
             .execute(Home::class.java, onSuccess = {
 
                 if (it.status == "Success"){
@@ -171,6 +173,7 @@ class HomeModel(
 
         OkHttpWrapper()
             .url(ApiLinkHelper.appUpdate())
+            .header(context)
             .execute(Home::class.java, onSuccess = {
 
                 if (it.status == "Success"){
@@ -210,6 +213,7 @@ class HomeModel(
 
         OkHttpWrapper()
             .url(ApiLinkHelper.appUpdate())
+            .header(context)
             .execute(Home::class.java, onSuccess = {
 
                 if (it.status == "Success"){
