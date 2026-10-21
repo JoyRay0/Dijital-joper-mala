@@ -44,6 +44,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mala.digital_joper_mala.R
@@ -86,7 +87,7 @@ class ComposeHelper {
 
         }
 
-        val maxWidth = 120.dp
+        val maxWidth = ScreenSize().responsiveHeightWidth(120, 130, 140)
 
         val width = if (number.toString().length > 5){
 
@@ -115,7 +116,7 @@ class ComposeHelper {
 
                     modifier = Modifier
                         .width(width)
-                        .height(70.dp)
+                        .height(ScreenSize().responsiveHeightWidth(70, 80, 90))
                         .clip(shape = RoundedCornerShape(12.dp))
                         .background(color = if (isDark) Color(0xFF9F8282) else Color(0xFFEADADA))
                         //.padding(40.dp)
@@ -124,7 +125,7 @@ class ComposeHelper {
                 ) {
 
                     Text(BanglaHelper.readLong(number),
-                        fontSize = 25.sp,
+                        fontSize = ScreenSize().responsiveTextSize(25, 27, 29),
                         fontFamily = BanglaHelper.banglaFont(),
                         fontWeight = FontWeight.SemiBold,
                         color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
@@ -157,8 +158,7 @@ class ComposeHelper {
                     Box(
 
                         modifier = Modifier
-                            .width(60.dp)
-                            .height(60.dp)
+                            .wrapContentWidth()
                             .shadow(elevation = 5.dp, shape = CircleShape)
                             .clip(shape = CircleShape)
                             .clickable {
@@ -167,6 +167,7 @@ class ComposeHelper {
                                 currentCount(0L)
                             }
                             .background(color = Color(0xFFF44336))
+                            .size(ScreenSize().responsiveHeightWidth(60, 70, 80))
                             .align(Alignment.CenterStart)
 
                     ) {
@@ -176,7 +177,7 @@ class ComposeHelper {
                             tint = Color(0xFFFFFFFF),
                             modifier = Modifier
                                 .wrapContentWidth()
-                                .size(30.dp)
+                                .size(ScreenSize().responsiveImageSize(30, 35, 40))
                                 .align(Alignment.Center)
 
                         )
@@ -188,8 +189,7 @@ class ComposeHelper {
                     Box(
 
                         modifier = Modifier
-                            .width(60.dp)
-                            .height(60.dp)
+                            .wrapContentWidth()
                             .shadow(elevation = 5.dp, shape = CircleShape)
                             .clip(shape = CircleShape)
                             .clickable {
@@ -213,6 +213,7 @@ class ComposeHelper {
 
                             }
                             .background(color = Color(0xFF4CAF50))
+                            .size(ScreenSize().responsiveHeightWidth(60, 70, 80))
                             .align(Alignment.CenterEnd)
 
                     ) {
@@ -222,7 +223,7 @@ class ComposeHelper {
                             tint = Color(0xFFFFFFFF),
                             modifier = Modifier
                                 .wrapContentWidth()
-                                .size(30.dp)
+                                .size(ScreenSize().responsiveImageSize(30, 35, 40))
                                 .align(Alignment.Center)
 
                         )
@@ -254,8 +255,6 @@ class ComposeHelper {
 
         LaunchedEffect(animationStatus) {
 
-            println("Animation status = $animationStatus")
-
             offsetY.animateTo(
                 targetValue = if (animationStatus) 0f else screenHeight.toFloat() * 2,
                 animationSpec = tween(
@@ -265,8 +264,6 @@ class ComposeHelper {
             )
 
             if (!animationStatus){
-
-                println("Animation status = $animationStatus")
 
                 onAnimationFinished()
 
@@ -343,7 +340,7 @@ class ComposeHelper {
 
                     Text(
                         text = "\uD83C\uDF89 নতুন অর্জন!",
-                        fontSize = 18.sp,
+                        fontSize = ScreenSize().responsiveTextSize(18, 20, 22),
                         fontFamily = BanglaHelper.banglaFont(),
                         fontWeight = FontWeight.Bold,
                         color = if (isDark) Color(0xFFEAEAEA) else Color(0xFF000000),
@@ -362,7 +359,7 @@ class ComposeHelper {
                             .clip(shape = CircleShape)
                             //.background(color = Color.Gray)
                             .clickable { closeClick() }
-                            .size(30.dp)
+                            .size(ScreenSize().responsiveImageSize(30, 33, 36))
                             .align(Alignment.CenterEnd)
 
                     ) {
@@ -372,7 +369,7 @@ class ComposeHelper {
                             tint = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
                             modifier = Modifier
                                 .wrapContentWidth()
-                                .size(18.dp)
+                                .size(ScreenSize().responsiveImageSize(18, 20, 22))
                                 .align(Alignment.Center)
 
                         )
@@ -395,7 +392,7 @@ class ComposeHelper {
                         else -> ""
 
                     },
-                    fontSize = 16.sp,
+                    fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.SemiBold,
                     color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
@@ -421,7 +418,7 @@ class ComposeHelper {
                         else -> ""
 
                     },
-                    fontSize = 16.sp,
+                    fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Normal,
                     color = if (isDark) Color(0xFFE3E2E2) else Color(0xFF000000),
@@ -446,7 +443,7 @@ class ComposeHelper {
     fun Dialog(
         //modifier: Modifier = Modifier,
         headerText : String = "Header",
-        headerTestSize : Float = 18f,
+        headerTestSize : TextUnit = 18.sp,
         headerTextWeight : FontWeight = FontWeight.Bold,
         isHeaderEnabled : Boolean = true,
         isDark: Boolean = false,
@@ -535,7 +532,7 @@ class ComposeHelper {
 
                         Text(
                             text = headerText,
-                            fontSize = headerTestSize.sp,
+                            fontSize = headerTestSize,
                             fontFamily = BanglaHelper.banglaFont(),
                             fontWeight = headerTextWeight,
                             color = if (isDark) Color(0xFFEAEAEA) else Color(0xFF000000),
@@ -555,7 +552,7 @@ class ComposeHelper {
                                 .clip(shape = CircleShape)
                                 //.background(color = Color.Gray)
                                 .clickable { closeClick() }
-                                .size(30.dp)
+                                .size(ScreenSize().responsiveImageSize(30, 33, 36))
                                 .align(Alignment.CenterEnd)
 
                         ) {
@@ -565,7 +562,7 @@ class ComposeHelper {
                                 tint = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
                                 modifier = Modifier
                                     .wrapContentWidth()
-                                    .size(18.dp)
+                                    .size(ScreenSize().responsiveImageSize(18, 20, 22))
                                     .align(Alignment.Center)
 
                             )
@@ -612,7 +609,7 @@ class ComposeHelper {
             ) {
 
                 Text( text = title,
-                    fontSize = 16.sp,
+                    fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Normal,
                     color = if (isDark) Color(0xFFE0DFDF) else Color(0xFF313030),
@@ -626,7 +623,7 @@ class ComposeHelper {
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text( text = mantra,
-                    fontSize = 16.sp,
+                    fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Bold,
                     color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
