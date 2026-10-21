@@ -560,7 +560,7 @@ private fun Toolbar(
     ) {
 
         Text( text = "জপ মালা",
-            fontSize = 19.sp,
+            fontSize = ScreenSize().responsiveTextSize(19, 21, 23),
             fontFamily = BanglaHelper.banglaFont(),
             fontWeight = FontWeight.Bold,
             color = Color(0xFFFFFFFF),
@@ -620,7 +620,7 @@ private fun Toolbar(
                             tint = Color(0xFFFFFFFF),
                             modifier = Modifier
                                 .wrapContentWidth()
-                                .size(22.dp)
+                                .size(ScreenSize().responsiveImageSize(22, 25, 27))
 
                         )
 
@@ -664,10 +664,10 @@ private fun BottonNav(
 
             modifier = Modifier
                 .fillMaxWidth()
-                .shadow(elevation = 2.dp, shape = RoundedCornerShape(12.dp))
-                .clip(shape = RoundedCornerShape(12.dp))
+                .shadow(elevation = 2.dp, shape = RoundedCornerShape(30.dp))
+                .clip(shape = RoundedCornerShape(30.dp))
                 .background(color = if (isDark) Color(0xFF605B5B) else Color(0xFF0AF1DB))
-                .padding(7.dp)
+                .padding(ScreenSize().responsivePadding(7, 10, 13))
 
         ) {
 
@@ -711,6 +711,7 @@ private fun BottonNav(
                             },
                             modifier = Modifier
                                 .wrapContentWidth()
+                                .size(ScreenSize().responsiveImageSize(22, 25, 28))
 
                         )
 
@@ -786,7 +787,7 @@ private fun Home(
                             .fillMaxWidth(),
                         list = pagerList,
                         placeHolder = painterResource(R.drawable.img_loader),
-                        height = 150.dp
+                        height = ScreenSize().responsiveHeightWidth(150, 170, 190)
 
                     )
 
@@ -841,7 +842,7 @@ private fun Home(
                                         0xFFFFFFFF
                                     )
                                 )
-                                .size(60.dp)
+                                .size(ScreenSize().responsiveHeightWidth(60, 70, 90))
                                 .padding(5.dp)
                                 .align(Alignment.CenterHorizontally)
 
@@ -859,7 +860,7 @@ private fun Home(
                         Spacer(modifier = Modifier.height(5.dp))
 
                         Text( text = text,
-                            fontSize = 14.sp,
+                            fontSize = ScreenSize().responsiveTextSize(14, 16, 18),
                             fontFamily = BanglaHelper.banglaFont(),
                             fontWeight = FontWeight.Normal,
                             color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
@@ -1008,7 +1009,7 @@ private fun Info(
                     contentDescription = "",
                     modifier = Modifier
                         .wrapContentWidth()
-                        .size(90.dp)
+                        .size(ScreenSize().responsiveImageSize(90, 120, 150))
                         .align(Alignment.Center)
 
                 )
@@ -1102,7 +1103,7 @@ private fun Item(
             ) {
 
                 Text( text = question,
-                    fontSize = 16.sp,
+                    fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Normal,
                     color = if (isDark) Color.White.copy(alpha = 0.8f) else Color.Black.copy(alpha = 0.7f),
@@ -1149,7 +1150,7 @@ private fun Item(
                     ) {
 
                         Text(text = answer,
-                            fontSize = 16.sp,
+                            fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                             fontFamily = BanglaHelper.banglaFont(),
                             fontWeight = FontWeight.Normal,
                             color = if (isDark) Color(0xFFE5E3E3) else Color(0xFF444444),
@@ -1335,7 +1336,7 @@ private fun MantraBander(
             ) {
 
                 Text( text = "মন্ত্র ভান্ডার",
-                    fontSize = 16.sp,
+                    fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Bold,
                     color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
@@ -1361,7 +1362,7 @@ private fun MantraBander(
                 ) {
 
                     Text( text = "আরো",
-                        fontSize = 14.sp,
+                        fontSize = ScreenSize().responsiveTextSize(14, 16, 18),
                         fontFamily = BanglaHelper.banglaFont(),
                         fontWeight = FontWeight.Normal,
                         color = if (isDark) Color.LightGray else Color.DarkGray,
@@ -1383,7 +1384,6 @@ private fun MantraBander(
                             .align(Alignment.CenterVertically)
 
                     )
-
 
                 }//row more button
 
@@ -1408,7 +1408,7 @@ private fun MantraBander(
                             modifier = Modifier
                                 .padding(9.dp)
                                 .wrapContentWidth()
-                                .size(30.dp)
+                                .size(ScreenSize().responsiveImageSize(30, 35, 40))
                                 .align(Alignment.CenterHorizontally),
                             color = if (isDark) Color.LightGray else Color(0xFF009688)
 
@@ -1470,7 +1470,7 @@ private fun MantraBander(
                     else -> {
 
                         Text( text = "কোন মন্ত্র নেই।",
-                            fontSize = 16.sp,
+                            fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                             fontFamily = BanglaHelper.banglaFont(),
                             fontWeight = FontWeight.Normal,
                             color = if (isDark) Color.White else Color.Black,
@@ -1497,7 +1497,7 @@ private fun MantraBander(
 @Preview(showBackground = true)
 @Composable
 private fun JopaHistory(
-    isDark: Boolean = true,
+    isDark: Boolean = false,
     jopHistoryMoreClick: () -> Unit = {},
     getJopCount : Long = 0L,
     historyStatus: String = ""

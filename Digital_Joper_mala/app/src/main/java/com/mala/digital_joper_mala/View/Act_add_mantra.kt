@@ -43,6 +43,7 @@ import com.mala.digital_joper_mala.Presenter.UserMantraPresenter
 import com.mala.digital_joper_mala.Presenter.UserMantras
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
+import com.rk_softwares.lawguidebook.Helper.ScreenSize
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 
@@ -237,7 +238,7 @@ private fun AddMantraFullScreen(
                             contentDescription = "Empty",
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .size(90.dp)
+                                .size(ScreenSize().responsiveImageSize(90, 120, 150))
                                 .align(Alignment.CenterHorizontally)
 
                         )
@@ -245,7 +246,7 @@ private fun AddMantraFullScreen(
                         Spacer(modifier = Modifier.height(7.dp))
 
                         Text(text = "কোন মন্ত্র খুজে পাওয়া যায়নি।",
-                            fontSize = 15.sp,
+                            fontSize = ScreenSize().responsiveTextSize(15, 17, 19),
                             fontFamily = BanglaHelper.banglaFont(),
                             fontWeight = FontWeight.Normal,
                             color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
@@ -395,7 +396,7 @@ private fun Toolbar(
                 .clip(shape = CircleShape)
                 //.background(color = Color.Green)
                 .align(Alignment.CenterEnd)
-                .size(37.dp)
+                .size(ScreenSize().responsiveImageSize(37, 42, 47))
         ) {
 
             Icon(
@@ -404,6 +405,7 @@ private fun Toolbar(
                 tint = Color(0xFFFFFFFF),
                 modifier = Modifier
                     .wrapContentWidth()
+                    .size(ScreenSize().responsiveImageSize(24, 27, 30))
 
             )
 
@@ -448,7 +450,7 @@ private fun AddDialog(
 
             //name
             Text( text = "১। পছন্দের দেব-দেবীর নাম",
-                fontSize = 15.sp,
+                fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                 fontFamily = BanglaHelper.banglaFont(),
                 fontWeight = FontWeight.Normal,
                 color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
@@ -477,7 +479,7 @@ private fun AddDialog(
                 if (name.value.isBlank()){
 
                     Text( text = "নাম....",
-                        fontSize = 15.sp,
+                        fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                         fontFamily = BanglaHelper.banglaFont(),
                         fontWeight = FontWeight.Normal,
                         textAlign = TextAlign.Start,
@@ -496,7 +498,7 @@ private fun AddDialog(
                     onValueChange = { name.value = it },
                     textStyle = TextStyle(
                         fontFamily = BanglaHelper.banglaFont(),
-                        fontSize = 15.sp,
+                        fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                         fontWeight = FontWeight.Normal,
                         color =  if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
                     ),
@@ -525,7 +527,7 @@ private fun AddDialog(
                             .wrapContentWidth()
                             .clip(shape = CircleShape)
                             //.background(color = Color.LightGray)
-                            .size(27.dp)
+                            .size(ScreenSize().responsiveImageSize(27, 32, 37))
                             .align(Alignment.CenterEnd)
                     ) {
 
@@ -534,7 +536,7 @@ private fun AddDialog(
                             tint = if (isDark) Color(0xFFD7D5D5) else Color(0xFF5E4F4F),
                             modifier = Modifier
                                 .wrapContentWidth()
-                                .size(19.dp)
+                                .size(ScreenSize().responsiveImageSize(19, 22, 25))
                                 .align(Alignment.Center)
 
                         )
@@ -549,7 +551,7 @@ private fun AddDialog(
 
             //mantra
             Text( text = "২। পছন্দের মন্ত্র",
-                fontSize = 15.sp,
+                fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                 fontFamily = BanglaHelper.banglaFont(),
                 fontWeight = FontWeight.Normal,
                 color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
@@ -578,7 +580,7 @@ private fun AddDialog(
                 if (mantra.value.isBlank()){
 
                     Text( text = "মন্ত্র....",
-                        fontSize = 15.sp,
+                        fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                         fontFamily = BanglaHelper.banglaFont(),
                         fontWeight = FontWeight.Normal,
                         textAlign = TextAlign.Start,
@@ -597,7 +599,7 @@ private fun AddDialog(
                     onValueChange = { mantra.value = it },
                     textStyle = TextStyle(
                         fontFamily = BanglaHelper.banglaFont(),
-                        fontSize = 15.sp,
+                        fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                         fontWeight = FontWeight.Normal,
                         color =  if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
                     ),
@@ -620,7 +622,7 @@ private fun AddDialog(
                             .wrapContentWidth()
                             .clip(shape = CircleShape)
                             //.background(color = Color.LightGray)
-                            .size(27.dp)
+                            .size(ScreenSize().responsiveImageSize(27, 32, 37))
                             .align(Alignment.CenterEnd)
                     ) {
 
@@ -629,7 +631,7 @@ private fun AddDialog(
                             tint = if (isDark) Color(0xFFD7D5D5) else Color(0xFF5E4F4F),
                             modifier = Modifier
                                 .wrapContentWidth()
-                                .size(19.dp)
+                                .size(ScreenSize().responsiveImageSize(19, 22, 25))
                                 .align(Alignment.Center)
 
                         )
@@ -646,19 +648,19 @@ private fun AddDialog(
 
             }//box
 
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.height(18.dp))
 
             Row(
 
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(7.dp)
+                    .padding(9.dp)
                     .align(Alignment.CenterHorizontally)
 
             ) {
 
                 Text( text = "বাতিল করুন",
-                    fontSize = 14.sp,
+                    fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Normal,
                     color = Color(0xFFFFFFFF),
@@ -683,7 +685,7 @@ private fun AddDialog(
                 Spacer(modifier = Modifier.width(14.dp))
 
                 Text( text = "যোগ করুন",
-                    fontSize = 14.sp,
+                    fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Normal,
                     color = Color(0xFFFFFFFF),
@@ -774,7 +776,7 @@ private fun Item(
             ) {
 
                 Text(text = title,
-                    fontSize = 15.sp,
+                    fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Normal,
                     color = if (isDark) Color(0xFFE5E4E4) else Color(0xFF000000),
@@ -796,7 +798,7 @@ private fun Item(
                         modifier = Modifier
                             .wrapContentWidth()
                             .clip(shape = CircleShape)
-                            .size(30.dp)
+                            .size(ScreenSize().responsiveImageSize(30, 35, 40))
                             .align(Alignment.CenterEnd)
                     ) {
 
@@ -805,7 +807,7 @@ private fun Item(
                             tint = if (isDark) Color(0xFFE0E0E0) else Color(0xFF5E5656),
                             modifier = Modifier
                                 .wrapContentWidth()
-                                .size(20.dp)
+                                .size(ScreenSize().responsiveImageSize(20, 25, 30))
                                 .align(Alignment.Center)
 
                         )
@@ -839,7 +841,7 @@ private fun Item(
             ) {
                 
                 Text(text = mantra,
-                    fontSize = 15.sp,
+                    fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Bold,
                     color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),

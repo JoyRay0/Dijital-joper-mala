@@ -189,7 +189,8 @@ fun NotificationFullScreen(
         topBar = { Toolbar(
             isDark = isDark,
             backClick = { backClick() },
-            deleteAllClick = { deleteAllClick() }
+            deleteAllClick = { deleteAllClick() },
+            isNotificationListEmpty = notificationList.isEmpty()
 
         ) },
         modifier = Modifier
@@ -276,7 +277,7 @@ fun NotificationFullScreen(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Text( text = "কোন নোটিফিকেশন নেই।",
-                        fontSize = ScreenSize().responsiveTextSize(15, 17, 19),
+                        fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                         fontFamily = BanglaHelper.banglaFont(),
                         fontWeight = FontWeight.Normal,
                         color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
@@ -302,7 +303,8 @@ fun NotificationFullScreen(
 private fun Toolbar(
     isDark : Boolean = false,
     backClick : () -> Unit = {},
-    deleteAllClick : () -> Unit = {}
+    deleteAllClick : () -> Unit = {},
+    isNotificationListEmpty : Boolean = false
 ) {
 
     Box(
@@ -335,24 +337,28 @@ private fun Toolbar(
 
         }
 
-        IconButton(
-            onClick = deleteAllClick,
-            modifier = Modifier
-                .wrapContentWidth()
-                .clip(shape = CircleShape)
-                //.background(color = Color.Green)
-                .align(Alignment.CenterEnd)
-                .size(37.dp)
-        ) {
+        if (!isNotificationListEmpty){
 
-            Icon(
-                painter = painterResource(R.drawable.ic_delete),
-                contentDescription = "delete",
-                tint = Color(0xFFFFFFFF),
+            IconButton(
+                onClick = deleteAllClick,
                 modifier = Modifier
                     .wrapContentWidth()
+                    .clip(shape = CircleShape)
+                    //.background(color = Color.Green)
+                    .align(Alignment.CenterEnd)
+                    .size(37.dp)
+            ) {
 
-            )
+                Icon(
+                    painter = painterResource(R.drawable.ic_delete),
+                    contentDescription = "delete",
+                    tint = Color(0xFFFFFFFF),
+                    modifier = Modifier
+                        .wrapContentWidth()
+
+                )
+
+            }
 
         }
 
