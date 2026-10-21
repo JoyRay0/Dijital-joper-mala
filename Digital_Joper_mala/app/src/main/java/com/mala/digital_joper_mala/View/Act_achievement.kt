@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -154,7 +153,7 @@ private fun AchievementFullScreen(
 
     LaunchedEffect(achievementStatus) {
 
-        if (achievementStatus == AchievementStatus.Pending.value || isAchievementLoaded) return@LaunchedEffect
+        if (achievementStatus == AchievementStatus.Pending.value || isAchievementLoaded || achievementsList.isEmpty()) return@LaunchedEffect
 
         achievementEasyMalaList.clear()
         achievementBoishnobMalaList.clear()
@@ -171,8 +170,8 @@ private fun AchievementFullScreen(
                         Achievement(
                             id = achievement.id,
                             malaName = achievement.malaName,
-                            achievementCount = achievement.achievementCount,
-                            isCompleted = true
+                            targetAchievementCount = achievement.targetAchievementCount,
+                            isCompleted = achievement.isCompleted
                         )
                     )
 
@@ -183,8 +182,8 @@ private fun AchievementFullScreen(
                         Achievement(
                             id = achievement.id,
                             malaName = achievement.malaName,
-                            achievementCount = achievement.achievementCount,
-                            isCompleted = true
+                            targetAchievementCount = achievement.targetAchievementCount,
+                            isCompleted = achievement.isCompleted
                         )
                     )
 
@@ -195,8 +194,8 @@ private fun AchievementFullScreen(
                         Achievement(
                             id = achievement.id,
                             malaName = achievement.malaName,
-                            achievementCount = achievement.achievementCount,
-                            isCompleted = true
+                            targetAchievementCount = achievement.targetAchievementCount,
+                            isCompleted = achievement.isCompleted
                         )
                     )
 
@@ -243,7 +242,7 @@ private fun AchievementFullScreen(
 
                 )
 
-            }else{
+            }else if (achievementStatus == AchievementStatus.Success.value && isAchievementLoaded){
 
                 LazyColumn(
 
@@ -294,7 +293,7 @@ private fun AchievementFullScreen(
                         AchievementItem(
                             isDark = isDark,
                             isAchievementCompleted = it.isCompleted,
-                            achievementCount = it.achievementCount
+                            achievementCount = it.targetAchievementCount
                         )
 
                     }//items
@@ -338,7 +337,7 @@ private fun AchievementFullScreen(
                         AchievementItem(
                             isDark = isDark,
                             isAchievementCompleted = it.isCompleted,
-                            achievementCount = it.achievementCount
+                            achievementCount = it.targetAchievementCount
                         )
 
                     }//items
@@ -382,7 +381,7 @@ private fun AchievementFullScreen(
                         AchievementItem(
                             isDark = isDark,
                             isAchievementCompleted = it.isCompleted,
-                            achievementCount = it.achievementCount
+                            achievementCount = it.targetAchievementCount
                         )
 
                     }//items
@@ -485,7 +484,7 @@ private fun AchievementItem(
                     contentDescription = "",
                     modifier = Modifier
                         .wrapContentWidth()
-                        .size(20.dp)
+                        .size(ScreenSize().responsiveImageSize(20, 23, 26))
                         .alpha(0.5f)
                         .align(Alignment.CenterVertically)
 
@@ -497,7 +496,7 @@ private fun AchievementItem(
                     contentDescription = "",
                     modifier = Modifier
                         .wrapContentWidth()
-                        .size(20.dp)
+                        .size(ScreenSize().responsiveImageSize(20, 23, 26))
                         .align(Alignment.CenterVertically)
 
                 )
