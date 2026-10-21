@@ -50,6 +50,7 @@ import com.mala.digital_joper_mala.Presenter.ShivMala
 import com.mala.digital_joper_mala.Presenter.ShivMalaPresenter
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
+import com.rk_softwares.lawguidebook.Helper.ScreenSize
 
 
 class Act_shiv_mala : ComponentActivity(), ShivMala, Achievements {
@@ -80,6 +81,8 @@ class Act_shiv_mala : ComponentActivity(), ShivMala, Achievements {
             var isVibration by remember { mutableStateOf(false) }
             var reloadAchievementListCount by remember { mutableStateOf(0) }
             var reloadCountLimit by remember { mutableStateOf(0) }
+
+            val countList = listOf(1000L, 5000L, 10000L, 50000L, 100000L, 500000L)
 
             if (ThemeHelper.isDarkTheme(this)) isDark = true else isDark = false
 
@@ -118,12 +121,14 @@ class Act_shiv_mala : ComponentActivity(), ShivMala, Achievements {
                     isVibration = isVibration,
                     saveCount = { count ->
 
-                        achievementPresenter.updateAchievement("shiv_mala", count.toString())
+                        if (count in countList) reloadAchievementListCount++
 
                     },
                     achievementList = achievementList,
                     currentCount = {
                         currentCount.value = it.toString()
+
+                        achievementPresenter.insertUserCount("shiv_mala", it.toString())
 
                     },
                     lastCountCache = lastCountCache.value,
@@ -240,9 +245,15 @@ private fun ShivMalaFullScreen(
         currentCount(count)
 
         /* check for achievement dialog */
-        val isExists = achievementList.any {
+        var isExists = false
 
-            it.achievementCount == count.toString()
+        for (it in achievementList){
+
+            if (it.targetAchievementCount == count.toString() && it.isCompleted){
+
+                isExists = true
+
+            }
 
         }
 
@@ -404,7 +415,7 @@ private fun Toolbar(
                 .clip(shape = CircleShape)
                 //.background(color = Color.Green)
                 .align(Alignment.CenterStart)
-                .size(37.dp)
+                .size(ScreenSize().responsiveImageSize(37, 40, 43))
         ) {
 
             Icon(
@@ -413,6 +424,8 @@ private fun Toolbar(
                 tint = Color(0xFFFFFFFF),
                 modifier = Modifier
                     .wrapContentWidth()
+                    .size(ScreenSize().responsiveImageSize(22, 24, 26))
+
 
             )
 
@@ -433,7 +446,7 @@ private fun Toolbar(
                 .clip(shape = CircleShape)
                 //.background(color = Color.Green)
                 .align(Alignment.CenterEnd)
-                .size(37.dp)
+                .size(ScreenSize().responsiveImageSize(37, 40, 43))
         ) {
 
             Icon(
@@ -442,7 +455,7 @@ private fun Toolbar(
                 tint = Color(0xFFFFFFFF),
                 modifier = Modifier
                     .wrapContentWidth()
-                    .size(22.dp)
+                    .size(ScreenSize().responsiveImageSize(22, 24, 26))
                     .align(Alignment.Center)
 
             )
@@ -481,13 +494,13 @@ private fun FloatingButton(
                 .clip(shape = RoundedCornerShape(16.dp))
                 .clickable { onClick() }
                 .background(color = if (isDark) Color(0xFF4B4A4A) else Color(0xFF2196F3))
-                .padding(14.dp)
+                .padding(ScreenSize().responsivePadding(14, 16, 18))
                 .align(Alignment.BottomEnd)
 
         ) {
 
             Text( text = "শিব মন্ত্র",
-                fontSize = 15.sp,
+                fontSize = ScreenSize().responsiveTextSize(15, 17, 19),
                 fontFamily = BanglaHelper.banglaFont(),
                 fontWeight = FontWeight.Normal,
                 color = Color(0xFFFFFFFF),
@@ -525,7 +538,7 @@ private fun MantraDialog(
 
         ComposeHelper().Dialog(
             headerText = "মন্ত্র সমূহ",
-            headerTestSize = 18f,
+            headerTestSize = ScreenSize().responsiveTextSize(18, 20, 22),
             isDark = isDark,
             closeClick = { closeClick() },
             animationStatus = animationStatus,
@@ -592,7 +605,7 @@ private fun Item(
 
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp)
+            .padding(7.dp)
 
     ) {
 
@@ -605,7 +618,7 @@ private fun Item(
         ) {
 
             Text( text = title,
-                fontSize = 16.sp,
+                fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                 fontFamily = BanglaHelper.banglaFont(),
                 fontWeight = FontWeight.Normal,
                 color = if (isDark) Color(0xFFEFEEEE) else Color(0xFF2D2D2D),
@@ -619,7 +632,7 @@ private fun Item(
             Spacer(modifier = Modifier.height(12.dp))
 
             Text( text = mantra,
-                fontSize = 16.sp,
+                fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                 fontFamily = BanglaHelper.banglaFont(),
                 fontWeight = FontWeight.Bold,
                 color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
@@ -697,7 +710,7 @@ private fun CounterLimit(
         ) {
 
             Text( text = "জপ লিমিট",
-                fontSize = 16.sp,
+                fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                 fontFamily = BanglaHelper.banglaFont(),
                 fontWeight = FontWeight.SemiBold,
                 color = if (isDark) Color.White else Color.Black,
@@ -717,7 +730,7 @@ private fun CounterLimit(
 
                     modifier = Modifier
                         .padding(5.dp)
-                        .width(150.dp)
+                        .width(ScreenSize().responsiveHeightWidth(150, 170, 190))
                         /*
                         .border(
                             width = 1.dp,
@@ -754,7 +767,7 @@ private fun CounterLimit(
                                 tint = if (selectedIndex == index) Color.White else Color(0xFF000000),
                                 modifier = Modifier
                                     .wrapContentWidth()
-                                    .size(19.dp)
+                                    .size(ScreenSize().responsiveImageSize(19, 22, 25))
                                     .align(Alignment.CenterStart)
 
                             )
@@ -762,7 +775,7 @@ private fun CounterLimit(
                         }
 
                         Text( text = counter,
-                            fontSize = 16.sp,
+                            fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                             fontFamily = BanglaHelper.banglaFont(),
                             fontWeight = FontWeight.Normal,
                             color = if (selectedIndex == index){
