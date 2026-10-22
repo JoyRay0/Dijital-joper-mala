@@ -8,6 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -30,6 +31,7 @@ import com.mala.digital_joper_mala.Presenter.Setting
 import com.mala.digital_joper_mala.Presenter.SettingPresenter
 import com.mala.digital_joper_mala.R
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
+import com.rk_softwares.lawguidebook.Helper.ScreenSize
 
 class Act_setting : ComponentActivity(), Setting {
 
@@ -464,7 +466,7 @@ private fun SettingFullScreen(
                     ) {
 
                         Text( text = "ধন্যবাদ আমাদের অ্যাপ ব্যবহার করার জন্য",
-                            fontSize = 17.sp,
+                            fontSize = ScreenSize().responsiveTextSize(17, 19, 21),
                             fontFamily = BanglaHelper.banglaFont(),
                             fontWeight = FontWeight.SemiBold,
                             color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF3A3434),
@@ -479,7 +481,7 @@ private fun SettingFullScreen(
                         Spacer(modifier = Modifier.height(4.dp))
 
                         Text( text = "আমরা অ্যাপ এর মধ্যে নিয়মিত আপডেট দিই এবং প্রতিটি আপডেটে নতুন নতুন ফিচার যুক্ত করি। আমাদের অ্যাপ ব্যবহার করতে যদি কোনো প্রকার সমস্যা হয় তবে দয়া করে আমাদের জানান। আমরা আপনার সমস্যা সমাধানের যথাসাধ্য চেষ্টা করবো।",
-                            fontSize = 15.sp,
+                            fontSize = ScreenSize().responsiveTextSize(15, 17, 19),
                             fontFamily = BanglaHelper.banglaFont(),
                             fontWeight = FontWeight.Normal,
                             color = if (isDark) Color(0xFFD5D5D5) else Color(0xFF000000),
@@ -494,7 +496,7 @@ private fun SettingFullScreen(
                         Spacer(modifier = Modifier.height(7.dp))
                         
                         Text( text = "ঠিক আছে",
-                            fontSize = 13.sp,
+                            fontSize = ScreenSize().responsiveTextSize(13, 15, 17),
                             fontFamily = BanglaHelper.banglaFont(),
                             fontWeight = FontWeight.Normal,
                             color = if (isDark) Color(0xFFFFDDDD) else Color(0xFF3A3434),
@@ -552,7 +554,7 @@ private fun Toolbar(
                 .clip(shape = CircleShape)
                 //.background(color = Color.Green)
                 .align(Alignment.CenterStart)
-                .size(37.dp)
+                .size(ScreenSize().responsiveImageSize(37, 42, 47))
         ) {
 
             Icon(
@@ -561,6 +563,7 @@ private fun Toolbar(
                 tint = Color(0xFFFFFFFF),
                 modifier = Modifier
                     .wrapContentWidth()
+                    .size(ScreenSize().responsiveImageSize(22, 24, 26))
 
             )
 
@@ -575,7 +578,7 @@ private fun Toolbar(
 @Composable
 private fun TextButtonHelper(
     text : String = "Test Icon",
-    icon : Int = 0,
+    @DrawableRes icon : Int = 0,
     iconSize : Dp = 20.dp,
     btnClick : () -> Unit = {},
     isEnabled : Boolean = true,
@@ -628,10 +631,12 @@ private fun TextButtonHelper(
             Row(
                 modifier = Modifier
                     .wrapContentWidth()
-                    .padding(12.dp)
+                    .padding(ScreenSize().responsivePadding(12, 14, 16))
                     .align(Alignment.CenterStart)
 
             ) {
+
+                val icon_size_dp_to_int = iconSize.value.toInt()   /* Covert dp value to int value */
 
                 if (!icon.toString().isEmpty()){
 
@@ -640,7 +645,7 @@ private fun TextButtonHelper(
                         tint = if (isDark) DarkDefaultIconColor else LightDefaultIconColor,
                         modifier = Modifier
                             .wrapContentWidth()
-                            .size(iconSize)
+                            .size(ScreenSize().responsiveImageSize(icon_size_dp_to_int, icon_size_dp_to_int + 4, icon_size_dp_to_int + 4))
                             .align(Alignment.CenterVertically)
 
                     )
@@ -650,7 +655,7 @@ private fun TextButtonHelper(
                 Spacer(modifier = Modifier.width(19.dp))
 
                 Text( text = text,
-                    fontSize = 15.sp,
+                    fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Normal,
                     color = if (isDark) DarkSettingText else LightSettingText,
@@ -676,7 +681,7 @@ private fun TextButtonHelper(
                     tint = if (isDark) Color(0xFF34ADA1) else Color(0xC6534848),
                     modifier = Modifier
                         .wrapContentWidth()
-                        .size(22.dp)
+                        .size(ScreenSize().responsiveImageSize(22, 25, 27))
                         .align(Alignment.Center)
 
                 )
@@ -746,7 +751,7 @@ private fun AppTheme(
                             }
 
                         } else Color.Transparent)
-                        .padding(7.dp)
+                        .padding(ScreenSize().responsivePadding(7, 9, 11))
                         .align(Alignment.Start)
 
                 ) {
@@ -758,7 +763,7 @@ private fun AppTheme(
                             tint = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
                             modifier = Modifier
                                 .wrapContentWidth()
-                                .size(21.dp)
+                                .size(ScreenSize().responsiveImageSize(21, 23, 25))
                                 .align(Alignment.CenterVertically)
 
                         )
@@ -772,7 +777,7 @@ private fun AppTheme(
                     Spacer(modifier = Modifier.width(16.dp))
 
                     Text( text = text,
-                        fontSize = 14.sp,
+                        fontSize = ScreenSize().responsiveTextSize(14, 16, 18),
                         fontFamily = BanglaHelper.banglaFont(),
                         fontWeight = FontWeight.Normal,
                         color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
@@ -866,7 +871,7 @@ private fun VibrationDialog(
                             }
 
                         } else Color.Transparent)
-                        .padding(7.dp)
+                        .padding(ScreenSize().responsivePadding(7, 9, 11))
                         .align(Alignment.Start)
 
                 ) {
@@ -878,7 +883,7 @@ private fun VibrationDialog(
                             tint = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
                             modifier = Modifier
                                 .wrapContentWidth()
-                                .size(21.dp)
+                                .size(ScreenSize().responsiveImageSize(21, 23, 25))
                                 .align(Alignment.CenterVertically)
 
                         )
@@ -892,7 +897,7 @@ private fun VibrationDialog(
                     Spacer(modifier = Modifier.width(16.dp))
 
                     Text( text = text,
-                        fontSize = 14.sp,
+                        fontSize = ScreenSize().responsiveTextSize(14, 16, 18),
                         fontFamily = BanglaHelper.banglaFont(),
                         fontWeight = FontWeight.Normal,
                         color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
