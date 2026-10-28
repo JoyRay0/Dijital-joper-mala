@@ -115,7 +115,7 @@ class OkHttpWrapper {
 fun OkHttpWrapper.header(context: Context) : OkHttpWrapper{
 
     //headers["API-KEY"] = SecurityKey.androidID(context)
-    headers["DeviceId"] = SecurityKey.androidID(context)
+    headers["device_id"] = SecurityKey.androidID(context)
 
     return this
 }
