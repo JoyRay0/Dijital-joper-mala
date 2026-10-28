@@ -7,7 +7,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 class ResponseHelper{
 
-    public static function jsonResponse(Response $response, int $status = 0, array $data) : Response{
+    public static function jsonResponse(Response $response, int $status, array $data) : Response{
 
         $response = $response
             ->withStatus($status);
@@ -20,7 +20,7 @@ class ResponseHelper{
 
     }
     
-    public static function errorResponse(Response $response, int $status = 0) : Response{
+    public static function errorResponse(Response $response, int $status) : Response{
 
         $response = $response
             ->withStatus($status);

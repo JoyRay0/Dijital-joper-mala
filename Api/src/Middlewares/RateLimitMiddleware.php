@@ -21,7 +21,7 @@ class RateLimitMiddleware {
 
     public function __invoke(Request $request, Handler $handler): Response{
 
-        $deviceID = $request->getHeaderLine('DeviceId');
+        $deviceID = $request->getHeaderLine('device_id');
 
         $count = (int) Cache::getStringCache($deviceID);
 

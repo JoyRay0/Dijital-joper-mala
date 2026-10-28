@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Middleware;
+namespace App\Middlewares;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as Handler;
@@ -19,10 +19,10 @@ class HeaderMiddleware{
         ->withHeader("X-XSS-Protection", "1; mode=block")
         ->withHeader("X-Frame-Options", "DENY")
         ->withHeader("Referrer-Policy", "no-referrer")
-        ->withHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-        ->withHeader("Access-Control-Allow-Origin", "". $_ENV['APP_LINK'])
+        //->withHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+        //->withHeader("Access-Control-Allow-Origin", "". $_ENV['APP_LINK'])
         ->withHeader("Cache-Control", "public, max-age=3600")
-        ->withHeader("X-App-Name", "LawGuideBook")
+        ->withHeader("X-App-Name", "Jopa_Mala")
         ->withHeader("Content-type", "application/json");
         
         return $header;

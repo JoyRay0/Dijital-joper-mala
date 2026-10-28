@@ -45,9 +45,10 @@ class Mysql{
 
                 $this->connection->exec(
                     "CREATE TABLE IF NOT EXISTS $this->activityTable (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id INT AUTO_INCREMENT PRIMARY KEY,
                     activity_name TEXT UNIQUE NOT NULL,
-                    duration INTEGER DEFAULT 0"
+                    duration INT DEFAULT 0
+                    )"
                 );
 
                 /*
@@ -56,18 +57,20 @@ class Mysql{
 
                 $this->connection->exec(
                     "CREATE TABLE IF NOT EXISTS $this->trackerTable (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id INT AUTO_INCREMENT PRIMARY KEY,
                     device_id TEXT UNIQUE NOT NULL,
                     android_version TEXT NOT NULL,
                     sdk_version TEXT NOT NULL,
                     country_code TEXT NOT NULL,
                     last_open TEXT NOT NULL
-                    "
+                    )"
                 );
 
+                /*
                 $this->connection->exec(
                     "CREATE INDEX idx_device_id ON $this->trackerTable(device_id)"
                 );
+                */
 
             }catch(PDOException $e){
 

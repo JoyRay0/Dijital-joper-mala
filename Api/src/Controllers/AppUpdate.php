@@ -12,13 +12,13 @@ use Src\Helper\LogHelper as Log;
 
 class AppUpdate{
 
-    public function App_update(Request $request, Response $response){
+    public function app_update(Request $request, Response $response){
     
-        $notification = json_decode(file_get_contents(__DIR__ . '../Json/notification.json'), true);
+        $app_update = json_decode(file_get_contents(dirname(__DIR__) . '/Json/app_update.json'), true);
 
-        if(empty($notification)){
+        if(empty($app_update)){
 
-            Log::writeNormalLog("Notification Json", "Empty notification json");
+            Log::writeNormalLog("Notification Json", "Empty app_update json");
 
             return ResHelper::errorResponse(
                 $response,
@@ -27,8 +27,8 @@ class AppUpdate{
 
         }
 
-        $old_version = (float) $notification['old_version'];
-        $new_version = (float) $notification['new_version'];
+        $old_version = (float) $app_update['old_version'];
+        $new_version = (float) $app_update['new_version'];
 
         if($new_version > $old_version){
 

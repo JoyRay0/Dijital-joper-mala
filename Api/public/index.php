@@ -1,9 +1,9 @@
 <?php
 
-require __DIR__ . "/../vendor/autoload.php";
+require __DIR__ . "/Api/vendor/autoload.php";
 
 use App\Controllers\Admin;
-use App\Middleware\HeaderMiddleware as AllHeader;
+use App\Middlewares\HeaderMiddleware as AllHeader;
 use App\Controllers\AppUpdate;
 use App\Controllers\Information;
 use App\Controllers\Mantra;
@@ -15,16 +15,25 @@ use App\Middlewares\DeviceIdMiddleware;
 use App\Middlewares\RateLimitMiddleware;
 use Dotenv\Dotenv;
 use Slim\Factory\AppFactory;
+use Slim\Psr7\Factory\ResponseFactory;
+use Slim\Psr7\Factory\ServerRequestFactory;
+use Src\Helper\ResponseHelper as Res;
+use Src\Helper\HttpCodesHelper as Http;
+use Src\Helper\StatusHelper as Status;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 
 
-$env = Dotenv::createImmutable( __DIR__ . "/..");
+$env = Dotenv::createImmutable( __DIR__ . '/Api');
 $env->load();
 
 $app = AppFactory::create();
 
 date_default_timezone_set("Asia/Dhaka");
 
+
 $app->add(new AllHeader());
+
 
 if(isset($_ENV['DEBUG']) && $_ENV['DEBUG'] === 'true'){
 
@@ -35,32 +44,31 @@ if(isset($_ENV['DEBUG']) && $_ENV['DEBUG'] === 'true'){
 $app->addRoutingMiddleware();
 $app->addBodyParsingMiddleware();
 
+$responseFactory = AppFactory::determineResponseFactory();
+
 /* User */
 
 $app->group('/api', function($group){
 
-    /*
-    - GET Request
-    */
-    $group->get('/app_update', AppUpdate::class . ':App_update');
+    // GET Request
+    
+    $group->get('/app_update', AppUpdate::class . ':app_update');
     $group->get('/information', Information::class . ':information');
     $group->get('/pager', Pager::class . ':pager');
     $group->get('/mantra', Mantra::class . ':mantra');
 
     //-----------------------
 
-    /*
-    - POST Request
-    */
+    // POST Request
 
     $group->post('/notification', Notification::class . ':notification');
     $group->post('/tracker', Tracker::class . ':tracker');
 
 })
-->add(new DeviceIdMiddleware())
+->add(new DeviceIdMiddleware($responseFactory))
 ->add(new RateLimitMiddleware(40));
 
-/* Admin  */
+// Admin  
 
 $app->group('/admin', function ($group){
 
@@ -81,5 +89,6 @@ $app->group('/admin', function ($group){
 
 })->add( new AdminCheckerMiddleware())
 ->add(new RateLimitMiddleware(5));
+
 
 $app->run();

@@ -6,11 +6,11 @@ use Phpfastcache\Helper\Psr16Adapter;
 
 class CacheHelper{
 
-    private static Psr16Adapter $cache;
+    private static ?Psr16Adapter $cache = null;
 
     private static function init(){
 
-        if(!self::$cache){
+        if(self::$cache === null){
 
             self::$cache = new Psr16Adapter('Files');
 
