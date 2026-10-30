@@ -113,6 +113,7 @@ class Act_home : ComponentActivity(), Home, JopCountHistory {//class============
             )
 
             presenter.appUpdate()
+            presenter.pagerDataFromServer()
             historyPresenter.getOneJopCount()
 
             if (jopHistoryCount.longValue == 0L){
@@ -185,6 +186,7 @@ class Act_home : ComponentActivity(), Home, JopCountHistory {//class============
                     infoList = infoList,
                     pagerList = pagerList,
                     status = serverStatus.value,
+                    isUpdateAvailable = isUpdateAvailable.value,
                     updateClick = {
 
                         try {
@@ -392,7 +394,7 @@ private fun HomeFullScreen(
     val screenHeight = ScreenSize().height()
     val startOffsetY = - (screenHeight.toFloat() * 0.4f )
 
-    val offsetY = remember { Animatable(startOffsetY) }
+    val offsetY = remember { Animatable(startOffsetY)}
 
     LaunchedEffect(newNotification) {
 
@@ -787,7 +789,7 @@ private fun Home(
                             .fillMaxWidth(),
                         list = pagerList,
                         placeHolder = painterResource(R.drawable.img_loader),
-                        height = ScreenSize().responsiveHeightWidth(150, 170, 190)
+                        height = ScreenSize().responsiveHeightWidth(170, 200, 210)
 
                     )
 
@@ -903,6 +905,10 @@ private fun Home(
                 lastItemName = achievementLastItemName,
                 lastItemCount = achievementLastItemCount
             )
+
+            /* Bottom Space */
+
+            Spacer(modifier = Modifier.height(60.dp))
 
         }//column
 
@@ -1105,8 +1111,8 @@ private fun Item(
                 Text( text = question,
                     fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                     fontFamily = BanglaHelper.banglaFont(),
-                    fontWeight = FontWeight.Normal,
-                    color = if (isDark) Color.White.copy(alpha = 0.8f) else Color.Black.copy(alpha = 0.7f),
+                    fontWeight = FontWeight.W500,
+                    color = if (isDark) Color.White.copy(alpha = 0.8f) else Color.Black.copy(alpha = 0.8f),
                     modifier = Modifier
                         .fillMaxWidth(0.93f)
                         .align(Alignment.CenterStart)
@@ -1611,7 +1617,7 @@ private fun JopaHistory(
                             0xFFF6F5F5
                         )
                     )
-                    .padding(10.dp)
+                    .padding(ScreenSize().responsivePadding(10, 12, 14))
                     .align(Alignment.CenterHorizontally)
 
             ) {
@@ -1713,8 +1719,8 @@ private fun Achievement(
     modifier: Modifier = Modifier,
     isDark: Boolean = false,
     achievementMoreClick : () -> Unit = {},
-    lastItemName : String = "shiv_mala",
-    lastItemCount : String = "1000"
+    lastItemName : String = "",
+    lastItemCount : String = ""
 ) {
 
     val achievementCountMap = mapOf(
@@ -1831,6 +1837,8 @@ private fun Achievement(
 
             }else{
 
+                /* Achievement data */
+
                 Box(
 
                     modifier = Modifier
@@ -1843,20 +1851,43 @@ private fun Achievement(
                         )
                         .clip(shape = RoundedCornerShape(12.dp))
                         .background(color = Color(0xFFFDF4F4))
-                        .padding(10.dp)
+                        .padding(ScreenSize().responsivePadding(10, 12, 14))
 
                 ) {
 
-                    Text( text = achievementNameMap[lastItemName] ?: "",
-                        fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
-                        fontFamily = BanglaHelper.banglaFont(),
-                        fontWeight = FontWeight.Normal,
-                        color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
-                        textAlign = TextAlign.Start,
+                    /* Achievement mala name */
+
+                    Row(
+
                         modifier = Modifier
                             .wrapContentWidth()
                             .align(Alignment.CenterStart)
-                    )
+
+                    ) {
+
+                        Image( painter = painterResource(R.drawable.img_achievement_badge),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .size(ScreenSize().responsiveImageSize(22, 27, 32))
+                                .align(Alignment.CenterVertically)
+
+                        )
+
+                        Spacer(modifier = Modifier.width(18.dp))
+
+                        Text( text = achievementNameMap[lastItemName] ?: "",
+                            fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
+                            fontFamily = BanglaHelper.banglaFont(),
+                            fontWeight = FontWeight.Normal,
+                            color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
+                            textAlign = TextAlign.Start,
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .align(Alignment.CenterVertically)
+                        )
+
+                    }//row
 
                     Text( text = achievementCountMap[lastItemCount] ?: "০",
                         fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
