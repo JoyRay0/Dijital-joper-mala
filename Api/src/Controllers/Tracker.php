@@ -42,6 +42,8 @@ class Tracker{
 
             $db = new Database();
 
+            /* Insert device information */
+
             $db->insertOneDeviceData(
                 $trackerData['device_id'],
                 $trackerData['android_version'],
@@ -49,6 +51,16 @@ class Tracker{
                 $trackerData['country_code'],
                 $trackerData['last_open']
             );
+
+            /* Insert activity data */
+
+            $all_activity_data = $trackerData["activity_data"];
+
+            foreach ($all_activity_data as $activity){
+
+                $db->insertOneActivity($activity['activity'], $activity['duration']);
+
+            }//loop
 
             return ResHelper::jsonResponse(
                 $response,
