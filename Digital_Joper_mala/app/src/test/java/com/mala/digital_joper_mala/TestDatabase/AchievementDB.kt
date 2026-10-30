@@ -1,9 +1,7 @@
 package com.mala.digital_joper_mala.TestDatabase
 
 import com.mala.digital_joper_mala.Database.AchievementDatabase
-import com.mala.digital_joper_mala.Database.JopHistoryDatabase
 import com.mala.digital_joper_mala.Model.Achievement
-import com.mala.digital_joper_mala.Model.JopHistory
 import io.mockk.*
 import org.junit.Test
 
@@ -47,7 +45,7 @@ class AchievementDB {
         val mala_name = "easy_mala"
         val achievement_count = "1000"
 
-        every { db.updateAchievement(mala_name, achievement_count) } returns true
+        //every { db.updateAchievement(mala_name, achievement_count) } returns true
 
     }
 
@@ -57,7 +55,7 @@ class AchievementDB {
         val mala_name = "boishnob_mala"
         val achievement_count = "5000"
 
-        every { db.updateAchievement(mala_name, achievement_count) } returns true
+       // every { db.updateAchievement(mala_name, achievement_count) } returns true
 
     }
 
@@ -67,7 +65,7 @@ class AchievementDB {
         val mala_name = "shiv_mala"
         val achievement_count = "1000"
 
-        every { db.updateAchievement(mala_name, achievement_count) } returns true
+        //every { db.updateAchievement(mala_name, achievement_count) } returns true
 
     }
 
@@ -77,7 +75,7 @@ class AchievementDB {
         val mala_name = ""
         val achievement_count = "1000"
 
-        every { db.updateAchievement(mala_name, achievement_count) } returns false
+        //every { db.updateAchievement(mala_name, achievement_count) } returns false
 
     }
 
@@ -87,7 +85,7 @@ class AchievementDB {
         val mala_name = ""
         val achievement_count = "5000"
 
-        every { db.updateAchievement(mala_name, achievement_count) } returns false
+        //every { db.updateAchievement(mala_name, achievement_count) } returns false
 
     }
 
@@ -97,7 +95,7 @@ class AchievementDB {
         val mala_name = ""
         val achievement_count = "1000"
 
-        every { db.updateAchievement(mala_name, achievement_count) } returns false
+        //every { db.updateAchievement(mala_name, achievement_count) } returns false
 
     }
 
@@ -109,7 +107,7 @@ class AchievementDB {
         val list = mutableListOf<Achievement>()
 
         list.add(Achievement(
-            achievementCount = "1000",
+            targetAchievementCount = "1000",
             isCompleted = true
         ))
 
@@ -125,7 +123,7 @@ class AchievementDB {
         val list = mutableListOf<Achievement>()
 
         list.add(Achievement(
-            achievementCount = "5000",
+            targetAchievementCount = "5000",
             isCompleted = true
         ))
 
@@ -141,7 +139,7 @@ class AchievementDB {
         val list = mutableListOf<Achievement>()
 
         list.add(Achievement(
-            achievementCount = "10000",
+            targetAchievementCount = "10000",
             isCompleted = true
         ))
 
