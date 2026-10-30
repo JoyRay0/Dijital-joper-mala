@@ -46,6 +46,7 @@ import com.mala.digital_joper_mala.Presenter.AllMantraPresenter
 import com.mala.digital_joper_mala.Presenter.Mantra
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.*
 import com.mala.digital_joper_mala.View.main_theme_ui.theme.Digital_Joper_malaTheme
+import com.rk_softwares.lawguidebook.Helper.ScreenSize
 
 class Act_all_mantra : ComponentActivity(), AllMantra {//class=========================================
 
@@ -382,7 +383,7 @@ private fun AllMantraFullScreen(
                         contentDescription = "",
                         modifier = Modifier
                             .wrapContentWidth()
-                            .size(120.dp)
+                            .size(ScreenSize().responsiveImageSize(120, 140, 160))
                             .align(Alignment.CenterHorizontally)
 
                     )
@@ -390,7 +391,7 @@ private fun AllMantraFullScreen(
                     Spacer(modifier = Modifier.height(7.dp))
 
                     Text( text = "কোন মন্ত্র নেই ।",
-                        fontSize = 16.sp,
+                        fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                         fontFamily = BanglaHelper.banglaFont(),
                         fontWeight = FontWeight.Normal,
                         color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
@@ -491,7 +492,7 @@ private fun Toolbar(
                 .clip(shape = CircleShape)
                 //.background(color = Color.Green)
                 .align(Alignment.CenterStart)
-                .size(37.dp)
+                .size(ScreenSize().responsiveImageSize(37, 42, 47))
         ) {
 
             Icon(
@@ -500,6 +501,7 @@ private fun Toolbar(
                 tint = Color(0xFFFFFFFF),
                 modifier = Modifier
                     .wrapContentWidth()
+                    .size(ScreenSize().responsiveImageSize(22, 24, 26))
 
             )
 
@@ -556,6 +558,7 @@ private fun Toolbar(
                             tint = Color(0xFFFFFFFF),
                             modifier = Modifier
                                 .wrapContentWidth()
+                                .size(ScreenSize().responsiveImageSize(22, 27, 32))
 
                         )
 
@@ -619,7 +622,7 @@ private fun Item(
             ) {
 
                 Text( text = title,
-                    fontSize = 15.sp,
+                    fontSize = ScreenSize().responsiveTextSize(15, 17, 19),
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Normal,
                     color = if (isDark) Color(0xFFEAE7E7) else Color(0xFF313030),
@@ -679,7 +682,7 @@ private fun Item(
             ) {
 
                 Text( text = mantra,
-                    fontSize = 15.sp,
+                    fontSize = ScreenSize().responsiveTextSize(15, 17, 19),
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Bold,
                     color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
