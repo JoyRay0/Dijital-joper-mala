@@ -30,6 +30,7 @@ data class Tracker(
     @SerializedName("last_open")
     val lastOpen : String = "",
 
+    @SerializedName("activity_data")
     val data : List<TrackerData> = emptyList()
 
 )
