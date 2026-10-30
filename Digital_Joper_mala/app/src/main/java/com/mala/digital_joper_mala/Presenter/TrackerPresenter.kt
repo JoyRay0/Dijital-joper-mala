@@ -5,6 +5,7 @@ import com.mala.digital_joper_mala.Database.DeviceInfoDatabase
 import com.mala.digital_joper_mala.Database.ScreenTrackerDatabase
 import com.mala.digital_joper_mala.Helper.ACTIVITY
 import com.mala.digital_joper_mala.Helper.RetryHelper
+import com.mala.digital_joper_mala.Helper.SecurityKey
 import com.mala.digital_joper_mala.Model.Tracker
 import com.mala.digital_joper_mala.Model.TrackerModel
 import kotlinx.coroutines.*
@@ -50,11 +51,11 @@ class TrackerPresenter(
         scopeIO.launch {
 
             val id = model.getDeviceId()
-            val timeStamp = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
+            val timeStamp = SimpleDateFormat("dd-MM-yyy", Locale.US).format(Date())
 
             if (id.isEmpty()){
 
-                model.insertDeviceId(UUID.randomUUID().toString())
+                model.insertDeviceId(SecurityKey.androidID(context))
 
             }
 
@@ -85,6 +86,7 @@ class TrackerPresenter(
                             androidVersion = deviceData!!.androidVersion,
                             sdkVersion = deviceData.sdkVersion,
                             countryCode = deviceData.countryCode,
+                            lastOpen = deviceData.lastOpen,
                             data = activityData
                         ),
 
