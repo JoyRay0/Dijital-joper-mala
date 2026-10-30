@@ -38,6 +38,7 @@ import com.mala.digital_joper_mala.Model.JopHistory
 import com.mala.digital_joper_mala.Presenter.History
 import com.mala.digital_joper_mala.Presenter.JopCountHistory
 import com.mala.digital_joper_mala.Presenter.JopHistoryPresenter
+import com.rk_softwares.lawguidebook.Helper.ScreenSize
 
 class Act_chart : ComponentActivity(), JopCountHistory {//class======================================================
 
@@ -243,7 +244,7 @@ private fun JopHistoryFullScreen(
             }else{
 
                 Text( text = "আপনার জপের যাত্রা এখনও শুরু হয়নি। জপ শুরু করুন - আপনার প্রতিটি জপের অগ্রগতি এখানে সুন্দরভাবে সংরক্ষিত থাকবে।",
-                    fontSize = 17.sp,
+                    fontSize = ScreenSize().responsiveTextSize(17, 19, 21),
                     fontFamily = BanglaHelper.banglaFont(),
                     fontWeight = FontWeight.Normal,
                     color = if (isDark) Color.White else Color.Black,
@@ -289,7 +290,7 @@ private fun Toolbar(
                 .clip(shape = CircleShape)
                 //.background(color = Color.Green)
                 .align(Alignment.CenterStart)
-                .size(37.dp)
+                .size(ScreenSize().responsiveImageSize(37, 42, 47))
         ) {
 
             Icon( painter = painterResource(R.drawable.ic_back),
@@ -297,6 +298,7 @@ private fun Toolbar(
                 tint = Color(0xFFFFFFFF),
                 modifier = Modifier
                     .wrapContentWidth()
+                    .size(ScreenSize().responsiveImageSize(22, 25, 28))
 
             )
 
@@ -365,14 +367,17 @@ fun HistoryItem(
                     shape = RoundedCornerShape(12.dp)
                     )
                 .clip(shape = RoundedCornerShape(12.dp))
-                .background(color = if (isDark) Color.DarkGray.copy(alpha = 0.8f) else Color(0xFFEEECEC))
-                .padding(10.dp)
+                .background(color = if (isDark) Color.DarkGray.copy(alpha = 0.8f) else Color(
+                    0xFFF3F1F1
+                )
+                )
+                .padding(ScreenSize().responsivePadding(10, 12, 14))
                 .align(Alignment.Center)
 
         ) {
 
             Text( text = "$day : $date",
-                fontSize = 16.sp,
+                fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                 fontFamily = BanglaHelper.banglaFont(),
                 fontWeight = FontWeight.Normal,
                 color = if (isDark) Color.White.copy(alpha = 0.8f) else Color.DarkGray,
@@ -384,7 +389,7 @@ fun HistoryItem(
             )
 
             Text( text = BanglaHelper.readLong(count),
-                fontSize = 16.sp,
+                fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                 fontFamily = BanglaHelper.banglaFont(),
                 fontWeight = FontWeight.SemiBold,
                 color = if (isDark) Color.White else Color.Black,
