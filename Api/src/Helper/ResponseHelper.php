@@ -13,7 +13,7 @@ class ResponseHelper{
             ->withStatus($status);
             
         $response->getBody()->write(
-            json_encode($data, JSON_PRETTY_PRINT)
+            json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
             );
 
         return $response;
