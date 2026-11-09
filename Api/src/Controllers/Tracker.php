@@ -12,31 +12,109 @@ use Src\Helper\LogHelper as Log;
 use Src\Helper\ResponseHelper as ResHelper;
 use Src\Helper\StatusHelper as Status;
 
+class TrackerDTO{
+
+    public ?string $deviceId = null;
+    public ?string $androidVersion = null;
+    public ?string $sdkVersion = null;
+    public ?string $countryCode = null;
+    public ?string $lastOpen = null;
+    public ?array $activityData = null;
+
+}
+
+class ActivityDataDTO{
+
+    public ?string $activity = null;
+    public ?string $duration = null;
+
+}
+
 class Tracker{
 
     public function tracker(Request $request, Response $response){
     
+        $requiredFields = [
+            "device_id" => "string", 
+            "android_version" => "string", 
+            "sdk_version" => "string", 
+            "country_code" => "string", 
+            "last_open" => "string",
+            "activity_data" => "array"
+        ];
+
+        $requiredActivityFiled = ["activity", "duration"];
+
         $trackerData = (!empty($request->getParsedBody())) ? $request->getParsedBody() : [];
 
-        if(empty($trackerData) && (
-            empty($trackerData['device_id']) ||
-            empty($trackerData['android_version']) ||
-            empty($trackerData['sdk_version']) ||
-            empty($trackerData['country_code']) ||
-            empty($trackerData['last_open']))
-        ){
+        /* Tracker body check */
 
-            Log::writeNormalLog(
-                "Tracker body",
-                "Empty tracker body"
-            );
+        foreach ($requiredFields as $field => $type){
 
-            return ResHelper::errorResponse(
-                $response,
-                Https::BadRequest->value
-            );
+            if(!isset($trackerData[$field]) || 
+            get_debug_type($trackerData[$field]) !== $type
+            ){
 
-        }
+                return ResHelper::errorResponse(
+                    $response,
+                    Https::BadRequest->value
+                );
+
+            }
+
+        }//loop
+
+        /* Activity data body check */
+
+        foreach ($trackerData["activity_data"] as $activityData){
+
+            foreach ($requiredActivityFiled as $activityFiled){
+
+                if(!isset($activityData[$activityFiled]) || !is_string($activityData[$activityFiled])){
+
+                    return ResHelper::errorResponse(
+                        $response,
+                        Https::BadRequest->value
+                    );
+
+                }
+
+            }//loop
+
+        }//loop
+
+        $tracker_dto = new TrackerDTO();
+
+        $tracker_dto->deviceId = strip_tags(trim($trackerData["device_id"]));
+        $tracker_dto->androidVersion = strip_tags(trim($trackerData["android_version"]));
+        $tracker_dto->sdkVersion = strip_tags(trim($trackerData["sdk_version"]));
+        $tracker_dto->countryCode = strip_tags(trim($trackerData["country_code"]));
+        $tracker_dto->lastOpen = strip_tags(trim($trackerData["last_open"]));
+        $tracker_dto->activityData = [];
+
+        foreach ($trackerData["activity_data"] as $_activity){
+
+            $activity_data = new ActivityDataDTO();
+
+            $activity_data->activity = $_activity[$requiredActivityFiled[0]];
+            $activity_data->duration = $_activity[$requiredActivityFiled[1]];
+
+            if(!preg_match("/^[a-zA-Z0-9_]+$/", $_activity[$requiredActivityFiled[0]]) ||
+            !preg_match("/^[0-9]+$/", $_activity[$requiredActivityFiled[1]])
+            ){
+
+                return ResHelper::errorResponse(
+                    $response,
+                    Https::BadRequest->value
+                );
+
+            }else{
+
+                $tracker_dto->activityData[] = $activity_data;
+
+            }
+
+        };
 
         try{
 
@@ -45,20 +123,18 @@ class Tracker{
             /* Insert device information */
 
             $db->insertOneDeviceData(
-                $trackerData['device_id'],
-                $trackerData['android_version'],
-                $trackerData['sdk_version'],
-                $trackerData['country_code'],
-                $trackerData['last_open']
+                $tracker_dto->deviceId,
+                $tracker_dto->androidVersion,
+                $tracker_dto->sdkVersion,
+                $tracker_dto->countryCode,
+                $tracker_dto->lastOpen
             );
 
             /* Insert activity data */
 
-            $all_activity_data = $trackerData["activity_data"];
+            foreach ($tracker_dto->activityData as $activity){
 
-            foreach ($all_activity_data as $activity){
-
-                $db->insertOneActivity($activity['activity'], $activity['duration']);
+                $db->insertOneActivity($activity[$requiredActivityFiled[0]], $activity[$requiredActivityFiled[1]]);
 
             }//loop
 
