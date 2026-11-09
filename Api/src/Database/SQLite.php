@@ -7,14 +7,6 @@ use PDOException;
 use Src\Helper\HttpCodesHelper as http;
 use Src\Helper\LogHelper as log;
 
-enum SQLiteHelper : string{
-
-    case TABLE_NAME = "notification";
-    case TITLE = "title";
-    case DESCRIPTION = "description";
-
-}
-
 class SQLite{
 
     private ?PDO $connection = null;
@@ -31,7 +23,7 @@ class SQLite{
 
             try{
 
-                $this->connection = new PDO("sqlite:database/database.db", null, null,
+                $this->connection = new PDO("sqlite:" . dirname(__DIR__) . "/Resources/database.db", null, null,
                     [
                         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -42,6 +34,8 @@ class SQLite{
                 log::writeErrorLog($e->getMessage());
 
                 http_response_code(http::ServerError->value);
+
+                throw $e;
 
             }
     
@@ -62,25 +56,25 @@ class SQLite{
         string $description,
         string $startAt,
         string $endAt
-    ){
+    ) : bool{
 
         if(empty($title) || empty($description) || empty($startAt) || empty($endAt)){
 
-            return;
+            return false;
 
         }
 
         $stmt = $this->connection->prepare(
             "INSERT INTO $this->tableName
             ($this->title, $this->description, $this->startAt, $this->endAt) VALUES
-            (:$this->title, :$this->description, :$this->startAt, :$this->endAt)
+            (?, ?, ?, ?)
             ");
 
-        $stmt->execute([
-            ":$this->title" => $title,
-            ":$this->description" => $description,
-            ":$this->startAt" => $startAt,
-            ":$this->endAt" => $endAt
+        return $stmt->execute([
+            $title,
+            $description,
+            $startAt,
+            $endAt
         ]);
 
 
