@@ -2,6 +2,7 @@
 
 namespace App\Middlewares;
 
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as Handler;
@@ -12,10 +13,12 @@ use Src\Helper\ResponseHelper as ResHelper;
 
 class RateLimitMiddleware {
 
-    private Response $response;
+    private ResponseFactoryInterface $response;
 
-    public function __construct(private int $limit)
+    public function __construct(private int $limit, ResponseFactoryInterface $response)
     {
+
+        $this->response = $response;
         
     }
 
@@ -25,10 +28,12 @@ class RateLimitMiddleware {
 
         $count = (int) Cache::getStringCache($deviceID);
 
+        $response = $this->response->createResponse();
+
         if($count >= $this->limit){
 
             return ResHelper::errorResponse(
-                $this->response,
+                $response,
                 Https::TooManyRequests->value
             );
 
