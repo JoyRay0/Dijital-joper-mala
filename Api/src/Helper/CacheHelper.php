@@ -25,10 +25,10 @@ class CacheHelper{
 
     }
 
-    public static function setArrayCache(string $key, array $value, int $endTime){
+    public static function setArrayCache(string $key, array $value, int $endTime) : bool{
 
         self::init();
-        self::$cache->set($key, $value, $endTime);
+        return self::$cache->set($key, $value, $endTime);
 
     }
 
@@ -38,7 +38,7 @@ class CacheHelper{
 
         $value = self::$cache->get($key, "");
 
-        return $value;
+        return is_string($value) ? $value : "";
 
     }
 
@@ -48,19 +48,19 @@ class CacheHelper{
 
         $value = self::$cache->get($key, []);
 
-        return $value;
+        return is_array($value) ? $value : [];
 
     }
 
-    public static function deleteStringCache(string $key){
+    public static function deleteStringCache(string $key) : bool{
 
-        self::$cache->delete($key);
+        return self::$cache->delete($key);
 
     }
 
-    public static function deleteArrayCache(string $key){
+    public static function deleteArrayCache(string $key) : bool{
 
-        self::$cache->delete($key);
+        return self::$cache->delete($key);
 
     }
 
