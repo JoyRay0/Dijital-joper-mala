@@ -13,18 +13,17 @@ use Src\Helper\HttpCodesHelper as https;
 use Src\Helper\StatusHelper as status;
 use Src\Helper\LogHelper as log;
 
-class Notification{
+final class Notification{
 
-    private const string CACHE_KEY = "notification";
-    private const string LOCK_KEY = "notification_lock";
+    private string $CACHE_KEY = "notification";
 
     public function notification(Request $request, Response $response){
     
         $date = (!empty($request->getParsedBody())) ? $request->getParsedBody() : [];
 
-        if(!is_array($date) || empty($date['date'])){
+        if(!is_array($date) || empty($date['date']) || !is_string($date['date'])){
             
-            log::writeNormalLog("Date", "Notification date empty");
+            log::writeNormalLog("Notification_Date", "Notification date empty");
 
             return ResHelper::errorResponse(
                 $response,
@@ -33,11 +32,12 @@ class Notification{
 
         }
 
-        $currentDate = new DateTime();
+        $currentDate = new DateTime('today');
+        $requestDate = DateTime::createFromFormat('!d-m-Y', $date['date']);
+    
+        if(!$requestDate || $requestDate->format('Y-m-d') !== $currentDate->format('Y-m-d')){
 
-        if(DateTime::createFromFormat('d-m-Y', $date['date']) != $currentDate){
-
-            log::writeNormalLog("Date", "Server date and request date not matching");
+            log::writeNormalLog("Notification_Date", "Server date and request date not matching");
 
             return ResHelper::errorResponse(
                 $response,
@@ -46,12 +46,11 @@ class Notification{
 
         }
 
-        $cache = Cache::getArrayCache(self::CACHE_KEY);
+        $cache = Cache::getArrayCache($this->CACHE_KEY);
 
-        if(!empty($cache) && 
-        $currentDate >= DateTime::createFromFormat('d-m-Y', $cache['start_at'])  && 
-        $currentDate <= DateTime::createFromFormat('d-m-Y', $cache['end_at'])
-        ){
+        $finalCache = $this->finalNotificationResponse($cache);
+
+        if(!empty($finalCache)){
 
             return ResHelper::jsonResponse(
                 $response,
@@ -59,98 +58,17 @@ class Notification{
                 [
                     "status" => status::Success->value,
                     "from" => "Cache",
-                    "data" => $cache
-                ]);
+                    "data" => $finalCache
+            ]);
 
         }
 
-        /* 
-        * Try to get DB access
-        *
-        * If another request is already loading the DB, wait until its cache becomes available.
-        *
-        */
-
-        for($i = 0; $i < 50; $i++){
-
-            // Is another request loading cache?
-
-            if(!empty(Cache::getStringCache(self::LOCK_KEY))){
-
-                /*
-
-                * 1 milliseconds = 1000 microseconds
-                * 100 milliseconds = 100,000 microseconds
-
-                */
-
-                usleep(100000); 
-
-
-                $cache = Cache::getArrayCache(self::CACHE_KEY);
-
-                if(!empty($cache) && 
-                $currentDate >= DateTime::createFromFormat('d-m-Y', $cache['start_at']) && 
-                $currentDate <= DateTime::createFromFormat('d-m-Y', $cache['end_at'])
-                ){
-
-                    return ResHelper::jsonResponse(
-                        $response,
-                        https::Success->value,
-                        [
-                            "status" => status::Success->value,
-                            "from" => "Cache",
-                            "data" => $cache
-                        ]
-                    );
-
-                }
-
-                continue;
-
-            }
-
-            // No lock -> try create one
-
-            Cache::setStringCache(self::LOCK_KEY, "lock", 5);
-
-            /*
-            * Double check cache
-            *
-            * Another request may have created cache just before we acquired the lock.
-            *
-            */
-
-            $cache = Cache::getArrayCache(self::CACHE_KEY);
-
-            if(!empty($cache) && 
-            $currentDate >= DateTime::createFromFormat('d-m-Y', $cache['start_at']) && 
-            $currentDate <= DateTime::createFromFormat('d-m-Y', $cache['end_at'])
-            ){
-
-                Cache::deleteStringCache(self::LOCK_KEY);
-
-                return ResHelper::jsonResponse(
-                    $response,
-                    https::Success->value,
-                    [
-                        "status" => status::Success->value,
-                        "from" => "Cache",
-                        "data" => $cache
-                    ]
-                );
-
-            }
-
-            break;
-
-        }//loop
 
         try{
 
             $db = new NotificationDatabase();
-        
-            $result = $db->getSingleNotification($date['date']);
+
+            $result = $db->getNotification();
 
             if(empty($result)){
 
@@ -168,7 +86,9 @@ class Notification{
 
             }
 
-            Cache::setArrayCache(self::CACHE_KEY, $result, 120);
+            Cache::setArrayCache($this->CACHE_KEY, $result, 300);
+
+            $finalResult = $this->finalNotificationResponse($result);
 
             return ResHelper::jsonResponse(
                     $response,
@@ -176,7 +96,7 @@ class Notification{
                     [
                         "status" => status::Success->value,
                         "from" => "database",
-                        "data" => $result
+                        "data" => $finalResult
                     ]
             );
 
@@ -189,13 +109,35 @@ class Notification{
                 https::ServerError->value
             );
 
-        }finally{
+        }
+    
+    }
 
-            Cache::deleteStringCache(self::LOCK_KEY);
+    private function finalNotificationResponse(array $data) : array{
+
+        $finalResult = [];
+
+        $today = date('Y-m-d');
+
+        if(!empty($data)){
+
+            foreach ($data as $item){
+
+                if(!empty($item) && 
+                $today >= $item['start_at'] &&
+                $today <= $item['end_at']
+                ){
+
+                    $finalResult[] = $item;
+
+                }
+
+            }//loop
 
         }
 
-    
+        return $finalResult;
+
     }
 
 }
