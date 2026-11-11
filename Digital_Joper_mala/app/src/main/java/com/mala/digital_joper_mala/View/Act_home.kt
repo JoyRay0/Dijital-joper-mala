@@ -52,6 +52,8 @@ import androidx.core.net.toUri
 import com.mala.digital_joper_mala.Helper.*
 import com.mala.digital_joper_mala.Model.HomeData
 import com.mala.digital_joper_mala.Model.JopHistory
+import com.mala.digital_joper_mala.Presenter.AchievementPresenter
+import com.mala.digital_joper_mala.Presenter.Achievements
 import com.mala.digital_joper_mala.Presenter.Home
 import com.mala.digital_joper_mala.Presenter.HomePresenter
 import com.mala.digital_joper_mala.Presenter.JopCountHistory
@@ -65,12 +67,13 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
 
-class Act_home : ComponentActivity(), Home, JopCountHistory {//class===================================================
+class Act_home : ComponentActivity(), Home, JopCountHistory, Achievements {//class===================================================
 
     private lateinit var presenter : HomePresenter
 
     private lateinit var tracker : TrackScreen
     private lateinit var historyPresenter : JopHistoryPresenter
+    private lateinit var achievementPresenter : AchievementPresenter
 
     //init
     private val rulesList = mutableStateListOf<HomeData>()
@@ -94,6 +97,8 @@ class Act_home : ComponentActivity(), Home, JopCountHistory {//class============
     private val isNotification = mutableStateOf(false)
     private val notificationCount = mutableStateOf("")
 
+    private val lastAchievementCompleted = mutableStateOf(Pair("", ""))
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -115,6 +120,9 @@ class Act_home : ComponentActivity(), Home, JopCountHistory {//class============
             presenter.appUpdate()
             presenter.pagerDataFromServer()
             historyPresenter.getOneJopCount()
+            presenter.getNotificationFromServer()
+            achievementPresenter.getLastCompletedAchievement()
+            presenter.getNotificationCount()
 
             if (jopHistoryCount.longValue == 0L){
 
@@ -237,14 +245,14 @@ class Act_home : ComponentActivity(), Home, JopCountHistory {//class============
                         finish()
                                           },
                     getJopCount = jopHistoryCount.longValue,
-                    //newNotification = isNotification.value,
+                    newNotification = isNotification.value,
                     notificationCount = notificationCount.value,
                     achievementMoreClick = {
                         IntentHelper.normalIntent(this, Act_achievement::class.java)
                         finish()
                     },
-                    achievementLastItemName = "easy_mala",
-                    achievementLastItemCount = "1000"
+                    achievementLastItemName = lastAchievementCompleted.value.first,
+                    achievementLastItemCount = lastAchievementCompleted.value.second
 
                 )
 
@@ -259,6 +267,8 @@ class Act_home : ComponentActivity(), Home, JopCountHistory {//class============
         tracker = TrackScreen(this)
 
         historyPresenter = JopHistoryPresenter(this, this)
+
+        achievementPresenter = AchievementPresenter(this, this)
     }
 
     override fun rulesList(list: List<HomeData>) {
@@ -301,11 +311,22 @@ class Act_home : ComponentActivity(), Home, JopCountHistory {//class============
 
         isNotification.value = isNewNotification
 
+        println("New Notification = $isNewNotification")
+
     }
 
     override fun notificationCount(count: String) {
 
         notificationCount.value = count
+
+        println("Notification = $count")
+
+    }
+
+    override fun lastCompletedAchievement(data: Pair<String, String>) {
+        super.lastCompletedAchievement(data)
+
+        lastAchievementCompleted.value = Pair(data.first, data.second)
 
     }
 
@@ -335,6 +356,7 @@ class Act_home : ComponentActivity(), Home, JopCountHistory {//class============
         tracker.destroy()
         presenter.onDestroy()
         historyPresenter.onDestroy()
+        achievementPresenter.onDestroy()
     }
 
     override fun historyList(list: List<JopHistory>) {
@@ -380,7 +402,7 @@ private fun HomeFullScreen(
     jopHistoryMoreClick: () -> Unit = {},
     getJopCount : Long = 0L,
     historyStatus : String = "",
-    newNotification : Boolean = true,
+    newNotification : Boolean = false,
     notificationCount : String = "",
     achievementMoreClick : () -> Unit = {},
     achievementLastItemName : String = "",
@@ -433,7 +455,8 @@ private fun HomeFullScreen(
             notificationClick = { notificationClick() },
             addMantraClick = { addMantraClick() },
             settingClick = { settingClick() },
-            isAnyDialogShowing = isAnyDialogVisible
+            isAnyDialogShowing = isAnyDialogVisible,
+            notificationCount = notificationCount
         ) },
 
         modifier = Modifier
@@ -549,8 +572,23 @@ private fun Toolbar(
     notificationClick : () -> Unit = {},
     addMantraClick : () -> Unit = {},
     settingClick : () -> Unit = {},
-    isAnyDialogShowing : Boolean = false
+    isAnyDialogShowing : Boolean = false,
+    notificationCount: String = "7"
 ) {
+
+    val notificationCountMap = mapOf(
+        "" to "",
+        "0" to "০",
+        "1" to "১",
+        "2" to "২",
+        "3" to "৩",
+        "4" to "৪",
+        "5" to "৫",
+        "6" to "৬",
+        "7" to "৭",
+        "8" to "৮",
+        "9" to "৯"
+    )
 
     Box(
 
@@ -625,6 +663,36 @@ private fun Toolbar(
                                 .size(ScreenSize().responsiveImageSize(22, 25, 27))
 
                         )
+
+                    }
+
+                    if (index == 0 && (notificationCount.toIntOrNull() ?: 0) > 0){
+
+                        Box(
+
+                            modifier = Modifier
+                                .size(20.dp)
+                                .offset(x = 5.dp, y = (-2).dp)
+                                .clip(shape = CircleShape)
+                                .background(color = Color(0xFFF44336))
+                                .align(Alignment.TopEnd),
+                            contentAlignment = Alignment.Center
+
+                        ) {
+
+                            Text(text = if ((notificationCount.toIntOrNull() ?: 0) > 9) "৯+" else notificationCountMap[notificationCount] ?: notificationCount,
+                                fontSize = ScreenSize().responsiveTextSize(12, 14, 16),
+                                fontFamily = BanglaHelper.banglaFont(),
+                                fontWeight = FontWeight.Normal,
+                                color = Color(0xFFFFFFFF),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier
+                                    .wrapContentWidth()
+                                    .offset(y = (-1.3).dp)
+                                    .align(Alignment.Center)
+                            )
+
+                        }//box
 
                     }
 
