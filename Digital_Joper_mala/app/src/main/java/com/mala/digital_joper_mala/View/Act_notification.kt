@@ -47,7 +47,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mala.digital_joper_mala.Helper.ACTIVITY
 import com.mala.digital_joper_mala.Helper.BanglaHelper
 import com.mala.digital_joper_mala.Helper.ComposeHelper
@@ -370,17 +369,18 @@ private fun Toolbar(
 @Preview(showBackground = true)
 @Composable
 fun NotificationItem(
-    title : String = "TTTTT",
-    description : String = "DDDDDD",
+    title : String = "",
+    description : String = "",
     isDark: Boolean = false,
     isShowed : Boolean = false,
     notificationClick : () -> Unit = {}
 ) {
 
-    var isDescription by remember { mutableStateOf(true) }
+    var isDescriptionVisible by remember { mutableStateOf(false) }
     val animatedIcon = animateFloatAsState(
-        targetValue = if (isDescription) 180f else 360f
+        targetValue = if (isDescriptionVisible) 180f else 360f
     )
+    var isTitleClicked by remember { mutableStateOf(false) }
 
     Box(
 
@@ -410,7 +410,8 @@ fun NotificationItem(
                     .clip(RoundedCornerShape(12.dp))
                     .clickable{
                         notificationClick()
-                        isDescription = !isDescription
+                        isDescriptionVisible = !isDescriptionVisible
+                        isTitleClicked = true
                     }
                     .padding(ScreenSize().responsivePadding(10, 12, 14))
 
@@ -419,7 +420,14 @@ fun NotificationItem(
                 Text( text = title,
                     fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                     fontFamily = BanglaHelper.banglaFont(),
-                    fontWeight = if (isShowed) FontWeight.Normal else FontWeight.SemiBold,
+                    fontWeight = if (isShowed){
+                        FontWeight.Normal
+                    } else {
+
+                        if (isTitleClicked) FontWeight.Normal else FontWeight.SemiBold
+
+
+                    },
                     color =
                         if (isDark){
 
@@ -429,7 +437,7 @@ fun NotificationItem(
 
                             }else{
 
-                                Color(0xFFFFFFFF)
+                                if (!isTitleClicked) Color(0xFFFFFFFF) else Color(0xFFDADADA)
 
                             }
 
@@ -441,7 +449,7 @@ fun NotificationItem(
 
                             }else {
 
-                                Color(0xFF000000)
+                                if (!isTitleClicked) Color(0xFF000000) else Color(0xFF3F3E3E)
 
                             }}
                     ,
@@ -465,7 +473,7 @@ fun NotificationItem(
             }//box
 
 
-            if (isDescription){
+            if (isDescriptionVisible){
 
                 Box(
 
@@ -479,7 +487,7 @@ fun NotificationItem(
                         )
                         .clip(RoundedCornerShape(12.dp))
                         .clickable{
-                            isDescription = !isDescription
+                            isDescriptionVisible = !isDescriptionVisible
                         }
                         .padding(ScreenSize().responsivePadding(10, 12, 14))
 
