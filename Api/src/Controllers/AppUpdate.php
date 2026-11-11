@@ -18,7 +18,7 @@ class AppUpdate{
 
         if(empty($app_update)){
 
-            Log::writeNormalLog("Notification Json", "Empty app_update json");
+            Log::writeNormalLog("App_Update_Json", "Empty app_update json");
 
             return ResHelper::errorResponse(
                 $response,
@@ -45,7 +45,7 @@ class AppUpdate{
         }else{
 
             Log::writeNormalLog(
-                "Version",
+                "App_Update_Json",
                 "no new version = $old_version"
             );
 
