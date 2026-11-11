@@ -122,7 +122,13 @@ class Act_home : ComponentActivity(), Home, JopCountHistory, Achievements {//cla
             historyPresenter.getOneJopCount()
             presenter.getNotificationFromServer()
             achievementPresenter.getLastCompletedAchievement()
-            presenter.getNotificationCount()
+
+
+            LaunchedEffect(isNotification.value) {
+
+                presenter.getNotificationCount()
+
+            }
 
             if (jopHistoryCount.longValue == 0L){
 
