@@ -532,9 +532,11 @@ private fun AchievementItem(
                 .wrapContentWidth()
                 .clip(shape = RoundedCornerShape(40.dp))
                 .background(
-                    color = if (isAchievementCompleted) Color(0x6392EF96) else Color(
-                        0xFFE8E8E8
-                    )
+                    color = if (isAchievementCompleted){
+                        if (isDark) Color(0xFF4CAF50) else Color(0x6392EF96)
+                    } else{
+                        if (isDark) Color(0xFF797878) else Color(0xFFE8E8E8)
+                    }
                 )
                 .padding(start = 16.dp, end = 16.dp)
                 //.alpha(if (isAchievementCompleted) 1f else 0.5f)
