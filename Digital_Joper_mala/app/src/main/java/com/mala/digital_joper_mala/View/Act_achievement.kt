@@ -478,6 +478,7 @@ private fun AchievementItem(
 
         ) {
             /* Complete image  */
+
             if (!isAchievementCompleted){
 
                 Image( painter = painterResource(R.drawable.img_lock),
