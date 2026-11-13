@@ -201,8 +201,8 @@ class ComposeHelper {
 
                                     if (counterLimit != countWithCacheNumber && counterLimit > countWithCacheNumber) {
 
-                                        number++
-                                        count++
+                                        countWithCacheNumber++
+                                        realCountWithoutCache++
 
                                         pCount(count)
 
