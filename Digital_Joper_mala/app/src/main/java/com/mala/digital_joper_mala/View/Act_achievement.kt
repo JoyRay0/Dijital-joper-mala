@@ -512,7 +512,7 @@ private fun AchievementItem(
                 fontSize = ScreenSize().responsiveTextSize(16, 18, 20),
                 fontFamily = BanglaHelper.banglaFont(),
                 fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF525252),
+                color = if (isDark) Color(0xFFEFEEEE) else Color(0xFF525252),
                 textAlign = TextAlign.Start,
                 modifier = Modifier
                     .wrapContentWidth()
