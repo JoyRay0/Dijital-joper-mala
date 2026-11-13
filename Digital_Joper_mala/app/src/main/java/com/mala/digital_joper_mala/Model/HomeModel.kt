@@ -31,7 +31,12 @@ data class HomeData(
     val answer : String = "",
     val title : String = "",
     val mantra : String = "",
-    val description : String = ""
+    val description : String = "",
+    val date : String = "",
+    @SerializedName("start_at")
+    val startAt : String = "",
+    @SerializedName("end_at")
+    val endAt : String = ""
 
 )
 
