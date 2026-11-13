@@ -91,7 +91,7 @@ class Act_add_mantra : ComponentActivity(), UserMantras {//class================
                     backClick = {
 
                         IntentHelper.normalIntent(this, Act_home::class.java)
-                        finish()
+                        finishAffinity()
 
                     },
                     mantraList = userMantraList,
@@ -124,7 +124,7 @@ class Act_add_mantra : ComponentActivity(), UserMantras {//class================
             BackHandler() {
 
                 IntentHelper.normalIntent(this, Act_home::class.java)
-                finish()
+                finishAffinity()
 
             }
         }

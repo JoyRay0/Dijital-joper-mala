@@ -113,7 +113,7 @@ class Act_all_mantra : ComponentActivity(), AllMantra {//class==================
                     isDark = isDark,
                     backClick = {
                         IntentHelper.normalIntent(this, Act_home::class.java)
-                        finish()
+                        finishAffinity()
                                 },
                     alertDialogStatus = dialogStatus.value,
                     alertDialogUserData = { presenter.setAllMantraCache(it) },
@@ -146,7 +146,7 @@ class Act_all_mantra : ComponentActivity(), AllMantra {//class==================
                 BackHandler() {
 
                     IntentHelper.normalIntent(this, Act_home::class.java)
-                    finish()
+                    finishAffinity()
 
                 }
 

@@ -82,7 +82,7 @@ class Act_chart : ComponentActivity(), JopCountHistory {//class=================
                 JopHistoryFullScreen(
                     backClick = {
                         IntentHelper.normalIntent(this, Act_home::class.java)
-                        finish()
+                        finishAffinity()
                                 },
                     deleteClick = { },
                     jopHistoryList = jopHistoryList,
@@ -97,7 +97,7 @@ class Act_chart : ComponentActivity(), JopCountHistory {//class=================
             BackHandler() {
 
                 IntentHelper.normalIntent(this, Act_home::class.java)
-                finish()
+                finishAffinity()
 
             }
 

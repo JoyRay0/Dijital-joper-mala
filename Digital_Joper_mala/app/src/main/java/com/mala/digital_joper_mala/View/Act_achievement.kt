@@ -74,7 +74,7 @@ class Act_achievement : ComponentActivity(), Achievements {//class==============
                     isDark = isDark,
                     backClick = {
                         IntentHelper.normalIntent(this, Act_home::class.java)
-                        finish()
+                        finishAffinity()
                     },
                     achievementStatus = achievementStatus.value,
                     achievementsList = achievementList
@@ -85,7 +85,7 @@ class Act_achievement : ComponentActivity(), Achievements {//class==============
             BackHandler() {
 
                 IntentHelper.normalIntent(this, Act_home::class.java)
-                finish()
+                finishAffinity()
 
             }
         }
