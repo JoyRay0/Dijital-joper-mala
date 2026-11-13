@@ -238,7 +238,6 @@ class HomeModel(
 
                     isNewNotification(hasInserted)
 
-
                 }else{
 
                     isNewNotification(false)
