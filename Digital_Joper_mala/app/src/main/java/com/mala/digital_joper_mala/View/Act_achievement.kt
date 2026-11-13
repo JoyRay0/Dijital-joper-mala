@@ -548,7 +548,11 @@ private fun AchievementItem(
                 fontSize = ScreenSize().responsiveTextSize(12, 14, 16),
                 fontFamily = BanglaHelper.banglaFont(),
                 fontWeight = FontWeight.SemiBold,
-                color = if (isAchievementCompleted) Color(0xFF494848) else Color.Black.copy(alpha = 0.6f),
+                color = if (isAchievementCompleted){
+                    if (isDark) Color(0xFFF1F0F0) else Color(0xFF494848)
+                } else{
+                    if (isDark) Color.White.copy(alpha = 0.6f) else Color.Black.copy(alpha = 0.6f)
+                },
                 textAlign = TextAlign.End,
                 modifier = Modifier
                     .wrapContentWidth()
