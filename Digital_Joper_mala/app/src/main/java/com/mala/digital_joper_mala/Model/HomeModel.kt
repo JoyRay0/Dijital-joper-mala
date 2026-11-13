@@ -200,7 +200,6 @@ class HomeModel(
     fun notificationFromServer(
         isNewNotification : (Boolean) -> Unit
     ){
-
         val cacheKey = "notification_sync"
         val currentTime = System.currentTimeMillis()
         val lastSyncTime = cache.getCache(cacheKey, "0").toLongOrNull() ?: 0
