@@ -6,7 +6,6 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -40,6 +39,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -49,7 +49,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mala.digital_joper_mala.R
 import com.rk_softwares.lawguidebook.Helper.ScreenSize
-import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -60,28 +59,29 @@ class ComposeHelper {
    //@Preview(showBackground = true)
     @Composable
     fun Counter(
-        modifier: Modifier = Modifier,
-        counterLimit : Long = 0,
-        currentCount : (Long) -> Unit = {},
-        isDark: Boolean = false,
-        isVibrationEnabled : Boolean = true,
-        countNumber : String = "",
-        pCount : (Long) -> Unit = {}
+       modifier: Modifier = Modifier,
+       counterLimit : Long = 0,
+       currentCount : (Long) -> Unit = {},
+       isDark: Boolean = false,
+       isVibrationEnabled : Boolean = true,
+       lastCountNumberInCache : String = "",
+       realCountForHistoryWithoutCache : (Long) -> Unit = {},
+       addButtonCountClick : (Long) -> Unit = {}
     ) {
 
-        var number by remember { mutableStateOf(0L) }
-        var count by remember { mutableLongStateOf(0L) }
+        var countWithCacheNumber by remember { mutableStateOf(0L) }
+        var realCountWithoutCache by remember { mutableLongStateOf(0L) }
         val context = LocalContext.current
 
-        LaunchedEffect(countNumber) {
+        LaunchedEffect(lastCountNumberInCache) {
 
-            if (countNumber.isEmpty()){
+            if (lastCountNumberInCache.isEmpty()){
 
-                number = 0L
+                countWithCacheNumber = 0L
 
             }else{
 
-                number = countNumber.toLong()
+                countWithCacheNumber = lastCountNumberInCache.toLong()
 
             }
 
@@ -89,9 +89,9 @@ class ComposeHelper {
 
         val maxWidth = ScreenSize().responsiveHeightWidth(120, 130, 140)
 
-        val width = if (number.toString().length > 5){
+        val width = if (countWithCacheNumber.toString().length > 5){
 
-            maxWidth + ((number.toString().length - 5) * 5).dp
+            maxWidth + ((countWithCacheNumber.toString().length - 5) * 5).dp
 
         }else maxWidth
 
@@ -124,7 +124,7 @@ class ComposeHelper {
 
                 ) {
 
-                    Text(BanglaHelper.readLong(number),
+                    Text(BanglaHelper.readLong(countWithCacheNumber),
                         fontSize = ScreenSize().responsiveTextSize(25, 27, 29),
                         fontFamily = BanglaHelper.banglaFont(),
                         fontWeight = FontWeight.SemiBold,
@@ -137,7 +137,7 @@ class ComposeHelper {
                             .padding(10.dp)
                     )
 
-                    if (number > 0L) currentCount(number)
+                    if (countWithCacheNumber > 0L) currentCount(countWithCacheNumber)
 
                 }//box
 
@@ -162,7 +162,7 @@ class ComposeHelper {
                             .shadow(elevation = 5.dp, shape = CircleShape)
                             .clip(shape = CircleShape)
                             .clickable {
-                                number = 0L
+                                countWithCacheNumber = 0L
                                 if (isVibrationEnabled) vibration(context)
                                 currentCount(0L)
                             }
