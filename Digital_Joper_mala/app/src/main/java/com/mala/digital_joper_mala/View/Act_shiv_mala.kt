@@ -33,7 +33,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mala.digital_joper_mala.Helper.ACTIVITY
 import com.mala.digital_joper_mala.Helper.BanglaHelper
 import com.mala.digital_joper_mala.Helper.ComposeHelper
@@ -114,7 +113,7 @@ class Act_shiv_mala : ComponentActivity(), ShivMala, Achievements {
                     isDark = isDark,
                     backClick = {
                         IntentHelper.normalIntent(this, Act_home::class.java)
-                        finish()
+                        finishAffinity()
                                 },
                     mantraList = mantraList,
                     floatingButtonClick = { presenter.getShivMala() },
@@ -128,8 +127,6 @@ class Act_shiv_mala : ComponentActivity(), ShivMala, Achievements {
                     currentCount = {
                         currentCount.value = it.toString()
 
-                        achievementPresenter.insertUserCount("shiv_mala", it.toString())
-
                     },
                     lastCountCache = lastCountCache.value,
                     setCountLimit = {
@@ -137,7 +134,19 @@ class Act_shiv_mala : ComponentActivity(), ShivMala, Achievements {
                         reloadCountLimit++
                     },
                     getCountLimit = getCountLimit.value,
-                    pCount = { pCount.longValue = it }
+                    saveCountWithoutCacheInJopaHistoryDatabase = { pCount.longValue = it },
+                    achievementCloseButtonClick = {
+
+                        achievementPresenter.updateDialogStatus("shiv_mala", it.toString(), true)
+
+                    },
+                    addButtonCountClick = {
+
+                        achievementPresenter.insertUserCount("shiv_mala", it.toString())
+
+                        if (it in countList) reloadAchievementListCount++
+
+                    }
                 )
 
             }
@@ -145,7 +154,7 @@ class Act_shiv_mala : ComponentActivity(), ShivMala, Achievements {
             BackHandler() {
 
                 IntentHelper.normalIntent(this, Act_home::class.java)
-                finish()
+                finishAffinity()
 
             }
         }
@@ -223,7 +232,9 @@ private fun ShivMalaFullScreen(
     lastCountCache : String = "",
     setCountLimit: (String) -> Unit = {},
     getCountLimit: String = "0",
-    pCount : (Long) -> Unit = {}
+    saveCountWithoutCacheInJopaHistoryDatabase : (Long) -> Unit = {},
+    achievementCloseButtonClick : (Long) -> Unit = {},
+    addButtonCountClick : (Long) -> Unit = {}
 ) {
 
     var isMantraDialogAnimation by remember { mutableStateOf(false) }
@@ -232,34 +243,32 @@ private fun ShivMalaFullScreen(
 
     var isAchievementAnimation by remember { mutableStateOf(false) }
     var isAchievementDialogVisible by remember { mutableStateOf(false) }
-    var count by remember { mutableStateOf(0L) }
+    var countWithCache by remember { mutableStateOf(0L) }
 
     var isAnyDialogVisible by remember { mutableStateOf(false) }
 
     val countList = listOf(1000L, 5000L, 10000L, 50000L, 100000L, 500000L)
 
-    LaunchedEffect(count, achievementList) {
+    LaunchedEffect(countWithCache, achievementList) {
 
         /* current count to save in cache */
 
-        currentCount(count)
+        currentCount(countWithCache)
 
         /* check for achievement dialog */
-        var isExists = false
+        if (countWithCache !in countList) return@LaunchedEffect
 
         for (it in achievementList){
 
-            if (it.targetAchievementCount == count.toString() && it.isCompleted){
+            if (it.targetAchievementCount == countWithCache.toString() && it.isCompleted && !it.isDialogShowed){
 
-                isExists = true
+                isAchievementDialogVisible = true
+                isAchievementAnimation = true
+
+                break
 
             }
 
-        }
-
-        if (!isExists && count in countList){
-            isAchievementAnimation = true
-            isAchievementDialogVisible = true
         }
 
     }
@@ -314,11 +323,12 @@ private fun ShivMalaFullScreen(
                     .fillMaxWidth()
                     .align(Alignment.Center),
                 counterLimit = countList[getCountLimit.toIntOrNull() ?: 0],
-                currentCount = { count = it },
+                currentCount = { countWithCache = it },
                 isDark = isDark,
                 isVibrationEnabled = isVibration,
-                countNumber = lastCountCache,
-                pCount = { pCount(it) }
+                lastCountNumberInCache = lastCountCache,
+                realCountForHistoryWithoutCache = { saveCountWithoutCacheInJopaHistoryDatabase(it) },
+                addButtonCountClick = { addButtonCountClick(it) }
             )
 
             /* floating button */
@@ -355,9 +365,10 @@ private fun ShivMalaFullScreen(
                 ComposeHelper().MilestonesDialog(
                     closeClick = {
                         isAchievementAnimation = false
-                        saveCount(count)
+                        saveCount(countWithCache)
+                        achievementCloseButtonClick(countWithCache)
                     },
-                    currentCount = count,
+                    currentCount = countWithCache,
                     isDark = isDark,
                     animationStatus = isAchievementAnimation,
                     onAnimationFinished = { isAchievementDialogVisible = false }

@@ -160,7 +160,7 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {//class======
                     isDark = isDark,
                     backClick = {
                         IntentHelper.normalIntent(this, Act_home::class.java)
-                        finish()
+                        finishAffinity()
                                 },
                     isVibration = isVibration,
                     saveAchievementCount = { count ->
@@ -169,11 +169,8 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {//class======
 
                     },
                     achievementList = achievementList,
-                    currentCount = {
+                    totalCurrentCountWithCache = {
                         currentCount.value = it.toString()
-
-                        achievementPresenter.insertUserCount("easy_mala", it.toString())
-
                     },
                     lastCountCache = lastCountCache.value,
                     setCountLimit = {
@@ -183,10 +180,20 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {//class======
                     getCountLimit = getCountLimit.value,
                     favoriteMantraList = favoriteMantraList,
                     userMantraList = userMantraList,
-                    pCount = { pCount.longValue = it },
+                    saveInJopaHistoryDatabase = { pCount.longValue = it },
                     isMantraPaginationLoading = isPaginationLoading.value,
                     onFavoriteMantraLoadMore = { reloadFavoriteMantraList++ },
-                    onUserMantraLoadMore = { reloadUserMantraList++ }
+                    onUserMantraLoadMore = { reloadUserMantraList++ },
+                    saveRealCountInAchievementDatabaseWithoutCache = {
+                        achievementPresenter.insertUserCount("easy_mala", it.toString())
+                        if (it in countList) reloadAchievementListCount++
+
+                    },
+                    achievementCloseButtonClick = {
+
+                        achievementPresenter.updateDialogStatus("easy_mala", it.toString(), true)
+
+                    }
                 )
 
             }
@@ -194,7 +201,7 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {//class======
             BackHandler() {
 
                 IntentHelper.normalIntent(this, Act_home::class.java)
-                finish()
+                finishAffinity()
 
             }
 
@@ -262,8 +269,6 @@ class Act_easy_mala : ComponentActivity(), EasyMala, Achievements {//class======
     override fun achievementCountList(list: List<Achievement>) {
         achievementList.clear()
         achievementList.addAll(list)
-
-        println("Achievement List = $list")
     }
 
 }
@@ -277,16 +282,18 @@ private fun EasyMalaFullScreen(
     isVibration : Boolean = false,
     saveAchievementCount : (Long) -> Unit = {},
     achievementList : List<Achievement> = emptyList(),
-    currentCount : (Long) -> Unit = {},
+    totalCurrentCountWithCache : (Long) -> Unit = {},
     lastCountCache : String = "",
     setCountLimit: (String) -> Unit = {},
     getCountLimit: String = "0",
     favoriteMantraList : List<EasyMalaItem> = emptyList(),
     userMantraList : List<EasyMalaItem> = emptyList(),
-    pCount : (Long) -> Unit = {},
+    saveInJopaHistoryDatabase : (Long) -> Unit = {},
     isMantraPaginationLoading : Boolean = false,
     onFavoriteMantraLoadMore: () -> Unit = {},
-    onUserMantraLoadMore: () -> Unit = {}
+    onUserMantraLoadMore: () -> Unit = {},
+    saveRealCountInAchievementDatabaseWithoutCache : (Long) -> Unit = {},
+    achievementCloseButtonClick : (Long) -> Unit = {}
     ) {
 
     var isMantraDialogVisible by remember { mutableStateOf(false) }
@@ -297,35 +304,32 @@ private fun EasyMalaFullScreen(
     var isAchievementDialogVisible by remember { mutableStateOf(false) }
     var isAchievementAnimation by remember { mutableStateOf(false) }
 
-    var count by remember { mutableStateOf(0L) }
+    var countWithCache by remember { mutableStateOf(0L) }
     var isAnyDialogVisible by remember { mutableStateOf(false) }
 
     val countList = listOf(1000L, 5000L, 10000L, 50000L, 100000L, 500000L)
 
-    LaunchedEffect(count, achievementList) {
+    LaunchedEffect(countWithCache, achievementList) {
 
         /* current count to save in cache */
 
-        currentCount(count)
+        totalCurrentCountWithCache(countWithCache)
 
         /* check for achievement dialog */
 
-        var isExists = false
+        if (countWithCache !in countList) return@LaunchedEffect
 
         for (it in achievementList){
 
-            if (it.targetAchievementCount == count.toString() && it.isCompleted){
+            if (it.targetAchievementCount == countWithCache.toString() && it.isCompleted && !it.isDialogShowed){
 
-                isExists = true
+                isAchievementDialogVisible = true
+                isAchievementAnimation = true
+
+                break
 
             }
 
-        }
-
-        if (!isExists && count in countList){
-
-            isAchievementDialogVisible = true
-            isAchievementAnimation = true
         }
 
     }
@@ -388,11 +392,12 @@ private fun EasyMalaFullScreen(
                         .fillMaxWidth()
                         .align(Alignment.Center),
                     counterLimit = getCountLimit.toLongOrNull() ?: 10000L,
-                    currentCount = { count = it },
+                    currentCount = { countWithCache = it },
                     isDark = isDark,
                     isVibrationEnabled = isVibration,
-                    countNumber = lastCountCache,
-                    pCount = { pCount(it) }
+                    lastCountNumberInCache = lastCountCache,
+                    realCountForHistoryWithoutCache = { saveInJopaHistoryDatabase(it) },
+                    addButtonCountClick = { saveRealCountInAchievementDatabaseWithoutCache(it) }
                 )
 
                 /* count edit */
@@ -458,9 +463,10 @@ private fun EasyMalaFullScreen(
                     ComposeHelper().MilestonesDialog(
                         closeClick = {
                             isAchievementAnimation = false
-                            saveAchievementCount(count)
+                            saveAchievementCount(countWithCache)
+                            achievementCloseButtonClick(countWithCache)
                         },
-                        currentCount = count,
+                        currentCount = countWithCache,
                         isDark = isDark,
                         animationStatus = isAchievementAnimation,
                         onAnimationFinished = { isAchievementDialogVisible = false }
