@@ -204,7 +204,8 @@ class ComposeHelper {
                                         countWithCacheNumber++
                                         realCountWithoutCache++
 
-                                        pCount(count)
+                                        realCountForHistoryWithoutCache(realCountWithoutCache)
+                                        addButtonCountClick(1)
 
                                     }
 
