@@ -8,7 +8,8 @@ data class Achievement(
     val malaName : String = "",
     val targetAchievementCount : String = "",
     val isCompleted : Boolean = false,
-    val userCount : Int = 0
+    val userCount : Int = 0,
+    val isDialogShowed : Boolean = false
 )
 
 class AchievementModel(
@@ -23,6 +24,14 @@ class AchievementModel(
 
     }
 
+    fun updateDialogStatus(malaName: String, count: String, isDialogShowed : Boolean): Boolean{
+
+        if (malaName.isEmpty() || count.isEmpty() || !isDialogShowed) return false
+
+        return db.updateDialogShowedStatus(malaName, count, isDialogShowed)
+
+    }
+
     fun getAchievement(malaName: String) : List<Achievement>{
 
         if (malaName.isEmpty()) return emptyList()
@@ -34,6 +43,17 @@ class AchievementModel(
     fun getAllAchievements() : List<Achievement>{
 
         return db.getAllAchievement()
+
+    }
+
+    fun getLastCompletedAchievement() : Pair<String, String>{
+
+        val data = db.getLastCompleteAchievement()
+
+        val first = data.first
+        val second = data.second
+
+        return Pair(first, second)
 
     }
 

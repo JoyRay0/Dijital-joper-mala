@@ -15,6 +15,7 @@ interface Achievements{
     fun achievementList(list: List<Achievement>){}
     fun achievementStatus(status : String){}
     fun achievementListUpdated(isUpdated : Boolean){}
+    fun lastCompletedAchievement(data : Pair<String, String>){}
 }
 
 enum class AchievementStatus(val value : String){
@@ -46,6 +47,16 @@ class AchievementPresenter(
                 view.achievementCountList(updateList)
 
             }
+
+        }
+
+    }
+
+    fun updateDialogStatus(malaName: String, count: String, isDialogShowed : Boolean){
+
+        scopeIO.launch {
+
+            model.updateDialogStatus(malaName, count, isDialogShowed)
 
         }
 
@@ -85,6 +96,29 @@ class AchievementPresenter(
                 }else{
 
                     view.achievementStatus(AchievementStatus.Failed.value)
+
+                }
+
+            }
+
+        }
+
+    }
+
+    fun getLastCompletedAchievement(){
+
+        scopeIO.launch {
+
+            val data = model.getLastCompletedAchievement()
+
+            val first = data.first
+            val second = data.second
+
+            withContext(Dispatchers.Main){
+
+                if (!first.isEmpty() && !second.isEmpty()){
+                    
+                    view.lastCompletedAchievement(Pair(first, second))
 
                 }
 
