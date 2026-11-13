@@ -216,6 +216,7 @@ class HomeModel(
         OkHttpWrapper()
             .url(ApiLinkHelper.notification())
             .header(context)
+            .post(HomeData(date = todayDate))
             .execute(Home::class.java, onSuccess = {
 
                 if (it.status == "Success"){
