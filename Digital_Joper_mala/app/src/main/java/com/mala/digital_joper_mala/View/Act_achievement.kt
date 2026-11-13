@@ -487,7 +487,9 @@ private fun AchievementItem(
                         .wrapContentWidth()
                         .size(ScreenSize().responsiveImageSize(20, 23, 26))
                         .alpha(0.5f)
-                        .align(Alignment.CenterVertically)
+                        .align(Alignment.CenterVertically),
+                    colorFilter = ColorFilter.tint( if (isDark)Color(0xFFFFFFFF) else Color(
+                        0xFF2C2C2C))
 
                 )
 
