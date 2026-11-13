@@ -199,7 +199,7 @@ class ComposeHelper {
 
                                 if (counterLimit > 0L) {
 
-                                    if (counterLimit != number && counterLimit > number) {
+                                    if (counterLimit != countWithCacheNumber && counterLimit > countWithCacheNumber) {
 
                                         number++
                                         count++
