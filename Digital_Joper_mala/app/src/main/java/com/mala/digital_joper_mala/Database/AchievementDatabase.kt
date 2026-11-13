@@ -10,7 +10,7 @@ import com.mala.digital_joper_mala.Model.Achievement
 
 class AchievementDatabase(
     val context : Context
-) : SQLiteOpenHelper(context, "achievement.db", null, 5) {
+) : SQLiteOpenHelper(context, "achievement.db", null, 9) {
 
     private companion object{
 
@@ -20,6 +20,8 @@ class AchievementDatabase(
         const val ACHIEVEMENT_TARGET = "achievement_target"
         const val IS_COMPLETE = "is_complete"
         const val TOTAL_USER_COUNT = "total_user_count"
+        const val COMPLETED_AT = "completed_at"
+        const val IS_DIALOG_SHOWED = "is_dialog_showed"
 
     }
 
@@ -38,7 +40,9 @@ $ID INTEGER PRIMARY KEY AUTOINCREMENT,
 $MALA_NAME TEXT NOT NULL,
 $ACHIEVEMENT_TARGET TEXT NOT NULL,
 $IS_COMPLETE INTEGER DEFAULT 0,
-$TOTAL_USER_COUNT INTEGER DEFAULT 0
+$TOTAL_USER_COUNT INTEGER DEFAULT 0,
+$COMPLETED_AT INTEGER DEFAULT 0,
+$IS_DIALOG_SHOWED INTEGER DEFAULT 0
 )
 """.trimIndent()
 
@@ -56,7 +60,7 @@ $TOTAL_USER_COUNT INTEGER DEFAULT 0
 
         if (oldVersion < newVersion){
 
-            db?.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
+            db?.execSQL("""DROP TABLE IF EXISTS $TABLE_NAME""".trimIndent())
 
         }
 
@@ -98,6 +102,7 @@ $TOTAL_USER_COUNT INTEGER DEFAULT 0
 
                         put(IS_COMPLETE, 1)
                         put(TOTAL_USER_COUNT, newCount)
+                        put(COMPLETED_AT, System.currentTimeMillis())
 
                     }
 
@@ -120,6 +125,40 @@ $TOTAL_USER_COUNT INTEGER DEFAULT 0
 
     }
 
+    fun updateDialogShowedStatus(malaName: String, count : String ,isDialogShowed : Boolean) : Boolean{
+
+        if (malaName !in malaNameList || count !in countList || !isDialogShowed){
+
+            return false
+
+        }
+
+        val db = dbOpen(true)
+        var updateStatus = false
+
+        try {
+
+            val cv = ContentValues()
+
+            cv.put(IS_DIALOG_SHOWED, 1)
+
+            updateStatus = db.update(
+                    TABLE_NAME,
+                    cv,
+                    "$IS_COMPLETE = 1 AND $MALA_NAME = ? AND $IS_DIALOG_SHOWED = 0",
+                    arrayOf(malaName)
+                ) > 0
+
+        }catch (e : Exception){
+
+            e.printStackTrace()
+
+        }
+
+        return updateStatus
+
+    }
+
     fun getAchievement(malaName : String) : List<Achievement> {
 
         if (malaName.isEmpty()) return emptyList()
@@ -132,18 +171,20 @@ $TOTAL_USER_COUNT INTEGER DEFAULT 0
 
         try {
 
-            cursor = db.rawQuery("SELECT $ACHIEVEMENT_TARGET, $IS_COMPLETE FROM $TABLE_NAME WHERE $MALA_NAME = ?", arrayOf(malaName))
+            cursor = db.rawQuery("SELECT * FROM $TABLE_NAME WHERE $MALA_NAME = ?", arrayOf(malaName))
 
             while (cursor.moveToNext()){
 
                 val count = cursor.getString(cursor.getColumnIndexOrThrow(ACHIEVEMENT_TARGET))
                 val is_complete = cursor.getInt(cursor.getColumnIndexOrThrow(IS_COMPLETE))
                 val user_count = cursor.getInt(cursor.getColumnIndexOrThrow(TOTAL_USER_COUNT))
+                val isDialogStatus = cursor.getInt(cursor.getColumnIndexOrThrow(IS_DIALOG_SHOWED))
 
                 list.add(Achievement(
                     targetAchievementCount = count,
                     isCompleted = is_complete > 0,
-                    userCount = user_count
+                    userCount = user_count,
+                    isDialogShowed = if (isDialogStatus == 0) false else true
                 ))
             }
 
@@ -240,6 +281,38 @@ $TOTAL_USER_COUNT INTEGER DEFAULT 0
 
     }
 
+    fun getLastCompleteAchievement() : Pair<String, String> {
+
+        val db = dbOpen()
+
+        var cursor: Cursor? = null
+
+        try {
+
+            cursor = db.rawQuery("SELECT $MALA_NAME, $ACHIEVEMENT_TARGET FROM $TABLE_NAME WHERE $IS_COMPLETE = 1 ORDER BY $COMPLETED_AT DESC LIMIT 1", null)
+
+            if (cursor.moveToFirst()) {
+
+                val malaName = cursor.getString(cursor.getColumnIndexOrThrow(MALA_NAME))
+                val target = cursor.getString(cursor.getColumnIndexOrThrow(ACHIEVEMENT_TARGET))
+
+                return Pair(malaName, target)
+
+            }
+
+        } catch (e: Exception) {
+
+            e.printStackTrace()
+
+        } finally {
+
+            cursor?.close()
+
+        }
+
+        return Pair("", "")
+    }
+
     /*
     private fun isAlreadyUpdated(malaName : String, count: String) : Boolean {
 
@@ -286,6 +359,7 @@ $TOTAL_USER_COUNT INTEGER DEFAULT 0
                     cv.put(MALA_NAME, name)
                     cv.put(ACHIEVEMENT_TARGET, count)
                     cv.put(IS_COMPLETE, 0)
+                    cv.put(IS_DIALOG_SHOWED, 0)
 
                     db?.insert(TABLE_NAME, null, cv)
 
