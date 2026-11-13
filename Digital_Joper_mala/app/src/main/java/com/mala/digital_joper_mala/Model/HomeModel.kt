@@ -214,7 +214,7 @@ class HomeModel(
         val todayDate = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(java.util.Date())
 
         OkHttpWrapper()
-            .url(ApiLinkHelper.appUpdate())
+            .url(ApiLinkHelper.notification())
             .header(context)
             .execute(Home::class.java, onSuccess = {
 
