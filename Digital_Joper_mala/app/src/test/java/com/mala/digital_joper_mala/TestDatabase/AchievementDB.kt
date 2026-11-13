@@ -39,65 +39,6 @@ class AchievementDB {
 
     }
 
-    @Test
-    fun test_update_achievement_easy_mala_return_true(){
-
-        val mala_name = "easy_mala"
-        val achievement_count = "1000"
-
-        //every { db.updateAchievement(mala_name, achievement_count) } returns true
-
-    }
-
-    @Test
-    fun test_update_achievement_boishnob_mala_return_true(){
-
-        val mala_name = "boishnob_mala"
-        val achievement_count = "5000"
-
-       // every { db.updateAchievement(mala_name, achievement_count) } returns true
-
-    }
-
-    @Test
-    fun test_update_achievement_shiv_mala_return_true(){
-
-        val mala_name = "shiv_mala"
-        val achievement_count = "1000"
-
-        //every { db.updateAchievement(mala_name, achievement_count) } returns true
-
-    }
-
-    @Test
-    fun test_update_achievement_easy_mala_return_false(){
-
-        val mala_name = ""
-        val achievement_count = "1000"
-
-        //every { db.updateAchievement(mala_name, achievement_count) } returns false
-
-    }
-
-    @Test
-    fun test_update_achievement_boishnob_mala_return_false(){
-
-        val mala_name = ""
-        val achievement_count = "5000"
-
-        //every { db.updateAchievement(mala_name, achievement_count) } returns false
-
-    }
-
-    @Test
-    fun test_update_achievement_shiv_mala_return_false(){
-
-        val mala_name = ""
-        val achievement_count = "1000"
-
-        //every { db.updateAchievement(mala_name, achievement_count) } returns false
-
-    }
 
     @Test
     fun test_get_achievement_easy_mala(){
@@ -144,6 +85,50 @@ class AchievementDB {
         ))
 
         every { db.getAchievement(mala_name) } returns list
+
+    }
+
+    @Test
+    fun test_empty_mala_name_update_dialog_status(){
+
+        val malaName = ""
+        val count = "1000"
+        val showed = true
+
+        every { db.updateDialogShowedStatus(malaName, count, showed) } returns false
+
+    }
+
+    @Test
+    fun test_empty_count_update_dialog_status(){
+
+        val malaName = "easy_mala"
+        val count = ""
+        val showed = true
+
+        every { db.updateDialogShowedStatus(malaName, count, showed) } returns false
+
+    }
+
+    @Test
+    fun test_showed_false_update_dialog_status(){
+
+        val malaName = "easy_mala"
+        val count = "1000"
+        val showed = false
+
+        every { db.updateDialogShowedStatus(malaName, count, showed) } returns false
+
+    }
+
+    @Test
+    fun test_update_dialog_status(){
+
+        val malaName = "easy_mala"
+        val count = "1000"
+        val showed = true
+
+        every { db.updateDialogShowedStatus(malaName, count, showed) } returns true
 
     }
 
