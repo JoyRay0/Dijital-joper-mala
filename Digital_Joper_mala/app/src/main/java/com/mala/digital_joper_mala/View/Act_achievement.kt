@@ -476,6 +476,7 @@ private fun AchievementItem(
 
         modifier = Modifier
             .fillMaxWidth()
+            .clickable{ showTotalUserCountOnClick() }
 
     ) {
 
