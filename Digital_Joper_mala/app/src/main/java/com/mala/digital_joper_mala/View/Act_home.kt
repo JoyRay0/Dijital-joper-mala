@@ -1920,7 +1920,7 @@ private fun Achievement(
                         .fillMaxWidth()
                         .border(
                             width = 1.dp,
-                            color = if (isDark) Color(0xFFF3F2F2) else Color.Transparent,
+                            color = if (isDark) Color.White.copy(alpha = 0.15f) else Color.Transparent,
                             shape = RoundedCornerShape(12.dp)
                         )
                         .clip(shape = RoundedCornerShape(12.dp))
