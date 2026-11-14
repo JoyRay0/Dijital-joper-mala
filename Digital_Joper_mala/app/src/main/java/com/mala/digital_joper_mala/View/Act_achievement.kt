@@ -80,7 +80,7 @@ class Act_achievement : ComponentActivity(), Achievements {//class==============
                     achievementsList = achievementList,
                     showTotalCountOnClick = {
 
-                        ShortMessageHelper.toast(this, BanglaHelper.readInt(it.toInt()) + "  জপ")
+                        ShortMessageHelper.toast(this, BanglaHelper.readInt(it) + "  জপ")
 
                     }
                 )
