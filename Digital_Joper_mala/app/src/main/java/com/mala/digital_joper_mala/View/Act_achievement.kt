@@ -459,7 +459,8 @@ private fun Toolbar(
 private fun AchievementItem(
     isDark: Boolean = false,
     isAchievementCompleted : Boolean = false,
-    achievementCount : String = "১০০০"
+    achievementCount : String = "১০০০",
+    showTotalUserCountOnClick : () -> Unit = {}
 ) {
 
     val countMap = mapOf(
