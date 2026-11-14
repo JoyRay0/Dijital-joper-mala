@@ -1924,7 +1924,7 @@ private fun Achievement(
                             shape = RoundedCornerShape(12.dp)
                         )
                         .clip(shape = RoundedCornerShape(12.dp))
-                        .background(color = Color(0xFFFDF4F4))
+                        .background(color = if (isDark) Color.DarkGray.copy(alpha = 0.8f) else Color(0xFFFDF4F4))
                         .padding(ScreenSize().responsivePadding(10, 12, 14))
 
                 ) {
