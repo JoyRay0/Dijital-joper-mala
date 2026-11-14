@@ -171,7 +171,8 @@ private fun AchievementFullScreen(
                             id = achievement.id,
                             malaName = achievement.malaName,
                             targetAchievementCount = achievement.targetAchievementCount,
-                            isCompleted = achievement.isCompleted
+                            isCompleted = achievement.isCompleted,
+                            userCount = achievement.userCount
                         )
                     )
 
