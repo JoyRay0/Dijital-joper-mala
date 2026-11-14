@@ -549,7 +549,7 @@ private fun AchievementItem(
                 .clip(shape = RoundedCornerShape(40.dp))
                 .background(
                     color = if (isAchievementCompleted){
-                        if (isDark) Color(0xFF4CAF50) else Color(0x6392EF96)
+                        if (isDark) Color(0xFF61A266) else Color(0x6392EF96)
                     } else{
                         if (isDark) Color(0xFF797878) else Color(0xFFE8E8E8)
                     }
