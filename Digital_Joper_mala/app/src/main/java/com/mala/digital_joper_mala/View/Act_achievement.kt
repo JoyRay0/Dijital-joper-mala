@@ -147,7 +147,7 @@ private fun AchievementFullScreen(
     backClick: () -> Unit = {},
     achievementStatus : String = "",
     achievementsList : List<Achievement> = emptyList(),
-    showTotalCountOnClick : (String) -> Unit = {}
+    showTotalCountOnClick : (Int) -> Unit = {}
 ) {
 
     val lazyState = rememberLazyListState()
