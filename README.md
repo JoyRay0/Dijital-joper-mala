@@ -6,19 +6,18 @@
 ## 📸 আমাদের অ্যাপের কিছু ছবি
 
 <p align="start">
-<img src="images/home_n.png" height="600"/>
-<img src="images/508.png" height="600"/>
-<img src="images/counter_n.png" height="600"/>
-<img src="images/user_image_n.png" height="600"/>
-<img src="images/user_info_n.png" height="600"/>
-<img src="images/user_mantra_n.png" height="600"/>
-<img src="images/history_n.png" height="600"/>
-<img src="images/custom_mala_n.png" height="600"/>
-<img src="images/all_mantras_n.png" height="600"/>
-<img src="images/search_n.png" height="600"/>
-<img src="images/setting_n.png" height="600"/>
-<img src="images/user_rules_n.png" height="600"/>
-<img src="images/chart.png" height="600"/>
+<img src="images/home.jpg" height="600"/>
+<img src="images/count.jpg" height="600"/>
+<img src="images/your_mantra.jpg" height="600"/>
+<img src="images/boishnob_mantra.jpg" height="600"/>
+<img src="images/shiv_mantra.jpg" height="600"/>
+<img src="images/notification.jpg" height="600"/>
+<img src="images/user_mantra.jpg" height="600"/>
+<img src="images/add_user_mantra.jpg" height="600"/>
+<img src="images/all_mantra.jpg" height="600"/>
+<img src="images/history.jpg" height="600"/>
+<img src="images/achievement.jpg" height="600"/>
+<img src="images/setting.jpg" height="600"/>
 </p>
 
 
@@ -55,8 +54,8 @@
 
 | টুলস | প্রোগ্রামিং ভাষা |
 |-----|-----|
-| ফ্রন্টএন্ড | Xml, Java, Kotlin, Jetpack Compose |
-| ব্যাকএন্ড | Core php |
+| ফ্রন্টএন্ড | Kotlin, Jetpack Compose |
+| ব্যাকএন্ড | Slim |
 | ডাটাবেস | MySQL, SQLite |
 
 ### ⚠️ সতর্কতা
