@@ -77,7 +77,12 @@ class Act_achievement : ComponentActivity(), Achievements {//class==============
                         finishAffinity()
                     },
                     achievementStatus = achievementStatus.value,
-                    achievementsList = achievementList
+                    achievementsList = achievementList,
+                    showTotalCountOnClick = {
+
+                        ShortMessageHelper.toast(this, BanglaHelper.readInt(it.toInt()) + "  জপ")
+
+                    }
                 )
 
             }
