@@ -277,7 +277,7 @@ private fun AchievementFullScreen(
                             fontSize = ScreenSize().responsiveTextSize(17, 19, 21),
                             fontFamily = BanglaHelper.banglaFont(),
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFF000000),
+                            color = if (isDark) Color(0xFFFFFFFF) else Color(0xFF000000),
                             textAlign = TextAlign.Start,
                             modifier = Modifier
                                 .fillMaxWidth()
