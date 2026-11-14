@@ -346,7 +346,8 @@ private fun AchievementFullScreen(
                         AchievementItem(
                             isDark = isDark,
                             isAchievementCompleted = it.isCompleted,
-                            achievementCount = it.targetAchievementCount
+                            achievementCount = it.targetAchievementCount,
+                            showTotalUserCountOnClick = { showTotalCountOnClick(it.userCount) }
                         )
 
                     }//items
