@@ -219,7 +219,8 @@ private fun JopHistoryFullScreen(
                             modifier = Modifier.animateItem(),
                             day = it.day,
                             date = it.date,
-                            count = it.count
+                            count = it.count,
+                            isDark = isDark
                         )
 
                     }
