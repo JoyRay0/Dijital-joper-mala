@@ -344,7 +344,7 @@ private fun Toolbar(
 fun HistoryItem(
     modifier: Modifier = Modifier,
     day : String = "",
-    date : String = "Test",
+    date : String = "",
     count : Long = 0L,
     isDark: Boolean = false
 ) {
